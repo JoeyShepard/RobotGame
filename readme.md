@@ -22,6 +22,6 @@ The results of the comparison and more information about the project can be foun
 - python - The original version of the game in Python. Requires Python 3 and PyGame 1.9.6.
 - asset_extraction - A modified version of the original game in Python that outputs game data in text format for porting to other versions.
 - traditional_assembly - Port of the game from Python to 65C02 assembly. Assembled with [Macroassembler AS 1.42](http://john.ccac.rwth-aachen.de:8000/as/).
-- optimized_assembly - Port of the game from Python to 65C02 assembly optimized with my [65C02 Assembly Optimizer](https://github.com/JoeyShepard/65C02_Assembly_Optimizer).
+- optimized_assembly - Port of the game from Python to 65C02 assembly optimized with my [65C02 Assembly Optimizer](https://github.com/JoeyShepard/65C02_Assembly_Optimizer). Relies on [NASM](https://www.nasm.us/) for macro expansion before optimizing and [Macroassembler AS 1.42](http://john.ccac.rwth-aachen.de:8000/as/) to assemble after optmizing.
 - c - Port of the game from Python to C. Compiled with [CC65 C compiler](https://cc65.github.io/).
 - forth - Port of the game from Python to [Tali Forth 2](https://github.com/scotws/TaliForth2). This folder also contains a reduced version of Tali Forth 2 that is small enough to fit in the memory of the simulator.
