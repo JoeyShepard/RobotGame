@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+
+<span style="font-size:24px;font-weight:bold;">Call Graph</span><br>
+<canvas id="GraphCanvas" width="1500" height="400" style="border:1px solid #000000;"></canvas>
+<br><br>
+<span style="font-size:24px;font-weight:bold;">Local Variable Assignments</span><br>
+<table id="localtable" border="1" style='font-family:"Arial; font-size:14px'>
+	<tr>
+		<td>(none)</td>
+	</tr>
+</table>
+
+<script>
+	box_width=80;
+	box_height=40;
+	box_border_width=10;
+	box_border_height=20;
+	screen_border_width=20;
+	screen_border_height=20;
+	//box_alpha=0.5; //Looks good with solid colors (ie FF0000, 00FF00, etc) but need same color in table so no alpha
+	box_alpha=1.0;
+	
+	boxlist=[];									//Empty list in case template loads without payload
+	boxlist.push([0,0,"Test","10 bytes"]);		//Test data
+	linelist=[];
+	tabledata=[];
+	graphwidth=0;
+	graphheight=0;
+	
+	
+	
+	//Reload page automatically when focus switches to window
+	//(can't reload page when optimizer writes new local file with javascript alone!)
+	reload=false;
+	setInterval(function()
+	{ 
+		if (!(document.hasFocus())) reload=true;
+		else
+		{
+			if (reload) location.reload();
+			reload=false;
+		}
+	},500);
+	
+boxlist=[];
+linelist=[];
+boxlist.push([6.0,0,'main','2 bytes']);
+boxlist.push([0.5,1,'test_funcB','2 bytes']);
+boxlist.push([2.0,1,'test_funcE','1 bytes']);
+boxlist.push([4.0,1,'setup','0 bytes']);
+boxlist.push([7.0,1,'clrscr','3 bytes']);
+boxlist.push([9.0,1,'puts','2 bytes']);
+boxlist.push([10.0,1,'put_int16','3 bytes']);
+boxlist.push([11.5,1,'gets','4 bytes']);
+boxlist.push([0.0,2,'test_funcC','3 bytes']);
+boxlist.push([1.0,2,'test_funcD','2 bytes']);
+boxlist.push([2.0,2,'test_funcC','3 bytes']);
+boxlist.push([3.0,2,'test_funcE','1 bytes']);
+boxlist.push([4.5,2,'test_funcB','2 bytes']);
+boxlist.push([6.0,2,'test_funcA','1 bytes']);
+boxlist.push([7.5,2,'test_funcB','2 bytes']);
+boxlist.push([9.0,2,'putc','13 bytes']);
+boxlist.push([10.0,2,'putc','13 bytes']);
+boxlist.push([11.0,2,'putc','13 bytes']);
+boxlist.push([12.0,2,'debug_nl','0 bytes']);
+boxlist.push([3.0,3,'test_funcC','3 bytes']);
+boxlist.push([4.0,3,'test_funcC','3 bytes']);
+boxlist.push([5.0,3,'test_funcD','2 bytes']);
+boxlist.push([7.0,3,'test_funcC','3 bytes']);
+boxlist.push([8.0,3,'test_funcD','2 bytes']);
+linelist.push([0.5,1,6.0,0]);
+linelist.push([2.0,1,6.0,0]);
+linelist.push([4.0,1,6.0,0]);
+linelist.push([7.0,1,6.0,0]);
+linelist.push([9.0,1,6.0,0]);
+linelist.push([10.0,1,6.0,0]);
+linelist.push([11.5,1,6.0,0]);
+linelist.push([0.0,2,0.5,1]);
+linelist.push([1.0,2,0.5,1]);
+linelist.push([2.0,2,2.0,1]);
+linelist.push([3.0,2,4.0,1]);
+linelist.push([4.5,2,4.0,1]);
+linelist.push([6.0,2,7.0,1]);
+linelist.push([7.5,2,7.0,1]);
+linelist.push([9.0,2,9.0,1]);
+linelist.push([10.0,2,10.0,1]);
+linelist.push([11.0,2,11.5,1]);
+linelist.push([12.0,2,11.5,1]);
+linelist.push([3.0,3,3.0,2]);
+linelist.push([4.0,3,4.5,2]);
+linelist.push([5.0,3,4.5,2]);
+linelist.push([7.0,3,7.5,2]);
+linelist.push([8.0,3,7.5,2]);
+graphwidth=13;
+graphheight=4;
+tabledata.push([['main','foo',1,0]]);
+tabledata.push([['main','bar',1,0]]);
+tabledata.push([['gets','start_X',1,0],['clrscr','ptr',2,0],['puts','ptr',2,0],['put_int16','num',2,0],['test_funcE','test_var',1,0]]);
+tabledata.push([['gets','goal',1,0],['clrscr','ptr',2,1],['puts','ptr',2,1],['put_int16','num',2,1]]);
+tabledata.push([['gets','offset',1,0],['clrscr','line_counter',1,0],['put_int16','printed',1,0]]);
+tabledata.push([['gets','state',1,0],['test_funcD','test_var1',1,0],['test_funcC','test_var1',1,0],['test_funcA','test_var',1,0]]);
+tabledata.push([['putc','ptr',2,0],['test_funcD','test_var2',1,0],['test_funcC','test_var2',1,0]]);
+tabledata.push([['putc','ptr',2,1],['test_funcC','test_var3',1,0]]);
+tabledata.push([['putc','gptr',2,0],['test_funcB','test_var1',1,0]]);
+tabledata.push([['putc','gptr',2,1],['test_funcB','test_var2',1,0]]);
+tabledata.push([['putc','temp_mult',1,0]]);
+tabledata.push([['putc','char_buff',8,0]]);
+tabledata.push([['putc','char_buff',8,1]]);
+tabledata.push([['putc','char_buff',8,2]]);
+tabledata.push([['putc','char_buff',8,3]]);
+tabledata.push([['putc','char_buff',8,4]]);
+tabledata.push([['putc','char_buff',8,5]]);
+tabledata.push([['putc','char_buff',8,6]]);
+tabledata.push([['putc','char_buff',8,7]]);
+max_row_length=5;
+	
+	var c = document.getElementById("GraphCanvas");
+	//c.style.padding="0px 50px 50px 0px";	//This is inside the picture, not outside!
+	if (graphwidth!=0)
+	{
+		newwidth=graphwidth*(box_width+box_border_width)-box_border_width+2*screen_border_width;
+		c.width=newwidth;
+	}
+	if (graphheight!=0)
+	{
+		newheight=graphheight*(box_height+box_border_height)-box_border_height+2*screen_border_height;
+		c.height=newheight;
+	}
+	var ctx = c.getContext("2d");
+	ctx.lineWidth=2;
+	ctx.textAlign="center";
+	ctx.textBaseline="middle";
+	
+	//Get list of unique box names for assigning colors
+	nodenames={};
+	for (let i=0;i<boxlist.length;i++)
+		//if (!nodenames.includes(boxlist[i][2])) nodenames.push(boxlist[i][2]); //Better to use object
+		if (!(boxlist[i][2] in nodenames)) nodenames[boxlist[i][2]]=i;
+	
+	color_table=[
+				//Normal
+				"60,120,216",
+				"224,102,102",
+				"106,168,79",
+				"241,194,50",
+				"142,124,195",
+				"230,145,56",
+				"194,123,160",
+				"69,129,142",
+				"109,158,235",
+				//Lighter
+				"234,153,153",
+				"147,196,125",
+				"255,217,102",
+				"180,167,214",
+				"246,178,107",
+				"213,166,189",
+				"118,165,175",
+				//Lightest
+				"164,194,244",
+				"182,215,168",
+				"255,229,153",
+				"249,203,156",
+				"162,196,201"
+				];
+	
+	//Assign colors to boxes
+	for (let i=0;i<Object.keys(nodenames).length;i++)
+	{
+		nodenames[Object.keys(nodenames)[i]]="rgba("+color_table[i%color_table.length]+","+box_alpha+")";
+	}
+	
+	//Draw boxes
+	for (let i=0;i<boxlist.length;i++)
+	{
+		let boxx=boxlist[i][0]*(box_width+box_border_width)+screen_border_width;
+		let boxy=boxlist[i][1]*(box_height+box_border_height)+screen_border_height;
+		ctx.fillStyle=nodenames[boxlist[i][2]];
+		ctx.fillRect(boxx,boxy,box_width,box_height);
+		ctx.strokeRect(boxx,boxy,box_width,box_height);
+		ctx.fillStyle="rgba(0,0,0,1)";
+		ctx.font="bold 14px Arial";
+		ctx.fillText(boxlist[i][2],boxx+box_width/2,boxy+box_height*0.30);
+		ctx.font="12px Arial";
+		ctx.fillText(boxlist[i][3],boxx+box_width/2,boxy+box_height*0.75);
+	}
+	
+	//Draw lines between nodes
+	for (let i=0;i<linelist.length;i++)
+	{
+		ctx.beginPath();
+		ctx.moveTo(linelist[i][0]*(box_width+box_border_width)+screen_border_width+box_width/2,
+			linelist[i][1]*(box_height+box_border_height)+screen_border_height);
+		ctx.lineTo(linelist[i][2]*(box_width+box_border_width)+screen_border_width+box_width/2,
+			linelist[i][3]*(box_height+box_border_height)+screen_border_height+box_height);
+		ctx.stroke();
+	}
+	
+	//Fill out locals assignment table
+	let tableHTML="";
+	for (let i=0;i<tabledata.length;i++)
+	{
+		tableHTML+="<tr><td><b>"+i+"</b></td>";
+		for (let j=0;j<tabledata[i].length;j++)
+		{
+			tableHTML+="<td style='background-color:"+nodenames[tabledata[i][j][0]]+"'>";
+			tableHTML+=tabledata[i][j][0]+"."+tabledata[i][j][1];
+			if (tabledata[i][j][2]!=1) tableHTML+="("+(tabledata[i][j][3]+1)+"/"+tabledata[i][j][2]+")";
+			tableHTML+="</td>\n";
+		}
+		tableHTML+="</tr>";
+	}
+	document.getElementById('localtable').innerHTML=tableHTML;
+</script>
+
+</body>
+</html>

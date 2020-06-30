@@ -1,0 +1,4642 @@
+C000 code0:
+C000 forth:
+C000 xt_cold:
+C000 CLD 
+C001 LDA #$6E
+C003 STA $10
+C005 LDA #$E7
+C007 STA $11
+C009 LDX #$21
+C00B _load_zp_loop:
+C00B LDA cold_zp_table,X
+C00E STA $00,X
+C010 DEX 
+C011 BNE _load_zp_loop
+C013 LDA cold_zp_table
+C016 STA $00
+C018 LDX #$FF
+C01A TXS 
+C01B LDX #$78
+C01D LDY #$31
+C01F LDA #$00
+C021 _load_user_vars_loop:
+C021 LDA cold_user_table,Y
+C024 STA ($1E),Y
+C026 DEY 
+C027 BNE _load_user_vars_loop
+C029 LDA cold_user_table
+C02C STA ($1E)
+C02E JSR xt_cr
+C031 xt_abort:
+C031 LDX #$78
+C033 xt_quit:
+C033 TXA 
+C034 LDX #$FF
+C036 TXS 
+C037 TAX 
+C038 STZ $0E
+C03A STZ $0F
+C03C STZ $06
+C03E STZ $07
+C040 STZ $16
+C042 STZ $17
+C044 _get_line:
+C044 LDA #$00
+C046 STA $08
+C048 LDA #$02
+C04A STA $09
+C04C STZ $0A
+C04E STZ $0B
+C050 JSR xt_refill
+C053 LDA $00,X
+C055 BNE _success
+C057 LDA #$06
+C059 JMP error
+C05C _success:
+C05C INX 
+C05D INX 
+C05E JSR _loop
+C061 CPX #$78
+C063 BEQ _stack_ok
+C065 BCC _stack_ok
+C067 JMP underflow_error
+C06A _stack_ok:
+C06A LDA $16
+C06C BEQ _print
+C06E LDA #$01
+C070 _print:
+C070 JSR print_string
+C073 BRA _get_line
+C0C9 cold_user_table_end:
+C0C9 xt_abs:
+C0C9 JSR underflow_1
+C0CC LDA $01,X
+C0CE BPL _done
+C0D0 SEC 
+C0D1 LDA #$00
+C0D3 SBC $00,X
+C0D5 STA $00,X
+C0D7 LDA #$00
+C0D9 SBC $01,X
+C0DB STA $01,X
+C0DD _done:
+C0DD z_abs:
+C0DD RTS 
+C0DE xt_accept:
+C0DE JSR underflow_2
+C0E1 LDA $00,X
+C0E3 ORA $01,X
+C0E5 BNE _not_zero
+C0E7 INX 
+C0E8 INX 
+C0E9 STZ $00,X
+C0EB STZ $01,X
+C0ED JMP _done
+C0F0 _not_zero:
+C0F0 LDA $00,X
+C0F2 STA $26
+C0F4 STZ $27
+C0F6 LDA $02,X
+C0F8 STA $24
+C0FA LDA $03,X
+C0FC STA $25
+C0FE INX 
+C0FF INX 
+C100 LDY #$00
+C102 _loop:
+C102 JSR key_a
+C105 CMP #$0A
+C107 BEQ _eol
+C109 CMP #$0D
+C10B BEQ _eol
+C10D CMP #$08
+C10F BEQ _backspace
+C111 CMP #$7F
+C113 BEQ _backspace
+C115 STA ($24),Y
+C117 INY 
+C118 JSR emit_a
+C11B CPY $26
+C11D BNE _loop
+C11F BRA _buffer_full
+C121 _eol:
+C121 JSR xt_space
+C124 _buffer_full:
+C124 STY $00,X
+C126 STZ $01,X
+C128 JMP _done
+C12B _backspace:
+C12B CPY #$00
+C12D BNE *
+C12F LDA #$07
+C131 JSR emit_a
+C134 INY 
+C135 *:
+C135 DEY 
+C136 LDA #$08
+C138 JSR emit_a
+C13B LDA #$20
+C13D JSR emit_a
+C140 LDA #$08
+C142 JSR emit_a
+C145 BRA _loop
+C147 _done:
+C147 z_accept:
+C147 RTS 
+C148 xt_again:
+C148 JSR underflow_1
+C14B LDY #$00
+C14D LDA #$4C
+C14F STA ($00),Y
+C151 INY 
+C152 LDA $00,X
+C154 STA ($00),Y
+C156 INY 
+C157 LDA $01,X
+C159 STA ($00),Y
+C15B INY 
+C15C TYA 
+C15D CLC 
+C15E ADC $00
+C160 STA $00
+C162 BCC _done
+C164 INC $01
+C166 _done:
+C166 INX 
+C167 INX 
+C168 z_again:
+C168 RTS 
+C169 xt_align:
+C169 xt_aligned:
+C169 z_align:
+C169 z_aligned:
+C169 RTS 
+C16A xt_allot:
+C16A JSR underflow_1
+C16D LDA $01,X
+C16F BMI _release
+C171 CLC 
+C172 LDA $00
+C174 ADC $00,X
+C176 STA $00
+C178 LDA $01
+C17A ADC $01,X
+C17C STA $01
+C17E LDY #$DF
+C180 CPY $00
+C182 LDA #$FF
+C184 SBC $01
+C186 BCS _done
+C188 STY $00
+C18A LDA #$FF
+C18C STA $01
+C18E LDA #$00
+C190 JMP error
+C193 _release:
+C193 DEX 
+C194 DEX 
+C195 LDA $00
+C197 STA $00,X
+C199 LDA $01
+C19B STA $01,X
+C19D JSR xt_plus
+C1A0 DEX 
+C1A1 DEX 
+C1A2 LDA #$00
+C1A4 STA $00,X
+C1A6 LDA #$03
+C1A8 STA $01,X
+C1AA JSR compare_16bit
+C1AD BEQ _nega_done
+C1AF BMI _nega_done
+C1B1 LDA #$00
+C1B3 STA $00
+C1B5 LDA #$03
+C1B7 STA $01
+C1B9 LDA #$82
+C1BB STA $02
+C1BD LDA #$E3
+C1BF STA $03
+C1C1 LDA #$0A
+C1C3 JMP error
+C1C6 _nega_done:
+C1C6 LDA $02,X
+C1C8 STA $00
+C1CA LDA $03,X
+C1CC STA $01
+C1CE INX 
+C1CF INX 
+C1D0 _done:
+C1D0 INX 
+C1D1 INX 
+C1D2 z_allot:
+C1D2 RTS 
+C1D3 xt_allow_native:
+C1D3 JSR current_to_dp
+C1D6 LDY #$01
+C1D8 LDA ($02),Y
+C1DA AND #$F5
+C1DC STA ($02),Y
+C1DE z_allow_native:
+C1DE RTS 
+C1DF xt_always_native:
+C1DF JSR current_to_dp
+C1E2 LDY #$01
+C1E4 LDA ($02),Y
+C1E6 ORA #$02
+C1E8 AND #$F7
+C1EA STA ($02),Y
+C1EC z_always_native:
+C1EC RTS 
+C1ED xt_and:
+C1ED JSR underflow_2
+C1F0 LDA $00,X
+C1F2 AND $02,X
+C1F4 STA $02,X
+C1F6 LDA $01,X
+C1F8 AND $03,X
+C1FA STA $03,X
+C1FC INX 
+C1FD INX 
+C1FE z_and:
+C1FE RTS 
+C1FF xt_backslash:
+C1FF LDA $0A
+C201 STA $0C
+C203 LDA $0B
+C205 STA $0D
+C207 z_backslash:
+C207 RTS 
+C208 xt_base:
+C208 DEX 
+C209 DEX 
+C20A LDA #$18
+C20C STA $00,X
+C20E STZ $01,X
+C210 z_base:
+C210 RTS 
+C211 xt_begin:
+C211 JSR xt_asm_arrow
+C214 z_begin:
+C214 RTS 
+C215 xt_bell:
+C215 LDA #$07
+C217 JSR emit_a
+C21A z_bell:
+C21A RTS 
+C21B xt_bl:
+C21B DEX 
+C21C DEX 
+C21D LDA #$20
+C21F STA $00,X
+C221 STZ $01,X
+C223 z_bl:
+C223 RTS 
+C224 xt_bracket_char:
+C224 JSR xt_char
+C227 JSR xt_literal
+C22A z_bracket_char:
+C22A RTS 
+C22B xt_buffer_colon:
+C22B JSR xt_create
+C22E JSR xt_allot
+C231 z_buffer_colon:
+C231 RTS 
+C232 xt_bye:
+C232 JMP platform_bye
+C235 xt_c_comma:
+C235 z_bye:
+C235 JSR underflow_1
+C238 LDA $00,X
+C23A JSR cmpl_a
+C23D INX 
+C23E INX 
+C23F z_c_comma:
+C23F RTS 
+C240 xt_c_fetch:
+C240 JSR underflow_1
+C243 LDA ($00,X)
+C245 STA $00,X
+C247 STZ $01,X
+C249 z_c_fetch:
+C249 RTS 
+C24A xt_c_store:
+C24A JSR underflow_2
+C24D LDA $02,X
+C24F STA ($00,X)
+C251 INX 
+C252 INX 
+C253 INX 
+C254 INX 
+C255 z_c_store:
+C255 RTS 
+C256 xt_cell_plus:
+C256 JSR underflow_1
+C259 INC $00,X
+C25B BNE *
+C25D INC $01,X
+C25F *:
+C25F INC $00,X
+C261 BNE _done
+C263 INC $01,X
+C265 _done:
+C265 z_cell_plus:
+C265 RTS 
+C266 xt_char:
+C266 JSR xt_parse_name
+C269 LDA $00,X
+C26B ORA $01,X
+C26D BNE _not_empty
+C26F LDA #$05
+C271 JMP error
+C274 _not_empty:
+C274 INX 
+C275 INX 
+C276 LDA ($00,X)
+C278 STA $00,X
+C27A STZ $01,X
+C27C z_char:
+C27C RTS 
+C27D xt_cmove:
+C27D JSR underflow_3
+C280 LDA $02,X
+C282 STA $26
+C284 LDA $03,X
+C286 STA $27
+C288 LDA $04,X
+C28A STA $24
+C28C LDA $05,X
+C28E STA $25
+C290 LDY #$00
+C292 LDA $01,X
+C294 BEQ _dopartial
+C296 _page:
+C296 LDA ($24),Y
+C298 STA ($26),Y
+C29A INY 
+C29B BNE _page
+C29D INC $25
+C29F INC $27
+C2A1 DEC $01,X
+C2A3 BNE _page
+C2A5 _dopartial:
+C2A5 LDA $00,X
+C2A7 BEQ _done
+C2A9 _partial:
+C2A9 LDA ($24),Y
+C2AB STA ($26),Y
+C2AD INY 
+C2AE DEC $00,X
+C2B0 BNE _partial
+C2B2 _done:
+C2B2 TXA 
+C2B3 CLC 
+C2B4 ADC #$06
+C2B6 TAX 
+C2B7 z_cmove:
+C2B7 RTS 
+C2B8 xt_cmove_up:
+C2B8 JSR underflow_3
+C2BB LDA $02,X
+C2BD STA $26
+C2BF LDA $03,X
+C2C1 CLC 
+C2C2 ADC $01,X
+C2C4 STA $27
+C2C6 LDA $04,X
+C2C8 STA $24
+C2CA LDA $05,X
+C2CC CLC 
+C2CD ADC $01,X
+C2CF STA $25
+C2D1 INC $01,X
+C2D3 LDY $00,X
+C2D5 BEQ _nopartial
+C2D7 _outerloop:
+C2D7 DEY 
+C2D8 BEQ _finishpage
+C2DA _innerloop:
+C2DA LDA ($24),Y
+C2DC STA ($26),Y
+C2DE DEY 
+C2DF BNE _innerloop
+C2E1 _finishpage:
+C2E1 LDA ($24)
+C2E3 STA ($26)
+C2E5 _nopartial:
+C2E5 DEC $25
+C2E7 DEC $27
+C2E9 DEC $01,X
+C2EB BNE _outerloop
+C2ED _done:
+C2ED TXA 
+C2EE CLC 
+C2EF ADC #$06
+C2F1 TAX 
+C2F2 z_cmove_up:
+C2F2 RTS 
+C2F3 xt_colon:
+C2F3 LDA $16
+C2F5 ORA $17
+C2F7 BEQ *
+C2F9 LDA #$07
+C2FB JMP error
+C2FE *:
+C2FE DEC $16
+C300 DEC $17
+C302 LDA #$40
+C304 TSB $20
+C306 JSR current_to_dp
+C309 LDA $03
+C30B PHA 
+C30C LDA $02
+C30E PHA 
+C30F LDA #$80
+C311 TSB $20
+C313 JSR xt_create
+C316 JSR current_to_dp
+C319 LDA $02
+C31B STA $04
+C31D LDA $03
+C31F STA $05
+C321 PLA 
+C322 STA $02
+C324 PLA 
+C325 STA $03
+C327 JSR dp_to_current
+C32A LDA $00
+C32C SEC 
+C32D SBC #$03
+C32F STA $00
+C331 BCS _done
+C333 DEC $01
+C335 _done:
+C335 z_colon:
+C335 RTS 
+C336 xt_colon_noname:
+C336 LDA $16
+C338 ORA $17
+C33A BEQ *
+C33C LDA #$07
+C33E JMP error
+C341 *:
+C341 DEC $16
+C343 DEC $17
+C345 LDA #$40
+C347 TRB $20
+C349 LDA $00
+C34B STA $04
+C34D LDA $01
+C34F STA $05
+C351 _done:
+C351 z_colon_noname:
+C351 RTS 
+C352 xt_comma:
+C352 JSR underflow_1
+C355 LDA $00,X
+C357 STA ($00)
+C359 INC $00
+C35B BNE *
+C35D INC $01
+C35F *:
+C35F LDA $01,X
+C361 STA ($00)
+C363 INC $00
+C365 BNE _done
+C367 INC $01
+C369 _done:
+C369 INX 
+C36A INX 
+C36B z_comma:
+C36B RTS 
+C36C xt_compile_comma:
+C36C JSR underflow_1
+C36F LDA $01,X
+C371 PHA 
+C372 LDA $00,X
+C374 PHA 
+C375 JSR xt_int_to_name
+C378 LDA $00,X
+C37A ORA $01,X
+C37C BNE _check_nt
+C37E JMP _compile_as_jump
+C381 _check_nt:
+C381 LDA $00,X
+C383 STA $2C
+C385 LDA $01,X
+C387 STA $2D
+C389 INC $00,X
+C38B BNE *
+C38D INC $01,X
+C38F *:
+C38F LDA ($00,X)
+C391 STA $28
+C393 AND #$02
+C395 BEQ _compile_check
+C397 LDA $2C
+C399 STA $00,X
+C39B LDA $2D
+C39D STA $01,X
+C39F JSR xt_wordsize
+C3A2 BRA _compile_as_code
+C3A4 _compile_check:
+C3A4 LDA $28
+C3A6 AND #$08
+C3A8 BEQ _check_size_limit
+C3AA JMP _compile_as_jump
+C3AD _check_size_limit:
+C3AD LDA $2C
+C3AF STA $00,X
+C3B1 LDA $2D
+C3B3 STA $01,X
+C3B5 JSR xt_wordsize
+C3B8 LDA $01,X
+C3BA CMP $1B
+C3BC BCC _compile_as_code
+C3BE BNE _jumpto_compile_as_jump
+C3C0 LDA $00,X
+C3C2 CMP $1A
+C3C4 BCC _compile_as_code
+C3C6 BEQ _compile_as_code
+C3C8 _jumpto_compile_as_jump:
+C3C8 JMP _compile_as_jump
+C3CB _compile_as_code:
+C3CB DEX 
+C3CC DEX 
+C3CD DEX 
+C3CE DEX 
+C3CF LDA $04,X
+C3D1 STA $00,X
+C3D3 LDA $05,X
+C3D5 STA $01,X
+C3D7 PLA 
+C3D8 STA $04,X
+C3DA PLA 
+C3DB STA $05,X
+C3DD LDA $00
+C3DF STA $02,X
+C3E1 LDA $01
+C3E3 STA $03,X
+C3E5 LDY #$00
+C3E7 _strip_loop:
+C3E7 LDA _strip_table,Y
+C3EA CMP $04,X
+C3EC BNE _next_entry
+C3EE LDA $C458,Y
+C3F1 CMP $05,X
+C3F3 BEQ _found_entry
+C3F5 _next_entry:
+C3F5 LDA _strip_table,Y
+C3F8 ORA $C458,Y
+C3FB BEQ *
+C3FD INY 
+C3FE INY 
+C3FF BRA _strip_loop
+C401 _found_entry:
+C401 TYA 
+C402 LSR 
+C403 TAY 
+C404 LDA _strip_size,Y
+C407 STA $2C
+C409 CLC 
+C40A ADC $04,X
+C40C STA $04,X
+C40E BCC *
+C410 INC $05,X
+C412 *:
+C412 ASL $2C
+C414 SEC 
+C415 LDA $00,X
+C417 SBC $2C
+C419 STA $00,X
+C41B BCS *
+C41D DEC $01,X
+C41F *:
+C41F _underflow_strip:
+C41F LDA $1C
+C421 ORA $1D
+C423 BEQ *
+C425 LDA $28
+C427 AND #$10
+C429 BEQ *
+C42B CLC 
+C42C LDA $04,X
+C42E ADC #$03
+C430 STA $04,X
+C432 BCC *
+C434 INC $05,X
+C436 *:
+C436 SEC 
+C437 LDA $00,X
+C439 SBC #$03
+C43B STA $00,X
+C43D BCS *
+C43F DEC $01,X
+C441 *:
+C441 _specials_done:
+C441 LDA $01,X
+C443 PHA 
+C444 LDA $00,X
+C446 PHA 
+C447 JSR xt_move
+C44A CLC 
+C44B PLA 
+C44C ADC $00
+C44E STA $00
+C450 PLA 
+C451 ADC $01
+C453 STA $01
+C455 BRA _done
+C469 _compile_as_jump:
+C469 LDA #$20
+C46B STA ($00)
+C46D LDY #$01
+C46F PLA 
+C470 STA ($00),Y
+C472 INY 
+C473 PLA 
+C474 STA ($00),Y
+C476 LDA #$03
+C478 CLC 
+C479 ADC $00
+C47B STA $00
+C47D BCC *
+C47F INC $01
+C481 *:
+C481 INX 
+C482 INX 
+C483 _done:
+C483 z_compile_comma:
+C483 RTS 
+C484 xt_compile_only:
+C484 JSR current_to_dp
+C487 LDY #$01
+C489 LDA ($02),Y
+C48B ORA #$01
+C48D STA ($02),Y
+C48F z_compile_only:
+C48F RTS 
+C490 xt_constant:
+C490 xt_value:
+C490 JSR underflow_1
+C493 JSR xt_create
+C496 SEC 
+C497 LDA $00
+C499 SBC #$02
+C49B STA $24
+C49D LDA $01
+C49F SBC #$00
+C4A1 STA $25
+C4A3 LDA #$7A
+C4A5 STA ($24)
+C4A7 LDY #$01
+C4A9 LDA #$E5
+C4AB STA ($24),Y
+C4AD JSR xt_comma
+C4B0 adjust_z:
+C4B0 JSR xt_latestnt
+C4B3 LDA $00,X
+C4B5 STA $24
+C4B7 LDA $01,X
+C4B9 STA $25
+C4BB LDY #$06
+C4BD LDA ($24),Y
+C4BF CLC 
+C4C0 ADC #$02
+C4C2 STA ($24),Y
+C4C4 INY 
+C4C5 LDA ($24),Y
+C4C7 ADC #$00
+C4C9 STA ($24),Y
+C4CB INX 
+C4CC INX 
+C4CD z_constant:
+C4CD z_value:
+C4CD RTS 
+C4CE xt_cr:
+C4CE LDA #$0A
+C4D0 JSR emit_a
+C4D3 z_cr:
+C4D3 RTS 
+C4D4 xt_create:
+C4D4 JSR xt_parse_name
+C4D7 LDA $00,X
+C4D9 ORA $01,X
+C4DB BNE _got_name
+C4DD LDA #$05
+C4DF JMP error
+C4E2 _got_name:
+C4E2 STZ $01,X
+C4E4 JSR xt_two_dup
+C4E7 JSR xt_find_name
+C4EA LDA $00,X
+C4EC ORA $01,X
+C4EE BEQ _new_name
+C4F0 INX 
+C4F1 INX 
+C4F2 BIT $20
+C4F4 BPL _redefined_name
+C4F6 LDA #$80
+C4F8 ORA $20
+C4FA STA $20
+C4FC BRA _process_name
+C4FE _redefined_name:
+C4FE LDA #$02
+C500 JSR print_string_no_lf
+C503 JSR xt_two_dup
+C506 JSR xt_type
+C509 JSR xt_space
+C50C BRA _process_name
+C50E _new_name:
+C50E INX 
+C50F INX 
+C510 LDA #$7F
+C512 AND $20
+C514 STA $20
+C516 _process_name:
+C516 LDA $00,X
+C518 STA $26
+C51A LDA $00
+C51C STA $24
+C51E LDA $01
+C520 STA $25
+C522 LDA $00,X
+C524 CLC 
+C525 ADC #$08
+C527 STA $28
+C529 CLC 
+C52A ADC #$03
+C52C STA $00,X
+C52E STZ $01,X
+C530 JSR xt_allot
+C533 JSR current_to_dp
+C536 LDY #$00
+C538 LDA $26
+C53A STA ($24),Y
+C53C LDA #$08
+C53E ORA #$20
+C540 INY 
+C541 STA ($24),Y
+C543 INY 
+C544 LDA $02
+C546 STA ($24),Y
+C548 INY 
+C549 LDA $03
+C54B STA ($24),Y
+C54D INY 
+C54E LDA $25
+C550 STA $03
+C552 LDA $24
+C554 STA $02
+C556 CLC 
+C557 ADC $28
+C559 STA ($24),Y
+C55B PHA 
+C55C INY 
+C55D LDA $25
+C55F ADC #$00
+C561 STA ($24),Y
+C563 INY 
+C564 PLA 
+C565 CLC 
+C566 ADC #$03
+C568 STA ($24),Y
+C56A DEY 
+C56B LDA ($24),Y
+C56D ADC #$00
+C56F INY 
+C570 INY 
+C571 STA ($24),Y
+C573 INY 
+C574 LDA $00,X
+C576 SEC 
+C577 SBC #$08
+C579 STA $2C
+C57B LDA $01,X
+C57D SBC #$00
+C57F STA $2D
+C581 _name_loop:
+C581 LDA ($2C),Y
+C583 CMP #$5B
+C585 BCS _store_name
+C587 CMP #$41
+C589 BCC _store_name
+C58B CLC 
+C58C ADC #$20
+C58E _store_name:
+C58E STA ($24),Y
+C590 INY 
+C591 DEC $26
+C593 BNE _name_loop
+C595 LDA #$20
+C597 STA ($24),Y
+C599 INY 
+C59A LDA #$C0
+C59C STA ($24),Y
+C59E INY 
+C59F LDA #$E5
+C5A1 STA ($24),Y
+C5A3 JSR dp_to_current
+C5A6 INX 
+C5A7 INX 
+C5A8 z_create:
+C5A8 RTS 
+C5A9 xt_d_minus:
+C5A9 xt_dabs:
+C5A9 JSR underflow_2
+C5AC LDA $01,X
+C5AE BPL _done
+C5B0 LDY #$00
+C5B2 SEC 
+C5B3 TYA 
+C5B4 SBC $02,X
+C5B6 STA $02,X
+C5B8 TYA 
+C5B9 SBC $03,X
+C5BB STA $03,X
+C5BD TYA 
+C5BE SBC $00,X
+C5C0 STA $00,X
+C5C2 TYA 
+C5C3 SBC $01,X
+C5C5 STA $01,X
+C5C7 _done:
+C5C7 z_dabs:
+C5C7 RTS 
+C5C8 xt_decimal:
+C5C8 LDA #$0A
+C5CA STA $18
+C5CC STZ $19
+C5CE z_decimal:
+C5CE RTS 
+C5CF xt_depth:
+C5CF LDA #$78
+C5D1 STX $2A
+C5D3 SEC 
+C5D4 SBC $2A
+C5D6 LSR 
+C5D7 DEX 
+C5D8 DEX 
+C5D9 STA $00,X
+C5DB STZ $01,X
+C5DD z_depth:
+C5DD RTS 
+C5DE xt_digit_question:
+C5DE JSR underflow_1
+C5E1 DEX 
+C5E2 DEX 
+C5E3 STZ $00,X
+C5E5 STZ $01,X
+C5E7 STZ $03,X
+C5E9 LDA $02,X
+C5EB CMP #$30
+C5ED BCC _done
+C5EF CMP #$3A
+C5F1 BCC _checkbase
+C5F3 CMP #$41
+C5F5 BCC _done
+C5F7 CMP #$61
+C5F9 BCC _case_done
+C5FB CMP #$7B
+C5FD BCS _case_done
+C5FF CLC 
+C600 ADC #$E0
+C602 _case_done:
+C602 SEC 
+C603 SBC #$07
+C605 _checkbase:
+C605 SEC 
+C606 SBC #$30
+C608 CMP $18
+C60A BCS _done
+C60C STA $02,X
+C60E DEC $00,X
+C610 DEC $01,X
+C612 _done:
+C612 z_digit_question:
+C612 RTS 
+C613 xt_dnegate:
+C613 JSR underflow_2
+C616 LDY #$00
+C618 SEC 
+C619 TYA 
+C61A SBC $02,X
+C61C STA $02,X
+C61E TYA 
+C61F SBC $03,X
+C621 STA $03,X
+C623 TYA 
+C624 SBC $00,X
+C626 STA $00,X
+C628 TYA 
+C629 SBC $01,X
+C62B STA $01,X
+C62D z_dnegate:
+C62D RTS 
+C62E xt_question_do:
+C62E LDA #$FF
+C630 STA $24
+C632 BRA do_common
+C634 xt_do:
+C634 STZ $24
+C636 do_common:
+C636 DEX 
+C637 DEX 
+C638 LDA $00
+C63A STA $00,X
+C63C LDA $01
+C63E STA $01,X
+C640 LDA #$05
+C642 TAY 
+C643 _loop:
+C643 STA ($00),Y
+C645 DEY 
+C646 BPL _loop
+C648 INC 
+C649 CLC 
+C64A ADC $00
+C64C STA $00
+C64E BCC *
+C650 INC $01
+C652 *:
+C652 LDA $24
+C654 BEQ _compile_do
+C656 LDY #$14
+C658 PHY 
+C659 *:
+C659 LDA do_runtime_end,Y
+C65C STA ($00),Y
+C65E DEY 
+C65F BPL *
+C661 PLA 
+C662 CLC 
+C663 ADC $00
+C665 STA $00
+C667 LDA $01
+C669 ADC #$00
+C66B STA $01
+C66D _compile_do:
+C66D LDY #$24
+C66F PHY 
+C670 *:
+C670 LDA do_runtime,Y
+C673 STA ($00),Y
+C675 DEY 
+C676 BPL *
+C678 PLA 
+C679 CLC 
+C67A ADC $00
+C67C STA $00
+C67E LDA $01
+C680 ADC #$00
+C682 STA $01
+C684 DEX 
+C685 DEX 
+C686 LDA $00
+C688 STA $00,X
+C68A LDA $01
+C68C STA $01,X
+C68E z_do:
+C68E z_question_do:
+C68E RTS 
+C68F do_runtime:
+C68F SEC 
+C690 LDA #$00
+C692 SBC $02,X
+C694 STA $02,X
+C696 LDA #$80
+C698 SBC $03,X
+C69A STA $03,X
+C69C PHA 
+C69D LDA $02,X
+C69F PHA 
+C6A0 CLC 
+C6A1 LDA $00,X
+C6A3 ADC $02,X
+C6A5 STA $00,X
+C6A7 LDA $01,X
+C6A9 ADC $03,X
+C6AB PHA 
+C6AC LDA $00,X
+C6AE PHA 
+C6AF INX 
+C6B0 INX 
+C6B1 INX 
+C6B2 INX 
+C6B3 do_runtime_end:
+C6B3 question_do_runtime:
+C6B3 JSR xt_two_dup
+C6B6 JSR xt_equal
+C6B9 LDA $00,X
+C6BB ORA $01,X
+C6BD BEQ _do_do
+C6BF TXA 
+C6C0 CLC 
+C6C1 ADC #$06
+C6C3 TAX 
+C6C4 RTS 
+C6C5 _do_do:
+C6C5 INX 
+C6C6 INX 
+C6C7 question_do_runtime_end:
+C6C7 xt_does:
+C6C7 LDY #$C6
+C6C9 LDA #$D6
+C6CB JSR cmpl_subroutine
+C6CE LDY #$E5
+C6D0 LDA #$A7
+C6D2 JSR cmpl_subroutine
+C6D5 z_does:
+C6D5 RTS 
+C6D6 does_runtime:
+C6D6 PLY 
+C6D7 PLA 
+C6D8 INY 
+C6D9 BNE *
+C6DB INC 
+C6DC *:
+C6DC STY $24
+C6DE STA $25
+C6E0 JSR current_to_dp
+C6E3 LDA $02
+C6E5 CLC 
+C6E6 ADC #$04
+C6E8 STA $26
+C6EA LDA $03
+C6EC ADC #$00
+C6EE STA $27
+C6F0 LDA ($26)
+C6F2 CLC 
+C6F3 ADC #$01
+C6F5 STA $28
+C6F7 LDY #$01
+C6F9 LDA ($26),Y
+C6FB ADC #$00
+C6FD STA $29
+C6FF LDA $24
+C701 STA ($28)
+C703 LDA $25
+C705 STA ($28),Y
+C707 RTS 
+C708 xt_dot:
+C708 JSR underflow_1
+C70B JSR xt_dup
+C70E JSR cold_user_table_end
+C711 JSR xt_case
+C714 JSR xt_less_number_sign
+C717 JSR xt_number_sign_s
+C71A JSR xt_rot
+C71D JSR xt_sign
+C720 JSR xt_number_sign_greater
+C723 JSR xt_type
+C726 JSR xt_space
+C729 z_dot:
+C729 RTS 
+C72A xt_dot_paren:
+C72A DEX 
+C72B DEX 
+C72C LDA #$29
+C72E STA $00,X
+C730 STZ $01,X
+C732 JSR xt_parse
+C735 JSR xt_type
+C738 z_dot_paren:
+C738 RTS 
+C739 xt_dot_quote:
+C739 JSR xt_s_quote
+C73C LDY #$D7
+C73E LDA #$B2
+C740 JSR cmpl_subroutine
+C743 z_dot_quote:
+C743 RTS 
+C744 xt_dot_s:
+C744 JSR xt_depth
+C747 LDA #$3C
+C749 JSR emit_a
+C74C LDA $00,X
+C74E PHA 
+C74F DEX 
+C750 DEX 
+C751 STA $00,X
+C753 STZ $01,X
+C755 JSR print_u
+C758 LDA #$3E
+C75A JSR emit_a
+C75D LDA #$20
+C75F JSR emit_a
+C762 INX 
+C763 INX 
+C764 CPX #$78
+C766 BEQ _done
+C768 _have_stack:
+C768 PLY 
+C769 LDA #$77
+C76B STA $28
+C76D STZ $29
+C76F _loop:
+C76F DEX 
+C770 DEX 
+C771 LDA ($28)
+C773 STA $01,X
+C775 DEC $28
+C777 LDA ($28)
+C779 STA $00,X
+C77B DEC $28
+C77D PHY 
+C77E JSR xt_dot
+C781 PLY 
+C782 DEY 
+C783 BNE _loop
+C785 PHA 
+C786 _done:
+C786 PLA 
+C787 z_dot_s:
+C787 RTS 
+C788 xt_drop:
+C788 JSR underflow_1
+C78B INX 
+C78C INX 
+C78D z_drop:
+C78D RTS 
+C78E xt_dup:
+C78E JSR underflow_1
+C791 DEX 
+C792 DEX 
+C793 LDA $02,X
+C795 STA $00,X
+C797 LDA $03,X
+C799 STA $01,X
+C79B z_dup:
+C79B RTS 
+C79C xt_else:
+C79C xt_endof:
+C79C LDY #$C7
+C79E LDA #$B6
+C7A0 JSR cmpl_subroutine
+C7A3 JSR xt_asm_arrow
+C7A6 JSR xt_case
+C7A9 JSR xt_comma
+C7AC JSR xt_asm_arrow
+C7AF JSR xt_rot
+C7B2 JSR xt_store
+C7B5 z_else:
+C7B5 z_endof:
+C7B5 RTS 
+C7B6 branch_runtime:
+C7B6 PLA 
+C7B7 STA $22
+C7B9 PLA 
+C7BA STA $23
+C7BC LDY #$01
+C7BE LDA ($22),Y
+C7C0 STA $24
+C7C2 INY 
+C7C3 LDA ($22),Y
+C7C5 STA $25
+C7C7 JMP ($0024)
+C7CA xt_emit:
+C7CA JSR underflow_1
+C7CD LDA $00,X
+C7CF INX 
+C7D0 INX 
+C7D1 emit_a:
+C7D1 JMP ($0010)
+C7D4 xt_endcase:
+C7D4 z_emit:
+C7D4 LDY #$C7
+C7D6 LDA #$88
+C7D8 JSR cmpl_subroutine
+C7DB _endcase_loop:
+C7DB LDA $00,X
+C7DD ORA $01,X
+C7DF BEQ _done
+C7E1 JSR xt_then
+C7E4 BRA _endcase_loop
+C7E6 _done:
+C7E6 INX 
+C7E7 INX 
+C7E8 z_endcase:
+C7E8 RTS 
+C7E9 xt_equal:
+C7E9 JSR underflow_2
+C7EC LDA $00,X
+C7EE CMP $02,X
+C7F0 BNE _false
+C7F2 LDA $01,X
+C7F4 CMP $03,X
+C7F6 BNE _false
+C7F8 LDA #$FF
+C7FA BRA _done
+C7FC _false:
+C7FC LDA #$00
+C7FE _done:
+C7FE STA $02,X
+C800 STA $03,X
+C802 INX 
+C803 INX 
+C804 z_equal:
+C804 RTS 
+C805 xt_fill:
+C805 JSR underflow_3
+C808 LDA $04,X
+C80A STA $24
+C80C LDA $05,X
+C80E STA $25
+C810 LDA $02,X
+C812 STA $26
+C814 LDA $03,X
+C816 STA $27
+C818 LDA $00,X
+C81A TAY 
+C81B _loop:
+C81B LDA #$FF
+C81D CMP $25
+C81F BCC _done
+C821 BNE _check_counter
+C823 LDA #$DF
+C825 CMP $24
+C827 BCC _done
+C829 _check_counter:
+C829 LDA $26
+C82B ORA $27
+C82D BEQ _done
+C82F TYA 
+C830 STA ($24)
+C832 LDA $26
+C834 BNE *
+C836 DEC $27
+C838 *:
+C838 DEC $26
+C83A INC $24
+C83C BNE _loop
+C83E INC $25
+C840 BRA _loop
+C842 _done:
+C842 TXA 
+C843 CLC 
+C844 ADC #$06
+C846 TAX 
+C847 z_blank:
+C847 z_erase:
+C847 z_fill:
+C847 RTS 
+C848 xt_execute:
+C848 JSR underflow_1
+C84B JSR doexecute
+C84E z_execute:
+C84E RTS 
+C84F doexecute:
+C84F LDA $00,X
+C851 STA $0E
+C853 LDA $01,X
+C855 STA $0F
+C857 INX 
+C858 INX 
+C859 JMP ($000E)
+C85C xt_exit:
+C85C RTS 
+C85D xt_false:
+C85D z_exit:
+C85D DEX 
+C85E DEX 
+C85F STZ $00,X
+C861 STZ $01,X
+C863 z_false:
+C863 RTS 
+C864 xt_fetch:
+C864 JSR underflow_1
+C867 LDA ($00,X)
+C869 TAY 
+C86A INC $00,X
+C86C BNE *
+C86E INC $01,X
+C870 *:
+C870 LDA ($00,X)
+C872 STA $01,X
+C874 STY $00,X
+C876 z_fetch:
+C876 RTS 
+C877 xt_find_name:
+C877 LDA $9E
+C879 BEQ _no_debug_pre
+C87B STZ $9F
+C87D STZ $A0
+C87F _no_debug_pre:
+C87F JSR underflow_2
+C882 LDA $00,X
+C884 ORA $01,X
+C886 BNE _nonempty
+C888 JMP _fail_done
+C88B _nonempty:
+C88B STZ $28
+C88D _wordlist_loop:
+C88D LDY #$1E
+C88F LDA $28
+C891 CMP ($1E),Y
+C893 BNE _have_string
+C895 JMP _fail_done
+C898 _have_string:
+C898 CLC 
+C899 ADC #$1F
+C89B TAY 
+C89C LDA ($1E),Y
+C89E ASL 
+C89F CLC 
+C8A0 ADC #$06
+C8A2 TAY 
+C8A3 LDA ($1E),Y
+C8A5 STA $24
+C8A7 INY 
+C8A8 LDA ($1E),Y
+C8AA STA $25
+C8AC LDA $02,X
+C8AE STA $26
+C8B0 LDA $03,X
+C8B2 STA $27
+C8B4 LDA $9E
+C8B6 BEQ _loop
+C8B8 LDA #$5C
+C8BA STA $FFE7
+C8BD LDA #$6E
+C8BF STA $FFE7
+C8C2 PHY 
+C8C3 PHX 
+C8C4 LDA $00,X
+C8C6 TAX 
+C8C7 LDY #$00
+C8C9 _debug_loop:
+C8C9 LDA ($26),Y
+C8CB DEX 
+C8CC BNE _debug_loop
+C8CE PLX 
+C8CF PLY 
+C8D0 _loop:
+C8D0 _no_debug_which:
+C8D0 LDA ($24)
+C8D2 CMP $00,X
+C8D4 BNE _next_entry
+C8D6 _compare_string:
+C8D6 LDA ($26)
+C8D8 CMP #$5B
+C8DA BCS _compare_first
+C8DC CMP #$41
+C8DE BCC _compare_first
+C8E0 CLC 
+C8E1 ADC #$20
+C8E3 _compare_first:
+C8E3 LDY #$08
+C8E5 CMP ($24),Y
+C8E7 BNE _next_entry
+C8E9 LDA $00,X
+C8EB DEC 
+C8EC BEQ _success
+C8EE LDA $24
+C8F0 PHA 
+C8F1 CLC 
+C8F2 ADC #$08
+C8F4 STA $24
+C8F6 LDA $25
+C8F8 PHA 
+C8F9 ADC #$00
+C8FB STA $25
+C8FD LDY $00,X
+C8FF DEY 
+C900 _string_loop:
+C900 LDA ($26),Y
+C902 CMP #$5B
+C904 BCS _check_char
+C906 CMP #$41
+C908 BCC _check_char
+C90A CLC 
+C90B ADC #$20
+C90D _check_char:
+C90D CMP ($24),Y
+C90F BNE _next_entry_tmp1
+C911 DEY 
+C912 BNE _string_loop
+C914 _success_tmp1:
+C914 PLA 
+C915 STA $25
+C917 PLA 
+C918 STA $24
+C91A _success:
+C91A LDA $24
+C91C STA $02,X
+C91E LDA $25
+C920 STA $03,X
+C922 BRA _done
+C924 _next_entry_tmp1:
+C924 PLA 
+C925 STA $25
+C927 PLA 
+C928 STA $24
+C92A _next_entry:
+C92A LDA $9E
+C92C BEQ _no_debug
+C92E LDA #$5C
+C930 STA $FFE7
+C933 LDA #$6E
+C935 STA $FFE7
+C938 LDA #$46
+C93A STA $FFE7
+C93D LDY #$02
+C93F LDA ($24),Y
+C941 PHA 
+C942 INY 
+C943 LDA ($24),Y
+C945 STA $25
+C947 STA $FFE8
+C94A PLA 
+C94B STA $24
+C94D STA $FFE8
+C950 LDA $24
+C952 ORA $25
+C954 BEQ _debug_done
+C956 LDA $24
+C958 CMP $9F
+C95A BNE _stuck_done
+C95C LDA $25
+C95E CMP $A0
+C960 BNE _stuck_done
+C962 LDA #$21
+C964 STA $FFE7
+C967 BRK 
+C968 BRK 
+C969 _stuck_done:
+C969 LDA $24
+C96B STA $9F
+C96D LDA $25
+C96F STA $A0
+C971 BRA _debug_done
+C973 _no_debug:
+C973 LDY #$02
+C975 LDA ($24),Y
+C977 PHA 
+C978 INY 
+C979 LDA ($24),Y
+C97B STA $25
+C97D PLA 
+C97E STA $24
+C980 _debug_done:
+C980 ORA $25
+C982 BEQ $C987
+C984 JMP _loop
+C987 INC $28
+C989 JMP _wordlist_loop
+C98C _fail_done:
+C98C STZ $02,X
+C98E STZ $03,X
+C990 _done:
+C990 INX 
+C991 INX 
+C992 z_find_name:
+C992 RTS 
+C993 xt_fm_slash_mod:
+C993 JSR underflow_3
+C996 STZ $26
+C998 LDA $01,X
+C99A BPL _check_d
+C99C INC $26
+C99E JSR xt_negate
+C9A1 JSR xt_to_r
+C9A4 JSR xt_dnegate
+C9A7 JSR xt_r_from
+C9AA _check_d:
+C9AA LDA $03,X
+C9AC BPL _multiply
+C9AE CLC 
+C9AF LDA $00,X
+C9B1 ADC $02,X
+C9B3 STA $02,X
+C9B5 LDA $01,X
+C9B7 ADC $03,X
+C9B9 STA $03,X
+C9BB _multiply:
+C9BB JSR xt_um_slash_mod
+C9BE LDA $26
+C9C0 BEQ _done
+C9C2 INX 
+C9C3 INX 
+C9C4 JSR xt_negate
+C9C7 DEX 
+C9C8 DEX 
+C9C9 _done:
+C9C9 z_fm_slash_mod:
+C9C9 RTS 
+C9CA load_evaluate:
+C9CA LDA #$FF
+C9CC STA $24
+C9CE BRA _got_work
+C9D0 xt_evaluate:
+C9D0 JSR underflow_2
+C9D3 STZ $24
+C9D5 LDA $00,X
+C9D7 ORA $01,X
+C9D9 BNE _got_work
+C9DB INX 
+C9DC INX 
+C9DD INX 
+C9DE INX 
+C9DF BRA _done
+C9E1 _got_work:
+C9E1 load_evaluate_start:
+C9E1 LDY #$01
+C9E3 LDA ($1E),Y
+C9E5 PHA 
+C9E6 DEY 
+C9E7 LDA ($1E),Y
+C9E9 PHA 
+C9EA LDA $24
+C9EC BNE _nozero
+C9EE STA ($1E),Y
+C9F0 INY 
+C9F1 STA ($1E),Y
+C9F3 _nozero:
+C9F3 JSR xt_input_to_r
+C9F6 LDA #$FF
+C9F8 STA $06
+C9FA STA $07
+C9FC STZ $0C
+C9FE STZ $0D
+CA00 LDA $00,X
+CA02 STA $0A
+CA04 LDA $01,X
+CA06 STA $0B
+CA08 LDA $02,X
+CA0A STA $08
+CA0C LDA $03,X
+CA0E STA $09
+CA10 INX 
+CA11 INX 
+CA12 INX 
+CA13 INX 
+CA14 JSR _loop
+CA17 JSR xt_r_to_input
+CA1A LDY #$00
+CA1C PLA 
+CA1D STA ($1E),Y
+CA1F INY 
+CA20 PLA 
+CA21 STA ($1E),Y
+CA23 _done:
+CA23 z_evaluate:
+CA23 RTS 
+CA24 xt_get_current:
+CA24 DEX 
+CA25 DEX 
+CA26 LDY #$04
+CA28 LDA ($1E),Y
+CA2A STA $00,X
+CA2C STZ $01,X
+CA2E z_get_current:
+CA2E RTS 
+CA2F xt_greater_than:
+CA2F JSR underflow_2
+CA32 LDY #$00
+CA34 JSR compare_16bit
+CA37 BEQ _false
+CA39 BPL _false
+CA3B DEY 
+CA3C _false:
+CA3C TYA 
+CA3D INX 
+CA3E INX 
+CA3F STA $00,X
+CA41 STA $01,X
+CA43 z_greater_than:
+CA43 RTS 
+CA44 xt_asm_arrow:
+CA44 xt_here:
+CA44 DEX 
+CA45 DEX 
+CA46 LDA $00
+CA48 STA $00,X
+CA4A LDA $01
+CA4C STA $01,X
+CA4E z_asm_arrow:
+CA4E z_here:
+CA4E RTS 
+CA4F xt_hex:
+CA4F LDA #$10
+CA51 STA $18
+CA53 STZ $19
+CA55 z_hex:
+CA55 RTS 
+CA56 xt_hold:
+CA56 JSR underflow_1
+CA59 LDA $34
+CA5B BNE *
+CA5D DEC $35
+CA5F *:
+CA5F DEC $34
+CA61 LDA $00,X
+CA63 STA ($34)
+CA65 INX 
+CA66 INX 
+CA67 z_hold:
+CA67 RTS 
+CA68 xt_i:
+CA68 DEX 
+CA69 DEX 
+CA6A STX $2A
+CA6C TSX 
+CA6D SEC 
+CA6E LDA $0101,X
+CA71 SBC $0103,X
+CA74 TAY 
+CA75 LDA $0102,X
+CA78 SBC $0104,X
+CA7B LDX $2A
+CA7D STA $01,X
+CA7F STY $00,X
+CA81 z_i:
+CA81 RTS 
+CA82 xt_if:
+CA82 LDY #$CA
+CA84 LDA #$93
+CA86 JSR cmpl_subroutine
+CA89 JSR xt_asm_arrow
+CA8C JSR xt_case
+CA8F JSR xt_comma
+CA92 z_if:
+CA92 RTS 
+CA93 zero_branch_runtime:
+CA93 PLA 
+CA94 STA $22
+CA96 PLA 
+CA97 STA $23
+CA99 LDA $00,X
+CA9B ORA $01,X
+CA9D BEQ _zero
+CA9F LDA $22
+CAA1 CLC 
+CAA2 ADC #$02
+CAA4 STA $24
+CAA6 LDA $23
+CAA8 ADC #$00
+CAAA STA $25
+CAAC BRA _done
+CAAE _zero:
+CAAE LDY #$01
+CAB0 LDA ($22),Y
+CAB2 STA $24
+CAB4 INY 
+CAB5 LDA ($22),Y
+CAB7 STA $25
+CAB9 LDA $24
+CABB BNE *
+CABD DEC $25
+CABF *:
+CABF DEC $24
+CAC1 _done:
+CAC1 LDA $25
+CAC3 PHA 
+CAC4 LDA $24
+CAC6 PHA 
+CAC7 INX 
+CAC8 INX 
+CAC9 RTS 
+CACA xt_immediate:
+CACA JSR current_to_dp
+CACD LDY #$01
+CACF LDA ($02),Y
+CAD1 ORA #$04
+CAD3 STA ($02),Y
+CAD5 z_immediate:
+CAD5 RTS 
+CAD6 xt_input:
+CAD6 DEX 
+CAD7 DEX 
+CAD8 LDA #$12
+CADA STA $00,X
+CADC LDA #$00
+CADE STA $01,X
+CAE0 z_input:
+CAE0 RTS 
+CAE1 xt_input_to_r:
+CAE1 PLA 
+CAE2 STA $24
+CAE4 PLA 
+CAE5 STA $25
+CAE7 LDY #$07
+CAE9 _loop:
+CAE9 LDA err_refill,Y
+CAEC PHA 
+CAED DEY 
+CAEE BPL _loop
+CAF0 LDA $25
+CAF2 PHA 
+CAF3 LDA $24
+CAF5 PHA 
+CAF6 z_input_to_r:
+CAF6 RTS 
+CAF7 xt_int_to_name:
+CAF7 JSR underflow_1
+CAFA DEX 
+CAFB DEX 
+CAFC STZ $00,X
+CAFE STZ $01,X
+CB00 _wordlist_loop:
+CB00 LDA $9E
+CB02 BEQ _no_debug_pre
+CB04 STZ $9F
+CB06 STZ $A0
+CB08 _no_debug_pre:
+CB08 LDA $00,X
+CB0A ASL 
+CB0B CLC 
+CB0C ADC #$06
+CB0E TAY 
+CB0F LDA ($1E),Y
+CB11 STA $26
+CB13 INY 
+CB14 LDA ($1E),Y
+CB16 STA $27
+CB18 LDA $26
+CB1A ORA $27
+CB1C BNE $CB21
+CB1E JMP _next_wordlist
+CB21 LDA $02,X
+CB23 STA $28
+CB25 LDA $03,X
+CB27 STA $29
+CB29 _loop:
+CB29 LDY #$04
+CB2B LDA ($26),Y
+CB2D CMP $28
+CB2F BNE _no_match
+CB31 INY 
+CB32 LDA ($26),Y
+CB34 CMP $29
+CB36 BEQ _match
+CB38 _no_match:
+CB38 CLC 
+CB39 LDA $26
+CB3B ADC #$02
+CB3D STA $26
+CB3F LDA $27
+CB41 ADC #$00
+CB43 STA $27
+CB45 LDY #$00
+CB47 LDA ($26),Y
+CB49 PHA 
+CB4A INY 
+CB4B ORA ($26),Y
+CB4D BEQ _zero
+CB4F LDA $9E
+CB51 BEQ _no_debug
+CB53 LDA #$5C
+CB55 STA $FFE7
+CB58 LDA #$6E
+CB5A STA $FFE7
+CB5D LDA ($26),Y
+CB5F STA $27
+CB61 STA $FFE8
+CB64 PLA 
+CB65 STA $26
+CB67 STA $FFE8
+CB6A LDA $26
+CB6C ORA $26
+CB6E BEQ _stuck_done
+CB70 LDA $26
+CB72 CMP $9F
+CB74 BNE _stuck_address
+CB76 LDA $27
+CB78 CMP $A0
+CB7A BNE _stuck_address
+CB7C LDA #$21
+CB7E STA $FFE7
+CB81 BRK 
+CB82 BRK 
+CB83 _stuck_address:
+CB83 LDA $26
+CB85 STA $9F
+CB87 LDA $27
+CB89 STA $A0
+CB8B _stuck_done:
+CB8B LDA $27
+CB8D CMP #$03
+CB8F BCS _loop
+CB91 LDA #$3C
+CB93 STA $FFE7
+CB96 BRK 
+CB97 BRK 
+CB98 _no_debug:
+CB98 LDA ($26),Y
+CB9A STA $27
+CB9C PLA 
+CB9D STA $26
+CB9F BRA _loop
+CBA1 _zero:
+CBA1 PLA 
+CBA2 _next_wordlist:
+CBA2 LDA $00,X
+CBA4 INC 
+CBA5 STA $00,X
+CBA7 CMP #$0C
+CBA9 BEQ $CBAE
+CBAB JMP _wordlist_loop
+CBAE INX 
+CBAF INX 
+CBB0 STZ $00,X
+CBB2 STZ $01,X
+CBB4 BRA z_int_to_name
+CBB6 _match:
+CBB6 INX 
+CBB7 INX 
+CBB8 LDA $26
+CBBA STA $00,X
+CBBC LDA $27
+CBBE STA $01,X
+CBC0 z_int_to_name:
+CBC0 RTS 
+CBC1 xt_invert:
+CBC1 JSR underflow_1
+CBC4 LDA #$FF
+CBC6 EOR $00,X
+CBC8 STA $00,X
+CBCA LDA #$FF
+CBCC EOR $01,X
+CBCE STA $01,X
+CBD0 z_invert:
+CBD0 RTS 
+CBD1 xt_j:
+CBD1 DEX 
+CBD2 DEX 
+CBD3 STX $2A
+CBD5 TSX 
+CBD6 SEC 
+CBD7 LDA $0107,X
+CBDA SBC $0109,X
+CBDD TAY 
+CBDE LDA $0108,X
+CBE1 SBC $010A,X
+CBE4 LDX $2A
+CBE6 STA $01,X
+CBE8 STY $00,X
+CBEA z_j:
+CBEA RTS 
+CBEB xt_key:
+CBEB JSR key_a
+CBEE DEX 
+CBEF DEX 
+CBF0 STA $00,X
+CBF2 STZ $01,X
+CBF4 z_key:
+CBF4 RTS 
+CBF5 key_a:
+CBF5 JMP ($0012)
+CBF8 xt_latestnt:
+CBF8 DEX 
+CBF9 DEX 
+CBFA JSR current_to_dp
+CBFD LDA $02
+CBFF STA $00,X
+CC01 LDA $03
+CC03 STA $01,X
+CC05 z_latestnt:
+CC05 RTS 
+CC06 xt_latestxt:
+CC06 JSR xt_latestnt
+CC09 JSR xt_name_to_int
+CC0C z_latestxt:
+CC0C RTS 
+CC0D xt_leave:
+CC0D PLA 
+CC0E PLA 
+CC0F PLA 
+CC10 PLA 
+CC11 RTS 
+CC12 xt_left_bracket:
+CC12 z_leave:
+CC12 STZ $16
+CC14 STZ $17
+CC16 z_left_bracket:
+CC16 RTS 
+CC17 xt_less_number_sign:
+CC17 JSR xt_pad
+CC1A LDA $00,X
+CC1C STA $34
+CC1E LDA $01,X
+CC20 STA $35
+CC22 INX 
+CC23 INX 
+CC24 z_less_number_sign:
+CC24 RTS 
+CC25 xt_less_than:
+CC25 JSR underflow_2
+CC28 LDY #$00
+CC2A JSR compare_16bit
+CC2D BEQ _false
+CC2F BMI _false
+CC31 DEY 
+CC32 _false:
+CC32 TYA 
+CC33 INX 
+CC34 INX 
+CC35 STA $00,X
+CC37 STA $01,X
+CC39 z_less_than:
+CC39 RTS 
+CC3A xt_literal:
+CC3A JSR underflow_1
+CC3D LDY #$CC
+CC3F LDA #$48
+CC41 JSR cmpl_subroutine
+CC44 JSR xt_comma
+CC47 z_literal:
+CC47 RTS 
+CC48 literal_runtime:
+CC48 DEX 
+CC49 DEX 
+CC4A PLA 
+CC4B STA $24
+CC4D PLA 
+CC4E STA $25
+CC50 LDY #$01
+CC52 LDA ($24),Y
+CC54 STA $00,X
+CC56 INY 
+CC57 LDA ($24),Y
+CC59 STA $01,X
+CC5B TYA 
+CC5C CLC 
+CC5D ADC $24
+CC5F TAY 
+CC60 LDA $25
+CC62 ADC #$00
+CC64 PHA 
+CC65 PHY 
+CC66 RTS 
+CC67 xt_loop:
+CC67 LDY #$CF
+CC69 LDA #$41
+CC6B JSR cmpl_subroutine
+CC6E xt_plus_loop:
+CC6E LDY #$11
+CC70 PHY 
+CC71 *:
+CC71 LDA plus_loop_runtime,Y
+CC74 STA ($00),Y
+CC76 DEY 
+CC77 BPL *
+CC79 PLA 
+CC7A CLC 
+CC7B ADC $00
+CC7D STA $00
+CC7F LDA $01
+CC81 ADC #$00
+CC83 STA $01
+CC85 JSR xt_comma
+CC88 LDA #$68
+CC8A LDY #$06
+CC8C *:
+CC8C STA ($00),Y
+CC8E DEY 
+CC8F BPL *
+CC91 LDA #$06
+CC93 CLC 
+CC94 ADC $00
+CC96 STA $00
+CC98 LDA $01
+CC9A ADC #$00
+CC9C STA $01
+CC9E LDA $00,X
+CCA0 STA $24
+CCA2 LDA $01,X
+CCA4 STA $25
+CCA6 INX 
+CCA7 INX 
+CCA8 LDA $00
+CCAA SEC 
+CCAB SBC #$01
+CCAD STA $26
+CCAF LDA $01
+CCB1 SBC #$00
+CCB3 STA $27
+CCB5 LDY #$00
+CCB7 LDA #$A9
+CCB9 STA ($24),Y
+CCBB INY 
+CCBC LDA $27
+CCBE STA ($24),Y
+CCC0 INY 
+CCC1 LDA #$48
+CCC3 STA ($24),Y
+CCC5 INY 
+CCC6 LDA #$A9
+CCC8 STA ($24),Y
+CCCA INY 
+CCCB LDA $26
+CCCD STA ($24),Y
+CCCF INY 
+CCD0 LDA #$48
+CCD2 STA ($24),Y
+CCD4 z_loop:
+CCD4 z_plus_loop:
+CCD4 RTS 
+CCD5 plus_loop_runtime:
+CCD5 CLC 
+CCD6 PLA 
+CCD7 ADC $00,X
+CCD9 TAY 
+CCDA CLV 
+CCDB PLA 
+CCDC ADC $01,X
+CCDE PHA 
+CCDF TYA 
+CCE0 PHA 
+CCE1 INX 
+CCE2 INX 
+CCE3 BVS $CCE8
+CCE6 plus_loop_runtime_end:
+CCE6 xt_lshift:
+CCE6 JSR underflow_2
+CCE9 LDA $00,X
+CCEB AND #$0F
+CCED BEQ _done
+CCEF TAY 
+CCF0 _loop:
+CCF0 ASL $02,X
+CCF2 ROL $03,X
+CCF4 DEY 
+CCF5 BNE _loop
+CCF7 _done:
+CCF7 INX 
+CCF8 INX 
+CCF9 z_lshift:
+CCF9 RTS 
+CCFA xt_m_star:
+CCFA JSR underflow_2
+CCFD LDA $01,X
+CCFF EOR $03,X
+CD01 PHA 
+CD02 JSR cold_user_table_end
+CD05 JSR xt_swap
+CD08 JSR cold_user_table_end
+CD0B JSR xt_um_star
+CD0E PLA 
+CD0F BPL _done
+CD11 JSR xt_dnegate
+CD14 _done:
+CD14 z_m_star:
+CD14 RTS 
+CD15 xt_max:
+CD15 JSR underflow_2
+CD18 LDA $00,X
+CD1A CMP $02,X
+CD1C LDA $01,X
+CD1E SBC $03,X
+CD20 BVC _no_overflow
+CD22 EOR #$80
+CD24 _no_overflow:
+CD24 BMI _keep_nos
+CD26 LDA $00,X
+CD28 STA $02,X
+CD2A LDA $01,X
+CD2C STA $03,X
+CD2E _keep_nos:
+CD2E INX 
+CD2F INX 
+CD30 z_max:
+CD30 RTS 
+CD31 xt_min:
+CD31 JSR underflow_2
+CD34 LDA $00,X
+CD36 CMP $02,X
+CD38 LDA $01,X
+CD3A SBC $03,X
+CD3C BVC _no_overflow
+CD3E EOR #$80
+CD40 _no_overflow:
+CD40 BPL _keep_nos
+CD42 LDA $00,X
+CD44 STA $02,X
+CD46 LDA $01,X
+CD48 STA $03,X
+CD4A _keep_nos:
+CD4A INX 
+CD4B INX 
+CD4C z_min:
+CD4C RTS 
+CD4D xt_minus:
+CD4D JSR underflow_2
+CD50 SEC 
+CD51 LDA $02,X
+CD53 SBC $00,X
+CD55 STA $02,X
+CD57 LDA $03,X
+CD59 SBC $01,X
+CD5B STA $03,X
+CD5D INX 
+CD5E INX 
+CD5F z_minus:
+CD5F RTS 
+CD60 xt_mod:
+CD60 JSR underflow_2
+CD63 JSR xt_slash_mod
+CD66 INX 
+CD67 INX 
+CD68 z_mod:
+CD68 RTS 
+CD69 xt_move:
+CD69 LDA $03,X
+CD6B CMP $05,X
+CD6D BEQ _lsb
+CD6F BCS _to_move_up
+CD71 JMP xt_cmove
+CD74 _lsb:
+CD74 LDA $02,X
+CD76 CMP $04,X
+CD78 BEQ _equal
+CD7A BCS _to_move_up
+CD7C JMP xt_cmove
+CD7F _to_move_up:
+CD7F JMP xt_cmove_up
+CD82 _equal:
+CD82 TXA 
+CD83 CLC 
+CD84 ADC #$06
+CD86 TAX 
+CD87 z_move:
+CD87 RTS 
+CD88 xt_name_to_int:
+CD88 JSR underflow_1
+CD8B LDA $00,X
+CD8D CLC 
+CD8E ADC #$04
+CD90 STA $28
+CD92 LDA $01,X
+CD94 BCC _done
+CD96 INC 
+CD97 _done:
+CD97 STA $29
+CD99 LDY #$00
+CD9B LDA ($28),Y
+CD9D STA $00,X
+CD9F INY 
+CDA0 LDA ($28),Y
+CDA2 STA $01,X
+CDA4 z_name_to_int:
+CDA4 RTS 
+CDA5 xt_name_to_string:
+CDA5 JSR underflow_1
+CDA8 DEX 
+CDA9 DEX 
+CDAA LDA ($02,X)
+CDAC STA $00,X
+CDAE STZ $01,X
+CDB0 LDA $02,X
+CDB2 CLC 
+CDB3 ADC #$08
+CDB5 TAY 
+CDB6 LDA $03,X
+CDB8 ADC #$00
+CDBA STA $03,X
+CDBC STY $02,X
+CDBE z_name_to_string:
+CDBE RTS 
+CDBF xt_nc_limit:
+CDBF DEX 
+CDC0 DEX 
+CDC1 LDA #$1A
+CDC3 STA $00,X
+CDC5 LDA #$00
+CDC7 STA $01,X
+CDC9 z_nc_limit:
+CDC9 RTS 
+CDCA xt_negate:
+CDCA JSR underflow_1
+CDCD LDA #$00
+CDCF SEC 
+CDD0 SBC $00,X
+CDD2 STA $00,X
+CDD4 LDA #$00
+CDD6 SBC $01,X
+CDD8 STA $01,X
+CDDA z_negate:
+CDDA RTS 
+CDDB xt_never_native:
+CDDB JSR current_to_dp
+CDDE LDY #$01
+CDE0 LDA ($02),Y
+CDE2 ORA #$08
+CDE4 AND #$FD
+CDE6 STA ($02),Y
+CDE8 z_never_native:
+CDE8 RTS 
+CDE9 xt_nip:
+CDE9 JSR underflow_2
+CDEC LDA $00,X
+CDEE STA $02,X
+CDF0 LDA $01,X
+CDF2 STA $03,X
+CDF4 INX 
+CDF5 INX 
+CDF6 z_nip:
+CDF6 RTS 
+CDF7 xt_not_equals:
+CDF7 JSR underflow_2
+CDFA LDY #$00
+CDFC LDA $00,X
+CDFE CMP $02,X
+CE00 BNE _not_equal
+CE02 LDA $01,X
+CE04 CMP $03,X
+CE06 BNE _not_equal
+CE08 LDA #$FF
+CE0A BRA _done
+CE0C _not_equal:
+CE0C DEY 
+CE0D _done:
+CE0D TYA 
+CE0E INX 
+CE0F INX 
+CE10 STA $00,X
+CE12 STA $01,X
+CE14 z_not_equals:
+CE14 RTS 
+CE15 xt_not_rote:
+CE15 JSR underflow_3
+CE18 LDY $01,X
+CE1A LDA $03,X
+CE1C STA $01,X
+CE1E LDA $05,X
+CE20 STA $03,X
+CE22 STY $05,X
+CE24 LDY $00,X
+CE26 LDA $02,X
+CE28 STA $00,X
+CE2A LDA $04,X
+CE2C STA $02,X
+CE2E STY $04,X
+CE30 z_not_rote:
+CE30 RTS 
+CE31 xt_number:
+CE31 JSR underflow_2
+CE34 STZ $2A
+CE36 STZ $2B
+CE38 LDA ($02,X)
+CE3A CMP #$2D
+CE3C BNE _check_dot
+CE3E DEC $2B
+CE40 INC $02,X
+CE42 BNE *
+CE44 INC $03,X
+CE46 *:
+CE46 DEC $00,X
+CE48 _check_dot:
+CE48 LDA $02,X
+CE4A CLC 
+CE4B ADC $00,X
+CE4D STA $2C
+CE4F LDA $03,X
+CE51 ADC #$00
+CE53 STA $2D
+CE55 LDA $2C
+CE57 BNE *
+CE59 DEC $2D
+CE5B *:
+CE5B DEC $2C
+CE5D LDA ($2C)
+CE5F CMP #$2E
+CE61 BNE _main
+CE63 DEC $2A
+CE65 DEC $00,X
+CE67 _main:
+CE67 DEX 
+CE68 DEX 
+CE69 DEX 
+CE6A DEX 
+CE6B LDA $04,X
+CE6D STA $00,X
+CE6F STZ $01,X
+CE71 LDA $06,X
+CE73 STA $02,X
+CE75 LDA $07,X
+CE77 STA $03,X
+CE79 STZ $04,X
+CE7B STZ $05,X
+CE7D STZ $06,X
+CE7F STZ $07,X
+CE81 JSR xt_to_number
+CE84 LDA $00,X
+CE86 BEQ _all_converted
+CE88 LDA #$3E
+CE8A JSR emit_a
+CE8D JSR xt_type
+CE90 LDA #$3C
+CE92 JSR emit_a
+CE95 JSR xt_space
+CE98 LDA #$08
+CE9A JMP error
+CE9D _all_converted:
+CE9D INX 
+CE9E INX 
+CE9F INX 
+CEA0 INX 
+CEA1 LDA $2A
+CEA3 BEQ _single
+CEA5 LDA #$20
+CEA7 TSB $20
+CEA9 LDA $2B
+CEAB BEQ _done
+CEAD JSR xt_dnegate
+CEB0 BRA _done
+CEB2 _single:
+CEB2 INX 
+CEB3 INX 
+CEB4 LDA #$20
+CEB6 TRB $20
+CEB8 LDA $2B
+CEBA BEQ _done
+CEBC JSR xt_negate
+CEBF _done:
+CEBF z_number:
+CEBF RTS 
+CEC0 xt_number_sign:
+CEC0 JSR underflow_2
+CEC3 JSR xt_base
+CEC6 JSR xt_fetch
+CEC9 JSR xt_to_r
+CECC JSR xt_case
+CECF JSR xt_r_fetch
+CED2 JSR xt_um_slash_mod
+CED5 JSR xt_rot
+CED8 JSR xt_rot
+CEDB JSR xt_r_from
+CEDE JSR xt_um_slash_mod
+CEE1 JSR xt_rot
+CEE4 JSR xt_rot
+CEE7 LDA $00,X
+CEE9 TAY 
+CEEA LDA s_abc_upper,Y
+CEED STA $00,X
+CEEF STZ $01,X
+CEF1 JSR xt_hold
+CEF4 z_number_sign:
+CEF4 RTS 
+CEF5 xt_number_sign_greater:
+CEF5 JSR underflow_2
+CEF8 LDA $34
+CEFA STA $00,X
+CEFC STA $02,X
+CEFE LDA $35
+CF00 STA $01,X
+CF02 STA $03,X
+CF04 JSR xt_pad
+CF07 SEC 
+CF08 LDA $00,X
+CF0A SBC $02,X
+CF0C STA $02,X
+CF0E LDA $01,X
+CF10 SBC $03,X
+CF12 STA $03,X
+CF14 INX 
+CF15 INX 
+CF16 z_number_sign_greater:
+CF16 RTS 
+CF17 xt_number_sign_s:
+CF17 JSR underflow_2
+CF1A _loop:
+CF1A JSR xt_number_sign
+CF1D LDA $00,X
+CF1F ORA $01,X
+CF21 ORA $02,X
+CF23 ORA $03,X
+CF25 BNE _loop
+CF27 z_number_sign_s:
+CF27 RTS 
+CF28 xt_of:
+CF28 LDY #$CF
+CF2A LDA #$7D
+CF2C JSR cmpl_subroutine
+CF2F LDY #$C7
+CF31 LDA #$E9
+CF33 JSR cmpl_subroutine
+CF36 JSR xt_if
+CF39 LDY #$C7
+CF3B LDA #$88
+CF3D JSR cmpl_subroutine
+CF40 z_of:
+CF40 RTS 
+CF41 xt_editor_wordlist:
+CF41 xt_one:
+CF41 DEX 
+CF42 DEX 
+CF43 LDA #$01
+CF45 STA $00,X
+CF47 STZ $01,X
+CF49 z_editor_wordlist:
+CF49 z_one:
+CF49 RTS 
+CF4A xt_one_minus:
+CF4A JSR underflow_1
+CF4D LDA $00,X
+CF4F BNE *
+CF51 DEC $01,X
+CF53 *:
+CF53 DEC $00,X
+CF55 z_one_minus:
+CF55 RTS 
+CF56 xt_char_plus:
+CF56 xt_one_plus:
+CF56 JSR underflow_1
+CF59 INC $00,X
+CF5B BNE _done
+CF5D INC $01,X
+CF5F _done:
+CF5F z_char_plus:
+CF5F z_one_plus:
+CF5F RTS 
+CF60 xt_or:
+CF60 JSR underflow_2
+CF63 LDA $00,X
+CF65 ORA $02,X
+CF67 STA $02,X
+CF69 LDA $01,X
+CF6B ORA $03,X
+CF6D STA $03,X
+CF6F INX 
+CF70 INX 
+CF71 z_or:
+CF71 RTS 
+CF72 xt_output:
+CF72 DEX 
+CF73 DEX 
+CF74 LDA #$10
+CF76 STA $00,X
+CF78 LDA #$00
+CF7A STA $01,X
+CF7C z_output:
+CF7C RTS 
+CF7D xt_over:
+CF7D JSR underflow_2
+CF80 DEX 
+CF81 DEX 
+CF82 LDA $04,X
+CF84 STA $00,X
+CF86 LDA $05,X
+CF88 STA $01,X
+CF8A z_over:
+CF8A RTS 
+CF8B xt_pad:
+CF8B DEX 
+CF8C DEX 
+CF8D LDA #$FF
+CF8F STA $00,X
+CF91 LDA #$3F
+CF93 STA $01,X
+CF95 z_pad:
+CF95 RTS 
+CF96 xt_paren:
+CF96 DEX 
+CF97 DEX 
+CF98 LDA #$29
+CF9A STA $00,X
+CF9C STZ $01,X
+CF9E JSR xt_parse
+CFA1 INX 
+CFA2 INX 
+CFA3 INX 
+CFA4 INX 
+CFA5 z_paren:
+CFA5 RTS 
+CFA6 xt_parse_name:
+CFA6 LDA $0A
+CFA8 SEC 
+CFA9 SBC $0C
+CFAB STA $24
+CFAD LDA $0B
+CFAF SBC $0D
+CFB1 STA $25
+CFB3 LDA $24
+CFB5 ORA $25
+CFB7 BEQ _empty_line
+CFB9 LDA $08
+CFBB CLC 
+CFBC ADC $0C
+CFBE STA $26
+CFC0 LDA $09
+CFC2 ADC $0D
+CFC4 STA $27
+CFC6 _skip_loop:
+CFC6 LDA ($26)
+CFC8 JSR is_whitespace
+CFCB BCC _char_found
+CFCD INC $26
+CFCF BNE *
+CFD1 INC $27
+CFD3 *:
+CFD3 LDA $24
+CFD5 BNE *
+CFD7 DEC $25
+CFD9 *:
+CFD9 DEC $24
+CFDB LDA $24
+CFDD ORA $25
+CFDF BNE _skip_loop
+CFE1 _empty_line:
+CFE1 DEX 
+CFE2 DEX 
+CFE3 DEX 
+CFE4 DEX 
+CFE5 STZ $00,X
+CFE7 STZ $01,X
+CFE9 JMP _done
+CFEC _char_found:
+CFEC LDA $26
+CFEE SEC 
+CFEF SBC $08
+CFF1 STA $0C
+CFF3 LDA $27
+CFF5 SBC $09
+CFF7 STA $0D
+CFF9 DEX 
+CFFA DEX 
+CFFB LDA #$20
+CFFD STA $00,X
+CFFF STZ $01,X
+D001 xt_parse:
+D001 JSR underflow_1
+D004 LDA $0A
+D006 ORA $0B
+D008 BEQ _abort_parse
+D00A LDA $0D
+D00C CMP $0B
+D00E BCC _go_parse
+D010 LDA $0C
+D012 CMP $0A
+D014 BCC _go_parse
+D016 _abort_parse:
+D016 DEX 
+D017 DEX 
+D018 STZ $00,X
+D01A STZ $01,X
+D01C BRA _done
+D01E _go_parse:
+D01E LDA $00,X
+D020 STA $2C
+D022 DEX 
+D023 DEX 
+D024 LDA $08
+D026 CLC 
+D027 ADC $0C
+D029 STA $24
+D02B STA $26
+D02D STA $02,X
+D02F LDA $09
+D031 ADC $0D
+D033 STA $25
+D035 STA $27
+D037 STA $03,X
+D039 LDA $08
+D03B CLC 
+D03C ADC $0A
+D03E STA $28
+D040 LDA $09
+D042 ADC $0B
+D044 STA $29
+D046 STZ $2D
+D048 _loop:
+D048 LDA $26
+D04A CMP $28
+D04C BNE _not_empty
+D04E LDA $27
+D050 CMP $29
+D052 BEQ _eol
+D054 _not_empty:
+D054 LDA ($26)
+D056 LDY $2C
+D058 CPY #$20
+D05A BNE _not_whitespace
+D05C JSR is_whitespace
+D05F BCC _not_whitespace
+D061 BRA _found_delimiter
+D063 _not_whitespace:
+D063 CMP $2C
+D065 BEQ _found_delimiter
+D067 INC $26
+D069 BNE _loop
+D06B INC $27
+D06D BRA _loop
+D06F _found_delimiter:
+D06F INC $2D
+D071 _eol:
+D071 LDA $26
+D073 SEC 
+D074 SBC $24
+D076 STA $00,X
+D078 LDA $27
+D07A SBC $25
+D07C STA $01,X
+D07E LDA $26
+D080 SEC 
+D081 SBC $08
+D083 STA $0C
+D085 LDA $27
+D087 SBC $09
+D089 STA $0D
+D08B LDA $0C
+D08D CLC 
+D08E ADC $2D
+D090 STA $0C
+D092 LDA $0D
+D094 ADC #$00
+D096 STA $0D
+D098 _done:
+D098 z_parse:
+D098 z_parse_name:
+D098 RTS 
+D099 xt_pick:
+D099 ASL $00,X
+D09B TXA 
+D09C ADC $00,X
+D09E TAY 
+D09F LDA an,Y
+D0A2 STA $00,X
+D0A4 LDA asccc,Y
+D0A7 STA $01,X
+D0A9 z_pick:
+D0A9 RTS 
+D0AA xt_plus:
+D0AA JSR underflow_2
+D0AD CLC 
+D0AE LDA $00,X
+D0B0 ADC $02,X
+D0B2 STA $02,X
+D0B4 LDA $01,X
+D0B6 ADC $03,X
+D0B8 STA $03,X
+D0BA INX 
+D0BB INX 
+D0BC z_plus:
+D0BC RTS 
+D0BD xt_plus_store:
+D0BD JSR underflow_2
+D0C0 LDA $00,X
+D0C2 STA $24
+D0C4 LDA $01,X
+D0C6 STA $25
+D0C8 LDY #$00
+D0CA LDA ($24),Y
+D0CC CLC 
+D0CD ADC $02,X
+D0CF STA ($24),Y
+D0D1 INY 
+D0D2 LDA ($24),Y
+D0D4 ADC $03,X
+D0D6 STA ($24),Y
+D0D8 INX 
+D0D9 INX 
+D0DA INX 
+D0DB INX 
+D0DC z_plus_store:
+D0DC RTS 
+D0DD xt_question:
+D0DD JSR xt_fetch
+D0E0 JSR xt_dot
+D0E3 z_question:
+D0E3 RTS 
+D0E4 xt_r_fetch:
+D0E4 PLY 
+D0E5 STY $24
+D0E7 PLY 
+D0E8 DEX 
+D0E9 DEX 
+D0EA PLA 
+D0EB STA $00,X
+D0ED PLA 
+D0EE STA $01,X
+D0F0 PHA 
+D0F1 LDA $00,X
+D0F3 PHA 
+D0F4 PHY 
+D0F5 LDY $24
+D0F7 PHY 
+D0F8 z_r_fetch:
+D0F8 RTS 
+D0F9 xt_r_from:
+D0F9 PLA 
+D0FA STA $2C
+D0FC PLY 
+D0FD DEX 
+D0FE DEX 
+D0FF PLA 
+D100 STA $00,X
+D102 PLA 
+D103 STA $01,X
+D105 PHY 
+D106 LDA $2C
+D108 PHA 
+D109 z_r_from:
+D109 RTS 
+D10A xt_r_to_input:
+D10A PLA 
+D10B STA $24
+D10D PLA 
+D10E STA $25
+D110 LDY #$00
+D112 _loop:
+D112 PLA 
+D113 STA err_refill,Y
+D116 INY 
+D117 CPY #$08
+D119 BNE _loop
+D11B LDA $25
+D11D PHA 
+D11E LDA $24
+D120 PHA 
+D121 z_r_to_input:
+D121 RTS 
+D122 xt_recurse:
+D122 LDY #$00
+D124 LDA #$20
+D126 STA ($00),Y
+D128 INY 
+D129 BIT $20
+D12B BVS _nt_in_workword
+D12D LDA $04
+D12F STA ($00),Y
+D131 INY 
+D132 LDA $05
+D134 STA ($00),Y
+D136 INY 
+D137 BRA _update_cp
+D139 _nt_in_workword:
+D139 LDA $04
+D13B CLC 
+D13C ADC #$04
+D13E STA $24
+D140 LDA $05
+D142 ADC #$00
+D144 STA $25
+D146 LDA ($24)
+D148 STA ($00),Y
+D14A PHY 
+D14B LDY #$01
+D14D LDA ($24),Y
+D14F PLY 
+D150 INY 
+D151 STA ($00),Y
+D153 INY 
+D154 _update_cp:
+D154 TYA 
+D155 CLC 
+D156 ADC $00
+D158 STA $00
+D15A BCC _done
+D15C INC $01
+D15E _done:
+D15E z_recurse:
+D15E RTS 
+D15F xt_refill:
+D15F LDA $06
+D161 BNE _src_not_kbd
+D163 DEX 
+D164 DEX 
+D165 DEX 
+D166 DEX 
+D167 LDA $08
+D169 STA $02,X
+D16B LDA $09
+D16D STA $03,X
+D16F STZ $0A
+D171 STZ $0B
+D173 LDA #$FF
+D175 STA $00,X
+D177 STZ $01,X
+D179 JSR xt_accept
+D17C LDA $00,X
+D17E STA $0A
+D180 LDA $01,X
+D182 STA $0B
+D184 STZ $0C
+D186 STZ $0D
+D188 LDA #$FF
+D18A STA $00,X
+D18C STA $01,X
+D18E BRA _done
+D190 _src_not_kbd:
+D190 INC 
+D191 BNE _src_not_string
+D193 DEX 
+D194 DEX 
+D195 STZ $00,X
+D197 STZ $01,X
+D199 BRA _done
+D19B _src_not_string:
+D19B LDA #$01
+D19D JMP error
+D1A0 _done:
+D1A0 z_refill:
+D1A0 RTS 
+D1A1 xt_repeat:
+D1A1 JSR xt_again
+D1A4 JSR xt_asm_arrow
+D1A7 JSR xt_swap
+D1AA JSR xt_store
+D1AD z_repeat:
+D1AD RTS 
+D1AE xt_right_bracket:
+D1AE LDA #$FF
+D1B0 STA $16
+D1B2 STA $17
+D1B4 z_right_bracket:
+D1B4 RTS 
+D1B5 xt_rot:
+D1B5 JSR underflow_3
+D1B8 LDY $05,X
+D1BA LDA $03,X
+D1BC STA $05,X
+D1BE LDA $01,X
+D1C0 STA $03,X
+D1C2 STY $01,X
+D1C4 LDY $04,X
+D1C6 LDA $02,X
+D1C8 STA $04,X
+D1CA LDA $00,X
+D1CC STA $02,X
+D1CE STY $00,X
+D1D0 z_rot:
+D1D0 RTS 
+D1D1 xt_rshift:
+D1D1 JSR underflow_2
+D1D4 LDA $00,X
+D1D6 AND #$0F
+D1D8 BEQ _done
+D1DA TAY 
+D1DB _loop:
+D1DB LSR $03,X
+D1DD ROR $02,X
+D1DF DEY 
+D1E0 BNE _loop
+D1E2 _done:
+D1E2 INX 
+D1E3 INX 
+D1E4 z_rshift:
+D1E4 RTS 
+D1E5 xt_s_backslash_quote:
+D1E5 LDA #$FF
+D1E7 STA $26
+D1E9 STZ $27
+D1EB JSR s_quote_start
+D1EE _done:
+D1EE z_s_backslash_quote:
+D1EE RTS 
+D1EF convert_hex_value:
+D1EF CMP #$41
+D1F1 BCC _digit
+D1F3 AND #$DF
+D1F5 SEC 
+D1F6 SBC #$37
+D1F8 BRA _done
+D1FA _digit:
+D1FA SEC 
+D1FB SBC #$30
+D1FD _done:
+D1FD RTS 
+D1FE xt_set_current:
+D1FE JSR underflow_1
+D201 LDY #$04
+D203 LDA $00,X
+D205 STA ($1E),Y
+D207 INX 
+D208 INX 
+D209 z_set_current:
+D209 RTS 
+D20A xt_set_order:
+D20A LDA #$FF
+D20C CMP $01,X
+D20E BNE _start
+D210 CMP $00,X
+D212 BNE _start
+D214 DEX 
+D215 DEX 
+D216 STZ $03,X
+D218 LDA #$03
+D21A STA $02,X
+D21C STZ $01,X
+D21E LDA #$01
+D220 STA $00,X
+D222 _start:
+D222 LDY #$1E
+D224 LDA $00,X
+D226 STA ($1E),Y
+D228 STA $24
+D22A INX 
+D22B INX 
+D22C LDA $24
+D22E BEQ _done
+D230 LDY #$1F
+D232 _loop:
+D232 LDA $00,X
+D234 STA ($1E),Y
+D236 INY 
+D237 INX 
+D238 INX 
+D239 DEC $24
+D23B BNE _loop
+D23D _done:
+D23D z_set_order:
+D23D RTS 
+D23E xt_s_quote:
+D23E STZ $26
+D240 STZ $27
+D242 s_quote_start:
+D242 DEX 
+D243 DEX 
+D244 DEX 
+D245 DEX 
+D246 LDA #$4C
+D248 JSR cmpl_a
+D24B JSR cmpl_a
+D24E JSR cmpl_a
+D251 LDA $00
+D253 STA $02,X
+D255 LDA $01
+D257 STA $03,X
+D259 _savechars_loop:
+D259 LDA $0D
+D25B CMP $0B
+D25D BCC _input_fine
+D25F LDA $0C
+D261 CMP $0A
+D263 BCC _input_fine
+D265 LDA $26
+D267 PHA 
+D268 LDA $27
+D26A PHA 
+D26B LDA $28
+D26D PHA 
+D26E JSR xt_refill
+D271 PLA 
+D272 STA $28
+D274 PLA 
+D275 STA $27
+D277 PLA 
+D278 STA $26
+D27A LDA $00,X
+D27C ORA $01,X
+D27E BNE _refill_ok
+D280 LDA #$06
+D282 JMP error
+D285 _refill_ok:
+D285 INX 
+D286 INX 
+D287 BRA _savechars_loop
+D289 _input_fine:
+D289 LDA $08
+D28B CLC 
+D28C ADC $0C
+D28E STA $24
+D290 LDA $09
+D292 ADC $0D
+D294 STA $25
+D296 LDA ($24)
+D298 BIT $26
+D29A BMI _handle_escapes
+D29C JMP _regular_char
+D29F _handle_escapes:
+D29F BIT $27
+D2A1 BMI _escaped
+D2A3 JMP _not_escaped
+D2A6 _escaped:
+D2A6 BVS _check_esc_chars
+D2A8 LDA #$01
+D2AA BIT $27
+D2AC BNE _esc_x_second_digit
+D2AE INC $27
+D2B0 LDA ($24)
+D2B2 JSR convert_hex_value
+D2B5 ASL 
+D2B6 ASL 
+D2B7 ASL 
+D2B8 ASL 
+D2B9 STA $28
+D2BB JMP _next_character
+D2BE _esc_x_second_digit:
+D2BE STZ $27
+D2C0 LDA ($24)
+D2C2 JSR convert_hex_value
+D2C5 ORA $28
+D2C7 JMP _save_character
+D2CA _check_esc_chars:
+D2CA STZ $27
+D2CC _check_esc_a:
+D2CC CMP #$61
+D2CE BNE _check_esc_b
+D2D0 LDA #$07
+D2D2 JMP _save_character
+D2D5 _check_esc_b:
+D2D5 CMP #$62
+D2D7 BNE _check_esc_e
+D2D9 LDA #$08
+D2DB JMP _save_character
+D2DE _check_esc_e:
+D2DE CMP #$65
+D2E0 BNE _check_esc_f
+D2E2 LDA #$1B
+D2E4 BRA _save_character
+D2E6 _check_esc_f:
+D2E6 CMP #$66
+D2E8 BNE _check_esc_l
+D2EA LDA #$0C
+D2EC BRA _save_character
+D2EE _check_esc_l:
+D2EE CMP #$6C
+D2F0 BNE _check_esc_m
+D2F2 LDA #$0A
+D2F4 BRA _save_character
+D2F6 _check_esc_m:
+D2F6 CMP #$6D
+D2F8 BNE _check_esc_n
+D2FA LDA #$0D
+D2FC JSR cmpl_a
+D2FF LDA #$0A
+D301 BRA _save_character
+D303 _check_esc_n:
+D303 CMP #$6E
+D305 BNE _check_esc_q
+D307 LDA #$0A
+D309 BRA _save_character
+D30B _check_esc_q:
+D30B CMP #$71
+D30D BNE _check_esc_r
+D30F LDA #$22
+D311 BRA _save_character
+D313 _check_esc_r:
+D313 CMP #$72
+D315 BNE _check_esc_t
+D317 LDA #$0D
+D319 BRA _save_character
+D31B _check_esc_t:
+D31B CMP #$74
+D31D BNE _check_esc_v
+D31F LDA #$09
+D321 BRA _save_character
+D323 _check_esc_v:
+D323 CMP #$76
+D325 BNE _check_esc_z
+D327 LDA #$0B
+D329 BRA _save_character
+D32B _check_esc_z:
+D32B CMP #$7A
+D32D BNE _check_esc_quote
+D32F LDA #$00
+D331 BRA _save_character
+D333 _check_esc_quote:
+D333 CMP #$22
+D335 BNE _check_esc_x
+D337 LDA #$22
+D339 BRA _save_character
+D33B _check_esc_x:
+D33B CMP #$78
+D33D BNE _check_esc_backslash
+D33F LDA #$BE
+D341 STA $27
+D343 BRA _next_character
+D345 _check_esc_backslash:
+D345 CMP #$5C
+D347 BNE _not_escaped
+D349 LDA #$5C
+D34B BRA _save_character
+D34D _not_escaped:
+D34D CMP #$5C
+D34F BNE _regular_char
+D351 LDA #$FF
+D353 STA $27
+D355 BRA _next_character
+D357 _regular_char:
+D357 CMP #$22
+D359 BEQ _found_string_end
+D35B _save_character:
+D35B JSR cmpl_a
+D35E _next_character:
+D35E INC $0C
+D360 BNE _savechars_loop_longjump
+D362 INC $0D
+D364 _savechars_loop_longjump:
+D364 JMP _savechars_loop
+D367 _found_string_end:
+D367 INC $0C
+D369 BNE *
+D36B INC $0D
+D36D *:
+D36D LDA $00
+D36F SEC 
+D370 SBC $02,X
+D372 STA $00,X
+D374 LDA $01
+D376 SBC $03,X
+D378 STA $01,X
+D37A LDA $02,X
+D37C SEC 
+D37D SBC #$02
+D37F STA $24
+D381 LDA $03,X
+D383 SBC #$00
+D385 STA $25
+D387 LDA $00
+D389 STA ($24)
+D38B LDY #$01
+D38D LDA $01
+D38F STA ($24),Y
+D391 LDA $16
+D393 ORA $17
+D395 BEQ _done
+D397 JSR sliteral_const_str
+D39A _done:
+D39A z_s_quote:
+D39A RTS 
+D39B xt_s_to_d:
+D39B JSR underflow_1
+D39E DEX 
+D39F DEX 
+D3A0 STZ $00,X
+D3A2 STZ $01,X
+D3A4 LDA $03,X
+D3A6 BPL _done
+D3A8 DEC $00,X
+D3AA DEC $01,X
+D3AC _done:
+D3AC z_s_to_d:
+D3AC RTS 
+D3AD xt_semicolon:
+D3AD BIT $20
+D3AF BVS _colonword
+D3B1 LDA #$60
+D3B3 JSR cmpl_a
+D3B6 DEX 
+D3B7 DEX 
+D3B8 LDA $04
+D3BA STA $00,X
+D3BC LDA $05
+D3BE STA $01,X
+D3C0 BRA _semicolon_done
+D3C2 _colonword:
+D3C2 LDY #$06
+D3C4 LDA $00
+D3C6 STA ($04),Y
+D3C8 INY 
+D3C9 LDA $01
+D3CB STA ($04),Y
+D3CD LDA #$60
+D3CF JSR cmpl_a
+D3D2 BIT $20
+D3D4 BPL _new_word
+D3D6 DEX 
+D3D7 DEX 
+D3D8 DEX 
+D3D9 DEX 
+D3DA LDA ($04)
+D3DC STA $00,X
+D3DE STZ $01,X
+D3E0 LDA $04
+D3E2 CLC 
+D3E3 ADC #$08
+D3E5 STA $02,X
+D3E7 LDA $05
+D3E9 ADC #$00
+D3EB STA $03,X
+D3ED LDA #$02
+D3EF JSR print_string_no_lf
+D3F2 JSR xt_type
+D3F5 JSR xt_space
+D3F8 LDA #$80
+D3FA TRB $20
+D3FC _new_word:
+D3FC LDA $04
+D3FE STA $02
+D400 LDA $05
+D402 STA $03
+D404 JSR dp_to_current
+D407 _semicolon_done:
+D407 STZ $16
+D409 STZ $17
+D40B z_semicolon:
+D40B RTS 
+D40C xt_sign:
+D40C JSR underflow_1
+D40F LDA $01,X
+D411 BMI _minus
+D413 INX 
+D414 INX 
+D415 BRA _done
+D417 _minus:
+D417 LDA #$2D
+D419 STA $00,X
+D41B STZ $01,X
+D41D JSR xt_hold
+D420 _done:
+D420 z_sign:
+D420 RTS 
+D421 xt_slash:
+D421 LDA #$00
+D423 PHA 
+D424 BRA _common
+D426 xt_slash_mod:
+D426 LDA #$FF
+D428 PHA 
+D429 _common:
+D429 JSR xt_to_r
+D42C JSR xt_s_to_d
+D42F JSR xt_r_from
+D432 JSR xt_sm_slash_rem
+D435 PLA 
+D436 BNE _done
+D438 JSR xt_swap
+D43B INX 
+D43C INX 
+D43D _done:
+D43D z_slash:
+D43D z_slash_mod:
+D43D RTS 
+D43E xt_sliteral:
+D43E JSR underflow_2
+D441 LDA #$4C
+D443 JSR cmpl_a
+D446 JSR cmpl_a
+D449 JSR cmpl_a
+D44C TXA 
+D44D SEC 
+D44E SBC #$06
+D450 TAX 
+D451 LDA $08,X
+D453 STA $04,X
+D455 LDA $09,X
+D457 STA $05,X
+D459 LDA $06,X
+D45B STA $00,X
+D45D LDA $07,X
+D45F STA $01,X
+D461 LDA $00
+D463 STA $08,X
+D465 STA $02,X
+D467 LDA $01
+D469 STA $09,X
+D46B STA $03,X
+D46D JSR xt_move
+D470 CLC 
+D471 LDA $00
+D473 ADC $00,X
+D475 STA $00
+D477 LDA $01
+D479 ADC $01,X
+D47B STA $01
+D47D LDA $02,X
+D47F SEC 
+D480 SBC #$02
+D482 STA $24
+D484 LDA $03,X
+D486 SBC #$00
+D488 STA $25
+D48A LDA $00
+D48C STA ($24)
+D48E LDY #$01
+D490 LDA $01
+D492 STA ($24),Y
+D494 sliteral_const_str:
+D494 LDY #$D4
+D496 LDA #$AE
+D498 JSR cmpl_subroutine
+D49B LDY $03,X
+D49D LDA $02,X
+D49F JSR cmpl_word
+D4A2 LDY $01,X
+D4A4 LDA $00,X
+D4A6 JSR cmpl_word
+D4A9 INX 
+D4AA INX 
+D4AB INX 
+D4AC INX 
+D4AD z_sliteral:
+D4AD RTS 
+D4AE sliteral_runtime:
+D4AE DEX 
+D4AF DEX 
+D4B0 DEX 
+D4B1 DEX 
+D4B2 PLA 
+D4B3 STA $24
+D4B5 PLA 
+D4B6 STA $25
+D4B8 LDY #$01
+D4BA LDA ($24),Y
+D4BC STA $02,X
+D4BE INY 
+D4BF LDA ($24),Y
+D4C1 STA $03,X
+D4C3 INY 
+D4C4 LDA ($24),Y
+D4C6 STA $00,X
+D4C8 INY 
+D4C9 LDA ($24),Y
+D4CB STA $01,X
+D4CD CLC 
+D4CE LDA $24
+D4D0 ADC #$04
+D4D2 TAY 
+D4D3 LDA $25
+D4D5 ADC #$00
+D4D7 PHA 
+D4D8 PHY 
+D4D9 RTS 
+D4DA xt_sm_slash_rem:
+D4DA JSR underflow_3
+D4DD LDA $03,X
+D4DF PHA 
+D4E0 LDA $01,X
+D4E2 EOR $03,X
+D4E4 PHA 
+D4E5 JSR cold_user_table_end
+D4E8 INX 
+D4E9 INX 
+D4EA JSR xt_d_minus
+D4ED DEX 
+D4EE DEX 
+D4EF JSR xt_um_slash_mod
+D4F2 PLA 
+D4F3 BPL *
+D4F5 JSR xt_negate
+D4F8 *:
+D4F8 PLA 
+D4F9 BPL _done
+D4FB INX 
+D4FC INX 
+D4FD JSR xt_negate
+D500 DEX 
+D501 DEX 
+D502 _done:
+D502 z_sm_slash_rem:
+D502 RTS 
+D503 xt_source:
+D503 DEX 
+D504 DEX 
+D505 LDA $08
+D507 STA $00,X
+D509 LDA $09
+D50B STA $01,X
+D50D DEX 
+D50E DEX 
+D50F LDA $0A
+D511 STA $00,X
+D513 LDA $0B
+D515 STA $01,X
+D517 z_source:
+D517 RTS 
+D518 xt_source_id:
+D518 DEX 
+D519 DEX 
+D51A LDA $06
+D51C STA $00,X
+D51E LDA $07
+D520 STA $01,X
+D522 z_source_id:
+D522 RTS 
+D523 xt_space:
+D523 LDA #$20
+D525 JSR emit_a
+D528 z_space:
+D528 RTS 
+D529 xt_spaces:
+D529 JSR underflow_1
+D52C LDA $00,X
+D52E ORA $01,X
+D530 BEQ _done
+D532 LDA #$20
+D534 LDY $01,X
+D536 BNE _lots_of_spaces
+D538 LDY $00,X
+D53A _quick_loop:
+D53A JSR emit_a
+D53D DEY 
+D53E BEQ _done
+D540 BRA _quick_loop
+D542 _lots_of_spaces:
+D542 LDY $00,X
+D544 _first_slow_loop:
+D544 BEQ _slow_outer_loop
+D546 JSR emit_a
+D549 DEY 
+D54A BRA _first_slow_loop
+D54C _slow_outer_loop:
+D54C LDY #$00
+D54E _slow_inner_loop:
+D54E JSR emit_a
+D551 DEY 
+D552 BNE _slow_inner_loop
+D554 DEC $01,X
+D556 BNE _slow_outer_loop
+D558 _done:
+D558 INX 
+D559 INX 
+D55A z_spaces:
+D55A RTS 
+D55B xt_star:
+D55B JSR underflow_2
+D55E JSR xt_um_star
+D561 INX 
+D562 INX 
+D563 z_star:
+D563 RTS 
+D564 xt_star_slash_mod:
+D564 JSR underflow_3
+D567 JSR xt_to_r
+D56A JSR xt_m_star
+D56D JSR xt_r_from
+D570 JSR xt_sm_slash_rem
+D573 z_star_slash_mod:
+D573 RTS 
+D574 xt_state:
+D574 DEX 
+D575 DEX 
+D576 LDA #$16
+D578 STA $00,X
+D57A LDA #$00
+D57C STA $01,X
+D57E z_state:
+D57E RTS 
+D57F xt_store:
+D57F JSR underflow_2
+D582 LDA $02,X
+D584 STA ($00,X)
+D586 INC $00,X
+D588 BNE *
+D58A INC $01,X
+D58C *:
+D58C LDA $03,X
+D58E STA ($00,X)
+D590 INX 
+D591 INX 
+D592 INX 
+D593 INX 
+D594 z_store:
+D594 RTS 
+D595 xt_strip_underflow:
+D595 DEX 
+D596 DEX 
+D597 LDA #$1C
+D599 STA $00,X
+D59B LDA #$00
+D59D STA $01,X
+D59F z_strip_underflow:
+D59F RTS 
+D5A0 xt_swap:
+D5A0 JSR underflow_2
+D5A3 LDA $00,X
+D5A5 LDY $02,X
+D5A7 STA $02,X
+D5A9 STY $00,X
+D5AB LDA $01,X
+D5AD LDY $03,X
+D5AF STA $03,X
+D5B1 STY $01,X
+D5B3 z_swap:
+D5B3 RTS 
+D5B4 xt_then:
+D5B4 JSR xt_asm_arrow
+D5B7 JSR xt_swap
+D5BA JSR xt_store
+D5BD z_then:
+D5BD RTS 
+D5BE xt_tick:
+D5BE JSR xt_parse_name
+D5C1 LDA $00,X
+D5C3 ORA $01,X
+D5C5 BNE *
+D5C7 LDA #$05
+D5C9 JMP error
+D5CC *:
+D5CC JSR xt_find_name
+D5CF LDA $00,X
+D5D1 ORA $01,X
+D5D3 BNE *
+D5D5 LDA #$08
+D5D7 JMP error
+D5DA *:
+D5DA JSR xt_name_to_int
+D5DD z_tick:
+D5DD RTS 
+D5DE xt_to:
+D5DE JSR xt_tick
+D5E1 LDA $00,X
+D5E3 CLC 
+D5E4 ADC #$03
+D5E6 STA $24
+D5E8 LDA $01,X
+D5EA ADC #$00
+D5EC STA $25
+D5EE INX 
+D5EF INX 
+D5F0 LDA $16
+D5F2 ORA $17
+D5F4 BEQ _interpret
+D5F6 LDY #$00
+D5F8 LDA #$B5
+D5FA JSR cmpl_word
+D5FD LDA #$8D
+D5FF JSR cmpl_a
+D602 LDY $25
+D604 LDA $24
+D606 JSR cmpl_word
+D609 LDY #$01
+D60B LDA #$B5
+D60D JSR cmpl_word
+D610 LDA #$8D
+D612 JSR cmpl_a
+D615 INC $24
+D617 BNE *
+D619 INC $25
+D61B *:
+D61B LDY $25
+D61D LDA $24
+D61F JSR cmpl_word
+D622 LDY #$E8
+D624 TYA 
+D625 JSR cmpl_word
+D628 BRA _done
+D62A _interpret:
+D62A JSR underflow_1
+D62D LDA $00,X
+D62F STA ($24)
+D631 LDY #$01
+D633 LDA $01,X
+D635 STA ($24),Y
+D637 INX 
+D638 INX 
+D639 _done:
+D639 z_to:
+D639 RTS 
+D63A xt_to_number:
+D63A JSR underflow_4
+D63D LDA $06,X
+D63F STA $36
+D641 LDA $07,X
+D643 STA $37
+D645 LDA $04,X
+D647 STA $38
+D649 LDA $05,X
+D64B STA $39
+D64D DEX 
+D64E DEX 
+D64F _loop:
+D64F LDA ($04,X)
+D651 STA $00,X
+D653 STZ $01,X
+D655 JSR xt_digit_question
+D658 LDA $00,X
+D65A BNE _digit_ok
+D65C INX 
+D65D INX 
+D65E BRA _done
+D660 _digit_ok:
+D660 LDA $02,X
+D662 STA $3A
+D664 LDA $03,X
+D666 STA $3B
+D668 LDA $38
+D66A STA $02,X
+D66C LDA $39
+D66E STA $03,X
+D670 LDA $18
+D672 STA $00,X
+D674 STZ $01,X
+D676 JSR xt_um_star
+D679 LDA $02,X
+D67B STA $3C
+D67D LDA $03,X
+D67F STA $3D
+D681 LDA $36
+D683 STA $02,X
+D685 LDA $37
+D687 STA $03,X
+D689 LDA $18
+D68B STA $00,X
+D68D STZ $01,X
+D68F JSR xt_um_star
+D692 LDA $00,X
+D694 STA $38
+D696 LDA $01,X
+D698 STA $39
+D69A LDA $02,X
+D69C STA $36
+D69E LDA $03,X
+D6A0 STA $37
+D6A2 CLC 
+D6A3 LDA $36
+D6A5 ADC $3A
+D6A7 STA $36
+D6A9 LDA $37
+D6AB ADC $3B
+D6AD STA $37
+D6AF LDA $38
+D6B1 ADC $3C
+D6B3 STA $38
+D6B5 LDA $39
+D6B7 ADC $3D
+D6B9 STA $39
+D6BB INX 
+D6BC INX 
+D6BD INC $04,X
+D6BF BNE *
+D6C1 INC $05,X
+D6C3 *:
+D6C3 DEC $02,X
+D6C5 BNE _loop
+D6C7 _done:
+D6C7 INX 
+D6C8 INX 
+D6C9 LDA $36
+D6CB STA $06,X
+D6CD LDA $37
+D6CF STA $07,X
+D6D1 LDA $38
+D6D3 STA $04,X
+D6D5 LDA $39
+D6D7 STA $05,X
+D6D9 z_to_number:
+D6D9 RTS 
+D6DA xt_to_r:
+D6DA PLA 
+D6DB STA $2C
+D6DD PLY 
+D6DE JSR underflow_1
+D6E1 LDA $01,X
+D6E3 PHA 
+D6E4 LDA $00,X
+D6E6 PHA 
+D6E7 INX 
+D6E8 INX 
+D6E9 PHY 
+D6EA LDA $2C
+D6EC PHA 
+D6ED z_to_r:
+D6ED RTS 
+D6EE xt_tuck:
+D6EE JSR underflow_2
+D6F1 DEX 
+D6F2 DEX 
+D6F3 LDY $04,X
+D6F5 LDA $02,X
+D6F7 STA $04,X
+D6F9 STY $02,X
+D6FB STA $00,X
+D6FD LDY $05,X
+D6FF LDA $03,X
+D701 STA $05,X
+D703 STY $03,X
+D705 STA $01,X
+D707 z_tuck:
+D707 RTS 
+D708 xt_assembler_wordlist:
+D708 xt_two:
+D708 DEX 
+D709 DEX 
+D70A LDA #$02
+D70C STA $00,X
+D70E STZ $01,X
+D710 z_assembler_wordlist:
+D710 z_two:
+D710 RTS 
+D711 xt_two_drop:
+D711 JSR underflow_2
+D714 INX 
+D715 INX 
+D716 INX 
+D717 INX 
+D718 z_two_drop:
+D718 RTS 
+D719 xt_two_dup:
+D719 JSR underflow_2
+D71C DEX 
+D71D DEX 
+D71E DEX 
+D71F DEX 
+D720 LDA $04,X
+D722 STA $00,X
+D724 LDA $05,X
+D726 STA $01,X
+D728 LDA $06,X
+D72A STA $02,X
+D72C LDA $07,X
+D72E STA $03,X
+D730 z_two_dup:
+D730 RTS 
+D731 xt_two_over:
+D731 JSR underflow_4
+D734 DEX 
+D735 DEX 
+D736 DEX 
+D737 DEX 
+D738 LDA $08,X
+D73A STA $00,X
+D73C LDA $09,X
+D73E STA $01,X
+D740 LDA $0A,X
+D742 STA $02,X
+D744 LDA $0B,X
+D746 STA $03,X
+D748 z_two_over:
+D748 RTS 
+D749 xt_two_r_from:
+D749 PLA 
+D74A STA $24
+D74C PLA 
+D74D STA $25
+D74F DEX 
+D750 DEX 
+D751 DEX 
+D752 DEX 
+D753 PLA 
+D754 STA $00,X
+D756 PLA 
+D757 STA $01,X
+D759 PLA 
+D75A STA $02,X
+D75C PLA 
+D75D STA $03,X
+D75F LDA $25
+D761 PHA 
+D762 LDA $24
+D764 PHA 
+D765 z_two_r_from:
+D765 RTS 
+D766 xt_cells:
+D766 xt_two_star:
+D766 JSR underflow_1
+D769 ASL $00,X
+D76B ROL $01,X
+D76D z_cells:
+D76D z_two_star:
+D76D RTS 
+D76E xt_two_swap:
+D76E JSR underflow_4
+D771 LDA $00,X
+D773 LDY $04,X
+D775 STA $04,X
+D777 STY $00,X
+D779 LDA $01,X
+D77B LDY $05,X
+D77D STA $05,X
+D77F STY $01,X
+D781 LDA $02,X
+D783 LDY $06,X
+D785 STA $06,X
+D787 STY $02,X
+D789 LDA $03,X
+D78B LDY $07,X
+D78D STA $07,X
+D78F STY $03,X
+D791 z_two_swap:
+D791 RTS 
+D792 xt_two_to_r:
+D792 PLA 
+D793 STA $24
+D795 PLA 
+D796 STA $25
+D798 JSR underflow_2
+D79B LDA $03,X
+D79D PHA 
+D79E LDA $02,X
+D7A0 PHA 
+D7A1 LDA $01,X
+D7A3 PHA 
+D7A4 LDA $00,X
+D7A6 PHA 
+D7A7 INX 
+D7A8 INX 
+D7A9 INX 
+D7AA INX 
+D7AB LDA $25
+D7AD PHA 
+D7AE LDA $24
+D7B0 PHA 
+D7B1 z_two_to_r:
+D7B1 RTS 
+D7B2 xt_type:
+D7B2 JSR underflow_2
+D7B5 LDA $02,X
+D7B7 STA $24
+D7B9 LDA $03,X
+D7BB STA $25
+D7BD _loop:
+D7BD LDA $00,X
+D7BF ORA $01,X
+D7C1 BEQ _done
+D7C3 LDA ($24)
+D7C5 JSR emit_a
+D7C8 INC $24
+D7CA BNE *
+D7CC INC $25
+D7CE *:
+D7CE LDA $00,X
+D7D0 BNE *
+D7D2 DEC $01,X
+D7D4 *:
+D7D4 DEC $00,X
+D7D6 BRA _loop
+D7D8 _done:
+D7D8 INX 
+D7D9 INX 
+D7DA INX 
+D7DB INX 
+D7DC z_type:
+D7DC RTS 
+D7DD xt_u_dot:
+D7DD JSR underflow_1
+D7E0 JSR print_u
+D7E3 LDA #$20
+D7E5 JSR emit_a
+D7E8 z_u_dot:
+D7E8 RTS 
+D7E9 xt_u_greater_than:
+D7E9 JSR underflow_2
+D7EC LDA $00,X
+D7EE CMP $02,X
+D7F0 LDA $01,X
+D7F2 SBC $03,X
+D7F4 INX 
+D7F5 INX 
+D7F6 LDA #$00
+D7F8 ADC #$FF
+D7FA STA $00,X
+D7FC STA $01,X
+D7FE z_u_greater_than:
+D7FE RTS 
+D7FF xt_u_less_than:
+D7FF JSR underflow_2
+D802 LDA $02,X
+D804 CMP $00,X
+D806 LDA $03,X
+D808 SBC $01,X
+D80A INX 
+D80B INX 
+D80C LDA #$00
+D80E ADC #$FF
+D810 STA $00,X
+D812 STA $01,X
+D814 z_u_less_than:
+D814 RTS 
+D815 xt_um_slash_mod:
+D815 JSR underflow_3
+D818 LDA $00,X
+D81A ORA $01,X
+D81C BNE _not_zero
+D81E LDA #$04
+D820 JMP error
+D823 _not_zero:
+D823 LDA #$11
+D825 STA $2C
+D827 _loop:
+D827 ROL $04,X
+D829 ROL $05,X
+D82B DEC $2C
+D82D BEQ _done
+D82F ROL $02,X
+D831 ROL $03,X
+D833 STZ $24
+D835 ROL $24
+D837 SEC 
+D838 LDA $02,X
+D83A SBC $00,X
+D83C STA $25
+D83E LDA $03,X
+D840 SBC $01,X
+D842 TAY 
+D843 LDA $24
+D845 SBC #$00
+D847 BCC _loop
+D849 LDA $25
+D84B STA $02,X
+D84D STY $03,X
+D84F BRA _loop
+D851 _done:
+D851 INX 
+D852 INX 
+D853 JSR xt_swap
+D856 z_um_slash_mod:
+D856 RTS 
+D857 xt_um_star:
+D857 JSR underflow_2
+D85A CLC 
+D85B LDA $00,X
+D85D SBC #$00
+D85F STA $26
+D861 LDA $01,X
+D863 SBC #$00
+D865 BCC _zero
+D867 STA $27
+D869 LDA #$00
+D86B STA $24
+D86D STX $28
+D86F DEX 
+D870 DEX 
+D871 _outer_loop:
+D871 LDY #$08
+D873 LSR $04,X
+D875 _inner_loop:
+D875 BCC _no_add
+D877 STA $25
+D879 LDA $24
+D87B ADC $26
+D87D STA $24
+D87F LDA $25
+D881 ADC $27
+D883 _no_add:
+D883 ROR 
+D884 ROR $24
+D886 ROR $04,X
+D888 DEY 
+D889 BNE _inner_loop
+D88B INX 
+D88C CPX $28
+D88E BNE _outer_loop
+D890 STA $01,X
+D892 LDA $24
+D894 STA $00,X
+D896 BRA _done
+D898 _zero:
+D898 STZ $02,X
+D89A STZ $03,X
+D89C _done:
+D89C z_um_star:
+D89C RTS 
+D89D xt_unloop:
+D89D PLA 
+D89E PLA 
+D89F PLA 
+D8A0 PLA 
+D8A1 PLA 
+D8A2 PLA 
+D8A3 z_unloop:
+D8A3 RTS 
+D8A4 xt_until:
+D8A4 LDY #$CA
+D8A6 LDA #$93
+D8A8 JSR cmpl_subroutine
+D8AB JSR xt_comma
+D8AE z_until:
+D8AE RTS 
+D8AF xt_useraddr:
+D8AF DEX 
+D8B0 DEX 
+D8B1 LDA #$1E
+D8B3 STA $00,X
+D8B5 LDA #$00
+D8B7 STA $01,X
+D8B9 z_useraddr:
+D8B9 RTS 
+D8BA xt_variable:
+D8BA JSR xt_create
+D8BD LDA #$00
+D8BF STA ($00)
+D8C1 INC $00
+D8C3 BNE *
+D8C5 INC $01
+D8C7 *:
+D8C7 STA ($00)
+D8C9 INC $00
+D8CB BNE *
+D8CD INC $01
+D8CF *:
+D8CF JSR adjust_z
+D8D2 z_variable:
+D8D2 RTS 
+D8D3 xt_while:
+D8D3 LDY #$CA
+D8D5 LDA #$93
+D8D7 JSR cmpl_subroutine
+D8DA JSR xt_asm_arrow
+D8DD JSR xt_case
+D8E0 JSR xt_comma
+D8E3 JSR xt_swap
+D8E6 z_while:
+D8E6 RTS 
+D8E7 xt_within:
+D8E7 JSR underflow_3
+D8EA JSR xt_over
+D8ED JSR xt_minus
+D8F0 JSR xt_to_r
+D8F3 JSR xt_minus
+D8F6 JSR xt_r_from
+D8F9 JSR xt_u_less_than
+D8FC z_within:
+D8FC RTS 
+D8FD xt_wordlist:
+D8FD LDY #$05
+D8FF LDA ($1E),Y
+D901 CMP #$0C
+D903 BNE _ok
+D905 LDA #$0B
+D907 JMP error
+D90A _ok:
+D90A INC 
+D90B STA ($1E),Y
+D90D DEX 
+D90E DEX 
+D90F STA $00,X
+D911 STZ $01,X
+D913 z_wordlist:
+D913 RTS 
+D914 xt_wordsize:
+D914 JSR underflow_1
+D917 LDA $00,X
+D919 STA $24
+D91B LDA $01,X
+D91D STA $25
+D91F LDY #$06
+D921 LDA ($24),Y
+D923 DEY 
+D924 DEY 
+D925 SEC 
+D926 SBC ($24),Y
+D928 STA $00,X
+D92A LDY #$07
+D92C LDA ($24),Y
+D92E DEY 
+D92F DEY 
+D930 SBC ($24),Y
+D932 STA $01,X
+D934 z_wordsize:
+D934 RTS 
+D935 xt_xor:
+D935 JSR underflow_2
+D938 LDA $00,X
+D93A EOR $02,X
+D93C STA $02,X
+D93E LDA $01,X
+D940 EOR $03,X
+D942 STA $03,X
+D944 INX 
+D945 INX 
+D946 z_xor:
+D946 RTS 
+D947 xt_case:
+D947 xt_forth_wordlist:
+D947 xt_zero:
+D947 DEX 
+D948 DEX 
+D949 STZ $00,X
+D94B STZ $01,X
+D94D z_case:
+D94D z_forth_wordlist:
+D94D z_zero:
+D94D RTS 
+D94E xt_zero_equal:
+D94E JSR underflow_1
+D951 LDA $00,X
+D953 ORA $01,X
+D955 BEQ _zero
+D957 LDA #$00
+D959 BRA _store
+D95B _zero:
+D95B LDA #$FF
+D95D _store:
+D95D STA $00,X
+D95F STA $01,X
+D961 z_zero_equal:
+D961 RTS 
+D962 xt_zero_greater:
+D962 JSR underflow_1
+D965 LDY #$00
+D967 LDA $01,X
+D969 BMI _done
+D96B ORA $00,X
+D96D BEQ _done
+D96F DEY 
+D970 _done:
+D970 TYA 
+D971 STA $00,X
+D973 STA $01,X
+D975 z_zero_greater:
+D975 RTS 
+D976 xt_zero_less:
+D976 JSR underflow_1
+D979 LDY #$00
+D97B LDA $01,X
+D97D BPL _done
+D97F DEY 
+D980 _done:
+D980 TYA 
+D981 STA $00,X
+D983 STA $01,X
+D985 z_zero_less:
+D985 RTS 
+D986 xt_zero_unequal:
+D986 JSR underflow_1
+D989 LDY #$00
+D98B LDA $00,X
+D98D ORA $01,X
+D98F BEQ _got_zero
+D991 DEY 
+D992 _got_zero:
+D992 TYA 
+D993 STA $00,X
+D995 STA $01,X
+D997 z_zero_unequal:
+D997 RTS 
+E561 cmpl_subroutine:
+E561 PHA 
+E562 LDA #$20
+E564 BRA cmpl_common
+E566 cmpl_jump:
+E566 PHA 
+E567 LDA #$4C
+E569 cmpl_common:
+E569 JSR cmpl_a
+E56C PLA 
+E56D cmpl_word:
+E56D JSR cmpl_a
+E570 TYA 
+E571 cmpl_a:
+E571 STA ($00)
+E573 INC $00
+E575 BNE _done
+E577 INC $01
+E579 _done:
+E579 RTS 
+E57A doconst:
+E57A DEX 
+E57B DEX 
+E57C PLA 
+E57D STA $24
+E57F PLA 
+E580 STA $25
+E582 LDY #$01
+E584 LDA ($24),Y
+E586 STA $00,X
+E588 INY 
+E589 LDA ($24),Y
+E58B STA $01,X
+E58D RTS 
+E58E dodefer:
+E58E PLA 
+E58F STA $24
+E591 PLA 
+E592 STA $25
+E594 LDY #$01
+E596 LDA ($24),Y
+E598 STA $26
+E59A INY 
+E59B LDA ($24),Y
+E59D STA $27
+E59F JMP ($0026)
+E5A2 defer_error:
+E5A2 LDA #$03
+E5A4 JMP error
+E5A7 dodoes:
+E5A7 PLY 
+E5A8 PLA 
+E5A9 INY 
+E5AA BNE *
+E5AC INC 
+E5AD *:
+E5AD STY $26
+E5AF STA $27
+E5B1 DEX 
+E5B2 DEX 
+E5B3 PLY 
+E5B4 PLA 
+E5B5 INY 
+E5B6 BNE *
+E5B8 INC 
+E5B9 *:
+E5B9 STY $00,X
+E5BB STA $01,X
+E5BD JMP ($0026)
+E5C0 dovar:
+E5C0 PLY 
+E5C1 PLA 
+E5C2 INY 
+E5C3 BNE *
+E5C5 INC 
+E5C6 *:
+E5C6 DEX 
+E5C7 DEX 
+E5C8 STA $01,X
+E5CA TYA 
+E5CB STA $00,X
+E5CD RTS 
+E5CE byte_to_ascii:
+E5CE PHA 
+E5CF LSR 
+E5D0 LSR 
+E5D1 LSR 
+E5D2 LSR 
+E5D3 JSR _nibble_to_ascii
+E5D6 PLA 
+E5D7 _nibble_to_ascii:
+E5D7 AND #$0F
+E5D9 ORA #$30
+E5DB CMP #$3A
+E5DD BCC *
+E5DF ADC #$06
+E5E1 *:
+E5E1 JMP emit_a
+E5E4 RTS 
+E5E5 compare_16bit:
+E5E5 LDA $00,X
+E5E7 CMP $02,X
+E5E9 BEQ _equal
+E5EB LDA $01,X
+E5ED SBC $03,X
+E5EF ORA #$01
+E5F1 BVS _overflow
+E5F3 BRA _not_equal
+E5F5 _equal:
+E5F5 LDA $01,X
+E5F7 SBC $03,X
+E5F9 BVC _done
+E5FB _overflow:
+E5FB EOR #$80
+E5FD _not_equal:
+E5FD ORA #$01
+E5FF _done:
+E5FF RTS 
+E600 current_to_dp:
+E600 LDY #$04
+E602 LDA ($1E),Y
+E604 ASL 
+E605 CLC 
+E606 ADC #$06
+E608 TAY 
+E609 LDA ($1E),Y
+E60B STA $02
+E60D INY 
+E60E LDA ($1E),Y
+E610 STA $03
+E612 RTS 
+E613 dp_to_current:
+E613 LDY #$04
+E615 LDA ($1E),Y
+E617 ASL 
+E618 CLC 
+E619 ADC #$06
+E61B TAY 
+E61C LDA $02
+E61E STA ($1E),Y
+E620 INY 
+E621 LDA $03
+E623 STA ($1E),Y
+E625 RTS 
+E626 _loop:
+E626 interpret:
+E626 JSR xt_parse_name
+E629 LDA $00,X
+E62B ORA $01,X
+E62D BEQ _line_done
+E62F JSR xt_two_dup
+E632 JSR xt_find_name
+E635 LDA $00,X
+E637 ORA $01,X
+E639 BNE _got_name_token
+E63B INX 
+E63C INX 
+E63D JSR xt_number
+E640 LDA $16
+E642 BEQ _loop
+E644 LDA #$20
+E646 BIT $20
+E648 BEQ _single_number
+E64A JSR xt_swap
+E64D LDY #$CC
+E64F LDA #$48
+E651 JSR cmpl_subroutine
+E654 JSR xt_comma
+E657 _single_number:
+E657 LDY #$CC
+E659 LDA #$48
+E65B JSR cmpl_subroutine
+E65E JSR xt_comma
+E661 BRA _loop
+E663 _got_name_token:
+E663 LDA $00,X
+E665 STA $04,X
+E667 LDA $01,X
+E669 STA $05,X
+E66B INX 
+E66C INX 
+E66D INX 
+E66E INX 
+E66F LDA $00,X
+E671 STA $22
+E673 LDA $01,X
+E675 STA $23
+E677 JSR xt_name_to_int
+E67A LDA $16
+E67C BNE _compile
+E67E LDY #$01
+E680 LDA ($22),Y
+E682 AND #$01
+E684 BEQ _interpret
+E686 LDA #$02
+E688 JMP error
+E68B _interpret:
+E68B JSR xt_execute
+E68E JMP _loop
+E691 _compile:
+E691 LDY #$01
+E693 LDA ($22),Y
+E695 AND #$04
+E697 BNE _interpret
+E699 JSR xt_compile_comma
+E69C JMP _loop
+E69F _line_done:
+E69F INX 
+E6A0 INX 
+E6A1 INX 
+E6A2 INX 
+E6A3 RTS 
+E6A4 is_printable:
+E6A4 CMP #$20
+E6A6 BCC _done
+E6A8 CMP #$7F
+E6AA BCS _failed
+E6AC SEC 
+E6AD BRA _done
+E6AF _failed:
+E6AF CLC 
+E6B0 _done:
+E6B0 RTS 
+E6B1 is_whitespace:
+E6B1 CMP #$00
+E6B3 BCC _done
+E6B5 CMP #$21
+E6B7 BCS _failed
+E6B9 SEC 
+E6BA BRA _done
+E6BC _failed:
+E6BC CLC 
+E6BD _done:
+E6BD RTS 
+E6BE underflow_1:
+E6BE CPX #$77
+E6C0 BPL underflow_error
+E6C2 RTS 
+E6C3 underflow_2:
+E6C3 CPX #$75
+E6C5 BPL underflow_error
+E6C7 RTS 
+E6C8 underflow_3:
+E6C8 CPX #$73
+E6CA BPL underflow_error
+E6CC RTS 
+E6CD underflow_4:
+E6CD CPX #$71
+E6CF BPL underflow_error
+E6D1 RTS 
+E6D2 underflow_error:
+E6D2 LDA #$09
+E6D4 error:
+E6D4 LDY $98
+E6D6 PHY 
+E6D7 STZ $98
+E6D9 ASL 
+E6DA TAY 
+E6DB LDA error_table,Y
+E6DE STA $28
+E6E0 INY 
+E6E1 LDA error_table,Y
+E6E4 STA $29
+E6E6 JSR print_common
+E6E9 JSR xt_cr
+E6EC PLY 
+E6ED BEQ _no_hang
+E6EF BRK 
+E6F0 BRK 
+E6F1 _no_hang:
+E6F1 JMP xt_abort
+E6F4 print_string_no_lf:
+E6F4 ASL 
+E6F5 TAY 
+E6F6 LDA assembler_dictionary_start,Y
+E6F9 STA $28
+E6FB INY 
+E6FC LDA assembler_dictionary_start,Y
+E6FF STA $29
+E701 print_common:
+E701 LDY #$00
+E703 _loop:
+E703 LDA ($28),Y
+E705 BEQ _done
+E707 JSR emit_a
+E70A INY 
+E70B BRA _loop
+E70D _done:
+E70D RTS 
+E70E print_string:
+E70E JSR print_string_no_lf
+E711 JMP xt_cr
+E714 print_u:
+E714 JSR xt_case
+E717 JSR xt_less_number_sign
+E71A JSR xt_number_sign_s
+E71D JSR xt_number_sign_greater
+E720 JMP xt_type
+E723 platform_bye:
+E723 BRK 
+E724 kernel_init:
+E724 v_irq:
+E724 v_nmi:
+E724 v_reset:
+E724 SEI 
+E725 LDA #$00
+E727 STA $FFE0
+E72A LDA #$04
+E72C STA $FFE1
+E72F LDA #$05
+E731 STA $FFE2
+E734 LDA #$00
+E736 STA $80
+E738 STA $81
+E73A LDA #$00
+E73C STA $86
+E73E LDA #$01
+E740 STA $98
+E742 LDA #$76
+E744 STA $9A
+E746 LDA #$EB
+E748 STA $9B
+E74A LDA #$8C
+E74C STA $9C
+E74E LDA #$E7
+E750 STA $9D
+E752 STZ $9E
+E754 LDX #$00
+E756 *:
+E756 LDA s_kernel_id,X
+E759 BEQ _done
+E75B JSR kernel_putc
+E75E INX 
+E75F BRA *
+E761 _done:
+E761 JMP code0
+E764 _loop:
+E764 kernel_getc:
+E764 LDA $FFE4
+E767 BEQ _loop
+E769 CMP #$0A
+E76B BEQ _loop
+E76D kernal_getc_done:
+E76D RTS 
+E76E kernel_putc:
+E76E CMP #$07
+E770 BNE kernal_putc_bell
+E772 STA $FFEF
+E775 RTS 
+E776 kernal_putc_bell:
+E776 STA $FFE7
+E779 PHA 
+E77A LDA $98
+E77C BEQ kernal_putc_no_print
+E77E PLA 
+E77F RTS 
+E780 kernal_putc_no_print:
+E780 PLA 
+E781 PHA 
+E782 LDA $86
+E784 BEQ kernal_putc_bank_switch
+E786 PLA 
+E787 RTS 
+E788 kernal_putc_bank_switch:
+E788 PLA 
+E789 JMP kernal_putc_code
+EA8C kernal_putc_code:
+EA8C PHX 
+EA8D PHY 
+EA8E PHA 
+EA8F PHA 
+EA90 CLC 
+EA91 LDA #$40
+EA93 LDX $81
+EA95 kernal_putc_y_loop:
+EA95 BEQ kernal_putc_y_done
+EA97 ADC #$08
+EA99 DEX 
+EA9A BRA kernal_putc_y_loop
+EA9C kernal_putc_y_done:
+EA9C STA $83
+EA9E LDA #$00
+EAA0 LDX $80
+EAA2 kernal_putc_x_loop:
+EAA2 BEQ kernal_putc_x_done
+EAA4 ADC #$06
+EAA6 DEX 
+EAA7 BRA kernal_putc_x_loop
+EAA9 kernal_putc_x_done:
+EAA9 STA $82
+EAAB PLA 
+EAAC CMP #$0A
+EAAE BEQ kernal_putc_adjust
+EAB0 CMP #$08
+EAB2 BNE kernal_putc_not_backspace
+EAB4 LDA $80
+EAB6 BEQ kernal_putc_trampoline
+EAB8 DEC $80
+EABA kernal_putc_trampoline:
+EABA JMP kernal_putc_done
+EABD kernal_putc_not_backspace:
+EABD CMP #$7F
+EABF BCS kernal_putc_print_done
+EAC1 SEC 
+EAC2 SBC #$20
+EAC4 BCC kernal_putc_print_done
+EAC6 TAX 
+EAC7 LDA #$E7
+EAC9 STA $85
+EACB LDA #$8C
+EACD CPX #$00
+EACF CLC 
+EAD0 kernal_putc_char_ptr:
+EAD0 BEQ kernal_putc_char_ptr_done
+EAD2 ADC #$08
+EAD4 BCC kernal_putc_char_ptr_loop
+EAD6 INC $85
+EAD8 CLC 
+EAD9 kernal_putc_char_ptr_loop:
+EAD9 DEX 
+EADA BRA kernal_putc_char_ptr
+EADC kernal_putc_char_ptr_done:
+EADC STA $84
+EADE LDY #$08
+EAE0 kernal_putc_loop_outer:
+EAE0 LDA ($84)
+EAE2 ROR 
+EAE3 ROR 
+EAE4 ROR 
+EAE5 LDX #$05
+EAE7 kernal_putc_loop_inner:
+EAE7 ROR 
+EAE8 PHA 
+EAE9 LDA #$3F
+EAEB BCS kernal_putc_fgcolor
+EAED LDA #$00
+EAEF kernal_putc_fgcolor:
+EAEF STA ($82)
+EAF1 INC $82
+EAF3 PLA 
+EAF4 DEX 
+EAF5 BNE kernal_putc_loop_inner
+EAF7 LDA $84
+EAF9 CLC 
+EAFA ADC #$01
+EAFC STA $84
+EAFE LDA $85
+EB00 ADC #$00
+EB02 STA $85
+EB04 LDA $83
+EB06 ADC #$01
+EB08 STA $83
+EB0A LDA $82
+EB0C SEC 
+EB0D SBC #$05
+EB0F STA $82
+EB11 DEY 
+EB12 BNE kernal_putc_loop_outer
+EB14 kernal_putc_print_done:
+EB14 LDA $80
+EB16 INA 
+EB17 CMP #$2A
+EB19 BNE kernal_putc_no_adjust
+EB1B kernal_putc_adjust:
+EB1B INC $81
+EB1D LDA $81
+EB1F CMP #$10
+EB21 BNE kernal_putc_no_scroll
+EB23 LDA #$40
+EB25 STA $83
+EB27 LDA #$48
+EB29 STA $85
+EB2B STZ $82
+EB2D STZ $84
+EB2F LDX #$78
+EB31 LDY #$00
+EB33 kernal_putc_scroll:
+EB33 LDA ($84),Y
+EB35 STA ($82),Y
+EB37 INY 
+EB38 BNE kernal_putc_scroll
+EB3A INC $85
+EB3C INC $83
+EB3E DEX 
+EB3F BNE kernal_putc_scroll
+EB41 DEC $81
+EB43 LDX #$08
+EB45 LDA #$00
+EB47 kernal_putc_blank:
+EB47 STA ($82),Y
+EB49 INY 
+EB4A BNE kernal_putc_blank
+EB4C INC $83
+EB4E DEX 
+EB4F BNE kernal_putc_blank
+EB51 kernal_putc_no_scroll:
+EB51 LDA #$00
+EB53 kernal_putc_no_adjust:
+EB53 STA $80
+EB55 kernal_putc_done:
+EB55 PLA 
+EB56 PLY 
+EB57 PLX 
+EB58 RTS 

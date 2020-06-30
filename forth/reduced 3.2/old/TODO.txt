@@ -1,0 +1,88 @@
+TODO/CHANGES for Tali Forth 2 
+Scot W. Stevenson <scot.stevenson@gmail.com>
+First version: 19. Jan 2014
+This version: 28. Dec 2018
+
+THIS DOCUMENT HAS BEEN REPLACED BY THE ISSUE SYSTEM OF GITHUB. IT IS INCLUDED
+HERE FOR HISTORICAL REASONS
+
+
+
+--> Milestone BETA
+
+TODO POST-BETA ("ALL THERE, BUT BEWARE OF SNEAKY BUGS")
+        - Add an editor based on ed
+        - Add block support
+
+--> Milestone RELEASE 1.0
+
+TODO AT SOME POINT
+        - Check where all "STY 0,X" can be used to good effect
+        - Check where all "cmpl_a" can be used to good effect
+        - Consider switching 0BRANCH/BRANCH to CS-PICK/CS-ROLL
+        - Add handling for multi-byte keyboard input (if possible with py65)
+        - See if we can add real Delete Key detection (ESC[3~)
+        - Add real USER variables
+        - Add multitasking (round-robin), this requires USER variables
+        - See if MAX and MIN can be combined
+        - See if > and < etc can be combined
+        - Consider moving UM* to table-based multiplication
+        - Consider implementing KEY? if we can make it work with py65mon
+        - Consider implementing THROW/CATCH
+        - Add an assembler
+
+
+-----------------------------------------------------------------------
+COMPLETED MAJOR CHANGES (LAST ON TOP WITH DATE)
+
+        - 04. Jul 2018 - Releasing as BETA
+        - 02. Jul 2018 - Tested all words
+        - 20. Jun 2018 - Handle strings longer than 255 chars
+        - 01. Jun 2018 - Added history function
+        - 17. May 2018 - Added testing suite
+        - 01. May 2018 - Added Makefile; added disassembler
+        - 16. Apr 2018 - Added tool to generate docs/WORDLIST.md
+        - 11. Mar 2018 - Allow stripping of underflow check for native compile
+        - 11. Mar 2018 - Added native compiling special cases
+        - 01. Mar 2018 - Enable assembly of Forth text files
+        - 26. Feb 2018 - Added Prime, Fact, Fib, Mandelbrot to user_words.asm
+        - 25. Feb 2018 - Added underflow checks
+        - 18. Feb 2018 - All words coded, releasing as ALPHA
+        - 12. Feb 2018 - Make PARSE work with 16-bit string lengths
+        - Jan 2018 - Get scaffolding CLI loop up and running
+        - Jan 2018 - Get Dictionary search up and running
+        - early Dec 2017 - Write/review docs for memory map, hang on wall
+        - early Dec 2017 - Write/review docs for stack structure, hang on wall
+        - early Dec 2017 - Write routine to print a string ("It's alive!")
+        - early Dec 2017 - Print temporary boot string
+        - 26. Nov 2017 - Add strings to forth_words.asm; create GitHub repo
+        - 25. Nov 2017 - Generated headers and words skeletons from template
+        - 23. Feb 2017 - Decided on major rewrite as Tali Forth 2
+
+
+-----------------------------------------------------------------------
+
+ORIGINAL TALI TIMELINE
+        - 10. Feb 2015: Added RECURSE. Tali now "feature complete", entering BETA
+        - 09. Feb 2015: Added new and working versions of DO/?DO/LEAVE/LOOP/+LOOP
+        - 28. Jan 2015: Added LEAVE, rewrote THEN, LOOP, +LOOP and DO
+        - 25. Jan 2015: Added WORD (against better judgement); MOVE; 2R words 
+        - 20. Jan 2015: Added ABORT", complete rewrite of S"
+        - 19. Jan 2015: Added f_cmpljsr and friends, converted code to their use
+        - 17. Jan 2015: Added DEFER, DEFER!, DEFER@, IS, ACTION-OF; >BODY works
+        - 14. Jan 2015: Major rewrite of CREATE, DOVAR, DOES; adds DODOES
+        - 11. Jan 2015: Added ['], internal routine for POSTPONE (l_postpoint)
+        - 10. Jan 2015: Added PICK, VALUE and TO
+        - 11. Nov 2014: Added ANSI-standard +LOOP
+        - 09. Nov 2014: LOOP, DO, I and J now confirm to ANSI standard
+        - 02. Nov 2014: Expanded README.txt, CR now newline, adapted to new py65
+        - 16. May 2014: CREATE/DOES> working 
+        - 13. Apr 2014: Basic DO/LOOP works (ALPHA 002) 
+        - 07. Apr 2014: Published as ALPHA 001 to 6502.org
+        - 03. Apr 2014: IF ELSE THEN works 
+        - 26. Feb 2014: Native compiling works
+        - 20. Feb 2014: Basic BEGIN-AGAIN loop works
+        - 15. Feb 2014: Basic compiling function up and running 
+        - 06. Feb 2014: Design of Dictionary structure complete
+        - 01. Feb 2014: Primitive interpreter loop up and running
+        - 19. Jan 2014: Start of project

@@ -1,0 +1,3 @@
+P2HEX/C V1.42 Beta [Bld 157]
+(C) 1992,2020 Alfred Arnold
+main.p==>>main.hex  (24932 Bytes)

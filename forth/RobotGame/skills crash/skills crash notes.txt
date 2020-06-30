@@ -1,0 +1,16 @@
+these will be slightly off since had to uncomment if
+
+probably not it but check that kb input doesnt overflow buffer
+	tried and it tried to execute when buffer full. hmm
+
+01:1610 = x3u = monster_map
+01:3A59
+inlined code
+01:3A67 - 20 0D 56
+01:3A84
+
+01:3A72
+inlined code
+01:3A81 - 20 36 4E
+monster.alive = 4E36
+

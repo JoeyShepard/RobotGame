@@ -1,0 +1,3 @@
+listing filter just filters 26mb file down to 500k
+
+generic listing reduces this to what goes on website

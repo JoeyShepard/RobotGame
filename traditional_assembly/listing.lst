@@ -1,0 +1,6408 @@
+0000 fname:
+0000 arg1:
+0000 arg1:
+0000 skip:
+0000 skip:
+0000 skip:
+0000 skip:
+0000 skip:
+0000 skip:
+0000 skip:
+0010 saveA:
+0011 saveX:
+C000 CharTable:
+C2F8 PHA
+C2F9 LDA #'\\'
+C2FB STA DEBUG
+C2FE LDA #'n'
+C300 STA DEBUG
+C303 PLA
+C304 RTS
+C305 RTS
+C306 PHX
+C307 DEX
+C308 DEX
+C309 LDA (dbg_ptr,X)
+C30B .loop:
+C30B BEQ .done
+C30D STA DEBUG
+C310 INC dbg_ptr,X
+C312 BNE .no_carry
+C314 INC dbg_ptr+1,X
+C316 LDA (dbg_ptr,X)
+C318 BRA .loop
+C31A .done:
+C31A PLX
+C31B RTS
+C31C msg1:
+C31C msg2:
+C31C skip1:
+EEBD tiles:
+0CDE EnableGfxRAM:
+0CDE LDA #BANK_GFX_RAM1
+0CE0 STA RAM_BANK2
+0CE3 STA RB2_copy
+0CE5 LDA #BANK_GFX_RAM2
+0CE7 STA RAM_BANK3
+0CEA STA RB3_copy
+0CEC RTS
+0CED EnableBankROM:
+0CED LDA #BANK_GEN_RAM2
+0CEF STA RAM_BANK2
+0CF2 STA RB2_copy
+0CF4 LDA #BANK_GEN_RAM3
+0CF6 STA RAM_BANK3
+0CF9 STA RB3_copy
+0CFB RTS
+0CFC Setup:
+0CFC LDX #0
+0CFE LDA #BANK_GEN_RAM1
+0D00 STA RAM_BANK1
+0D03 STA RB1_copy
+0D05 JSR EnableGfxRAM
+0D08 LDA #$20#256
+0D0A STA rand_val
+0D0C LDA #$20>>8
+0D0E STA rand_val+1
+0D10 RTS
+0D11 clrscr:
+0D11 color:
+0D11 rows:
+0D11 PHX
+0D12 DEX
+0D13 DEX
+0D14 STX saveX
+0D16 LDX #zpcounter
+0D18 LDA ZP_locals-1,X
+0D1A PHA
+0D1B DEX
+0D1C BNE ZP_push
+0D1E LDX saveX
+0D20 LDA #128#256
+0D22 STA rows,X
+0D24 LDA #SCREEN_ADDRESS#256
+0D26 STA gfx_ptr
+0D28 LDA #SCREEN_ADDRESS>>8
+0D2A STA gfx_ptr+1
+0D2C LDA color,X
+0D2E LDY #0
+0D30 STA (gfx_ptr),Y
+0D32 DEY
+0D33 BNE .loop_inner
+0D35 INC gfx_ptr+1
+0D37 DEC rows,X
+0D39 BNE .loop_outer
+0D3B STX saveX
+0D3D LDX #0
+0D3F PLA
+0D40 STA ZP_locals,X
+0D42 INX
+0D43 CPX #zpcounter
+0D45 BNE ZP_pull
+0D47 LDX saveX
+0D49 PLX
+0D4A RTS
+0D4B CalcXY:
+0D4B posx:
+0D4B posy:
+0D4B PHX
+0D4C DEX
+0D4D DEX
+0D4E LDA posx,X
+0D50 STA ret_val
+0D52 LDA #SCREEN_ADDRESS>>8
+0D54 CLC
+0D55 ADC posy,X
+0D57 STA ret_val+1
+0D59 PLX
+0D5A RTS
+0D5B TileAddress:
+0D5B PHX
+0D5C DEX
+0D5D LDA tile_id,X
+0D5F ASL
+0D60 ADC #tiles#256
+0D62 STA ret_val
+0D64 LDA #0
+0D66 ADC #tiles>>8
+0D68 STA ret_val+1
+0D6A LDA (ret_val)
+0D6C PHA
+0D6D INC ret_val
+0D6F BNE no_carry2
+0D71 INC ret_val+1
+0D73 LDA (ret_val)
+0D75 STA ret_val+1
+0D77 PLA
+0D78 STA ret_val
+0D7A PLX
+0D7B RTS
+0D7C CopyTile:
+0D7C PHX
+0D7D DEX
+0D7E DEX
+0D7F STX saveX
+0D81 LDX #zpcounter
+0D83 LDA ZP_locals-1,X
+0D85 PHA
+0D86 DEX
+0D87 BNE ZP_push
+0D89 LDX saveX
+0D8B LDA dest_id,X
+0D8D STA call_offset,X
+0D8F JSR TileAddress
+0D92 LDA ret_val
+0D94 STA dest_ptr
+0D96 LDA ret_val+1
+0D98 STA dest_ptr+1
+0D9A LDA source_id,X
+0D9C STA call_offset,X
+0D9E JSR TileAddress
+0DA1 LDA ret_val
+0DA3 STA source_ptr
+0DA5 LDA ret_val+1
+0DA7 STA source_ptr+1
+0DA9 LDY #0
+0DAB LDA (source_ptr),Y ;width
+0DAD STA (dest_ptr),Y
+0DAF INY
+0DB0 LDA (source_ptr),Y ;row_count
+0DB2 STA (dest_ptr),Y
+0DB4 STA row_count ;save row count
+0DB6 INY
+0DB7 LDA (source_ptr),Y
+0DB9 STA (dest_ptr),Y
+0DBB BNE skip
+0DBD JMP if{temp}
+0DC0 skip:
+0DC0 INY
+0DC1 LDA (source_ptr),Y
+0DC3 STA (dest_ptr),Y
+0DC5 INY
+0DC6 BRA ct.loop ;could fall through and one BRA after endif but slower
+0DC8 JMP if{temp2}
+0DCB DEC row_count
+0DCD BEQ ct.done
+0DCF INY
+0DD0 CPY #200 ;check for Y overflow only once per row
+0DD2 BCC ct.loop
+0DD4 TYA
+0DD5 SEC
+0DD6 SBC #200
+0DD8 TAY
+0DD9 LDA #200#256
+0DDB CLC
+0DDC ADC source_ptr
+0DDE STA source_ptr
+0DE0 BCC .no_carry
+0DE2 INC source_ptr+1
+0DE4 LDA #200#256
+0DE6 CLC
+0DE7 ADC dest_ptr
+0DE9 STA dest_ptr
+0DEB BCC .no_carry
+0DED INC dest_ptr+1
+0DEF BRA ct.loop
+0DF1 STX saveX
+0DF3 LDX #0
+0DF5 PLA
+0DF6 STA ZP_locals,X
+0DF8 INX
+0DF9 CPX #zpcounter
+0DFB BNE ZP_pull
+0DFD LDX saveX
+0DFF PLX
+0E00 RTS
+0E01 DrawTile:
+0E01 tile:
+0E01 xpos:
+0E01 ypos:
+0E01 PHX
+0E02 DEX
+0E03 DEX
+0E04 DEX
+0E05 STX saveX
+0E07 LDX #zpcounter
+0E09 LDA ZP_locals-1,X
+0E0B PHA
+0E0C DEX
+0E0D BNE ZP_push
+0E0F LDX saveX
+0E11 LDA xpos,X
+0E13 STA call_offset,X
+0E15 LDA ypos,X
+0E17 STA call_offset,X
+0E19 JSR CalcXY
+0E1C LDA ret_val
+0E1E STA gfx_ptr
+0E20 LDA ret_val+1
+0E22 STA gfx_ptr+1
+0E24 LDA #tiles#256
+0E26 STA tile_ptr
+0E28 LDA #tiles>>8
+0E2A STA tile_ptr+1
+0E2C LDA tile,X
+0E2E STA call_offset,X
+0E30 JSR TileAddress
+0E33 LDA ret_val
+0E35 STA tile_ptr
+0E37 LDA ret_val+1
+0E39 STA tile_ptr+1
+0E3B LDA (tile_ptr) ;get tile width
+0E3D STA t_width
+0E3F LDY #1 ;get row count
+0E41 LDA (tile_ptr),Y
+0E43 STA row_count
+0E45 INY
+0E46 LDA (tile_ptr),Y ;get count of count,color pair
+0E48 STA t_count
+0E4A INY ;advance tile_ptr
+0E4B BEQ skip
+0E4D JMP if{temp}
+0E50 skip:
+0E50 INC tile_ptr+1
+0E52 CMP #0 ;count of 0 means new line
+0E54 BEQ skip
+0E56 JMP if{temp}
+0E59 skip:
+0E59 DEC row_count ;decrease row_count
+0E5B BEQ dt.return
+0E5D LDA #0 ;increase gfx_ptr by 256-width
+0E5F SEC
+0E60 SBC t_width
+0E62 CLC
+0E63 ADC gfx_ptr
+0E65 STA gfx_ptr
+0E67 BCC .no_carry
+0E69 INC gfx_ptr+1
+0E6B BRA dt.loop
+0E6D JMP if{temp2}
+0E70 LDA (tile_ptr),Y ;count not 0. get color of count,color pair
+0E72 STA t_color
+0E74 INY ;advance tile_ptr
+0E75 BEQ skip
+0E77 JMP if{temp}
+0E7A skip:
+0E7A INC tile_ptr+1
+0E7C CMP #COLOR_TRANSPARENT
+0E7E BEQ skip
+0E80 JMP if{temp}
+0E83 skip:
+0E83 LDA t_count
+0E85 CLC
+0E86 ADC gfx_ptr
+0E88 STA gfx_ptr
+0E8A BCC .no_carry
+0E8C INC gfx_ptr+1
+0E8E BRA dt.loop
+0E90 JMP if{temp2}
+0E93 PHY ;save index into tile_ptr
+0E94 LDY t_count
+0E96 DEY
+0E97 LDA t_color
+0E99 STA (gfx_ptr),Y
+0E9B DEY
+0E9C BPL color.for
+0E9E LDA t_count ;advance gfx_ptr by number of pixels drawn
+0EA0 CLC
+0EA1 ADC gfx_ptr
+0EA3 STA gfx_ptr
+0EA5 PLY ;restore index into tile_ptr
+0EA6 BRA dt.loop
+0EA8 STX saveX
+0EAA LDX #0
+0EAC PLA
+0EAD STA ZP_locals,X
+0EAF INX
+0EB0 CPX #zpcounter
+0EB2 BNE ZP_pull
+0EB4 LDX saveX
+0EB6 PLX
+0EB7 RTS
+0EB8 DrawTile1bpp:
+0EB8 tile:
+0EB8 xpos:
+0EB8 ypos:
+0EB8 color1:
+0EB8 color2:
+0EB8 t0:
+0EB8 t1:
+0EB8 t2:
+0EB8 t3:
+0EB8 PHX
+0EB9 TXA ;2
+0EBA SEC ;2
+0EBB SBC #xcounter ;2
+0EBD TAX ;2
+0EBE STX saveX
+0EC0 LDX #zpcounter
+0EC2 LDA ZP_locals-1,X
+0EC4 PHA
+0EC5 DEX
+0EC6 BNE ZP_push
+0EC8 LDX saveX
+0ECA STZ byte_count
+0ECC STZ bit_count
+0ECE LDA xpos,X
+0ED0 STA call_offset,X
+0ED2 LDA ypos,X
+0ED4 STA call_offset,X
+0ED6 JSR CalcXY
+0ED9 LDA ret_val
+0EDB STA gfx_ptr
+0EDD LDA ret_val+1
+0EDF STA gfx_ptr+1
+0EE1 LDA #tiles#256
+0EE3 STA tile_ptr
+0EE5 LDA #tiles>>8
+0EE7 STA tile_ptr+1
+0EE9 LDA tile,X
+0EEB STA call_offset,X
+0EED JSR TileAddress
+0EF0 LDA ret_val
+0EF2 STA tile_ptr
+0EF4 LDA ret_val+1
+0EF6 STA tile_ptr+1
+0EF8 LDA (tile_ptr)
+0EFA STA t_width
+0EFC LDY #1
+0EFE LDA (tile_ptr),Y
+0F00 STA t_height
+0F02 STA row_count
+0F04 INY
+0F05 LDA (tile_ptr),Y
+0F07 STA edge_style
+0F09 INY
+0F0A LDA byte_count
+0F0C BEQ skip
+0F0E JMP if{temp}
+0F11 skip:
+0F11 LDA (tile_ptr),Y
+0F13 STA t_pixel
+0F15 INY
+0F16 LDA bit_count
+0F18 BEQ skip
+0F1A JMP if{temp}
+0F1D skip:
+0F1D LDA edge_style
+0F1F BEQ skip
+0F21 JMP if{temp}
+0F24 skip:
+0F24 LDA #false#256
+0F26 STA trans_row,X
+0F28 JMP if{temp2}
+0F2B LDA row_count
+0F2D CMP #1
+0F2F BEQ dt1.row1
+0F31 CMP t_height
+0F33 BNE dt1.row1_done
+0F35 STZ t0,X
+0F37 LDA t_width
+0F39 DEC
+0F3A STA t1,X
+0F3C LDA edge_style
+0F3E CMP #2
+0F40 BEQ skip
+0F42 JMP if{temp}
+0F45 skip:
+0F45 LDA #1#256
+0F47 STA t2,X
+0F49 LDA t_width
+0F4B DEC
+0F4C DEC
+0F4D STA t3,X
+0F4F JMP if{temp2}
+0F52 LDA #$FF
+0F54 STA t2,X
+0F56 STA t3,X
+0F58 LDA #true#256
+0F5A STA trans_row,X
+0F5C BRA dt1.rows_done
+0F5E LDA row_count
+0F60 CMP #2
+0F62 BEQ dt1.row2a
+0F64 LDA t_height
+0F66 DEC
+0F67 CMP row_count
+0F69 BEQ dt1.row2a
+0F6B BRA dt1.row_else
+0F6D LDA edge_style
+0F6F CMP #2
+0F71 BEQ skip
+0F73 JMP if{temp}
+0F76 skip:
+0F76 STZ t0,X
+0F78 LDA t_width
+0F7A DEC
+0F7B STA t1,X
+0F7D LDA #$FF
+0F7F STA t2,X
+0F81 STA t3,X
+0F83 LDA #true#256
+0F85 STA trans_row,X
+0F87 JMP if{temp2}
+0F8A BRA dt1.row_else
+0F8C BRA dt1.rows_done
+0F8E LDA #false#256
+0F90 STA trans_row,X
+0F92 LDA #false#256
+0F94 STA skip_pixel,X
+0F96 LDA trans_row,X
+0F98 BNE skip
+0F9A JMP if{temp}
+0F9D skip:
+0F9D LDA bit_count
+0F9F BRA s{ts}c{tc}
+0FA1 JMP s{ts}done
+0FA4 CMP t0,X
+0FA6 BEQ skip
+0FA8 JMP s{ts}c{tc}
+0FAB skip:
+0FAB BRA s{ts}b{tb}
+0FAD CMP t1,X
+0FAF BNE s{ts}c{tc}
+0FB1 BRA s{ts}b{tb}
+0FB3 BRA s{ts}b{tb}
+0FB5 CMP t2,X
+0FB7 BNE s{ts}c{tc}
+0FB9 BRA s{ts}b{tb}
+0FBB BRA s{ts}b{tb}
+0FBD CMP t3,X
+0FBF BNE s{ts}c{tc}
+0FC1 BRA s{ts}b{tb}
+0FC3 LDA #true#256
+0FC5 STA skip_pixel,X
+0FC7 LDA skip_pixel,X
+0FC9 BEQ skip
+0FCB JMP if{temp}
+0FCE skip:
+0FCE LDA t_pixel
+0FD0 BMI skip
+0FD2 JMP if{temp}
+0FD5 skip:
+0FD5 LDA color1,X
+0FD7 JMP if{temp2}
+0FDA LDA color2,X
+0FDC CMP #COLOR_TRANSPARENT
+0FDE BNE skip
+0FE0 JMP if{temp}
+0FE3 skip:
+0FE3 STA (gfx_ptr)
+0FE5 INC gfx_ptr
+0FE7 BNE no_carry2
+0FE9 INC gfx_ptr+1
+0FEB ASL t_pixel
+0FED INC bit_count
+0FEF LDA bit_count
+0FF1 CMP t_width
+0FF3 BEQ skip
+0FF5 JMP if{temp}
+0FF8 skip:
+0FF8 STZ bit_count
+0FFA STZ byte_count
+0FFC DEC row_count
+0FFE LDA #0
+1000 SEC
+1001 SBC t_width
+1003 CLC
+1004 ADC gfx_ptr
+1006 STA gfx_ptr
+1008 BCC .no_carry
+100A INC gfx_ptr+1
+100C JMP if{temp2}
+100F LDA byte_count
+1011 CMP #7
+1013 BEQ skip
+1015 JMP if{temp}
+1018 skip:
+1018 STZ byte_count
+101A JMP if{temp2}
+101D INC byte_count
+101F LDA row_count
+1021 BEQ skip
+1023 JMP dt1.loop
+1026 skip:
+1026 STX saveX
+1028 LDX #0
+102A PLA
+102B STA ZP_locals,X
+102D INX
+102E CPX #zpcounter
+1030 BNE ZP_pull
+1032 LDX saveX
+1034 PLX
+1035 RTS
+1036 RotateTile90:
+1036 dest:
+1036 src:
+1036 PHX
+1037 DEX
+1038 DEX
+1039 STX saveX
+103B LDX #zpcounter
+103D LDA ZP_locals-1,X
+103F PHA
+1040 DEX
+1041 BNE ZP_push
+1043 LDX saveX
+1045 LDA src,X
+1047 STA call_offset,X
+1049 STZ call_offset,X
+104B STZ call_offset,X
+104D JSR DrawTile
+1050 LDA dest,X
+1052 STA call_offset,X
+1054 JSR TileAddress
+1057 LDA ret_val
+1059 STA dest_ptr
+105B LDA ret_val+1
+105D STA dest_ptr+1
+105F LDA src,X
+1061 STA call_offset,X
+1063 JSR TileAddress
+1066 LDA ret_val
+1068 STA gfx_ptr
+106A LDA ret_val+1
+106C STA gfx_ptr+1
+106E LDY #1
+1070 LDA (gfx_ptr),Y
+1072 STA row_count
+1074 STA (dest_ptr),Y
+1076 DEY ;reverse order to save LDA
+1077 LDA (gfx_ptr),Y
+1079 STA t_width
+107B STA (dest_ptr),Y
+107D LDY #2 ;point to color pairs of destination
+107F STZ gfx_ptr ;set X coord to 0
+1081 LDA t_width ;point to (0,width) pixel, ie bottom left pixel
+1083 CLC
+1084 ADC #SCREEN_ADDRESS>>8-1
+1086 STA gfx_ptr+1
+1088 LDA (gfx_ptr)
+108A STA new_color
+108C LDA #1#256
+108E STA new_count
+1090 DEC gfx_ptr+1
+1092 LDA t_width
+1094 DEC
+1095 STA counter
+1097 LDA (gfx_ptr)
+1099 CMP new_color
+109B BEQ skip
+109D JMP if{temp}
+10A0 skip:
+10A0 INC new_count
+10A2 JMP if{temp2}
+10A5 PHA
+10A6 LDA new_count
+10A8 STA (dest_ptr),Y
+10AA INY
+10AB LDA new_color
+10AD STA (dest_ptr),Y
+10AF INY
+10B0 PLA
+10B1 STA new_color
+10B3 LDA #1
+10B5 STA new_count
+10B7 DEC gfx_ptr+1
+10B9 DEC counter
+10BB BNE rt.loop_inner
+10BD LDA new_count ;write pair followed by 0 for end of row
+10BF STA (dest_ptr),Y
+10C1 INY
+10C2 LDA new_color
+10C4 STA (dest_ptr),Y
+10C6 INY
+10C7 LDA #0
+10C9 STA (dest_ptr),Y
+10CB INY
+10CC INC gfx_ptr ;next column
+10CE CPY #200
+10D0 BCS skip
+10D2 JMP if{temp}
+10D5 skip:
+10D5 TYA
+10D6 SEC
+10D7 SBC #200
+10D9 TAY
+10DA LDA #200#256
+10DC CLC
+10DD ADC dest_ptr
+10DF STA dest_ptr
+10E1 BCC .no_carry
+10E3 INC dest_ptr+1
+10E5 DEC row_count
+10E7 BNE rt.loop_outer
+10E9 STX saveX
+10EB LDX #0
+10ED PLA
+10EE STA ZP_locals,X
+10F0 INX
+10F1 CPX #zpcounter
+10F3 BNE ZP_pull
+10F5 LDX saveX
+10F7 PLX
+10F8 RTS
+10F9 ColorTile:
+10F9 tile:
+10F9 PHX
+10FA DEX
+10FB DEX
+10FC STX saveX
+10FE LDX #zpcounter
+1100 LDA ZP_locals-1,X
+1102 PHA
+1103 DEX
+1104 BNE ZP_push
+1106 LDX saveX
+1108 LDA tile,X
+110A STA call_offset,X
+110C JSR TileAddress
+110F LDA ret_val
+1111 STA tile_ptr
+1113 LDA ret_val+1
+1115 STA tile_ptr+1
+1117 LDA tile,X
+1119 BRA s{ts}c{tc}
+111B JMP s{ts}done
+111E CMP #Robot_left
+1120 BEQ skip
+1122 JMP s{ts}c{tc}
+1125 skip:
+1125 BRA s{ts}b{tb}
+1127 CMP #Robot_right
+1129 BNE s{ts}c{tc}
+112B BRA s{ts}b{tb}
+112D BRA s{ts}b{tb}
+112F CMP #Menu_item_temp
+1131 BNE s{ts}c{tc}
+1133 BRA s{ts}b{tb}
+1135 LDA #item_colors#256
+1137 STA color_table
+1139 LDA #item_colors>>8
+113B STA color_table+1
+113D JMP s{ts}done
+1140 LDA #tile_colors#256
+1142 STA color_table
+1144 LDA #tile_colors>>8
+1146 STA color_table+1
+1148 LDA color_index,X
+114A ASL
+114B CLC
+114C ADC color_table
+114E STA color_table
+1150 BCC .no_carry
+1152 INC color_table+1
+1154 LDA (color_table)
+1156 PHA
+1157 LDY #1
+1159 LDA (color_table),Y
+115B STA color_table+1
+115D PLA
+115E STA color_table
+1160 LDA (tile_ptr),Y
+1162 STA row_count
+1164 LDA (color_table),Y
+1166 ASL
+1167 ADC #2
+1169 STA c_size
+116B INY ;point to pixel data of tile_ptr
+116C LDA (tile_ptr),Y
+116E BEQ skip
+1170 JMP if{temp}
+1173 skip:
+1173 INY
+1174 CPY #200
+1176 BCS skip
+1178 JMP if{temp}
+117B skip:
+117B TYA
+117C SEC
+117D SBC #200
+117F TAY
+1180 LDA #200#256
+1182 CLC
+1183 ADC tile_ptr
+1185 STA tile_ptr
+1187 BCC .no_carry
+1189 INC tile_ptr+1
+118B DEC row_count
+118D BNE color.loop1
+118F JMP if{temp2}
+1192 INY
+1193 LDA (tile_ptr),Y
+1195 STA t_color
+1197 CMP #COLOR_TRANSPARENT+1
+1199 BCS skip
+119B JMP if{temp}
+119E skip:
+119E PHY ;save index into tile_ptr
+119F LDY #2 ;skip past item type and count of pairs
+11A1 LDA t_color
+11A3 CMP (color_table),Y
+11A5 BEQ skip
+11A7 JMP if{temp}
+11AA skip:
+11AA INY
+11AB LDA (color_table),Y
+11AD PLY
+11AE STA (tile_ptr),Y
+11B0 INY
+11B1 BRA color.loop1
+11B3 JMP if{temp2}
+11B6 INY
+11B7 INY
+11B8 TYA
+11B9 CMP c_size
+11BB BNE color.loop2
+11BD PLY
+11BE INY
+11BF BRA color.loop1
+11C1 STX saveX
+11C3 LDX #0
+11C5 PLA
+11C6 STA ZP_locals,X
+11C8 INX
+11C9 CPX #zpcounter
+11CB BNE ZP_pull
+11CD LDX saveX
+11CF PLX
+11D0 RTS
+11DA LoadTiles:
+11DA PHX
+11DB DEX
+11DC LDA #Ground_0#256
+11DE STA call_offset,X
+11E0 LDA #Ground_raw#256
+11E2 STA call_offset,X
+11E4 JSR CopyTile
+11E7 LDA #Ground_90#256
+11E9 STA call_offset,X
+11EB LDA #Ground_0#256
+11ED STA call_offset,X
+11EF JSR RotateTile90
+11F2 LDA #Ground_180#256
+11F4 STA call_offset,X
+11F6 LDA #Ground_90#256
+11F8 STA call_offset,X
+11FA JSR RotateTile90
+11FD LDA #Ground_270#256
+11FF STA call_offset,X
+1201 LDA #Ground_180#256
+1203 STA call_offset,X
+1205 JSR RotateTile90
+1208 LDA #Rock#256
+120A STA call_offset,X
+120C LDA #Ground_raw#256
+120E STA call_offset,X
+1210 JSR CopyTile
+1213 LDA #Lava#256
+1215 STA call_offset,X
+1217 LDA #Ground_raw#256
+1219 STA call_offset,X
+121B JSR CopyTile
+121E LDA #Crystal_red#256
+1220 STA call_offset,X
+1222 LDA #Crystal_raw#256
+1224 STA call_offset,X
+1226 JSR CopyTile
+1229 LDA #Crystal_blue#256
+122B STA call_offset,X
+122D LDA #Crystal_raw#256
+122F STA call_offset,X
+1231 JSR CopyTile
+1234 LDA #Crystal_yellow#256
+1236 STA call_offset,X
+1238 LDA #Crystal_raw#256
+123A STA call_offset,X
+123C JSR CopyTile
+123F LDY #0
+1241 LDA tiles_to_color,Y
+1244 STA color_tile,X
+1246 PHY
+1247 LDA color_tile,X
+1249 STA call_offset,X
+124B LDA color_tile,X
+124D STA call_offset,X
+124F JSR ColorTile
+1252 PLY
+1253 INY
+1254 CPY #9 ;9 tile IDs to color
+1256 BNE lt.loop
+1258 PLX
+1259 RTS
+125A ColorHero:
+125A LDA #Robot_left#256
+125C STA call_offset,X
+125E LDA #Robot_left_raw#256
+1260 STA call_offset,X
+1262 JSR CopyTile
+1265 LDA #Robot_left#256
+1267 STA call_offset,X
+1269 LDA hero_equipped+head
+126C STA call_offset,X
+126E JSR ColorTile
+1271 LDA #Robot_left#256
+1273 STA call_offset,X
+1275 LDA hero_equipped+body
+1278 STA call_offset,X
+127A JSR ColorTile
+127D LDA #Robot_left#256
+127F STA call_offset,X
+1281 LDA hero_equipped+legs
+1284 STA call_offset,X
+1286 JSR ColorTile
+1289 LDA #Robot_left#256
+128B STA call_offset,X
+128D LDA hero_equipped+gun
+1290 STA call_offset,X
+1292 JSR ColorTile
+1295 LDA #Robot_left#256
+1297 STA call_offset,X
+1299 LDA hero_equipped+tool
+129C STA call_offset,X
+129E JSR ColorTile
+12A1 LDA #Robot_right#256
+12A3 STA call_offset,X
+12A5 LDA #Robot_right_raw#256
+12A7 STA call_offset,X
+12A9 JSR CopyTile
+12AC LDA #Robot_right#256
+12AE STA call_offset,X
+12B0 LDA hero_equipped+head
+12B3 STA call_offset,X
+12B5 JSR ColorTile
+12B8 LDA #Robot_right#256
+12BA STA call_offset,X
+12BC LDA hero_equipped+body
+12BF STA call_offset,X
+12C1 JSR ColorTile
+12C4 LDA #Robot_right#256
+12C6 STA call_offset,X
+12C8 LDA hero_equipped+legs
+12CB STA call_offset,X
+12CD JSR ColorTile
+12D0 LDA #Robot_right#256
+12D2 STA call_offset,X
+12D4 LDA hero_equipped+gun
+12D7 STA call_offset,X
+12D9 JSR ColorTile
+12DC LDA #Robot_right#256
+12DE STA call_offset,X
+12E0 LDA hero_equipped+tool
+12E3 STA call_offset,X
+12E5 JSR ColorTile
+12E8 RTS
+12E9 rand:
+12E9 LDA rand_val+1
+12EB CLC
+12EC ROR
+12ED LDA rand_val
+12EF ROR
+12F0 EOR rand_val+1
+12F2 STA rand_val+1
+12F4 LDA #0
+12F6 ROR
+12F7 EOR rand_val
+12F9 STA rand_val
+12FB LDA rand_val+1
+12FD CLC
+12FE ROR
+12FF EOR rand_val
+1301 STA rand_val
+1303 LDA rand_val
+1305 EOR rand_val+1
+1307 STA rand_val+1
+1309 RTS
+130A rand8:
+130A max:
+130A divisor:
+130A PHX
+130B DEX
+130C DEX
+130D DEX
+130E JSR rand
+1311 LDA rand_val
+1313 STA ret_val
+1315 LDA rand_val+1
+1317 STA ret_val+1
+1319 LDA max,X
+131B STA divisor+1,X
+131D STZ divisor,X
+131F LDA ret_val
+1321 SEC
+1322 SBC divisor,X
+1324 STA ret_val
+1326 LDA ret_val+1
+1328 SBC divisor+1,X
+132A STA ret_val+1
+132C BCS r8.loop
+132E LDA divisor,X
+1330 CLC
+1331 ADC ret_val
+1333 STA ret_val
+1335 LDA divisor+1,X
+1337 ADC ret_val+1
+1339 STA ret_val+1
+133B CLC
+133C ROR divisor+1,X
+133E ROR divisor,X
+1340 LDA ret_val+1
+1342 BNE r8.loop
+1344 LDA ret_val
+1346 CMP max,X
+1348 BCS r8.loop
+134A PLX
+134B RTS
+134C rand5050:
+134C JSR rand
+134F LDA rand_val
+1351 AND #1
+1353 STA ret_val
+1355 RTS
+1356 CalcStats:
+1356 Mine1s:
+1356 Drill1s:
+1356 PHX
+1357 TXA ;2
+1358 SEC ;2
+1359 SBC #xcounter ;2
+135B TAX ;2
+135C STX saveX
+135E LDX #zpcounter
+1360 LDA ZP_locals-1,X
+1362 PHA
+1363 DEX
+1364 BNE ZP_push
+1366 LDX saveX
+1368 LDA hero_HP_Upgrade
+136B CLC
+136C ADC #2
+136E STA hero_HP_Max_temp
+1371 LDA hero_Batt_Upgrade
+1374 CLC
+1375 ADC #3
+1377 STA hero_Batt_Max
+137A LDA hero_Dmg_Upgrade
+137D STA hero_Dmg
+1380 LDA #8#256
+1382 STA hero_Mine_Speed
+1385 LDA #12#256
+1387 STA hero_Drill_Speed
+138A LDA #1#256
+138C STA hero_Batt_Recharge
+138F LDA #5#256
+1391 STA hero_Crit_Rate
+1394 STZ hero_HP_Recharge
+1397 STZ hero_Lava_Res
+139A LDA #4#256
+139C STA hero_Lava_Dmg
+139F LDA #4>>8
+13A1 STA hero_Lava_Dmg+1
+13A4 LDA #4#256
+13A6 STA hero_Dmg_Cost
+13A9 LDA #2#256
+13AB STA hero_Mine_Cost
+13AE LDA #2#256
+13B0 STA hero_Drill_Cost
+13B3 LDA #false#256
+13B5 STA Mine1s,X
+13B7 LDA #false#256
+13B9 STA Drill1s,X
+13BB STZ item_counter,X
+13BD LDY item_counter,X
+13BF LDA hero_equipped,Y
+13C2 ASL
+13C3 TAY
+13C4 LDA item_stats,Y
+13C7 STA item_ptr
+13C9 LDA item_stats+1,Y
+13CC STA item_ptr+1
+13CE LDY #stat_count
+13D0 LDA (item_ptr),Y
+13D2 STA stat_max,X
+13D4 STZ stat_counter,X
+13D6 LDA stat_counter,X
+13D8 ASL
+13D9 ADC #stat_begin
+13DB TAY
+13DC LDA (item_ptr),Y
+13DE PHY
+13DF STA stat_ID,X
+13E1 ASL
+13E2 TAY
+13E3 LDA stat_pointers,Y
+13E6 STA stat_ptr
+13E8 LDA stat_pointers+1,Y
+13EB STA stat_ptr+1
+13ED PLY
+13EE INY
+13EF LDA (item_ptr),Y
+13F1 STA stat_val,X
+13F3 LDA stat_ptr
+13F5 ORA stat_ptr+1
+13F7 BEQ skip
+13F9 JMP if{temp}
+13FC skip:
+13FC LDA stat_ID,X
+13FE BRA s{ts}c{tc}
+1400 JMP s{ts}done
+1403 CMP #stat_Mine
+1405 BEQ skip
+1407 JMP s{ts}c{tc}
+140A skip:
+140A LDA hero_Mine_Speed
+140D SEC
+140E SBC stat_val,X
+1410 STA hero_Mine_Speed
+1413 JMP s{ts}done
+1416 CMP #stat_Mine1s
+1418 BEQ skip
+141A JMP s{ts}c{tc}
+141D skip:
+141D LDA #true#256
+141F STA Mine1s,X
+1421 JMP s{ts}done
+1424 CMP #stat_Drill
+1426 BEQ skip
+1428 JMP s{ts}c{tc}
+142B skip:
+142B LDA hero_Drill_Speed
+142E SEC
+142F SBC stat_val,X
+1431 STA hero_Drill_Speed
+1434 JMP s{ts}done
+1437 CMP #stat_Drill1s
+1439 BEQ skip
+143B JMP s{ts}c{tc}
+143E skip:
+143E LDA #true#256
+1440 STA Drill1s,X
+1442 JMP s{ts}done
+1445 CMP #stat_Lava_Heals
+1447 BEQ skip
+1449 JMP s{ts}c{tc}
+144C skip:
+144C LDA #$FFFF#256
+144E STA hero_Lava_Dmg
+1451 LDA #$FFFF>>8
+1453 STA hero_Lava_Dmg+1
+1456 JMP s{ts}done
+1459 CMP #stat_Dmg_Cost_50
+145B BEQ skip
+145D JMP s{ts}c{tc}
+1460 skip:
+1460 LDA #2#256
+1462 STA hero_Dmg_Cost
+1465 JMP s{ts}done
+1468 CMP #stat_Mine_Cost_50
+146A BEQ skip
+146C JMP s{ts}c{tc}
+146F skip:
+146F LDA #1#256
+1471 STA hero_Mine_Cost
+1474 JMP if{temp2}
+1477 LDA stat_val,X
+1479 CLC
+147A ADC (stat_ptr)
+147C STA (stat_ptr)
+147E INC stat_counter,X
+1480 LDA stat_counter,X
+1482 CMP stat_max,X
+1484 BEQ skip
+1486 JMP cs.stats
+1489 skip:
+1489 INC item_counter,X
+148B LDA item_counter,X
+148D CMP #SLOT_COUNT
+148F BEQ skip
+1491 JMP cs.loop
+1494 skip:
+1494 LDA skill_list+Fast_Digger
+1497 BNE skip
+1499 JMP if{temp}
+149C skip:
+149C DEC hero_Mine_Speed
+149F DEC hero_Mine_Speed
+14A2 DEC hero_Drill_Speed
+14A5 DEC hero_Drill_Speed
+14A8 LDA Mine1s,X
+14AA BNE skip
+14AC JMP if{temp}
+14AF skip:
+14AF LDA #1#256
+14B1 STA hero_Mine_Speed
+14B4 LDA Drill1s,X
+14B6 BNE skip
+14B8 JMP if{temp}
+14BB skip:
+14BB LDA #1#256
+14BD STA hero_Drill_Speed
+14C0 LDA skill_list+Lucky_Crit
+14C3 BNE skip
+14C5 JMP if{temp}
+14C8 skip:
+14C8 LDA hero_Crit_Rate
+14CB CLC
+14CC ADC #20
+14CE STA hero_Crit_Rate
+14D1 LDA hero_Lava_Dmg
+14D4 AND hero_Lava_Dmg+1
+14D7 CMP #$FF
+14D9 BNE skip
+14DB JMP if{temp}
+14DE skip:
+14DE LDA hero_Lava_Res
+14E1 BRA s{ts}c{tc}
+14E3 JMP s{ts}done
+14E6 CMP #25
+14E8 BEQ skip
+14EA JMP s{ts}c{tc}
+14ED skip:
+14ED LDA #3#256
+14EF STA hero_Lava_Dmg
+14F2 LDA #3>>8
+14F4 STA hero_Lava_Dmg+1
+14F7 JMP s{ts}done
+14FA CMP #50
+14FC BEQ skip
+14FE JMP s{ts}c{tc}
+1501 skip:
+1501 LDA #2#256
+1503 STA hero_Lava_Dmg
+1506 LDA #2>>8
+1508 STA hero_Lava_Dmg+1
+150B LDA hero_HP_Max_temp
+150E STA hero_HP_Max
+1511 LDA hero_HP_Max
+1514 CMP hero_HP
+1517 BCC skip
+1519 JMP if{temp}
+151C skip:
+151C LDA hero_HP_Max
+151F STA hero_HP
+1522 LDA hero_HP_Max+1
+1525 STA hero_HP+1
+1528 LDA hero_Batt_Max
+152B CMP hero_Batt
+152E BCC skip
+1530 JMP if{temp}
+1533 skip:
+1533 LDA hero_Batt_Max
+1536 STA hero_Batt
+1539 STX saveX
+153B LDX #0
+153D PLA
+153E STA ZP_locals,X
+1540 INX
+1541 CPX #zpcounter
+1543 BNE ZP_pull
+1545 LDX saveX
+1547 PLX
+1548 RTS
+1549 MazeHorizStripe:
+1549 value:
+1549 counter:
+1549 PHX
+154A TXA ;2
+154B SEC ;2
+154C SBC #xcounter ;2
+154E TAX ;2
+154F STX saveX
+1551 LDX #zpcounter
+1553 LDA ZP_locals-1,X
+1555 PHA
+1556 DEX
+1557 BNE ZP_push
+1559 LDX saveX
+155B LDA #MAP_WIDTH#256
+155D STA call_offset,X
+155F JSR rand8
+1562 LDA ret_val
+1564 STA stripe_X,X
+1566 LDA #MAP_HEIGHT#256
+1568 STA call_offset,X
+156A JSR rand8
+156D LDA ret_val
+156F STA stripe_Y,X
+1571 LDA #MAP_LAVA_SIZE-1#256
+1573 STA call_offset,X
+1575 JSR rand8
+1578 LDA ret_val
+157A CLC
+157B ADC #1
+157D STA stripe_width,X
+157F LDA #MAP_LAVA_SIZE-1#256
+1581 STA call_offset,X
+1583 JSR rand8
+1586 LDA ret_val
+1588 CLC
+1589 ADC #1
+158B STA stripe_height,X
+158D JSR rand5050
+1590 LDA ret_val
+1592 STA stripe_dx,X
+1594 JSR rand5050
+1597 LDA ret_val
+1599 STA stripe_dy,X
+159B LDA #map_data#256
+159D CLC
+159E ADC stripe_X,X
+15A0 STA map_ptr
+15A2 LDA #map_data>>8
+15A4 ADC #0
+15A6 STA map_ptr+1
+15A8 LDY stripe_Y,X
+15AA BNE skip
+15AC JMP if{temp}
+15AF skip:
+15AF LDA #MAP_WIDTH#256
+15B1 CLC
+15B2 ADC map_ptr
+15B4 STA map_ptr
+15B6 BCC .no_carry
+15B8 INC map_ptr+1
+15BA DEY
+15BB BNE mhs.mult
+15BD LDY stripe_width,X
+15BF LDA stripe_X,X
+15C1 CMP #MAP_WIDTH
+15C3 BCS mhs.done
+15C5 LDA stripe_Y,X
+15C7 CMP #MAP_HEIGHT
+15C9 BCS mhs.done
+15CB LDA value,X
+15CD STA (map_ptr)
+15CF LDA stripe_dx,X
+15D1 BNE skip
+15D3 JMP if{temp}
+15D6 skip:
+15D6 DEC stripe_X,X
+15D8 BMI mhs.done
+15DA LDA map_ptr
+15DC SEC
+15DD SBC #1
+15DF STA map_ptr
+15E1 BCS no_carry2
+15E3 DEC map_ptr+1
+15E5 JMP if{temp2}
+15E8 INC stripe_X,X
+15EA INC map_ptr
+15EC BNE no_carry2
+15EE INC map_ptr+1
+15F0 DEY
+15F1 BNE mhs.width
+15F3 LDA stripe_dy,X
+15F5 BNE skip
+15F7 JMP if{temp}
+15FA skip:
+15FA DEC stripe_Y,X
+15FC BMI mhs.done
+15FE LDA map_ptr
+1600 SEC
+1601 SBC #MAP_WIDTH
+1603 STA map_ptr
+1605 BCS .no_carry
+1607 DEC map_ptr+1
+1609 JMP if{temp2}
+160C INC stripe_Y,X
+160E LDA #MAP_WIDTH#256
+1610 CLC
+1611 ADC map_ptr
+1613 STA map_ptr
+1615 BCC .no_carry
+1617 INC map_ptr+1
+1619 DEC stripe_height,X
+161B BNE mhs.height
+161D STX saveX
+161F LDX #0
+1621 PLA
+1622 STA ZP_locals,X
+1624 INX
+1625 CPX #zpcounter
+1627 BNE ZP_pull
+1629 LDX saveX
+162B PLX
+162C RTS
+162D FillMap:
+162D value:
+162D counter:
+162D PHX
+162E DEX
+162F DEX
+1630 DEX
+1631 DEX
+1632 STX saveX
+1634 LDX #zpcounter
+1636 LDA ZP_locals-1,X
+1638 PHA
+1639 DEX
+163A BNE ZP_push
+163C LDX saveX
+163E LDA ptr_in,X
+1640 STA map_ptr
+1642 LDA ptr_in+1,X
+1644 STA map_ptr+1
+1646 LDA #MAP_HEIGHT/5#256
+1648 STA counter,X
+164A LDA value,X
+164C LDY #MAP_WIDTH*5
+164E DEY
+164F STA (map_ptr),Y
+1651 BNE fm.loop
+1653 LDA #200#256
+1655 CLC
+1656 ADC map_ptr
+1658 STA map_ptr
+165A BCC .no_carry
+165C INC map_ptr+1
+165E DEC counter,X
+1660 BNE fm.loop_outer
+1662 STX saveX
+1664 LDX #0
+1666 PLA
+1667 STA ZP_locals,X
+1669 INX
+166A CPX #zpcounter
+166C BNE ZP_pull
+166E LDX saveX
+1670 PLX
+1671 RTS
+1672 OffsetXY:
+1672 map:
+1672 mX:
+1672 mY:
+1672 PHX
+1673 DEX
+1674 DEX
+1675 DEX
+1676 DEX
+1677 LDA map,X
+1679 STA ret_val
+167B LDA map+1,X
+167D STA ret_val+1
+167F LDY mY,X
+1681 BNE skip
+1683 JMP if{temp}
+1686 skip:
+1686 LDA #MAP_WIDTH#256
+1688 CLC
+1689 ADC ret_val
+168B STA ret_val
+168D BCC .no_carry
+168F INC ret_val+1
+1691 DEY
+1692 BRA oxy.mult
+1694 LDA mX,X
+1696 CLC
+1697 ADC ret_val
+1699 STA ret_val
+169B BCC .no_carry
+169D INC ret_val+1
+169F PLX
+16A0 RTS
+16A1 MapXY:
+16A1 map:
+16A1 mX:
+16A1 mY:
+16A1 PHX
+16A2 DEX
+16A3 DEX
+16A4 DEX
+16A5 DEX
+16A6 LDA map,X
+16A8 STA ret_val
+16AA LDA map+1,X
+16AC STA ret_val+1
+16AE LDY mY,X
+16B0 BNE skip
+16B2 JMP if{temp}
+16B5 skip:
+16B5 LDA #MAP_WIDTH#256
+16B7 CLC
+16B8 ADC ret_val
+16BA STA ret_val
+16BC BCC .no_carry
+16BE INC ret_val+1
+16C0 DEY
+16C1 BRA mxy.mult
+16C3 LDY mX,X
+16C5 LDA (ret_val),Y
+16C7 STA ret_val
+16C9 PLX
+16CA RTS
+16CB MakeMap:
+16CB counter:
+16CB PHX
+16CC DEX
+16CD STX saveX
+16CF LDX #zpcounter
+16D1 LDA ZP_locals-1,X
+16D3 PHA
+16D4 DEX
+16D5 BNE ZP_push
+16D7 LDX saveX
+16D9 LDA #map_data#256
+16DB STA call_offset,X
+16DD LDA #map_data>>8
+16DF STA call_offset+1,X
+16E1 LDA #MAP_BLANK#256
+16E3 STA call_offset,X
+16E5 JSR FillMap
+16E8 LDY #MAP_LAVA_COUNT
+16EA PHY
+16EB LDA #MAP_LAVA#256
+16ED STA call_offset,X
+16EF JSR MazeHorizStripe
+16F2 PLY
+16F3 DEY
+16F4 BNE mm.lava_loop
+16F6 LDY #MAP_WALL_COUNT
+16F8 PHY
+16F9 LDA #MAP_ROCK#256
+16FB STA call_offset,X
+16FD JSR MazeHorizStripe
+1700 PLY
+1701 DEY
+1702 BNE mm.rock_loop
+1704 LDA #map_data#256
+1706 STA map_ptr
+1708 LDA #map_data>>8
+170A STA map_ptr+1
+170C LDA #MAP_HEIGHT/5#256
+170E STA counter,X
+1710 LDY #0
+1712 LDA (map_ptr),Y
+1714 CMP #MAP_BLANK
+1716 BEQ skip
+1718 JMP if{temp}
+171B skip:
+171B LDA #4#256
+171D STA call_offset,X
+171F JSR rand8
+1722 LDA ret_val
+1724 BRA s{ts}c{tc}
+1726 JMP s{ts}done
+1729 CMP #1
+172B BEQ skip
+172D JMP s{ts}c{tc}
+1730 skip:
+1730 LDA #MAP_BLANK_90
+1732 JMP s{ts}done
+1735 CMP #2
+1737 BEQ skip
+1739 JMP s{ts}c{tc}
+173C skip:
+173C LDA #MAP_BLANK_180
+173E JMP s{ts}done
+1741 CMP #3
+1743 BEQ skip
+1745 JMP s{ts}c{tc}
+1748 skip:
+1748 LDA #MAP_BLANK_270
+174A JMP s{ts}done
+174D LDA #MAP_BLANK
+174F STA (map_ptr),Y
+1751 INY
+1752 CPY #MAP_WIDTH*5
+1754 BNE mm.blank_loop
+1756 LDY #0
+1758 LDA #MAP_WIDTH*5#256
+175A CLC
+175B ADC map_ptr
+175D STA map_ptr
+175F BCC .no_carry
+1761 INC map_ptr+1
+1763 DEC counter,X
+1765 BNE mm.blank_loop
+1767 LDA #map_data#256
+1769 STA call_offset,X
+176B LDA #map_data>>8
+176D STA call_offset+1,X
+176F LDA #HERO_START_X#256
+1771 STA call_offset,X
+1773 LDA #HERO_START_Y#256
+1775 STA call_offset,X
+1777 JSR OffsetXY
+177A LDA #MAP_BLANK#256
+177C STA (ret_val)
+177E LDA #MAP_HEIGHT/2#256
+1780 STA call_offset,X
+1782 JSR rand8
+1785 LDA ret_val
+1787 CLC
+1788 ADC #MAP_HEIGHT/2
+178A STA counter,X
+178C LDA #MAP_WIDTH/2#256
+178E STA call_offset,X
+1790 JSR rand8
+1793 LDA ret_val
+1795 CLC
+1796 ADC #MAP_WIDTH/2
+1798 STA ret_val
+179A LDA #map_data#256
+179C STA call_offset,X
+179E LDA #map_data>>8
+17A0 STA call_offset+1,X
+17A2 LDA ret_val
+17A4 STA call_offset,X
+17A6 LDA counter,X
+17A8 STA call_offset,X
+17AA JSR OffsetXY
+17AD LDA #MAP_EXIT#256
+17AF STA (ret_val)
+17B1 STX saveX
+17B3 LDX #0
+17B5 PLA
+17B6 STA ZP_locals,X
+17B8 INX
+17B9 CPX #zpcounter
+17BB BNE ZP_pull
+17BD LDX saveX
+17BF PLX
+17C0 RTS
+17C1 CheckForMonster:
+17C1 mX:
+17C1 mY:
+17C1 PHX
+17C2 DEX
+17C3 DEX
+17C4 LDA #monster_map#256
+17C6 STA call_offset,X
+17C8 LDA #monster_map>>8
+17CA STA call_offset+1,X
+17CC LDA mX,X
+17CE STA call_offset,X
+17D0 LDA mY,X
+17D2 STA call_offset,X
+17D4 JSR MapXY
+17D7 LDA ret_val
+17D9 STZ ret_val
+17DB STA mX,X ;reuse variable
+17DD CMP #NO_MONSTER
+17DF BNE skip
+17E1 JMP if{temp}
+17E4 skip:
+17E4 ASL
+17E5 CLC
+17E6 ADC mX,X
+17E8 ADC #MONSTER_ALIVE
+17EA TAY
+17EB LDA monster_list,Y
+17EE STA ret_val
+17F0 PLX
+17F1 RTS
+17F2 CheckForCrystal:
+17F2 mX:
+17F2 mY:
+17F2 PHX
+17F3 DEX
+17F4 DEX
+17F5 LDA #crystal_map#256
+17F7 STA call_offset,X
+17F9 LDA #crystal_map>>8
+17FB STA call_offset+1,X
+17FD LDA mX,X
+17FF STA call_offset,X
+1801 LDA mY,X
+1803 STA call_offset,X
+1805 JSR MapXY
+1808 LDA ret_val
+180A STZ ret_val
+180C CMP #NO_CRYSTAL
+180E BNE skip
+1810 JMP if{temp}
+1813 skip:
+1813 ASL
+1814 ASL
+1815 CLC
+1816 ADC #CRYSTAL_ACTIVE
+1818 TAY
+1819 LDA crystal_list,Y
+181C STA ret_val
+181E PLX
+181F RTS
+1820 LoadMonsters:
+1820 mX:
+1820 mY:
+1820 counter:
+1820 PHX
+1821 DEX
+1822 DEX
+1823 DEX
+1824 LDA #monster_map#256
+1826 STA call_offset,X
+1828 LDA #monster_map>>8
+182A STA call_offset+1,X
+182C LDA #NO_MONSTER#256
+182E STA call_offset,X
+1830 JSR FillMap
+1833 STZ counter,X
+1835 LDA #MAP_WIDTH#256
+1837 STA call_offset,X
+1839 JSR rand8
+183C LDA ret_val
+183E STA mX,X
+1840 LDA #MAP_HEIGHT#256
+1842 STA call_offset,X
+1844 JSR rand8
+1847 LDA ret_val
+1849 STA mY,X
+184B CMP #HERO_START_Y
+184D BEQ skip
+184F JMP if{temp}
+1852 skip:
+1852 LDA mX,X
+1854 CMP #HERO_START_X
+1856 BEQ skip
+1858 JMP if{temp}
+185B skip:
+185B BRA lm.loop
+185D LDA mX,X
+185F STA call_offset,X
+1861 LDA mY,X
+1863 STA call_offset,X
+1865 JSR CheckForMonster
+1868 LDA ret_val
+186A BEQ skip
+186C JMP if{temp}
+186F skip:
+186F LDA #map_data#256
+1871 STA call_offset,X
+1873 LDA #map_data>>8
+1875 STA call_offset+1,X
+1877 LDA mX,X
+1879 STA call_offset,X
+187B LDA mY,X
+187D STA call_offset,X
+187F JSR MapXY
+1882 LDA ret_val
+1884 BRA s{ts}c{tc}
+1886 JMP s{ts}done
+1889 CMP #MAP_BLANK
+188B BEQ skip
+188D JMP s{ts}c{tc}
+1890 skip:
+1890 BRA s{ts}b{tb}
+1892 CMP #MAP_BLANK_90
+1894 BNE s{ts}c{tc}
+1896 BRA s{ts}b{tb}
+1898 BRA s{ts}b{tb}
+189A CMP #MAP_BLANK_180
+189C BNE s{ts}c{tc}
+189E BRA s{ts}b{tb}
+18A0 BRA s{ts}b{tb}
+18A2 CMP #MAP_BLANK_270
+18A4 BNE s{ts}c{tc}
+18A6 BRA s{ts}b{tb}
+18A8 LDA #monster_map#256
+18AA STA call_offset,X
+18AC LDA #monster_map>>8
+18AE STA call_offset+1,X
+18B0 LDA mX,X
+18B2 STA call_offset,X
+18B4 LDA mY,X
+18B6 STA call_offset,X
+18B8 JSR OffsetXY
+18BB LDA counter,X
+18BD STA (ret_val)
+18BF ASL
+18C0 ADC counter,X
+18C2 TAY
+18C3 LDA mX,X
+18C5 STA monster_list,Y
+18C8 INY
+18C9 LDA mY,X
+18CB STA monster_list,Y
+18CE INY
+18CF LDA #true
+18D1 STA monster_list,Y
+18D4 LDA counter,X
+18D6 INC
+18D7 CMP #MONSTER_COUNT
+18D9 BEQ lm.done
+18DB STA counter,X
+18DD JMP lm.loop
+18E0 JMP lm.loop
+18E3 PLX
+18E4 RTS
+18E5 LoadCrystals:
+18E5 mX:
+18E5 mY:
+18E5 counter:
+18E5 PHX
+18E6 DEX
+18E7 DEX
+18E8 DEX
+18E9 LDA #crystal_map#256
+18EB STA call_offset,X
+18ED LDA #crystal_map>>8
+18EF STA call_offset+1,X
+18F1 LDA #NO_CRYSTAL#256
+18F3 STA call_offset,X
+18F5 JSR FillMap
+18F8 STZ counter,X
+18FA LDA #MAP_WIDTH#256
+18FC STA call_offset,X
+18FE JSR rand8
+1901 LDA ret_val
+1903 STA mX,X
+1905 LDA #MAP_HEIGHT#256
+1907 STA call_offset,X
+1909 JSR rand8
+190C LDA ret_val
+190E STA mY,X
+1910 CMP #HERO_START_Y
+1912 BEQ skip
+1914 JMP if{temp}
+1917 skip:
+1917 LDA mX,X
+1919 CMP #HERO_START_X
+191B BEQ skip
+191D JMP if{temp}
+1920 skip:
+1920 BRA lc.loop
+1922 LDA mX,X
+1924 STA call_offset,X
+1926 LDA mY,X
+1928 STA call_offset,X
+192A JSR CheckForMonster
+192D LDA ret_val
+192F BEQ skip
+1931 JMP if{temp}
+1934 skip:
+1934 LDA mX,X
+1936 STA call_offset,X
+1938 LDA mY,X
+193A STA call_offset,X
+193C JSR CheckForCrystal
+193F LDA ret_val
+1941 BEQ skip
+1943 JMP if{temp}
+1946 skip:
+1946 LDA #map_data#256
+1948 STA call_offset,X
+194A LDA #map_data>>8
+194C STA call_offset+1,X
+194E LDA mX,X
+1950 STA call_offset,X
+1952 LDA mY,X
+1954 STA call_offset,X
+1956 JSR MapXY
+1959 LDA ret_val
+195B BRA s{ts}c{tc}
+195D JMP s{ts}done
+1960 CMP #MAP_BLANK
+1962 BEQ skip
+1964 JMP s{ts}c{tc}
+1967 skip:
+1967 BRA s{ts}b{tb}
+1969 CMP #MAP_BLANK_90
+196B BNE s{ts}c{tc}
+196D BRA s{ts}b{tb}
+196F BRA s{ts}b{tb}
+1971 CMP #MAP_BLANK_180
+1973 BNE s{ts}c{tc}
+1975 BRA s{ts}b{tb}
+1977 BRA s{ts}b{tb}
+1979 CMP #MAP_BLANK_270
+197B BNE s{ts}c{tc}
+197D BRA s{ts}b{tb}
+197F LDA #crystal_map#256
+1981 STA call_offset,X
+1983 LDA #crystal_map>>8
+1985 STA call_offset+1,X
+1987 LDA mX,X
+1989 STA call_offset,X
+198B LDA mY,X
+198D STA call_offset,X
+198F JSR OffsetXY
+1992 LDA counter,X
+1994 STA (ret_val)
+1996 ASL
+1997 ASL
+1998 TAY
+1999 LDA mX,X
+199B STA crystal_list,Y
+199E INY
+199F LDA mY,X
+19A1 STA crystal_list,Y
+19A4 INY
+19A5 LDA #true
+19A7 STA crystal_list,Y
+19AA INY
+19AB LDA #3#256
+19AD STA call_offset,X
+19AF JSR rand8
+19B2 LDA ret_val
+19B4 BRA s{ts}c{tc}
+19B6 JMP s{ts}done
+19B9 CMP #0
+19BB BEQ skip
+19BD JMP s{ts}c{tc}
+19C0 skip:
+19C0 LDA #CRYSTAL_RED_TYPE
+19C2 JMP s{ts}done
+19C5 CMP #1
+19C7 BEQ skip
+19C9 JMP s{ts}c{tc}
+19CC skip:
+19CC LDA #CRYSTAL_BLUE_TYPE
+19CE JMP s{ts}done
+19D1 CMP #2
+19D3 BEQ skip
+19D5 JMP s{ts}c{tc}
+19D8 skip:
+19D8 LDA #CRYSTAL_YELLOW_TYPE
+19DA STA crystal_list,Y
+19DD LDA counter,X
+19DF INC
+19E0 CMP #CRYSTAL_COUNT
+19E2 BEQ lc.done
+19E4 STA counter,X
+19E6 JMP lc.loop
+19E9 JMP lc.loop
+19EC PLX
+19ED RTS
+19EE UpdateTarget:
+19EE tX:
+19EE tY:
+19EE PHX
+19EF DEX
+19F0 DEX
+19F1 LDA display_X
+19F4 CLC
+19F5 ADC hero_X
+19F8 STA tX,X
+19FA LDA display_Y
+19FD CLC
+19FE ADC hero_Y
+1A01 STA tY,X
+1A03 LDA #target_none#256
+1A05 STA hero_target_type
+1A08 LDA hero_target_direction
+1A0B BRA s{ts}c{tc}
+1A0D JMP s{ts}done
+1A10 CMP #DIRECTION_UP
+1A12 BEQ skip
+1A14 JMP s{ts}c{tc}
+1A17 skip:
+1A17 LDA hero_Y
+1A1A BNE skip
+1A1C JMP ut.done
+1A1F skip:
+1A1F DEC tY,X
+1A21 JMP s{ts}done
+1A24 CMP #DIRECTION_DOWN
+1A26 BEQ skip
+1A28 JMP s{ts}c{tc}
+1A2B skip:
+1A2B LDA hero_Y
+1A2E CMP #FRAME_HEIGHT-1
+1A30 BNE skip
+1A32 JMP ut.done
+1A35 skip:
+1A35 INC tY,X
+1A37 JMP s{ts}done
+1A3A CMP #DIRECTION_LEFT
+1A3C BEQ skip
+1A3E JMP s{ts}c{tc}
+1A41 skip:
+1A41 LDA hero_X
+1A44 BNE skip
+1A46 JMP ut.done
+1A49 skip:
+1A49 DEC tX,X
+1A4B JMP s{ts}done
+1A4E CMP #DIRECTION_RIGHT
+1A50 BEQ skip
+1A52 JMP s{ts}c{tc}
+1A55 skip:
+1A55 LDA hero_X
+1A58 CMP #FRAME_WIDTH-1
+1A5A BNE skip
+1A5C JMP ut.done
+1A5F skip:
+1A5F INC tX,X
+1A61 LDA tX,X
+1A63 STA hero_target_index
+1A66 LDA tY,X
+1A68 STA hero_target_index2
+1A6B LDA #map_data#256
+1A6D STA call_offset,X
+1A6F LDA #map_data>>8
+1A71 STA call_offset+1,X
+1A73 LDA tX,X
+1A75 STA call_offset,X
+1A77 LDA tY,X
+1A79 STA call_offset,X
+1A7B JSR MapXY
+1A7E LDA ret_val
+1A80 BRA s{ts}c{tc}
+1A82 JMP s{ts}done
+1A85 CMP #MAP_ROCK
+1A87 BEQ skip
+1A89 JMP s{ts}c{tc}
+1A8C skip:
+1A8C LDA #target_rock#256
+1A8E STA hero_target_type
+1A91 JMP s{ts}done
+1A94 CMP #MAP_EXIT
+1A96 BEQ skip
+1A98 JMP s{ts}c{tc}
+1A9B skip:
+1A9B LDA #target_exit#256
+1A9D STA hero_target_type
+1AA0 JMP s{ts}done
+1AA3 LDA tX,X
+1AA5 STA call_offset,X
+1AA7 LDA tY,X
+1AA9 STA call_offset,X
+1AAB JSR CheckForMonster
+1AAE LDA ret_val
+1AB0 BNE skip
+1AB2 JMP if{temp}
+1AB5 skip:
+1AB5 LDA #target_monster#256
+1AB7 STA hero_target_type
+1ABA LDA #monster_map#256
+1ABC STA call_offset,X
+1ABE LDA #monster_map>>8
+1AC0 STA call_offset+1,X
+1AC2 LDA tX,X
+1AC4 STA call_offset,X
+1AC6 LDA tY,X
+1AC8 STA call_offset,X
+1ACA JSR MapXY
+1ACD LDA ret_val
+1ACF STA hero_target_index
+1AD2 JMP if{temp2}
+1AD5 LDA tX,X
+1AD7 STA call_offset,X
+1AD9 LDA tY,X
+1ADB STA call_offset,X
+1ADD JSR CheckForCrystal
+1AE0 LDA ret_val
+1AE2 BNE skip
+1AE4 JMP if{temp}
+1AE7 skip:
+1AE7 LDA #target_crystal#256
+1AE9 STA hero_target_type
+1AEC LDA #crystal_map#256
+1AEE STA call_offset,X
+1AF0 LDA #crystal_map>>8
+1AF2 STA call_offset+1,X
+1AF4 LDA tX,X
+1AF6 STA call_offset,X
+1AF8 LDA tY,X
+1AFA STA call_offset,X
+1AFC JSR MapXY
+1AFF LDA ret_val
+1B01 STA hero_target_index
+1B04 PLX
+1B05 RTS
+1B06 DrawRect:
+1B06 xpos:
+1B06 ypos:
+1B06 width:
+1B06 height:
+1B06 color:
+1B06 PHX
+1B07 TXA ;2
+1B08 SEC ;2
+1B09 SBC #xcounter ;2
+1B0B TAX ;2
+1B0C STX saveX
+1B0E LDX #zpcounter
+1B10 LDA ZP_locals-1,X
+1B12 PHA
+1B13 DEX
+1B14 BNE ZP_push
+1B16 LDX saveX
+1B18 LDA width,X
+1B1A BEQ dr.done
+1B1C STZ call_offset,X
+1B1E LDA ypos,X
+1B20 STA call_offset,X
+1B22 JSR CalcXY
+1B25 LDA ret_val
+1B27 STA gfx_ptr
+1B29 LDA ret_val+1
+1B2B STA gfx_ptr+1
+1B2D LDA xpos,X
+1B2F CLC
+1B30 ADC width,X
+1B32 STA x_end
+1B34 LDY xpos,X
+1B36 LDA color,X
+1B38 STA (gfx_ptr),Y
+1B3A INY
+1B3B CPY x_end
+1B3D BNE dr.loop
+1B3F INC gfx_ptr+1
+1B41 DEC height,X
+1B43 BNE dr.loop_outer
+1B45 STX saveX
+1B47 LDX #0
+1B49 PLA
+1B4A STA ZP_locals,X
+1B4C INX
+1B4D CPX #zpcounter
+1B4F BNE ZP_pull
+1B51 LDX saveX
+1B53 PLX
+1B54 RTS
+1B55 DrawText:
+1B55 arg1:
+1B55 arg2:
+1B55 ypos:
+1B55 digit:
+1B55 subtractor:
+1B55 character:
+1B55 PHX
+1B56 TXA ;2
+1B57 SEC ;2
+1B58 SBC #xcounter ;2
+1B5A TAX ;2
+1B5B STX saveX
+1B5D LDX #zpcounter
+1B5F LDA ZP_locals-1,X
+1B61 PHA
+1B62 DEX
+1B63 BNE ZP_push
+1B65 LDX saveX
+1B67 LDA draw_X
+1B6A STA original_X,X
+1B6C LDA draw_X
+1B6F STA call_offset,X
+1B71 LDA ypos,X
+1B73 STA call_offset,X
+1B75 JSR CalcXY
+1B78 LDA ret_val
+1B7A STA gfx_ptr
+1B7C LDA ret_val+1
+1B7E STA gfx_ptr+1
+1B80 STZ digit_count,X
+1B82 LDA digit_count,X
+1B84 BNE skip
+1B86 JMP if{temp}
+1B89 skip:
+1B89 LDA digit_count,X
+1B8B BRA s{ts}c{tc}
+1B8D JMP s{ts}done
+1B90 CMP #1
+1B92 BEQ skip
+1B94 JMP s{ts}c{tc}
+1B97 skip:
+1B97 LDA #1
+1B99 JMP s{ts}done
+1B9C CMP #2
+1B9E BEQ skip
+1BA0 JMP s{ts}c{tc}
+1BA3 skip:
+1BA3 LDA #10
+1BA5 JMP s{ts}done
+1BA8 CMP #3
+1BAA BEQ skip
+1BAC JMP s{ts}c{tc}
+1BAF skip:
+1BAF LDA #100
+1BB1 DEC digit_count,X
+1BB3 STA subtractor,X
+1BB5 LDA #'0'#256
+1BB7 STA character,X
+1BB9 LDA digit,X
+1BBB SEC
+1BBC SBC subtractor,X
+1BBE BCS skip
+1BC0 JMP if{temp}
+1BC3 skip:
+1BC3 STA digit,X
+1BC5 INC character,X
+1BC7 BRA dtxt.digit
+1BC9 JMP if{temp2}
+1BCC CLC
+1BCD ADC subtractor,X
+1BCF STA digit,X
+1BD1 LDA character,X
+1BD3 JMP if{temp2}
+1BD6 LDA (str_ptr,X)
+1BD8 BNE skip
+1BDA JMP dtxt.done
+1BDD skip:
+1BDD INC str_ptr,X
+1BDF BNE no_carry1
+1BE1 INC str_ptr+1,X
+1BE3 CMP #'$'
+1BE5 BEQ skip
+1BE7 JMP if{temp}
+1BEA skip:
+1BEA LDA #1#256
+1BEC STA digit_count,X
+1BEE LDA arg1,X
+1BF0 STA digit,X
+1BF2 PHA
+1BF3 LDA arg2,X
+1BF5 STA arg1,X
+1BF7 PLA
+1BF8 CMP #10
+1BFA BCC dtxt.loop
+1BFC INC digit_count,X
+1BFE CMP #100
+1C00 BCC dtxt.loop
+1C02 INC digit_count,X
+1C04 JMP dtxt.loop
+1C07 JMP if{temp2}
+1C0A CMP #'*'
+1C0C BEQ skip
+1C0E JMP if{temp}
+1C11 skip:
+1C11 LDA original_X,X
+1C13 STA gfx_ptr
+1C15 LDA #TEXT_SPACING_Y*SCREEN_WIDTH#256
+1C17 CLC
+1C18 ADC gfx_ptr
+1C1A STA gfx_ptr
+1C1C LDA #TEXT_SPACING_Y*SCREEN_WIDTH>>8
+1C1E ADC gfx_ptr+1
+1C20 STA gfx_ptr+1
+1C22 BRA dtxt.next
+1C24 SEC
+1C25 SBC #32 ;32 is first printable character
+1C27 STZ char_ptr+1
+1C29 ASL
+1C2A ROL char_ptr+1
+1C2C ROL
+1C2D ROL char_ptr+1
+1C2F ROL
+1C30 ROL char_ptr+1
+1C32 ADC #CharTable#256
+1C34 STA char_ptr
+1C36 LDA char_ptr+1
+1C38 ADC #CharTable>>8
+1C3A STA char_ptr+1
+1C3C LDY #0
+1C3E LDA (char_ptr),Y
+1C40 PHY
+1C41 LDY #6
+1C43 CLC
+1C44 ROR
+1C45 PHA
+1C46 BCC skip
+1C48 JMP if{temp}
+1C4B skip:
+1C4B LDA bg_color,X
+1C4D JMP if{temp2}
+1C50 CLC
+1C51 LDA fg_color,X
+1C53 STA (gfx_ptr)
+1C55 INC gfx_ptr
+1C57 PLA
+1C58 DEY
+1C59 BNE dtxt.pixel
+1C5B LDA gfx_ptr
+1C5D SEC
+1C5E SBC #6
+1C60 STA gfx_ptr
+1C62 INC gfx_ptr+1
+1C64 PLY
+1C65 INY
+1C66 CPY #8
+1C68 BNE dtxt.row
+1C6A LDA gfx_ptr
+1C6C CLC
+1C6D ADC #6
+1C6F STA gfx_ptr
+1C71 LDA gfx_ptr+1
+1C73 SEC
+1C74 SBC #8
+1C76 STA gfx_ptr+1
+1C78 JMP dtxt.loop
+1C7B STX saveX
+1C7D LDX #0
+1C7F PLA
+1C80 STA ZP_locals,X
+1C82 INX
+1C83 CPX #zpcounter
+1C85 BNE ZP_pull
+1C87 LDX saveX
+1C89 PLX
+1C8A RTS
+1C8B DrawBar:
+1C8B xpos:
+1C8B ypos:
+1C8B stat1:
+1C8B stat2:
+1C8B PHX
+1C8C TXA ;2
+1C8D SEC ;2
+1C8E SBC #xcounter ;2
+1C90 TAX ;2
+1C91 STX saveX
+1C93 LDX #zpcounter
+1C95 LDA ZP_locals-1,X
+1C97 PHA
+1C98 DEX
+1C99 BNE ZP_push
+1C9B LDX saveX
+1C9D LDA stat1,X
+1C9F STA bar_width
+1CA1 CLC
+1CA2 ROL bar_width
+1CA4 ROL bar_width+1
+1CA6 ROL bar_width
+1CA8 ROL bar_width+1
+1CAA ROL bar_width
+1CAC ROL bar_width+1
+1CAE ROL bar_width
+1CB0 ROL bar_width+1
+1CB2 LDA bar_width
+1CB4 STA mult_buff
+1CB6 LDA bar_width+1
+1CB8 STA mult_buff+1
+1CBA ROL bar_width
+1CBC ROL bar_width+1
+1CBE ROL bar_width
+1CC0 ROL bar_width+1
+1CC2 LDA bar_width
+1CC4 CLC
+1CC5 ADC mult_buff
+1CC7 STA mult_buff
+1CC9 LDA bar_width+1
+1CCB ADC mult_buff+1
+1CCD STA mult_buff+1
+1CCF STZ bar_width
+1CD1 STZ bar_width+1
+1CD3 LDA stat2,X
+1CD5 STA div_buff+1 ;divisor
+1CD7 STZ div_buff
+1CD9 LDA #$100#256
+1CDB STA ret_val
+1CDD LDA #$100>>8
+1CDF STA ret_val+1
+1CE1 LDA mult_buff
+1CE3 SEC
+1CE4 SBC div_buff
+1CE6 STA mult_buff
+1CE8 LDA mult_buff+1
+1CEA SBC div_buff+1
+1CEC STA mult_buff+1
+1CEE BCS skip
+1CF0 JMP if{temp}
+1CF3 skip:
+1CF3 LDA ret_val
+1CF5 CLC
+1CF6 ADC bar_width
+1CF8 STA bar_width
+1CFA LDA ret_val+1
+1CFC ADC bar_width+1
+1CFE STA bar_width+1
+1D00 BRA dbar.div1
+1D02 LDA div_buff
+1D04 CLC
+1D05 ADC mult_buff
+1D07 STA mult_buff
+1D09 LDA div_buff+1
+1D0B ADC mult_buff+1
+1D0D STA mult_buff+1
+1D0F CLC
+1D10 ROR div_buff+1
+1D12 ROR div_buff
+1D14 CLC
+1D15 ROR ret_val+1
+1D17 ROR ret_val
+1D19 LDA ret_val
+1D1B ORA ret_val+1
+1D1D BNE dbar.div1
+1D1F LDA xpos,X
+1D21 STA call_offset,X
+1D23 LDA ypos,X
+1D25 STA call_offset,X
+1D27 LDA bar_width
+1D29 STA call_offset,X
+1D2B LDA #BAR_HEIGHT#256
+1D2D STA call_offset,X
+1D2F LDA fg_color,X
+1D31 STA call_offset,X
+1D33 JSR DrawRect
+1D36 LDA xpos,X
+1D38 CLC
+1D39 ADC bar_width
+1D3B STA xpos,X
+1D3D LDA #BAR_WIDTH
+1D3F SEC
+1D40 SBC bar_width
+1D42 STA bar_width
+1D44 LDA xpos,X
+1D46 STA call_offset,X
+1D48 LDA ypos,X
+1D4A STA call_offset,X
+1D4C LDA bar_width
+1D4E STA call_offset,X
+1D50 LDA #BAR_HEIGHT#256
+1D52 STA call_offset,X
+1D54 LDA bg_color,X
+1D56 STA call_offset,X
+1D58 JSR DrawRect
+1D5B STX saveX
+1D5D LDX #0
+1D5F PLA
+1D60 STA ZP_locals,X
+1D62 INX
+1D63 CPX #zpcounter
+1D65 BNE ZP_pull
+1D67 LDX saveX
+1D69 PLX
+1D6A RTS
+1D6B DrawLegend:
+1D6B height:
+1D6B PHX
+1D6C DEX
+1D6D DEX
+1D6E DEX
+1D6F STX saveX
+1D71 LDX #zpcounter
+1D73 LDA ZP_locals-1,X
+1D75 PHA
+1D76 DEX
+1D77 BNE ZP_push
+1D79 LDX saveX
+1D7B LDA #LEGEND_LEFT#256
+1D7D STA call_offset,X
+1D7F LDA #LEGEND_TOP#256
+1D81 STA call_offset,X
+1D83 LDA #LEGEND_WIDTH#256
+1D85 STA call_offset,X
+1D87 LDA #LEGEND_HEIGHT#256
+1D89 STA call_offset,X
+1D8B LDA #COLOR_LEGEND_BG#256
+1D8D STA call_offset,X
+1D8F JSR DrawRect
+1D92 LDA #LEGEND_LEFT+LEGEND_STATS_LEFT#256
+1D94 STA draw_X
+1D97 BRA str_skip
+1DA0 LDA #str_addr#256
+1DA2 STA call_offset,X
+1DA4 LDA #str_addr>>8
+1DA6 STA call_offset+1,X
+1DA8 LDA hero_HP
+1DAB STA call_offset,X
+1DAD LDA hero_HP_Max
+1DB0 STA call_offset,X
+1DB2 LDA #LEGEND_HP_TOP#256
+1DB4 STA call_offset,X
+1DB6 LDA #COLOR_WHITE#256
+1DB8 STA call_offset,X
+1DBA LDA #COLOR_LEGEND_BG#256
+1DBC STA call_offset,X
+1DBE JSR DrawText
+1DC1 LDA #LEGEND_LEFT+LEGEND_STATS_LEFT#256
+1DC3 STA call_offset,X
+1DC5 LDA #LEGEND_HP_BAR_TOP#256
+1DC7 STA call_offset,X
+1DC9 LDA hero_HP
+1DCC STA call_offset,X
+1DCE LDA hero_HP_Max
+1DD1 STA call_offset,X
+1DD3 LDA #COLOR_RED#256
+1DD5 STA call_offset,X
+1DD7 LDA #COLOR_DARK_RED#256
+1DD9 STA call_offset,X
+1DDB JSR DrawBar
+1DDE LDA #LEGEND_LEFT+LEGEND_STATS_LEFT#256
+1DE0 STA draw_X
+1DE3 BRA str_skip
+1DEE LDA #str_addr#256
+1DF0 STA call_offset,X
+1DF2 LDA #str_addr>>8
+1DF4 STA call_offset+1,X
+1DF6 LDA hero_Batt
+1DF9 STA call_offset,X
+1DFB LDA hero_Batt_Max
+1DFE STA call_offset,X
+1E00 LDA #LEGEND_BATT_TOP#256
+1E02 STA call_offset,X
+1E04 LDA #COLOR_WHITE#256
+1E06 STA call_offset,X
+1E08 LDA #COLOR_LEGEND_BG#256
+1E0A STA call_offset,X
+1E0C JSR DrawText
+1E0F LDA #LEGEND_LEFT+LEGEND_STATS_LEFT#256
+1E11 STA call_offset,X
+1E13 LDA #LEGEND_BATT_BAR_TOP#256
+1E15 STA call_offset,X
+1E17 LDA hero_Batt
+1E1A STA call_offset,X
+1E1C LDA hero_Batt_Max
+1E1F STA call_offset,X
+1E21 LDA #COLOR_BLUE#256
+1E23 STA call_offset,X
+1E25 LDA #COLOR_DARK_BLUE#256
+1E27 STA call_offset,X
+1E29 JSR DrawBar
+1E2C LDA #LEGEND_LEFT+LEGEND_STATS_LEFT#256
+1E2E STA draw_X
+1E31 BRA str_skip
+1E3B LDA #str_addr#256
+1E3D STA call_offset,X
+1E3F LDA #str_addr>>8
+1E41 STA call_offset+1,X
+1E43 LDA hero_Exp
+1E46 STA call_offset,X
+1E48 LDA hero_Exp_Max
+1E4B STA call_offset,X
+1E4D LDA #LEGEND_EXP_TOP#256
+1E4F STA call_offset,X
+1E51 LDA #COLOR_WHITE#256
+1E53 STA call_offset,X
+1E55 LDA #COLOR_LEGEND_BG#256
+1E57 STA call_offset,X
+1E59 JSR DrawText
+1E5C LDA #LEGEND_LEFT+LEGEND_STATS_LEFT#256
+1E5E STA call_offset,X
+1E60 LDA #LEGEND_EXP_BAR_TOP#256
+1E62 STA call_offset,X
+1E64 LDA hero_Exp
+1E67 STA call_offset,X
+1E69 LDA hero_Exp_Max
+1E6C STA call_offset,X
+1E6E LDA #COLOR_GREEN#256
+1E70 STA call_offset,X
+1E72 LDA #COLOR_DARK_GREEN#256
+1E74 STA call_offset,X
+1E76 JSR DrawBar
+1E79 LDA hero_target_type
+1E7C BRA s{ts}c{tc}
+1E7E JMP s{ts}done
+1E81 CMP #target_rock
+1E83 BEQ skip
+1E85 JMP s{ts}c{tc}
+1E88 skip:
+1E88 LDA #LEGEND_LEFT+LEGEND_STATS_LEFT#256
+1E8A STA draw_X
+1E8D BRA str_skip
+1E94 LDA #str_addr#256
+1E96 STA call_offset,X
+1E98 LDA #str_addr>>8
+1E9A STA call_offset+1,X
+1E9C STZ call_offset,X
+1E9E STZ call_offset,X
+1EA0 LDA #LEGEND_TARGET_TOP#256
+1EA2 STA call_offset,X
+1EA4 LDA #COLOR_ROCK#256
+1EA6 STA call_offset,X
+1EA8 LDA #COLOR_LEGEND_BG#256
+1EAA STA call_offset,X
+1EAC JSR DrawText
+1EAF JMP s{ts}done
+1EB2 CMP #target_exit
+1EB4 BEQ skip
+1EB6 JMP s{ts}c{tc}
+1EB9 skip:
+1EB9 LDA #LEGEND_LEFT+LEGEND_STATS_LEFT#256
+1EBB STA draw_X
+1EBE BRA str_skip
+1EC5 LDA #str_addr#256
+1EC7 STA call_offset,X
+1EC9 LDA #str_addr>>8
+1ECB STA call_offset+1,X
+1ECD STZ call_offset,X
+1ECF STZ call_offset,X
+1ED1 LDA #LEGEND_TARGET_TOP#256
+1ED3 STA call_offset,X
+1ED5 LDA #COLOR_EXIT#256
+1ED7 STA call_offset,X
+1ED9 LDA #COLOR_LEGEND_BG#256
+1EDB STA call_offset,X
+1EDD JSR DrawText
+1EE0 JMP s{ts}done
+1EE3 CMP #target_monster
+1EE5 BEQ skip
+1EE7 JMP s{ts}c{tc}
+1EEA skip:
+1EEA LDA #LEGEND_LEFT+LEGEND_STATS_LEFT#256
+1EEC STA draw_X
+1EEF BRA str_skip
+1EFC LDA #str_addr#256
+1EFE STA call_offset,X
+1F00 LDA #str_addr>>8
+1F02 STA call_offset+1,X
+1F04 STZ call_offset,X
+1F06 STZ call_offset,X
+1F08 LDA #LEGEND_TARGET_TOP#256
+1F0A STA call_offset,X
+1F0C LDA #COLOR_MONSTER#256
+1F0E STA call_offset,X
+1F10 LDA #COLOR_LEGEND_BG#256
+1F12 STA call_offset,X
+1F14 JSR DrawText
+1F17 JMP s{ts}done
+1F1A CMP #target_crystal
+1F1C BEQ skip
+1F1E JMP s{ts}c{tc}
+1F21 skip:
+1F21 LDA #LEGEND_LEFT+LEGEND_STATS_LEFT#256
+1F23 STA draw_X
+1F26 LDA hero_target_index
+1F29 ASL
+1F2A ASL
+1F2B ADC #CRYSTAL_COLOR
+1F2D TAY
+1F2E LDA crystal_list,Y
+1F31 BRA s{ts}c{tc}
+1F33 JMP s{ts}done
+1F36 CMP #CRYSTAL_RED_TYPE
+1F38 BEQ skip
+1F3A JMP s{ts}c{tc}
+1F3D skip:
+1F3D BRA str_skip
+1F47 LDA #str_addr#256
+1F49 STA call_offset,X
+1F4B LDA #str_addr>>8
+1F4D STA call_offset+1,X
+1F4F STZ call_offset,X
+1F51 STZ call_offset,X
+1F53 LDA #LEGEND_TARGET_TOP#256
+1F55 STA call_offset,X
+1F57 LDA #COLOR_CRYSTAL_RED1#256
+1F59 STA call_offset,X
+1F5B LDA #COLOR_LEGEND_BG#256
+1F5D STA call_offset,X
+1F5F JSR DrawText
+1F62 JMP s{ts}done
+1F65 CMP #CRYSTAL_BLUE_TYPE
+1F67 BEQ skip
+1F69 JMP s{ts}c{tc}
+1F6C skip:
+1F6C BRA str_skip
+1F76 LDA #str_addr#256
+1F78 STA call_offset,X
+1F7A LDA #str_addr>>8
+1F7C STA call_offset+1,X
+1F7E STZ call_offset,X
+1F80 STZ call_offset,X
+1F82 LDA #LEGEND_TARGET_TOP#256
+1F84 STA call_offset,X
+1F86 LDA #COLOR_CRYSTAL_BLUE1#256
+1F88 STA call_offset,X
+1F8A LDA #COLOR_LEGEND_BG#256
+1F8C STA call_offset,X
+1F8E JSR DrawText
+1F91 JMP s{ts}done
+1F94 CMP #CRYSTAL_YELLOW_TYPE
+1F96 BEQ skip
+1F98 JMP s{ts}c{tc}
+1F9B skip:
+1F9B BRA str_skip
+1FA5 LDA #str_addr#256
+1FA7 STA call_offset,X
+1FA9 LDA #str_addr>>8
+1FAB STA call_offset+1,X
+1FAD STZ call_offset,X
+1FAF STZ call_offset,X
+1FB1 LDA #LEGEND_TARGET_TOP#256
+1FB3 STA call_offset,X
+1FB5 LDA #COLOR_CRYSTAL_YELLOW1#256
+1FB7 STA call_offset,X
+1FB9 LDA #COLOR_LEGEND_BG#256
+1FBB STA call_offset,X
+1FBD JSR DrawText
+1FC0 LDA hero_activity
+1FC3 BNE skip
+1FC5 JMP if{temp}
+1FC8 skip:
+1FC8 LDA #LEGEND_LEFT+LEGEND_STATS_LEFT#256
+1FCA STA call_offset,X
+1FCC LDA #LEGEND_TARGET_BAR_TOP#256
+1FCE STA call_offset,X
+1FD0 LDA hero_activity_ticks
+1FD3 STA call_offset,X
+1FD5 LDA hero_activity_ticks_max
+1FD8 STA call_offset,X
+1FDA LDA #COLOR_PURPLE#256
+1FDC STA call_offset,X
+1FDE LDA #COLOR_DARK_PURPLE#256
+1FE0 STA call_offset,X
+1FE2 JSR DrawBar
+1FE5 LDA #map_data#256
+1FE7 STA map_ptr
+1FE9 LDA #map_data>>8
+1FEB STA map_ptr+1
+1FED LDA #(LEGEND_LEFT+LEGEND_MAZE_LEFT)#256
+1FEF STA call_offset,X
+1FF1 LDA #LEGEND_MAZE_TOP#256
+1FF3 STA call_offset,X
+1FF5 JSR CalcXY
+1FF8 LDA ret_val
+1FFA STA gfx_ptr
+1FFC LDA ret_val+1
+1FFE STA gfx_ptr+1
+2000 LDA #MAP_HEIGHT#256
+2002 STA height,X
+2004 STZ mX
+2006 STZ mY
+2008 LDY #0 ;X pos into map
+200A LDA #false#256
+200C STA if_monster,X
+200E LDA #false#256
+2010 STA if_crystal,X
+2012 PHY
+2013 LDA mX
+2015 STA call_offset,X
+2017 LDA mY
+2019 STA call_offset,X
+201B JSR CheckForMonster
+201E LDA ret_val
+2020 STA if_monster,X
+2022 LDA mX
+2024 STA call_offset,X
+2026 LDA mY
+2028 STA call_offset,X
+202A JSR CheckForCrystal
+202D LDA ret_val
+202F STA if_crystal,X
+2031 PLY
+2032 LDA mX
+2034 INC
+2035 CMP #MAP_WIDTH
+2037 BNE skip
+2039 JMP if{temp}
+203C skip:
+203C STA mX
+203E JMP if{temp2}
+2041 STZ mX
+2043 INC mY
+2045 LDA if_monster,X
+2047 BNE skip
+2049 JMP if{temp}
+204C skip:
+204C LDA #COLOR_RED
+204E BRA dl.pixel
+2050 LDA if_crystal,X
+2052 BNE skip
+2054 JMP if{temp}
+2057 skip:
+2057 LDA #COLOR_YELLOW
+2059 BRA dl.pixel
+205B LDA (map_ptr),Y
+205D BRA s{ts}c{tc}
+205F JMP s{ts}done
+2062 CMP #MAP_BLANK
+2064 BEQ skip
+2066 JMP s{ts}c{tc}
+2069 skip:
+2069 BRA s{ts}b{tb}
+206B CMP #MAP_BLANK_90
+206D BNE s{ts}c{tc}
+206F BRA s{ts}b{tb}
+2071 BRA s{ts}b{tb}
+2073 CMP #MAP_BLANK_180
+2075 BNE s{ts}c{tc}
+2077 BRA s{ts}b{tb}
+2079 BRA s{ts}b{tb}
+207B CMP #MAP_BLANK_270
+207D BNE s{ts}c{tc}
+207F BRA s{ts}b{tb}
+2081 LDA #COLOR_DIRT
+2083 JMP s{ts}done
+2086 CMP #MAP_ROCK
+2088 BEQ skip
+208A JMP s{ts}c{tc}
+208D skip:
+208D LDA #COLOR_ROCK
+208F JMP s{ts}done
+2092 CMP #MAP_LAVA
+2094 BEQ skip
+2096 JMP s{ts}c{tc}
+2099 skip:
+2099 LDA #COLOR_LAVA
+209B JMP s{ts}done
+209E CMP #MAP_EXIT
+20A0 BEQ skip
+20A2 JMP s{ts}c{tc}
+20A5 skip:
+20A5 LDA #COLOR_EXIT
+20A7 JMP s{ts}done
+20AA LDA #COLOR_WHITE
+20AC PHY
+20AD PHA
+20AE TYA
+20AF ASL
+20B0 TAY
+20B1 PLA
+20B2 STA (gfx_ptr),Y
+20B4 INY
+20B5 STA (gfx_ptr),Y
+20B7 INC gfx_ptr+1
+20B9 STA (gfx_ptr),Y
+20BB DEY
+20BC STA (gfx_ptr),Y
+20BE DEC gfx_ptr+1
+20C0 PLY
+20C1 INY
+20C2 CPY #MAP_WIDTH
+20C4 BEQ skip
+20C6 JMP dl.loop
+20C9 skip:
+20C9 LDA #LEGEND_LEFT+LEGEND_MAZE_LEFT
+20CB STA gfx_ptr
+20CD INC gfx_ptr+1
+20CF INC gfx_ptr+1
+20D1 LDA #MAP_WIDTH#256
+20D3 CLC
+20D4 ADC map_ptr
+20D6 STA map_ptr
+20D8 BCC .no_carry
+20DA INC map_ptr+1
+20DC DEC height,X
+20DE BEQ skip
+20E0 JMP dl.loop_outer
+20E3 skip:
+20E3 LDA display_X
+20E6 ASL
+20E7 ADC #LEGEND_LEFT+LEGEND_MAZE_LEFT
+20E9 STA gfx_ptr
+20EB STA map_ptr ;reuse as second gfx_ptr
+20ED LDA display_Y
+20F0 ASL
+20F1 ADC #LEGEND_MAZE_TOP+(SCREEN_ADDRESS>>8)
+20F3 STA gfx_ptr+1
+20F5 ADC #FRAME_HEIGHT*2-1
+20F7 STA map_ptr+1
+20F9 LDY #0
+20FB LDA #COLOR_GREEN
+20FD STA (gfx_ptr),Y
+20FF STA (map_ptr),Y
+2101 INY
+2102 CPY #FRAME_WIDTH*2
+2104 BNE dl.hline
+2106 LDA gfx_ptr
+2108 CLC
+2109 ADC #FRAME_WIDTH*2-1
+210B STA map_ptr
+210D INC gfx_ptr+1
+210F LDA gfx_ptr+1
+2111 STA map_ptr+1
+2113 LDY #(FRAME_HEIGHT-1)*2
+2115 LDA #COLOR_GREEN
+2117 STA (gfx_ptr)
+2119 STA (map_ptr)
+211B INC gfx_ptr+1
+211D INC map_ptr+1
+211F DEY
+2120 BNE dh.vline
+2122 STX saveX
+2124 LDX #0
+2126 PLA
+2127 STA ZP_locals,X
+2129 INX
+212A CPX #zpcounter
+212C BNE ZP_pull
+212E LDX saveX
+2130 PLX
+2131 RTS
+2132 DrawFrame:
+2132 tile:
+2132 i:
+2132 j:
+2132 PHX
+2133 TXA ;2
+2134 SEC ;2
+2135 SBC #xcounter ;2
+2137 TAX ;2
+2138 LDA #map_data#256
+213A STA call_offset,X
+213C LDA #map_data>>8
+213E STA call_offset+1,X
+2140 LDA display_X
+2143 STA call_offset,X
+2145 LDA display_Y
+2148 STA call_offset,X
+214A JSR OffsetXY
+214D LDA ret_val
+214F STA map_ptr,X
+2151 LDA ret_val+1
+2153 STA map_ptr+1,X
+2155 LDA #monster_map#256
+2157 STA call_offset,X
+2159 LDA #monster_map>>8
+215B STA call_offset+1,X
+215D LDA display_X
+2160 STA call_offset,X
+2162 LDA display_Y
+2165 STA call_offset,X
+2167 JSR OffsetXY
+216A LDA ret_val
+216C STA monster_ptr,X
+216E LDA ret_val+1
+2170 STA monster_ptr+1,X
+2172 LDA #crystal_map#256
+2174 STA call_offset,X
+2176 LDA #crystal_map>>8
+2178 STA call_offset+1,X
+217A LDA display_X
+217D STA call_offset,X
+217F LDA display_Y
+2182 STA call_offset,X
+2184 JSR OffsetXY
+2187 LDA ret_val
+2189 STA crystal_ptr,X
+218B LDA ret_val+1
+218D STA crystal_ptr+1,X
+218F STZ i,X
+2191 STZ j,X
+2193 LDA (map_ptr,X)
+2195 BRA s{ts}c{tc}
+2197 JMP s{ts}done
+219A CMP #MAP_BLANK
+219C BEQ skip
+219E JMP s{ts}c{tc}
+21A1 skip:
+21A1 LDA #Ground_0#256
+21A3 STA tile,X
+21A5 JMP s{ts}done
+21A8 CMP #MAP_BLANK_90
+21AA BEQ skip
+21AC JMP s{ts}c{tc}
+21AF skip:
+21AF LDA #Ground_90#256
+21B1 STA tile,X
+21B3 JMP s{ts}done
+21B6 CMP #MAP_BLANK_180
+21B8 BEQ skip
+21BA JMP s{ts}c{tc}
+21BD skip:
+21BD LDA #Ground_180#256
+21BF STA tile,X
+21C1 JMP s{ts}done
+21C4 CMP #MAP_BLANK_270
+21C6 BEQ skip
+21C8 JMP s{ts}c{tc}
+21CB skip:
+21CB LDA #Ground_270#256
+21CD STA tile,X
+21CF JMP s{ts}done
+21D2 CMP #MAP_ROCK
+21D4 BEQ skip
+21D6 JMP s{ts}c{tc}
+21D9 skip:
+21D9 LDA #Rock#256
+21DB STA tile,X
+21DD JMP s{ts}done
+21E0 CMP #MAP_LAVA
+21E2 BEQ skip
+21E4 JMP s{ts}c{tc}
+21E7 skip:
+21E7 LDA #Lava#256
+21E9 STA tile,X
+21EB JMP s{ts}done
+21EE CMP #MAP_EXIT
+21F0 BEQ skip
+21F2 JMP s{ts}c{tc}
+21F5 skip:
+21F5 LDA #ExitID#256
+21F7 STA tile,X
+21F9 CMP #ExitID
+21FB BEQ skip
+21FD JMP if{temp}
+2200 skip:
+2200 LDA #ExitID#256
+2202 STA call_offset,X
+2204 LDA i,X
+2206 STA call_offset,X
+2208 LDA j,X
+220A STA call_offset,X
+220C LDA #COLOR_BLACK#256
+220E STA call_offset,X
+2210 LDA #COLOR_BLUE#256
+2212 STA call_offset,X
+2214 JSR DrawTile1bpp
+2217 JMP if{temp2}
+221A LDA tile,X
+221C STA call_offset,X
+221E LDA i,X
+2220 STA call_offset,X
+2222 LDA j,X
+2224 STA call_offset,X
+2226 JSR DrawTile
+2229 INC map_ptr,X
+222B BNE no_carry1
+222D INC map_ptr+1,X
+222F LDA (monster_ptr,X)
+2231 CMP #NO_MONSTER
+2233 BNE skip
+2235 JMP if{temp}
+2238 skip:
+2238 ASL
+2239 ADC (monster_ptr,X)
+223B ADC #MONSTER_ALIVE
+223D TAY
+223E LDA monster_list,Y
+2241 BNE skip
+2243 JMP if{temp}
+2246 skip:
+2246 LDA #Monster#256
+2248 STA call_offset,X
+224A LDA i,X
+224C STA call_offset,X
+224E LDA j,X
+2250 STA call_offset,X
+2252 JSR DrawTile
+2255 JMP if{temp2}
+2258 LDA #Monster_dead#256
+225A STA call_offset,X
+225C LDA i,X
+225E STA call_offset,X
+2260 LDA j,X
+2262 STA call_offset,X
+2264 JSR DrawTile
+2267 INC monster_ptr,X
+2269 BNE no_carry1
+226B INC monster_ptr+1,X
+226D LDA (crystal_ptr,X)
+226F CMP #NO_CRYSTAL
+2271 BNE skip
+2273 JMP if{temp}
+2276 skip:
+2276 ASL
+2277 ASL
+2278 PHA
+2279 ADC #CRYSTAL_ACTIVE
+227B TAY
+227C LDA crystal_list,Y
+227F BNE skip
+2281 JMP if{temp}
+2284 skip:
+2284 PLA
+2285 CLC
+2286 ADC #CRYSTAL_COLOR
+2288 TAY
+2289 LDA crystal_list,Y
+228C BRA s{ts}c{tc}
+228E JMP s{ts}done
+2291 CMP #CRYSTAL_RED_TYPE
+2293 BEQ skip
+2295 JMP s{ts}c{tc}
+2298 skip:
+2298 LDA #Crystal_red#256
+229A STA call_offset,X
+229C LDA i,X
+229E STA call_offset,X
+22A0 LDA j,X
+22A2 STA call_offset,X
+22A4 JSR DrawTile
+22A7 JMP s{ts}done
+22AA CMP #CRYSTAL_BLUE_TYPE
+22AC BEQ skip
+22AE JMP s{ts}c{tc}
+22B1 skip:
+22B1 LDA #Crystal_blue#256
+22B3 STA call_offset,X
+22B5 LDA i,X
+22B7 STA call_offset,X
+22B9 LDA j,X
+22BB STA call_offset,X
+22BD JSR DrawTile
+22C0 JMP s{ts}done
+22C3 CMP #CRYSTAL_YELLOW_TYPE
+22C5 BEQ skip
+22C7 JMP s{ts}c{tc}
+22CA skip:
+22CA LDA #Crystal_yellow#256
+22CC STA call_offset,X
+22CE LDA i,X
+22D0 STA call_offset,X
+22D2 LDA j,X
+22D4 STA call_offset,X
+22D6 JSR DrawTile
+22D9 JMP if{temp2}
+22DC PLA
+22DD LDA #Crystal_base#256
+22DF STA call_offset,X
+22E1 LDA i,X
+22E3 STA call_offset,X
+22E5 LDA j,X
+22E7 STA call_offset,X
+22E9 JSR DrawTile
+22EC INC crystal_ptr,X
+22EE BNE no_carry1
+22F0 INC crystal_ptr+1,X
+22F2 LDA i,X
+22F4 CLC
+22F5 ADC #32
+22F7 STA i,X
+22F9 CMP #32*FRAME_WIDTH
+22FB BEQ skip
+22FD JMP df.loop_x
+2300 skip:
+2300 LDA #MAP_WIDTH-FRAME_WIDTH#256
+2302 CLC
+2303 ADC map_ptr,X
+2305 STA map_ptr,X
+2307 BCC .no_carry
+2309 INC map_ptr+1,X
+230B LDA #MAP_WIDTH-FRAME_WIDTH#256
+230D CLC
+230E ADC monster_ptr,X
+2310 STA monster_ptr,X
+2312 BCC .no_carry
+2314 INC monster_ptr+1,X
+2316 LDA #MAP_WIDTH-FRAME_WIDTH#256
+2318 CLC
+2319 ADC crystal_ptr,X
+231B STA crystal_ptr,X
+231D BCC .no_carry
+231F INC crystal_ptr+1,X
+2321 STZ i,X
+2323 LDA j,X
+2325 CLC
+2326 ADC #32
+2328 STA j,X
+232A CMP #32*FRAME_HEIGHT
+232C BNE skip
+232E JMP if{temp}
+2331 skip:
+2331 JMP df.loop_y
+2334 LDA hero_X
+2337 ASL
+2338 ASL
+2339 ASL
+233A ASL
+233B ASL
+233C STA i,X
+233E LDA hero_Y
+2341 ASL
+2342 ASL
+2343 ASL
+2344 ASL
+2345 ASL
+2346 STA j,X
+2348 LDA hero_facing
+234B CMP #DIRECTION_LEFT
+234D BEQ skip
+234F JMP if{temp}
+2352 skip:
+2352 LDA #Robot_left#256
+2354 STA call_offset,X
+2356 LDA i,X
+2358 STA call_offset,X
+235A LDA j,X
+235C STA call_offset,X
+235E JSR DrawTile
+2361 JMP if{temp2}
+2364 LDA #Robot_right#256
+2366 STA call_offset,X
+2368 LDA i,X
+236A STA call_offset,X
+236C LDA j,X
+236E STA call_offset,X
+2370 JSR DrawTile
+2373 LDA hero_target_direction
+2376 BRA s{ts}c{tc}
+2378 JMP s{ts}done
+237B CMP #DIRECTION_UP
+237D BEQ skip
+237F JMP s{ts}c{tc}
+2382 skip:
+2382 LDA j,X
+2384 BEQ df.no_draw
+2386 SEC
+2387 SBC #32
+2389 STA j,X
+238B JMP s{ts}done
+238E CMP #DIRECTION_DOWN
+2390 BEQ skip
+2392 JMP s{ts}c{tc}
+2395 skip:
+2395 LDA j,X
+2397 CMP #32*(FRAME_HEIGHT-1)
+2399 BEQ df.no_draw
+239B CLC
+239C ADC #32
+239E STA j,X
+23A0 JMP s{ts}done
+23A3 CMP #DIRECTION_LEFT
+23A5 BEQ skip
+23A7 JMP s{ts}c{tc}
+23AA skip:
+23AA LDA i,X
+23AC BEQ df.no_draw
+23AE SEC
+23AF SBC #32
+23B1 STA i,X
+23B3 JMP s{ts}done
+23B6 CMP #DIRECTION_RIGHT
+23B8 BEQ skip
+23BA JMP s{ts}c{tc}
+23BD skip:
+23BD LDA i,X
+23BF CMP #32*(FRAME_WIDTH-1)
+23C1 BEQ df.no_draw
+23C3 CLC
+23C4 ADC #32
+23C6 STA i,X
+23C8 LDA #Hero_target#256
+23CA STA call_offset,X
+23CC LDA i,X
+23CE STA call_offset,X
+23D0 LDA j,X
+23D2 STA call_offset,X
+23D4 LDA #COLOR_GREEN#256
+23D6 STA call_offset,X
+23D8 LDA #COLOR_TRANSPARENT#256
+23DA STA call_offset,X
+23DC JSR DrawTile1bpp
+23DF PLX
+23E0 RTS
+23E1 DrawBorder:
+23E1 xpos:
+23E1 ypos:
+23E1 width:
+23E1 height:
+23E1 color:
+23E1 PHX
+23E2 TXA ;2
+23E3 SEC ;2
+23E4 SBC #xcounter ;2
+23E6 TAX ;2
+23E7 STX saveX
+23E9 LDX #zpcounter
+23EB LDA ZP_locals-1,X
+23ED PHA
+23EE DEX
+23EF BNE ZP_push
+23F1 LDX saveX
+23F3 DEC width,X
+23F5 DEC height,X
+23F7 LDA xpos,X
+23F9 STA gfx_ptr1
+23FB STA gfx_ptr2
+23FD LDA ypos,X
+23FF CLC
+2400 ADC #SCREEN_ADDRESS>>8
+2402 STA gfx_ptr1+1
+2404 ADC height,X
+2406 STA gfx_ptr2+1
+2408 LDY width,X
+240A LDA color,X
+240C STA (gfx_ptr1),Y
+240E STA (gfx_ptr2),Y
+2410 DEY
+2411 BNE db.hline
+2413 LDA gfx_ptr1
+2415 CLC
+2416 ADC width,X
+2418 STA gfx_ptr2
+241A LDA gfx_ptr1+1
+241C STA gfx_ptr2+1
+241E LDY height,X
+2420 INY
+2421 LDA color,X
+2423 STA (gfx_ptr1)
+2425 STA (gfx_ptr2)
+2427 INC gfx_ptr1+1
+2429 INC gfx_ptr2+1
+242B DEY
+242C BNE db.vline
+242E STX saveX
+2430 LDX #0
+2432 PLA
+2433 STA ZP_locals,X
+2435 INX
+2436 CPX #zpcounter
+2438 BNE ZP_pull
+243A LDX saveX
+243C PLX
+243D RTS
+243E DrawMenuBorder:
+243E counter:
+243E width:
+243E height:
+243E PHX
+243F DEX
+2440 DEX
+2441 DEX
+2442 LDA #1#256
+2444 STA call_offset,X
+2446 LDA #1#256
+2448 STA call_offset,X
+244A LDA #SCREEN_WIDTH-2#256
+244C STA call_offset,X
+244E LDA #MENU_BORDER_SIZE+TEXT_LINE_HEIGHT#256
+2450 STA call_offset,X
+2452 LDA #COLOR_MENU_BORDER#256
+2454 STA call_offset,X
+2456 JSR DrawRect
+2459 LDA #1#256
+245B STA call_offset,X
+245D LDA #SCREEN_HEIGHT-MENU_BORDER_SIZE#256
+245F STA call_offset,X
+2461 LDA #SCREEN_WIDTH-2#256
+2463 STA call_offset,X
+2465 LDA #MENU_BORDER_SIZE-1#256
+2467 STA call_offset,X
+2469 LDA #COLOR_MENU_BORDER#256
+246B STA call_offset,X
+246D JSR DrawRect
+2470 LDA #1#256
+2472 STA call_offset,X
+2474 LDA #MENU_BORDER_SIZE+TEXT_LINE_HEIGHT+1#256
+2476 STA call_offset,X
+2478 LDA #MENU_BORDER_SIZE-1#256
+247A STA call_offset,X
+247C LDA #$67#256
+247E STA call_offset,X
+2480 LDA #COLOR_MENU_BORDER#256
+2482 STA call_offset,X
+2484 JSR DrawRect
+2487 LDA #SCREEN_WIDTH-MENU_BORDER_SIZE#256
+2489 STA call_offset,X
+248B LDA #MENU_BORDER_SIZE+TEXT_LINE_HEIGHT+1#256
+248D STA call_offset,X
+248F LDA #MENU_BORDER_SIZE-1#256
+2491 STA call_offset,X
+2493 LDA #103#256
+2495 STA call_offset,X
+2497 LDA #COLOR_MENU_BORDER#256
+2499 STA call_offset,X
+249B JSR DrawRect
+249E STZ call_offset,X
+24A0 STZ call_offset,X
+24A2 LDA #SCREEN_WIDTH#256
+24A4 STA call_offset,X
+24A6 LDA #SCREEN_HEIGHT#256
+24A8 STA call_offset,X
+24AA LDA #COLOR_BLACK#256
+24AC STA call_offset,X
+24AE JSR DrawBorder
+24B1 LDA #MENU_BORDER_SIZE#256
+24B3 STA call_offset,X
+24B5 LDA #MENU_BORDER_SIZE#256
+24B7 STA call_offset,X
+24B9 LDA #SCREEN_WIDTH-MENU_BORDER_SIZE*2#256
+24BB STA call_offset,X
+24BD LDA #SCREEN_HEIGHT-MENU_BORDER_SIZE*2#256
+24BF STA call_offset,X
+24C1 LDA #COLOR_BLACK#256
+24C3 STA call_offset,X
+24C5 JSR DrawBorder
+24C8 LDA #1#256
+24CA STA counter,X
+24CC LDA #SCREEN_WIDTH#256
+24CE CLC
+24CF SBC counter,X
+24D1 STA width,X
+24D3 LDA #SCREEN_HEIGHT
+24D5 CLC
+24D6 SBC counter,X
+24D8 STA height,X
+24DA LDA counter,X
+24DC STA call_offset,X
+24DE LDA counter,X
+24E0 STA call_offset,X
+24E2 JSR CalcXY
+24E5 LDA #COLOR_BLACK#256
+24E7 STA (ret_val)
+24E9 LDA width,X
+24EB STA call_offset,X
+24ED LDA counter,X
+24EF STA call_offset,X
+24F1 JSR CalcXY
+24F4 LDA #COLOR_BLACK#256
+24F6 STA (ret_val)
+24F8 LDA width,X
+24FA STA call_offset,X
+24FC LDA height,X
+24FE STA call_offset,X
+2500 JSR CalcXY
+2503 LDA #COLOR_BLACK#256
+2505 STA (ret_val)
+2507 LDA counter,X
+2509 STA call_offset,X
+250B LDA height,X
+250D STA call_offset,X
+250F JSR CalcXY
+2512 LDA #COLOR_BLACK#256
+2514 STA (ret_val)
+2516 LDA counter,X
+2518 INC
+2519 CMP #MENU_BORDER_SIZE
+251B STA counter,X
+251D BNE dmb.loop
+251F LDA #MENU_CHAR_LEFT#256
+2521 STA draw_X
+2524 BRA str_skip
+2532 LDA #str_addr#256
+2534 STA call_offset,X
+2536 LDA #str_addr>>8
+2538 STA call_offset+1,X
+253A STZ call_offset,X
+253C STZ call_offset,X
+253E LDA #MENU_TITLE_TOP#256
+2540 STA call_offset,X
+2542 LDA #COLOR_WHITE#256
+2544 STA call_offset,X
+2546 LDA #COLOR_MENU_CHAR#256
+2548 STA call_offset,X
+254A JSR DrawText
+254D LDA #MENU_SKILL_LEFT#256
+254F STA draw_X
+2552 BRA str_skip
+255D LDA #str_addr#256
+255F STA call_offset,X
+2561 LDA #str_addr>>8
+2563 STA call_offset+1,X
+2565 STZ call_offset,X
+2567 STZ call_offset,X
+2569 LDA #MENU_TITLE_TOP#256
+256B STA call_offset,X
+256D LDA #COLOR_WHITE#256
+256F STA call_offset,X
+2571 LDA #COLOR_MENU_SKILLS#256
+2573 STA call_offset,X
+2575 JSR DrawText
+2578 LDA #MENU_RES_LEFT#256
+257A STA draw_X
+257D BRA str_skip
+258B LDA #str_addr#256
+258D STA call_offset,X
+258F LDA #str_addr>>8
+2591 STA call_offset+1,X
+2593 STZ call_offset,X
+2595 STZ call_offset,X
+2597 LDA #MENU_TITLE_TOP#256
+2599 STA call_offset,X
+259B LDA #COLOR_WHITE#256
+259D STA call_offset,X
+259F LDA #COLOR_MENU_RESOURCES#256
+25A1 STA call_offset,X
+25A3 JSR DrawText
+25A6 LDA #MENU_SKILL_LEFT-1#256
+25A8 STA call_offset,X
+25AA LDA #MENU_TITLE_TOP#256
+25AC STA call_offset,X
+25AE LDA #1#256
+25B0 STA call_offset,X
+25B2 LDA #TEXT_LINE_HEIGHT#256
+25B4 STA call_offset,X
+25B6 LDA #COLOR_MENU_SKILLS#256
+25B8 STA call_offset,X
+25BA JSR DrawRect
+25BD PLX
+25BE RTS
+25C4 DrawItem:
+25C4 tile:
+25C4 xpos:
+25C4 ypos:
+25C4 PHX
+25C5 DEX
+25C6 DEX
+25C7 DEX
+25C8 STX saveX
+25CA LDX #zpcounter
+25CC LDA ZP_locals-1,X
+25CE PHA
+25CF DEX
+25D0 BNE ZP_push
+25D2 LDX saveX
+25D4 LDA tile,X
+25D6 ASL
+25D7 TAY
+25D8 LDA item_stats,Y
+25DB STA temp_ptr
+25DD LDA item_stats+1,Y
+25E0 STA temp_ptr+1
+25E2 LDY #type
+25E4 LDA (temp_ptr),Y
+25E6 TAY
+25E7 LDA tile_src,Y
+25EA STA temp_ptr
+25EC LDA #Menu_item_temp#256
+25EE STA call_offset,X
+25F0 LDA temp_ptr
+25F2 STA call_offset,X
+25F4 JSR CopyTile
+25F7 LDA #Menu_item_temp#256
+25F9 STA call_offset,X
+25FB LDA tile,X
+25FD STA call_offset,X
+25FF JSR ColorTile
+2602 LDA #Menu_item_temp#256
+2604 STA call_offset,X
+2606 LDA xpos,X
+2608 STA call_offset,X
+260A LDA ypos,X
+260C STA call_offset,X
+260E JSR DrawTile
+2611 STX saveX
+2613 LDX #0
+2615 PLA
+2616 STA ZP_locals,X
+2618 INX
+2619 CPX #zpcounter
+261B BNE ZP_pull
+261D LDX saveX
+261F PLX
+2620 RTS
+2621 DrawItemStats:
+2621 item:
+2621 xpos:
+2621 ypos:
+2621 count:
+2621 counter:
+2621 title:
+2621 PHX
+2622 TXA ;2
+2623 SEC ;2
+2624 SBC #xcounter ;2
+2626 TAX ;2
+2627 STX saveX
+2629 LDX #zpcounter
+262B LDA ZP_locals-1,X
+262D PHA
+262E DEX
+262F BNE ZP_push
+2631 LDX saveX
+2633 LDA item,X
+2635 ASL
+2636 TAY
+2637 LDA item_stats,Y
+263A STA stat_ptr
+263C LDA item_stats+1,Y
+263F STA stat_ptr+1
+2641 LDY #type
+2643 LDA (stat_ptr),Y
+2645 CMP #stat_Res_Only
+2647 BEQ skip
+2649 JMP if{temp}
+264C skip:
+264C LDY #description
+264E LDA (stat_ptr),Y
+2650 ASL
+2651 TAY
+2652 LDA res_descriptions,Y
+2655 STA stat_ptr
+2657 LDA res_descriptions+1,Y
+265A STA stat_ptr+1
+265C LDA xpos,X
+265E INC
+265F INC
+2660 STA draw_X
+2663 INC ypos,X
+2665 INC ypos,X
+2667 LDA stat_ptr
+2669 STA call_offset,X
+266B LDA stat_ptr+1
+266D STA call_offset+1,X
+266F STZ call_offset,X
+2671 STZ call_offset,X
+2673 LDA ypos,X
+2675 STA call_offset,X
+2677 LDA #COLOR_WHITE#256
+2679 STA call_offset,X
+267B LDA bg_color,X
+267D STA call_offset,X
+267F JSR DrawText
+2682 JMP if{temp2}
+2685 LDA item,X
+2687 STA call_offset,X
+2689 LDA xpos,X
+268B STA call_offset,X
+268D LDA ypos,X
+268F STA call_offset,X
+2691 JSR DrawItem
+2694 LDA item,X
+2696 ASL
+2697 TAY
+2698 LDA item_titles,Y
+269B STA title,X
+269D LDA item_titles+1,Y
+26A0 STA title+1,X
+26A2 LDA xpos,X
+26A4 CLC
+26A5 ADC #MENU_CHAR_BOX_TITLE_OFFSET_X
+26A7 STA draw_X
+26AA LDA ypos,X
+26AC CLC
+26AD ADC #MENU_CHAR_BOX_TITLE_OFFSET_Y
+26AF STA stat_y,X
+26B1 LDA item,X
+26B3 ASL
+26B4 TAY
+26B5 LDA item_stats,Y
+26B8 STA stat_ptr
+26BA LDA item_stats+1,Y
+26BD STA stat_ptr+1
+26BF LDY #quality
+26C1 LDA (stat_ptr),Y
+26C3 TAY
+26C4 LDA title_colors,Y
+26C7 STA temp_color,X
+26C9 LDA title,X
+26CB STA call_offset,X
+26CD LDA title+1,X
+26CF STA call_offset+1,X
+26D1 STZ call_offset,X
+26D3 STZ call_offset,X
+26D5 LDA stat_y,X
+26D7 STA call_offset,X
+26D9 LDA #COLOR_BLACK#256
+26DB STA call_offset,X
+26DD LDA temp_color,X
+26DF STA call_offset,X
+26E1 JSR DrawText
+26E4 LDA ypos,X
+26E6 CLC
+26E7 ADC #MENU_CHAR_BOX_STAT_OFFSET_Y
+26E9 STA stat_y,X
+26EB LDA item,X
+26ED ASL
+26EE TAY
+26EF LDA item_stats,Y
+26F2 STA item_ptr
+26F4 LDA item_stats+1,Y
+26F7 STA item_ptr+1
+26F9 LDY #stat_count
+26FB LDA (item_ptr),Y
+26FD STA count,X
+26FF STZ counter,X
+2701 LDA counter,X
+2703 ASL
+2704 ADC #stat_begin
+2706 TAY
+2707 LDA (item_ptr),Y
+2709 TAY
+270A LDA stat_description_colors,Y
+270D STA temp_color,X
+270F TYA
+2710 ASL
+2711 TAY
+2712 LDA stat_descriptions,Y
+2715 STA title,X
+2717 LDA stat_descriptions+1,Y
+271A STA title+1,X
+271C LDA counter,X
+271E ASL
+271F ADC #stat_begin+1
+2721 TAY
+2722 LDA (item_ptr),Y
+2724 STA temp_stat,X
+2726 LDA xpos,X
+2728 CLC
+2729 ADC #MENU_CHAR_BOX_STAT_OFFSET_X
+272B LDA temp_color,X
+272D CMP bg_color,X
+272F BEQ skip
+2731 JMP if{temp}
+2734 skip:
+2734 LDA #COLOR_RED#256
+2736 STA temp_color,X
+2738 LDA title,X
+273A STA call_offset,X
+273C LDA title+1,X
+273E STA call_offset+1,X
+2740 LDA temp_stat,X
+2742 STA call_offset,X
+2744 STZ call_offset,X
+2746 LDA stat_y,X
+2748 STA call_offset,X
+274A LDA temp_color,X
+274C STA call_offset,X
+274E LDA bg_color,X
+2750 STA call_offset,X
+2752 JSR DrawText
+2755 LDA stat_y,X
+2757 CLC
+2758 ADC #10
+275A STA stat_y,X
+275C INC counter,X
+275E LDA counter,X
+2760 CMP count,X
+2762 BNE dis.stats
+2764 STX saveX
+2766 LDX #0
+2768 PLA
+2769 STA ZP_locals,X
+276B INX
+276C CPX #zpcounter
+276E BNE ZP_pull
+2770 LDX saveX
+2772 PLX
+2773 RTS
+2774 DrawMenuInventory:
+2774 i:
+2774 j:
+2774 ypos:
+2774 xpos:
+2774 index:
+2774 PHX
+2775 TXA ;2
+2776 SEC ;2
+2777 SBC #xcounter ;2
+2779 TAX ;2
+277A STX saveX
+277C LDX #zpcounter
+277E LDA ZP_locals-1,X
+2780 PHA
+2781 DEX
+2782 BNE ZP_push
+2784 LDX saveX
+2786 LDA #MENU_CHAR_BOX_LEFT#256
+2788 STA call_offset,X
+278A LDA #MENU_CHAR_BOX1_TOP#256
+278C STA call_offset,X
+278E LDA #MENU_CHAR_BOX_WIDTH#256
+2790 STA call_offset,X
+2792 LDA #MENU_CHAR_BOX_HEIGHT#256
+2794 STA call_offset,X
+2796 LDA #MENU_CHAR_BOX_COLOR#256
+2798 STA call_offset,X
+279A JSR DrawRect
+279D LDA #MENU_CHAR_BOX_LEFT#256
+279F STA call_offset,X
+27A1 LDA #MENU_CHAR_BOX2_TOP#256
+27A3 STA call_offset,X
+27A5 LDA #MENU_CHAR_BOX_WIDTH#256
+27A7 STA call_offset,X
+27A9 LDA #MENU_CHAR_BOX_HEIGHT#256
+27AB STA call_offset,X
+27AD LDA #MENU_CHAR_BOX_COLOR#256
+27AF STA call_offset,X
+27B1 JSR DrawRect
+27B4 STZ index,X
+27B6 STZ i,X
+27B8 STZ j,X
+27BA LDA j,X
+27BC ASL
+27BD ASL
+27BE ASL
+27BF ASL
+27C0 ADC #MENU_CHAR_GRID_LEFT
+27C2 STA xpos,X
+27C4 LDA i,X
+27C6 ASL
+27C7 ASL
+27C8 ASL
+27C9 ASL
+27CA ADC #MENU_CHAR_GRID_TOP
+27CC STA ypos,X
+27CE LDA #Menu_item_slot#256
+27D0 STA call_offset,X
+27D2 LDA xpos,X
+27D4 STA call_offset,X
+27D6 LDA ypos,X
+27D8 STA call_offset,X
+27DA JSR DrawTile
+27DD LDY index,X
+27DF LDA hero_inventory,Y
+27E2 CMP #item_none
+27E4 BNE skip
+27E6 JMP if{temp}
+27E9 skip:
+27E9 ASL
+27EA TAY
+27EB LDA item_stats,Y
+27EE STA item_ptr
+27F0 LDA item_stats+1,Y
+27F3 STA item_ptr+1
+27F5 LDY #type
+27F7 LDA (item_ptr),Y
+27F9 CMP #stat_Res_Only
+27FB BNE skip
+27FD JMP if{temp}
+2800 skip:
+2800 STA item_type,X
+2802 LDY index,X
+2804 LDA hero_inventory,Y
+2807 STA item_ptr
+2809 LDA item_ptr
+280B STA call_offset,X
+280D LDA xpos,X
+280F STA call_offset,X
+2811 LDA ypos,X
+2813 STA call_offset,X
+2815 JSR DrawItem
+2818 LDA menu_char_x
+281B CMP j,X
+281D BEQ skip
+281F JMP if{temp}
+2822 skip:
+2822 LDA menu_char_y
+2825 CMP i,X
+2827 BEQ skip
+2829 JMP if{temp}
+282C skip:
+282C LDY item_type,X
+282E LDA hero_equipped,Y
+2831 STA item_ptr
+2833 LDA item_ptr
+2835 STA call_offset,X
+2837 LDA #MENU_CHAR_BOX_LEFT#256
+2839 STA call_offset,X
+283B LDA #MENU_CHAR_BOX1_TOP#256
+283D STA call_offset,X
+283F LDA #MENU_CHAR_BOX_COLOR#256
+2841 STA call_offset,X
+2843 JSR DrawItemStats
+2846 LDY index,X
+2848 LDA hero_inventory,Y
+284B STA item_ptr
+284D LDA item_ptr
+284F STA call_offset,X
+2851 LDA #MENU_CHAR_BOX_LEFT#256
+2853 STA call_offset,X
+2855 LDA #MENU_CHAR_BOX2_TOP#256
+2857 STA call_offset,X
+2859 LDA #MENU_CHAR_BOX_COLOR#256
+285B STA call_offset,X
+285D JSR DrawItemStats
+2860 LDA #Menu_item_selector#256
+2862 STA call_offset,X
+2864 LDA #MENU_CHAR_BOX_LEFT#256
+2866 STA call_offset,X
+2868 LDA #MENU_CHAR_BOX2_TOP#256
+286A STA call_offset,X
+286C LDA #COLOR_TRANSPARENT#256
+286E STA call_offset,X
+2870 LDA #COLOR_GREEN#256
+2872 STA call_offset,X
+2874 JSR DrawTile1bpp
+2877 INC index,X
+2879 INC j,X
+287B LDA j,X
+287D CMP #MENU_CHAR_BOX_X_COUNT
+287F BEQ skip
+2881 JMP dmi.loopx
+2884 skip:
+2884 INC i,X
+2886 LDA i,X
+2888 CMP #MENU_CHAR_BOX_Y_COUNT
+288A BEQ skip
+288C JMP dmi.loopy
+288F skip:
+288F LDA #MENU_CHAR_GRID_LEFT#256
+2891 STA call_offset,X
+2893 LDA #MENU_CHAR_GRID_LINE_TOP#256
+2895 STA call_offset,X
+2897 LDA #MENU_CHAR_GRID_LINE_WIDTH#256
+2899 STA call_offset,X
+289B LDA #1#256
+289D STA call_offset,X
+289F LDA #COLOR_BLACK#256
+28A1 STA call_offset,X
+28A3 JSR DrawRect
+28A6 LDA #MENU_CHAR_GRID_LINE_LEFT#256
+28A8 STA call_offset,X
+28AA LDA #MENU_CHAR_GRID_TOP#256
+28AC STA call_offset,X
+28AE LDA #1#256
+28B0 STA call_offset,X
+28B2 LDA #MENU_CHAR_GRID_LINE_HEIGHT#256
+28B4 STA call_offset,X
+28B6 LDA #COLOR_BLACK#256
+28B8 STA call_offset,X
+28BA JSR DrawRect
+28BD LDA menu_char_x
+28C0 ASL
+28C1 ASL
+28C2 ASL
+28C3 ASL
+28C4 CLC
+28C5 ADC #MENU_CHAR_GRID_LEFT
+28C7 STA xpos,X
+28C9 LDA menu_char_y
+28CC ASL
+28CD ASL
+28CE ASL
+28CF ASL
+28D0 CLC
+28D1 ADC #MENU_CHAR_GRID_TOP
+28D3 STA ypos,X
+28D5 LDA #Menu_item_selector#256
+28D7 STA call_offset,X
+28D9 LDA xpos,X
+28DB STA call_offset,X
+28DD LDA ypos,X
+28DF STA call_offset,X
+28E1 LDA #COLOR_TRANSPARENT#256
+28E3 STA call_offset,X
+28E5 LDA #COLOR_GREEN#256
+28E7 STA call_offset,X
+28E9 JSR DrawTile1bpp
+28EC STX saveX
+28EE LDX #0
+28F0 PLA
+28F1 STA ZP_locals,X
+28F3 INX
+28F4 CPX #zpcounter
+28F6 BNE ZP_pull
+28F8 LDX saveX
+28FA PLX
+28FB RTS
+2908 DrawSkills:
+2908 row:
+2908 column:
+2908 index:
+2908 left:
+2908 top:
+2908 color:
+2908 color2:
+2908 PHX
+2909 TXA ;2
+290A SEC ;2
+290B SBC #xcounter ;2
+290D TAX ;2
+290E STX saveX
+2910 LDX #zpcounter
+2912 LDA ZP_locals-1,X
+2914 PHA
+2915 DEX
+2916 BNE ZP_push
+2918 LDX saveX
+291A LDA #MENU_SKILL_DBOX_LEFT#256
+291C STA call_offset,X
+291E LDA #MENU_SKILL_DBOX_TOP#256
+2920 STA call_offset,X
+2922 LDA #MENU_SKILL_DBOX_WIDTH#256
+2924 STA call_offset,X
+2926 LDA #MENU_SKILL_DBOX_HEIGHT#256
+2928 STA call_offset,X
+292A LDA #MENU_SKILL_DBOX_COLOR#256
+292C STA call_offset,X
+292E JSR DrawRect
+2931 LDA #Skill0#256
+2933 STA index,X
+2935 STZ row,X
+2937 LDY row,X
+2939 LDA ds.tops,Y
+293C STA top,X
+293E LDA ds.colors,Y
+2941 STA color,X
+2943 LDA #MENU_SKILL_BOX_LEFT#256
+2945 STA call_offset,X
+2947 LDA top,X
+2949 STA call_offset,X
+294B LDA #MENU_SKILL_BOX_WIDTH#256
+294D STA call_offset,X
+294F LDA #MENU_SKILL_BOX_HEIGHT#256
+2951 STA call_offset,X
+2953 LDA color,X
+2955 STA call_offset,X
+2957 JSR DrawRect
+295A STZ column,X
+295C LDA column,X
+295E ASL ;*2
+295F ASL ;*4
+2960 STA mult_buff,X
+2962 ASL ;*8
+2963 ASL ;*16
+2964 ASL ;*32
+2965 SEC
+2966 SBC mult_buff,X
+2968 CLC
+2969 ADC #MENU_SKILL_SKILL_LEFT
+296B STA left,X
+296D LDA row,X
+296F ASL ;*2
+2970 STA mult_buff,X
+2972 ASL ;*4
+2973 ASL ;*8
+2974 ASL ;*16
+2975 ASL ;*32
+2976 SEC
+2977 SBC mult_buff,X
+2979 CLC
+297A ADC #MENU_SKILL_SKILL_TOP
+297C STA top,X
+297E LDA index,X
+2980 SEC
+2981 SBC #Skill0
+2983 TAY
+2984 LDA skill_list,Y
+2987 BNE skip
+2989 JMP if{temp}
+298C skip:
+298C LDY row,X
+298E LDA ds.color1,Y
+2991 STA color,X
+2993 LDA ds.color2,Y
+2996 STA color2,X
+2998 LDA index,X
+299A STA call_offset,X
+299C LDA left,X
+299E STA call_offset,X
+29A0 LDA top,X
+29A2 STA call_offset,X
+29A4 LDA color,X
+29A6 STA call_offset,X
+29A8 LDA color2,X
+29AA STA call_offset,X
+29AC JSR DrawTile1bpp
+29AF JMP if{temp2}
+29B2 LDA index,X
+29B4 STA call_offset,X
+29B6 LDA left,X
+29B8 STA call_offset,X
+29BA LDA top,X
+29BC STA call_offset,X
+29BE LDA #COLOR_GRAY_1#256
+29C0 STA call_offset,X
+29C2 LDA #COLOR_GRAY_2#256
+29C4 STA call_offset,X
+29C6 JSR DrawTile1bpp
+29C9 LDA menu_skills_x
+29CC CMP column,X
+29CE BEQ skip
+29D0 JMP if{temp}
+29D3 skip:
+29D3 LDA menu_skills_y
+29D6 CMP row,X
+29D8 BEQ skip
+29DA JMP if{temp}
+29DD skip:
+29DD LDA #Menu_skill_selector#256
+29DF STA call_offset,X
+29E1 LDA left,X
+29E3 STA call_offset,X
+29E5 LDA top,X
+29E7 STA call_offset,X
+29E9 LDA #COLOR_TRANSPARENT#256
+29EB STA call_offset,X
+29ED LDA #COLOR_GREEN#256
+29EF STA call_offset,X
+29F1 JSR DrawTile1bpp
+29F4 LDA menu_skills_y
+29F7 ASL
+29F8 ASL
+29F9 CLC
+29FA ADC menu_skills_y
+29FD ADC menu_skills_x
+2A00 ASL
+2A01 STA index_buff,X ;save index for skill description
+2A03 TAY
+2A04 LDA skill_titles,Y
+2A07 STA str_ptr
+2A09 LDA skill_titles+1,Y
+2A0C STA str_ptr+1
+2A0E LDY #0
+2A10 LDA (str_ptr),Y
+2A12 BEQ ds.title_done
+2A14 INY
+2A15 BNE ds.title
+2A17 TYA
+2A18 ASL
+2A19 STA mult_buff,X
+2A1B ASL
+2A1C CLC
+2A1D ADC mult_buff,X
+2A1F STA mult_buff,X
+2A21 LDA #MENU_SKILL_DBOX_WIDTH
+2A23 SEC
+2A24 SBC mult_buff,X
+2A26 LSR
+2A27 CLC
+2A28 ADC #MENU_SKILL_DBOX_LEFT
+2A2A STA draw_X
+2A2D LDY menu_skills_y
+2A30 LDA ds.color2,Y
+2A33 STA color,X
+2A35 LDA str_ptr
+2A37 STA call_offset,X
+2A39 LDA str_ptr+1
+2A3B STA call_offset+1,X
+2A3D STZ call_offset,X
+2A3F STZ call_offset,X
+2A41 LDA #MENU_SKILL_DBOX_TITLE_TOP#256
+2A43 STA call_offset,X
+2A45 LDA #COLOR_WHITE#256
+2A47 STA call_offset,X
+2A49 LDA color,X
+2A4B STA call_offset,X
+2A4D JSR DrawText
+2A50 LDY index_buff,X
+2A52 LDA skill_descriptions,Y
+2A55 STA str_ptr
+2A57 LDA skill_descriptions+1,Y
+2A5A STA str_ptr+1
+2A5C LDA #MENU_SKILL_DBOX_TEXT_LEFT#256
+2A5E STA draw_X
+2A61 LDA str_ptr
+2A63 STA call_offset,X
+2A65 LDA str_ptr+1
+2A67 STA call_offset+1,X
+2A69 STZ call_offset,X
+2A6B STZ call_offset,X
+2A6D LDA #MENU_SKILL_DBOX_TEXT_TOP#256
+2A6F STA call_offset,X
+2A71 LDA #COLOR_WHITE#256
+2A73 STA call_offset,X
+2A75 LDA #MENU_SKILL_DBOX_COLOR#256
+2A77 STA call_offset,X
+2A79 JSR DrawText
+2A7C LDA index_buff,X
+2A7E LSR
+2A7F TAY
+2A80 LDA skill_list,Y
+2A83 BEQ skip
+2A85 JMP if{temp}
+2A88 skip:
+2A88 LDA menu_skills_x
+2A8B BEQ ds.upgrade
+2A8D DEY
+2A8E LDA skill_list,Y
+2A91 BNE skip
+2A93 JMP if{temp}
+2A96 skip:
+2A96 LDA #MENU_SKILL_UPGRADE_LEFT#256
+2A98 STA draw_X
+2A9B BRA str_skip
+2AAC LDA #str_addr#256
+2AAE STA call_offset,X
+2AB0 LDA #str_addr>>8
+2AB2 STA call_offset+1,X
+2AB4 STZ call_offset,X
+2AB6 STZ call_offset,X
+2AB8 LDA #MENU_SKILL_UPGRADE_TOP#256
+2ABA STA call_offset,X
+2ABC LDA #COLOR_YELLOW#256
+2ABE STA call_offset,X
+2AC0 LDA #MENU_SKILL_DBOX_COLOR#256
+2AC2 STA call_offset,X
+2AC4 JSR DrawText
+2AC7 INC index,X
+2AC9 INC column,X
+2ACB LDA column,X
+2ACD CMP #5
+2ACF BEQ skip
+2AD1 JMP ds.columns
+2AD4 skip:
+2AD4 INC row,X
+2AD6 LDA row,X
+2AD8 CMP #3
+2ADA BEQ skip
+2ADC JMP ds.rows
+2ADF skip:
+2ADF STX saveX
+2AE1 LDX #0
+2AE3 PLA
+2AE4 STA ZP_locals,X
+2AE6 INX
+2AE7 CPX #zpcounter
+2AE9 BNE ZP_pull
+2AEB LDX saveX
+2AED PLX
+2AEE RTS
+2AEF loop:
+2AEF done:
+2AFB DrawResources:
+2AFB row:
+2AFB column:
+2AFB left:
+2AFB top:
+2AFB color:
+2AFB color2:
+2AFB item:
+2AFB PHX
+2AFC TXA ;2
+2AFD SEC ;2
+2AFE SBC #xcounter ;2
+2B00 TAX ;2
+2B01 STX saveX
+2B03 LDX #zpcounter
+2B05 LDA ZP_locals-1,X
+2B07 PHA
+2B08 DEX
+2B09 BNE ZP_push
+2B0B LDX saveX
+2B0D LDA #item_none
+2B0F STA menu_res_target
+2B12 STA draw_item,X
+2B14 LDA #MENU_RES_BOX_LEFT#256
+2B16 STA call_offset,X
+2B18 LDA #MENU_RES_BOX_TOP#256
+2B1A STA call_offset,X
+2B1C LDA #MENU_RES_BOX_WIDTH#256
+2B1E STA call_offset,X
+2B20 LDA #MENU_RES_BOX_HEIGHT#256
+2B22 STA call_offset,X
+2B24 LDA #MENU_RES_BOX_COLOR#256
+2B26 STA call_offset,X
+2B28 JSR DrawRect
+2B2B STZ row,X
+2B2D LDA row,X
+2B2F INC
+2B30 STA tile_index,X
+2B32 LDA #0
+2B34 CLC
+2B35 LDY row,X
+2B37 loop:
+2B37 BEQ done
+2B39 ADC #MENU_RES_BLOCK_WIDTH
+2B3B DEY
+2B3C BNE loop
+2B3E done:
+2B3E ADC #MENU_RES_BLOCK_LEFT
+2B40 STA left,X
+2B42 LDY row,X
+2B44 LDA dres.colors,Y
+2B47 STA color,X
+2B49 LDA left,X
+2B4B STA call_offset,X
+2B4D LDA #MENU_RES_BLOCK_TOP#256
+2B4F STA call_offset,X
+2B51 LDA #MENU_RES_BLOCK_WIDTH#256
+2B53 STA call_offset,X
+2B55 LDA #2+MENU_RES_BLOCK_HEIGHT*5#256
+2B57 STA call_offset,X
+2B59 LDA color,X
+2B5B STA call_offset,X
+2B5D JSR DrawRect
+2B60 STZ column,X
+2B62 LDA row,X
+2B64 CMP #4
+2B66 BCC skip
+2B68 JMP if{temp}
+2B6B skip:
+2B6B LDA #0
+2B6D CLC
+2B6E LDY row,X
+2B70 loop:
+2B70 BEQ done
+2B72 ADC #MENU_RES_BLOCK_WIDTH
+2B74 DEY
+2B75 BNE loop
+2B77 done:
+2B77 ADC #MENU_RES_ITEM_LEFT
+2B79 STA left,X
+2B7B LDA #0
+2B7D CLC
+2B7E LDY column,X
+2B80 loop:
+2B80 BEQ done
+2B82 ADC #MENU_RES_BLOCK_HEIGHT
+2B84 DEY
+2B85 BNE loop
+2B87 done:
+2B87 ADC #MENU_RES_ITEM_TOP
+2B89 STA top,X
+2B8B LDA tile_index,X
+2B8D STA call_offset,X
+2B8F LDA left,X
+2B91 STA call_offset,X
+2B93 LDA top,X
+2B95 STA call_offset,X
+2B97 JSR DrawItem
+2B9A LDA tile_index,X
+2B9C STA draw_item,X
+2B9E LDA tile_index,X
+2BA0 CLC
+2BA1 ADC #5
+2BA3 STA tile_index,X
+2BA5 JMP if{temp2}
+2BA8 LDA column,X
+2BAA CMP #3
+2BAC BCC skip
+2BAE JMP if{temp}
+2BB1 skip:
+2BB1 LDA row,X
+2BB3 SEC
+2BB4 SBC #4
+2BB6 STA mult_buff,X
+2BB8 ASL
+2BB9 ADC mult_buff,X
+2BBB ADC column,X
+2BBD TAY
+2BBE LDA dres.items,Y
+2BC1 STA item,X
+2BC3 LDA #0
+2BC5 CLC
+2BC6 LDY row,X
+2BC8 loop:
+2BC8 BEQ done
+2BCA ADC #MENU_RES_BLOCK_WIDTH
+2BCC DEY
+2BCD BNE loop
+2BCF done:
+2BCF ADC #MENU_RES_ITEM_LEFT
+2BD1 STA left,X
+2BD3 LDA #0
+2BD5 CLC
+2BD6 LDY column,X
+2BD8 loop:
+2BD8 BEQ done
+2BDA ADC #MENU_RES_BLOCK_HEIGHT
+2BDC DEY
+2BDD BNE loop
+2BDF done:
+2BDF ADC #MENU_RES_ITEM_TOP
+2BE1 STA top,X
+2BE3 LDA item,X
+2BE5 BRA s{ts}c{tc}
+2BE7 JMP s{ts}done
+2BEA CMP #Res_HP_Heal
+2BEC BEQ skip
+2BEE JMP s{ts}c{tc}
+2BF1 skip:
+2BF1 BRA s{ts}b{tb}
+2BF3 CMP #Res_HP_Upgrade
+2BF5 BNE s{ts}c{tc}
+2BF7 BRA s{ts}b{tb}
+2BF9 LDA #MENU_RES_HP_COLOR1#256
+2BFB STA color,X
+2BFD LDA #MENU_RES_HP_COLOR2#256
+2BFF STA color2,X
+2C01 JMP s{ts}done
+2C04 CMP #Res_Batt_Heal
+2C06 BEQ skip
+2C08 JMP s{ts}c{tc}
+2C0B skip:
+2C0B BRA s{ts}b{tb}
+2C0D CMP #Res_Batt_Upgrade
+2C0F BNE s{ts}c{tc}
+2C11 BRA s{ts}b{tb}
+2C13 LDA #MENU_RES_BATT_COLOR1#256
+2C15 STA color,X
+2C17 LDA #MENU_RES_BATT_COLOR2#256
+2C19 STA color2,X
+2C1B JMP s{ts}done
+2C1E CMP #Res_Exp_Upgrade
+2C20 BEQ skip
+2C22 JMP s{ts}c{tc}
+2C25 skip:
+2C25 BRA s{ts}b{tb}
+2C27 CMP #Res_Dmg_Upgrade
+2C29 BNE s{ts}c{tc}
+2C2B BRA s{ts}b{tb}
+2C2D LDA #MENU_RES_EXP_COLOR1#256
+2C2F STA color,X
+2C31 LDA #MENU_RES_EXP_COLOR2#256
+2C33 STA color2,X
+2C35 LDA item,X
+2C37 STA call_offset,X
+2C39 LDA left,X
+2C3B STA call_offset,X
+2C3D LDA top,X
+2C3F STA call_offset,X
+2C41 LDA color,X
+2C43 STA call_offset,X
+2C45 LDA color2,X
+2C47 STA call_offset,X
+2C49 JSR DrawTile1bpp
+2C4C LDA column,X
+2C4E ASL
+2C4F CLC
+2C50 ADC row,X
+2C52 CLC
+2C53 ADC #21 ;Skip past items to Res_only section
+2C55 STA draw_item,X
+2C57 JMP if{temp2}
+2C5A LDA #item_none#256
+2C5C STA draw_item,X
+2C5E LDA row,X
+2C60 CMP menu_res_x
+2C63 BEQ skip
+2C65 JMP if{temp}
+2C68 skip:
+2C68 LDA column,X
+2C6A CMP menu_res_y
+2C6D BEQ skip
+2C6F JMP if{temp}
+2C72 skip:
+2C72 LDA #0
+2C74 CLC
+2C75 LDY column,X
+2C77 loop:
+2C77 BEQ done
+2C79 ADC #MENU_RES_BLOCK_HEIGHT
+2C7B DEY
+2C7C BNE loop
+2C7E done:
+2C7E ADC #MENU_RES_ITEM_TOP
+2C80 STA top,X
+2C82 LDA #Menu_item_selector#256
+2C84 STA call_offset,X
+2C86 LDA left,X
+2C88 STA call_offset,X
+2C8A LDA top,X
+2C8C STA call_offset,X
+2C8E LDA #COLOR_TRANSPARENT#256
+2C90 STA call_offset,X
+2C92 LDA #COLOR_GREEN#256
+2C94 STA call_offset,X
+2C96 JSR DrawTile1bpp
+2C99 LDA draw_item,X
+2C9B CMP #item_none
+2C9D BNE skip
+2C9F JMP if{temp}
+2CA2 skip:
+2CA2 LDA draw_item,X
+2CA4 STA call_offset,X
+2CA6 LDA #MENU_RES_BOX_LEFT#256
+2CA8 STA call_offset,X
+2CAA LDA #MENU_RES_BOX_TOP#256
+2CAC STA call_offset,X
+2CAE LDA #MENU_RES_BOX_COLOR#256
+2CB0 STA call_offset,X
+2CB2 JSR DrawItemStats
+2CB5 LDA draw_item,X
+2CB7 STA menu_res_target
+2CBA INC column,X
+2CBC LDA column,X
+2CBE CMP #5
+2CC0 BEQ skip
+2CC2 JMP dres.columns
+2CC5 skip:
+2CC5 INC row,X
+2CC7 LDA row,X
+2CC9 CMP #6
+2CCB BEQ skip
+2CCD JMP dres.rows
+2CD0 skip:
+2CD0 LDA menu_res_target
+2CD3 CMP #item_none
+2CD5 BNE skip
+2CD7 JMP if{temp}
+2CDA skip:
+2CDA ASL
+2CDB TAY
+2CDC LDA item_stats,Y
+2CDF STA item_ptr
+2CE1 LDA item_stats+1,Y
+2CE4 STA item_ptr+1
+2CE6 LDY #cost
+2CE8 LDA (item_ptr),Y
+2CEA STA temp_cost,X
+2CEC LDY #cost_type
+2CEE LDA (item_ptr),Y
+2CF0 TAY
+2CF1 LDA crystal_colors,Y
+2CF4 STA color,X
+2CF6 LDA #MENU_RES_COST_LEFT#256
+2CF8 STA draw_X
+2CFB BRA str_skip
+2D05 LDA #str_addr#256
+2D07 STA call_offset,X
+2D09 LDA #str_addr>>8
+2D0B STA call_offset+1,X
+2D0D LDA temp_cost,X
+2D0F STA call_offset,X
+2D11 STZ call_offset,X
+2D13 LDA #MENU_RES_COST_TOP#256
+2D15 STA call_offset,X
+2D17 LDA color,X
+2D19 STA call_offset,X
+2D1B LDA #MENU_RES_BOX_COLOR#256
+2D1D STA call_offset,X
+2D1F JSR DrawText
+2D22 STX saveX
+2D24 LDX #0
+2D26 PLA
+2D27 STA ZP_locals,X
+2D29 INX
+2D2A CPX #zpcounter
+2D2C BNE ZP_pull
+2D2E LDX saveX
+2D30 PLX
+2D31 RTS
+2D32 DrawMenu:
+2D32 counter:
+2D32 PHX
+2D33 TXA ;2
+2D34 SEC ;2
+2D35 SBC #xcounter ;2
+2D37 TAX ;2
+2D38 LDA output_mode
+2D3B BRA s{ts}c{tc}
+2D3D JMP s{ts}done
+2D40 CMP #OUTPUT_CHARACTER
+2D42 BEQ skip
+2D44 JMP s{ts}c{tc}
+2D47 skip:
+2D47 LDA #MENU_BG_LEFT#256
+2D49 STA call_offset,X
+2D4B LDA #MENU_BG_TOP#256
+2D4D STA call_offset,X
+2D4F LDA #MENU_BG_WIDTH#256
+2D51 STA call_offset,X
+2D53 LDA #MENU_BG_HEIGHT#256
+2D55 STA call_offset,X
+2D57 LDA #COLOR_MENU_CHAR#256
+2D59 STA call_offset,X
+2D5B JSR DrawRect
+2D5E LDA #Robot_right#256
+2D60 STA call_offset,X
+2D62 LDA #MENU_CHAR_ROBOT_LEFT#256
+2D64 STA call_offset,X
+2D66 LDA #MENU_CHAR_ROBOT_TOP#256
+2D68 STA call_offset,X
+2D6A JSR DrawTile
+2D6D LDA #MENU_CHAR_HP_TOP#256
+2D6F STA stat_y,X
+2D71 STZ counter,X
+2D73 LDA counter,X
+2D75 ASL
+2D76 TAY
+2D77 LDA hero_stat_pointers,Y
+2D7A STA stat_ptr,X
+2D7C LDA hero_stat_pointers+1,Y
+2D7F STA stat_ptr+1,X
+2D81 ORA hero_stat_pointers,Y
+2D84 BEQ skip
+2D86 JMP if{temp}
+2D89 skip:
+2D89 LDA hero_HP_Max
+2D8C STA temp_stat,X
+2D8E JMP if{temp2}
+2D91 LDA (stat_ptr,X)
+2D93 STA temp_stat,X
+2D95 LDA hero_stat_texts,Y
+2D98 STA stat_ptr,X
+2D9A LDA hero_stat_texts+1,Y
+2D9D STA stat_ptr+1,X
+2D9F LDY counter,X
+2DA1 LDA hero_stat_colors,Y
+2DA4 STA temp_color,X
+2DA6 LDA #MENU_CHAR_STAT_LEFT#256
+2DA8 STA draw_X
+2DAB LDA stat_ptr,X
+2DAD STA call_offset,X
+2DAF LDA stat_ptr+1,X
+2DB1 STA call_offset+1,X
+2DB3 LDA temp_stat,X
+2DB5 STA call_offset,X
+2DB7 STZ call_offset,X
+2DB9 LDA stat_y,X
+2DBB STA call_offset,X
+2DBD LDA temp_color,X
+2DBF STA call_offset,X
+2DC1 LDA #COLOR_MENU_CHAR#256
+2DC3 STA call_offset,X
+2DC5 JSR DrawText
+2DC8 LDA stat_y,X
+2DCA CLC
+2DCB ADC #9
+2DCD STA stat_y,X
+2DCF LDA counter,X
+2DD1 INC
+2DD2 STA counter,X
+2DD4 CMP #HERO_STAT_COUNT
+2DD6 BNE dm.loop
+2DD8 JSR DrawMenuInventory
+2DDB JMP s{ts}done
+2DDE CMP #OUTPUT_SKILLS
+2DE0 BEQ skip
+2DE2 JMP s{ts}c{tc}
+2DE5 skip:
+2DE5 LDA #MENU_BG_LEFT#256
+2DE7 STA call_offset,X
+2DE9 LDA #MENU_BG_TOP#256
+2DEB STA call_offset,X
+2DED LDA #MENU_BG_WIDTH#256
+2DEF STA call_offset,X
+2DF1 LDA #MENU_BG_HEIGHT#256
+2DF3 STA call_offset,X
+2DF5 LDA #COLOR_MENU_SKILLS#256
+2DF7 STA call_offset,X
+2DF9 JSR DrawRect
+2DFC LDA #MENU_SKILL_POINTS_LEFT#256
+2DFE STA draw_X
+2E01 BRA str_skip
+2E0D LDA #str_addr#256
+2E0F STA call_offset,X
+2E11 LDA #str_addr>>8
+2E13 STA call_offset+1,X
+2E15 LDA hero_Points
+2E18 STA call_offset,X
+2E1A STZ call_offset,X
+2E1C LDA #MENU_SKILL_POINTS_TOP#256
+2E1E STA call_offset,X
+2E20 LDA #COLOR_WHITE#256
+2E22 STA call_offset,X
+2E24 LDA #COLOR_MENU_SKILLS#256
+2E26 STA call_offset,X
+2E28 JSR DrawText
+2E2B JSR DrawSkills
+2E2E JMP s{ts}done
+2E31 CMP #OUTPUT_RESOURCES
+2E33 BEQ skip
+2E35 JMP s{ts}c{tc}
+2E38 skip:
+2E38 LDA #MENU_BG_LEFT#256
+2E3A STA call_offset,X
+2E3C LDA #MENU_BG_TOP#256
+2E3E STA call_offset,X
+2E40 LDA #MENU_BG_WIDTH#256
+2E42 STA call_offset,X
+2E44 LDA #MENU_BG_HEIGHT#256
+2E46 STA call_offset,X
+2E48 LDA #COLOR_MENU_RESOURCES#256
+2E4A STA call_offset,X
+2E4C JSR DrawRect
+2E4F LDA #MENU_RES_MONEY_LEFT#256
+2E51 STA call_offset,X
+2E53 LDA #MENU_RES_MONEY_TOP#256
+2E55 STA call_offset,X
+2E57 LDA #MENU_RES_MONEY_WIDTH#256
+2E59 STA call_offset,X
+2E5B LDA #MENU_RES_MONEY_HEIGHT#256
+2E5D STA call_offset,X
+2E5F LDA #COLOR_BLACK#256
+2E61 STA call_offset,X
+2E63 JSR DrawRect
+2E66 LDA #MENU_RES_MONEY_RED_LEFT#256
+2E68 STA draw_X
+2E6B BRA str_skip
+2E6F LDA #str_addr#256
+2E71 STA call_offset,X
+2E73 LDA #str_addr>>8
+2E75 STA call_offset+1,X
+2E77 LDA hero_Red
+2E7A STA call_offset,X
+2E7C STZ call_offset,X
+2E7E LDA #MENU_RES_MONEY_VAL_TOP#256
+2E80 STA call_offset,X
+2E82 LDA #COLOR_CRYSTAL_RED1#256
+2E84 STA call_offset,X
+2E86 LDA #COLOR_BLACK#256
+2E88 STA call_offset,X
+2E8A JSR DrawText
+2E8D LDA #MENU_RES_MONEY_BLUE_LEFT#256
+2E8F STA draw_X
+2E92 BRA str_skip
+2E96 LDA #str_addr#256
+2E98 STA call_offset,X
+2E9A LDA #str_addr>>8
+2E9C STA call_offset+1,X
+2E9E LDA hero_Blue
+2EA1 STA call_offset,X
+2EA3 STZ call_offset,X
+2EA5 LDA #MENU_RES_MONEY_VAL_TOP#256
+2EA7 STA call_offset,X
+2EA9 LDA #COLOR_CRYSTAL_BLUE1#256
+2EAB STA call_offset,X
+2EAD LDA #COLOR_BLACK#256
+2EAF STA call_offset,X
+2EB1 JSR DrawText
+2EB4 LDA #MENU_RES_MONEY_YELLOW_LEFT#256
+2EB6 STA draw_X
+2EB9 BRA str_skip
+2EBD LDA #str_addr#256
+2EBF STA call_offset,X
+2EC1 LDA #str_addr>>8
+2EC3 STA call_offset+1,X
+2EC5 LDA hero_Yellow
+2EC8 STA call_offset,X
+2ECA STZ call_offset,X
+2ECC LDA #MENU_RES_MONEY_VAL_TOP#256
+2ECE STA call_offset,X
+2ED0 LDA #COLOR_CRYSTAL_YELLOW1#256
+2ED2 STA call_offset,X
+2ED4 LDA #COLOR_BLACK#256
+2ED6 STA call_offset,X
+2ED8 JSR DrawText
+2EDB JSR DrawResources
+2EDE PLX
+2EDF RTS
+2EE0 CheckHP:
+2EE0 temp:
+2EE0 PHX
+2EE1 DEX
+2EE2 DEX
+2EE3 LDA hero_HP+1
+2EE6 BMI chp.dead
+2EE8 ORA hero_HP
+2EEB BEQ chp.dead
+2EED BRA chp.alive
+2EEF STZ hero_HP
+2EF2 STZ hero_HP+1
+2EF5 JSR DrawFrame
+2EF8 JSR DrawLegend
+2EFB LDA #DEAD_LEFT#256
+2EFD STA call_offset,X
+2EFF LDA #DEAD_TOP#256
+2F01 STA call_offset,X
+2F03 LDA #DEAD_WIDTH#256
+2F05 STA call_offset,X
+2F07 LDA #DEAD_HEIGHT#256
+2F09 STA call_offset,X
+2F0B LDA #COLOR_BLACK#256
+2F0D STA call_offset,X
+2F0F JSR DrawRect
+2F12 LDA #DEAD_MSG_LEFT#256
+2F14 STA draw_X
+2F17 BRA str_skip
+2F22 LDA #str_addr#256
+2F24 STA call_offset,X
+2F26 LDA #str_addr>>8
+2F28 STA call_offset+1,X
+2F2A STZ call_offset,X
+2F2C STZ call_offset,X
+2F2E LDA #DEAD_MSG_TOP#256
+2F30 STA call_offset,X
+2F32 LDA #COLOR_WHITE#256
+2F34 STA call_offset,X
+2F36 LDA #COLOR_BLACK#256
+2F38 STA call_offset,X
+2F3A JSR DrawText
+2F3D JMP *
+2F40 LDA hero_HP_Max
+2F43 CMP hero_HP
+2F46 BCC skip
+2F48 JMP if{temp}
+2F4B skip:
+2F4B LDA hero_HP_Max
+2F4E STA hero_HP
+2F51 LDA hero_HP_Max+1
+2F54 STA hero_HP+1
+2F57 PLX
+2F58 RTS
+2F59 CheckLavaExit:
+2F59 mX:
+2F59 mY:
+2F59 PHX
+2F5A DEX
+2F5B DEX
+2F5C LDA display_X
+2F5F CLC
+2F60 ADC hero_X
+2F63 STA mX,X
+2F65 LDA display_Y
+2F68 CLC
+2F69 ADC hero_Y
+2F6C STA mY,X
+2F6E LDA #map_data#256
+2F70 STA call_offset,X
+2F72 LDA #map_data>>8
+2F74 STA call_offset+1,X
+2F76 LDA mX,X
+2F78 STA call_offset,X
+2F7A LDA mY,X
+2F7C STA call_offset,X
+2F7E JSR MapXY
+2F81 LDA ret_val
+2F83 BRA s{ts}c{tc}
+2F85 JMP s{ts}done
+2F88 CMP #MAP_LAVA
+2F8A BEQ skip
+2F8C JMP s{ts}c{tc}
+2F8F skip:
+2F8F LDA hero_HP
+2F92 SEC
+2F93 SBC hero_Lava_Dmg
+2F96 STA hero_HP
+2F99 LDA hero_HP+1
+2F9C SBC hero_Lava_Dmg+1
+2F9F STA hero_HP+1
+2FA2 JSR CheckHP
+2FA5 LDA #true#256
+2FA7 STA ret_val
+2FA9 BRA cle.done
+2FAB JMP s{ts}done
+2FAE CMP #MAP_EXIT
+2FB0 BEQ skip
+2FB2 JMP s{ts}c{tc}
+2FB5 skip:
+2FB5 JSR MakeMap
+2FB8 JSR LoadMonsters
+2FBB JSR LoadCrystals
+2FBE JSR ResetGame
+2FC1 LDA #true#256
+2FC3 STA ret_val
+2FC5 BRA cle.done
+2FC7 LDA #false#256
+2FC9 STA ret_val
+2FCB PLX
+2FCC RTS
+2FCD AddExp:
+2FCD exp:
+2FCD PHX
+2FCE DEX
+2FCF LDA hero_Exp
+2FD2 CLC
+2FD3 ADC exp,X
+2FD5 STA hero_Exp
+2FD8 CMP hero_Exp_Max
+2FDB BCS skip
+2FDD JMP if{temp}
+2FE0 skip:
+2FE0 LDA hero_Exp
+2FE3 SEC
+2FE4 SBC hero_Exp_Max
+2FE7 STA hero_Exp
+2FEA LDA hero_Exp_Max
+2FED CLC
+2FEE ADC #10
+2FF0 STA hero_Exp_Max
+2FF3 INC hero_Level
+2FF6 INC hero_Points
+2FF9 LDA hero_HP_Max
+2FFC STA hero_HP
+2FFF LDA hero_HP_Max+1
+3002 STA hero_HP+1
+3005 LDA hero_Batt_Max
+3008 STA hero_Batt
+300B LDA skill_list+Wise_Rewards
+300E BNE skip
+3010 JMP if{temp}
+3013 skip:
+3013 LDA #3#256
+3015 STA call_offset,X
+3017 JSR rand8
+301A LDA ret_val
+301C BRA s{ts}c{tc}
+301E JMP s{ts}done
+3021 CMP #0
+3023 BEQ skip
+3025 JMP s{ts}c{tc}
+3028 skip:
+3028 LDA hero_Blue
+302B CLC
+302C ADC #5
+302E STA hero_Blue
+3031 JMP s{ts}done
+3034 CMP #1
+3036 BEQ skip
+3038 JMP s{ts}c{tc}
+303B skip:
+303B LDA hero_Red
+303E CLC
+303F ADC #5
+3041 STA hero_Red
+3044 JMP s{ts}done
+3047 CMP #2
+3049 BEQ skip
+304B JMP s{ts}c{tc}
+304E skip:
+304E LDA hero_Yellow
+3051 CLC
+3052 ADC #5
+3054 STA hero_Yellow
+3057 PLX
+3058 RTS
+3059 TickHandler:
+3059 redraw:
+3059 index5:
+3059 PHX
+305A TXA ;2
+305B SEC ;2
+305C SBC #xcounter ;2
+305E TAX ;2
+305F STX saveX
+3061 LDX #zpcounter
+3063 LDA ZP_locals-1,X
+3065 PHA
+3066 DEX
+3067 BNE ZP_push
+3069 LDX saveX
+306B LDA #false#256
+306D STA redraw,X
+306F LDA hero_HP
+3072 STA original_hp,X
+3074 LDA hero_Batt
+3077 STA original_batt,X
+3079 LDA hero_HP_Recharge
+307C CLC
+307D ADC hero_HP
+3080 STA hero_HP
+3083 BCC .no_carry
+3085 INC hero_HP+1
+3088 LDA hero_Batt_Recharge
+308B CLC
+308C ADC hero_Batt
+308F STA hero_Batt
+3092 BCC .no_carry
+3094 INC hero_Batt+1
+3097 LDA hero_activity
+309A BNE skip
+309C JMP if{temp}
+309F skip:
+309F LDA hero_target_type
+30A2 BRA s{ts}c{tc}
+30A4 JMP s{ts}done
+30A7 CMP #target_crystal
+30A9 BEQ skip
+30AB JMP s{ts}c{tc}
+30AE skip:
+30AE LDA hero_Batt
+30B1 CMP hero_Mine_Cost
+30B4 BCS skip
+30B6 JMP if{temp}
+30B9 skip:
+30B9 LDA skill_list+Battery_Saver
+30BC BEQ th.batt_saver
+30BE LDA #5#256
+30C0 STA call_offset,X
+30C2 JSR rand8
+30C5 LDA ret_val
+30C7 BEQ th.batt_saver_done
+30C9 LDA hero_Batt
+30CC SEC
+30CD SBC hero_Mine_Cost
+30D0 STA hero_Batt
+30D3 INC hero_activity_ticks
+30D6 LDA #true#256
+30D8 STA redraw,X
+30DA LDA hero_activity_ticks
+30DD CMP hero_activity_ticks_max
+30E0 BEQ skip
+30E2 JMP if{temp}
+30E5 skip:
+30E5 LDA hero_target_index
+30E8 ASL
+30E9 ASL
+30EA CLC
+30EB STA index5,X
+30ED ADC #CRYSTAL_COLOR
+30EF TAY
+30F0 LDA crystal_list,Y
+30F3 BRA s{ts}c{tc}
+30F5 JMP s{ts}done
+30F8 CMP #CRYSTAL_RED_TYPE
+30FA BEQ skip
+30FC JMP s{ts}c{tc}
+30FF skip:
+30FF INC hero_Red
+3102 JMP s{ts}done
+3105 CMP #CRYSTAL_BLUE_TYPE
+3107 BEQ skip
+3109 JMP s{ts}c{tc}
+310C skip:
+310C INC hero_Blue
+310F JMP s{ts}done
+3112 CMP #CRYSTAL_YELLOW_TYPE
+3114 BEQ skip
+3116 JMP s{ts}c{tc}
+3119 skip:
+3119 INC hero_Yellow
+311C LDA skill_list+Master_Miner
+311F BNE skip
+3121 JMP if{temp}
+3124 skip:
+3124 LDA crystal_list,Y
+3127 BRA s{ts}c{tc}
+3129 JMP s{ts}done
+312C CMP #CRYSTAL_RED_TYPE
+312E BEQ skip
+3130 JMP s{ts}c{tc}
+3133 skip:
+3133 INC hero_Red
+3136 JMP s{ts}done
+3139 CMP #CRYSTAL_BLUE_TYPE
+313B BEQ skip
+313D JMP s{ts}c{tc}
+3140 skip:
+3140 INC hero_Blue
+3143 JMP s{ts}done
+3146 CMP #CRYSTAL_YELLOW_TYPE
+3148 BEQ skip
+314A JMP s{ts}c{tc}
+314D skip:
+314D INC hero_Yellow
+3150 LDA #2#256
+3152 STA call_offset,X
+3154 JSR AddExp
+3157 LDA index5,X
+3159 CLC
+315A ADC #CRYSTAL_ACTIVE
+315C TAY
+315D LDA #false
+315F STA crystal_list,Y
+3162 LDA #2#256
+3164 STA call_offset,X
+3166 JSR AddExp
+3169 LDA #target_none#256
+316B STA hero_target_type
+316E LDA #false#256
+3170 STA hero_activity
+3173 JSR DrawFrame
+3176 LDA #true#256
+3178 STA redraw,X
+317A JMP s{ts}done
+317D CMP #target_rock
+317F BEQ skip
+3181 JMP s{ts}c{tc}
+3184 skip:
+3184 LDA hero_Batt
+3187 CMP hero_Drill_Cost
+318A BCS skip
+318C JMP if{temp}
+318F skip:
+318F LDA hero_Batt
+3192 SEC
+3193 SBC hero_Drill_Cost
+3196 STA hero_Batt
+3199 INC hero_activity_ticks
+319C LDA #true#256
+319E STA redraw,X
+31A0 LDA hero_activity_ticks
+31A3 CMP hero_activity_ticks_max
+31A6 BEQ skip
+31A8 JMP if{temp}
+31AB skip:
+31AB LDA #map_data#256
+31AD STA call_offset,X
+31AF LDA #map_data>>8
+31B1 STA call_offset+1,X
+31B3 LDA hero_target_index
+31B6 STA call_offset,X
+31B8 LDA hero_target_index2
+31BB STA call_offset,X
+31BD JSR OffsetXY
+31C0 LDA #MAP_BLANK
+31C2 STA (ret_val)
+31C4 LDA #1#256
+31C6 STA call_offset,X
+31C8 JSR AddExp
+31CB LDA #target_none#256
+31CD STA hero_target_type
+31D0 LDA #false#256
+31D2 STA hero_activity
+31D5 LDA skill_list+Lucky_Driller
+31D8 BNE skip
+31DA JMP if{temp}
+31DD skip:
+31DD LDA #4#256
+31DF STA call_offset,X
+31E1 JSR rand8
+31E4 LDA ret_val
+31E6 BEQ skip
+31E8 JMP if{temp}
+31EB skip:
+31EB LDA #3#256
+31ED STA call_offset,X
+31EF JSR rand8
+31F2 LDA ret_val
+31F4 BRA s{ts}c{tc}
+31F6 JMP s{ts}done
+31F9 CMP #0
+31FB BEQ skip
+31FD JMP s{ts}c{tc}
+3200 skip:
+3200 INC hero_Red
+3203 JMP s{ts}done
+3206 CMP #1
+3208 BEQ skip
+320A JMP s{ts}c{tc}
+320D skip:
+320D INC hero_Blue
+3210 JMP s{ts}done
+3213 CMP #2
+3215 BEQ skip
+3217 JMP s{ts}c{tc}
+321A skip:
+321A INC hero_Yellow
+321D LDA #2#256
+321F STA call_offset,X
+3221 JSR AddExp
+3224 JSR DrawFrame
+3227 LDA #true#256
+3229 STA redraw,X
+322B JMP s{ts}done
+322E CMP #target_monster
+3230 BEQ skip
+3232 JMP s{ts}c{tc}
+3235 skip:
+3235 LDA hero_Batt
+3238 CMP hero_Dmg_Cost
+323B BCS skip
+323D JMP if{temp}
+3240 skip:
+3240 LDA hero_Batt
+3243 SEC
+3244 SBC hero_Dmg_Cost
+3247 STA hero_Batt
+324A LDA skill_list+Instakill
+324D BNE skip
+324F JMP if{temp}
+3252 skip:
+3252 LDA #20#256
+3254 STA call_offset,X
+3256 JSR rand8
+3259 LDA ret_val
+325B BEQ skip
+325D JMP if{temp}
+3260 skip:
+3260 STZ hero_activity_ticks
+3263 LDA hero_activity_ticks
+3266 BNE skip
+3268 JMP if{temp}
+326B skip:
+326B LDA hero_activity_ticks
+326E SEC
+326F SBC hero_Dmg
+3272 STA hero_activity_ticks
+3275 BCS .no_carry
+3277 DEC hero_activity_ticks+1
+327A LDA #100#256
+327C STA call_offset,X
+327E JSR rand8
+3281 LDA ret_val
+3283 CMP hero_Crit_Rate
+3286 BCC skip
+3288 JMP if{temp}
+328B skip:
+328B LDA skill_list+Crit_Lord
+328E BNE skip
+3290 JMP if{temp}
+3293 skip:
+3293 LDA hero_activity_ticks
+3296 SEC
+3297 SBC hero_Dmg
+329A STA hero_activity_ticks
+329D BCS .no_carry
+329F DEC hero_activity_ticks+1
+32A2 JMP if{temp2}
+32A5 LDA hero_Dmg
+32A8 LSR
+32A9 STA mult_buff,X
+32AB LDA hero_activity_ticks
+32AE SEC
+32AF SBC mult_buff,X
+32B1 STA hero_activity_ticks
+32B4 BCS .no_carry
+32B6 DEC hero_activity_ticks+1
+32B9 LDA hero_activity_ticks+1
+32BC BMI th.mob_dead
+32BE ORA hero_activity_ticks
+32C1 BEQ th.mob_dead
+32C3 JMP th.mob_done
+32C6 LDA hero_target_index
+32C9 ASL
+32CA CLC
+32CB ADC hero_target_index
+32CE ADC #MONSTER_ALIVE
+32D0 TAY
+32D1 LDA #false
+32D3 STA monster_list,Y
+32D6 LDA skill_list+Experienced
+32D9 BNE skip
+32DB JMP if{temp}
+32DE skip:
+32DE LDA #11#256
+32E0 STA call_offset,X
+32E2 JSR AddExp
+32E5 JMP if{temp2}
+32E8 LDA #10#256
+32EA STA call_offset,X
+32EC JSR AddExp
+32EF LDA #target_none#256
+32F1 STA hero_target_type
+32F4 LDA #false#256
+32F6 STA hero_activity
+32F9 LDA skill_list+Bounty_Hunter
+32FC BNE skip
+32FE JMP if{temp}
+3301 skip:
+3301 LDA #10#256
+3303 STA call_offset,X
+3305 JSR rand8
+3308 LDA ret_val
+330A BEQ skip
+330C JMP if{temp}
+330F skip:
+330F LDA #3#256
+3311 STA call_offset,X
+3313 JSR rand8
+3316 LDA ret_val
+3318 BRA s{ts}c{tc}
+331A JMP s{ts}done
+331D CMP #0
+331F BEQ skip
+3321 JMP s{ts}c{tc}
+3324 skip:
+3324 INC hero_Red
+3327 JMP s{ts}done
+332A CMP #1
+332C BEQ skip
+332E JMP s{ts}c{tc}
+3331 skip:
+3331 INC hero_Blue
+3334 JMP s{ts}done
+3337 CMP #2
+3339 BEQ skip
+333B JMP s{ts}c{tc}
+333E skip:
+333E INC hero_Yellow
+3341 JSR DrawFrame
+3344 LDA #true#256
+3346 STA redraw,X
+3348 JSR rand5050
+334B LDA ret_val
+334D BNE skip
+334F JMP if{temp}
+3352 skip:
+3352 LDA hero_HP
+3355 SEC
+3356 SBC #2
+3358 STA hero_HP
+335B BCS .no_carry
+335D DEC hero_HP+1
+3360 LDA hero_Batt_Max
+3363 CMP hero_Batt
+3366 BCC skip
+3368 JMP if{temp}
+336B skip:
+336B LDA hero_Batt_Max
+336E STA hero_Batt
+3371 LDA hero_Batt
+3374 CMP original_batt,X
+3376 BNE skip
+3378 JMP if{temp}
+337B skip:
+337B LDA #true#256
+337D STA redraw,X
+337F JSR CheckHP
+3382 LDA hero_HP
+3385 CMP original_hp,X
+3387 BNE skip
+3389 JMP if{temp}
+338C skip:
+338C LDA #true#256
+338E STA redraw,X
+3390 JSR CheckLavaExit
+3393 LDA ret_val
+3395 BNE skip
+3397 JMP if{temp}
+339A skip:
+339A LDA #true#256
+339C STA redraw,X
+339E LDA redraw,X
+33A0 BNE skip
+33A2 JMP if{temp}
+33A5 skip:
+33A5 JSR DrawLegend
+33A8 STX saveX
+33AA LDX #0
+33AC PLA
+33AD STA ZP_locals,X
+33AF INX
+33B0 CPX #zpcounter
+33B2 BNE ZP_pull
+33B4 LDX saveX
+33B6 PLX
+33B7 RTS
+33B8 KeyHandlerGame:
+33B8 key:
+33B8 redraw:
+33B8 mX:
+33B8 mY:
+33B8 moved:
+33B8 PHX
+33B9 TXA ;2
+33BA SEC ;2
+33BB SBC #xcounter ;2
+33BD TAX ;2
+33BE LDA KB_INPUT
+33C1 STA key,X
+33C3 LDA key,X
+33C5 BRA s{ts}c{tc}
+33C7 JMP s{ts}done
+33CA CMP #'m'
+33CC BEQ skip
+33CE JMP s{ts}c{tc}
+33D1 skip:
+33D1 BRA s{ts}b{tb}
+33D3 CMP #'c'
+33D5 BNE s{ts}c{tc}
+33D7 BRA s{ts}b{tb}
+33D9 LDA #OUTPUT_CHARACTER#256
+33DB STA output_mode
+33DE JMP s{ts}done
+33E1 CMP #'k'
+33E3 BEQ skip
+33E5 JMP s{ts}c{tc}
+33E8 skip:
+33E8 LDA #OUTPUT_SKILLS#256
+33EA STA output_mode
+33ED JMP s{ts}done
+33F0 CMP #'r'
+33F2 BEQ skip
+33F4 JMP s{ts}c{tc}
+33F7 skip:
+33F7 LDA #OUTPUT_RESOURCES#256
+33F9 STA output_mode
+33FC LDA output_mode
+33FF CMP #OUTPUT_GAME
+3401 BNE skip
+3403 JMP if{temp}
+3406 skip:
+3406 JSR DrawMenuBorder
+3409 JSR DrawMenu
+340C JMP if{temp2}
+340F LDA #false#256
+3411 STA redraw,X
+3413 LDA #false#256
+3415 STA moved,X
+3417 LDA hero_activity
+341A BEQ skip
+341C JMP if{temp}
+341F skip:
+341F LDA key,X
+3421 BRA s{ts}c{tc}
+3423 JMP s{ts}done
+3426 CMP #'w'
+3428 BEQ skip
+342A JMP s{ts}c{tc}
+342D skip:
+342D LDA hero_target_direction
+3430 CMP #DIRECTION_UP
+3432 BNE skip
+3434 JMP if{temp}
+3437 skip:
+3437 LDA #DIRECTION_UP#256
+3439 STA hero_target_direction
+343C LDA #true#256
+343E STA redraw,X
+3440 JMP if{temp2}
+3443 LDA display_Y
+3446 CLC
+3447 ADC hero_Y
+344A CMP #1
+344C BCS skip
+344E JMP if{temp}
+3451 skip:
+3451 DEC
+3452 STA mY,X
+3454 LDA display_X
+3457 CLC
+3458 ADC hero_X
+345B STA mX,X
+345D LDA #map_data#256
+345F STA call_offset,X
+3461 LDA #map_data>>8
+3463 STA call_offset+1,X
+3465 LDA mX,X
+3467 STA call_offset,X
+3469 LDA mY,X
+346B STA call_offset,X
+346D JSR MapXY
+3470 LDA ret_val
+3472 CMP #MAP_ROCK
+3474 BNE skip
+3476 JMP if{temp}
+3479 skip:
+3479 LDA mX,X
+347B STA call_offset,X
+347D LDA mY,X
+347F STA call_offset,X
+3481 JSR CheckForMonster
+3484 LDA ret_val
+3486 EOR #$FF
+3488 STA or_buff,X
+348A LDY #SKILL_GHOST
+348C LDA skill_list,Y
+348F ORA or_buff,X
+3491 BNE skip
+3493 JMP if{temp}
+3496 skip:
+3496 LDA hero_Y
+3499 CMP #2
+349B BCS skip
+349D JMP if{temp}
+34A0 skip:
+34A0 DEC hero_Y
+34A3 LDA #true#256
+34A5 STA moved,X
+34A7 JMP if{temp2}
+34AA CMP #1
+34AC BEQ skip
+34AE JMP if{temp}
+34B1 skip:
+34B1 LDA display_Y
+34B4 BEQ skip
+34B6 JMP if{temp}
+34B9 skip:
+34B9 STZ hero_Y
+34BC LDA #true#256
+34BE STA moved,X
+34C0 JMP if{temp2}
+34C3 DEC display_Y
+34C6 LDA #true#256
+34C8 STA moved,X
+34CA LDA moved,X
+34CC BNE skip
+34CE JMP if{temp}
+34D1 skip:
+34D1 JSR CheckLavaExit
+34D4 JMP s{ts}done
+34D7 CMP #'s'
+34D9 BEQ skip
+34DB JMP s{ts}c{tc}
+34DE skip:
+34DE LDA hero_target_direction
+34E1 CMP #DIRECTION_DOWN
+34E3 BNE skip
+34E5 JMP if{temp}
+34E8 skip:
+34E8 LDA #DIRECTION_DOWN#256
+34EA STA hero_target_direction
+34ED LDA #1#256
+34EF STA redraw,X
+34F1 JMP if{temp2}
+34F4 LDA display_Y
+34F7 SEC
+34F8 ADC hero_Y
+34FB CMP #MAP_HEIGHT
+34FD BCC skip
+34FF JMP if{temp}
+3502 skip:
+3502 STA mY,X
+3504 LDA display_X
+3507 CLC
+3508 ADC hero_X
+350B STA mX,X
+350D LDA #map_data#256
+350F STA call_offset,X
+3511 LDA #map_data>>8
+3513 STA call_offset+1,X
+3515 LDA mX,X
+3517 STA call_offset,X
+3519 LDA mY,X
+351B STA call_offset,X
+351D JSR MapXY
+3520 LDA ret_val
+3522 CMP #MAP_ROCK
+3524 BNE skip
+3526 JMP if{temp}
+3529 skip:
+3529 LDA mX,X
+352B STA call_offset,X
+352D LDA mY,X
+352F STA call_offset,X
+3531 JSR CheckForMonster
+3534 LDA ret_val
+3536 EOR #$FF
+3538 STA or_buff,X
+353A LDY #SKILL_GHOST
+353C LDA skill_list,Y
+353F ORA or_buff,X
+3541 BNE skip
+3543 JMP if{temp}
+3546 skip:
+3546 LDA hero_Y
+3549 CMP #FRAME_HEIGHT-2
+354B BCC skip
+354D JMP if{temp}
+3550 skip:
+3550 INC hero_Y
+3553 LDA #true#256
+3555 STA moved,X
+3557 JMP if{temp2}
+355A CMP #FRAME_HEIGHT-2
+355C BEQ skip
+355E JMP if{temp}
+3561 skip:
+3561 LDA display_Y
+3564 CMP #MAP_HEIGHT-FRAME_HEIGHT
+3566 BEQ skip
+3568 JMP if{temp}
+356B skip:
+356B LDA #FRAME_HEIGHT-1#256
+356D STA hero_Y
+3570 LDA #true#256
+3572 STA moved,X
+3574 JMP if{temp2}
+3577 INC display_Y
+357A LDA #true#256
+357C STA moved,X
+357E LDA moved,X
+3580 BNE skip
+3582 JMP if{temp}
+3585 skip:
+3585 JSR CheckLavaExit
+3588 JMP s{ts}done
+358B CMP #'a'
+358D BEQ skip
+358F JMP s{ts}c{tc}
+3592 skip:
+3592 LDA hero_facing
+3595 CMP #DIRECTION_RIGHT
+3597 BEQ skip
+3599 JMP if{temp}
+359C skip:
+359C LDA #DIRECTION_LEFT#256
+359E STA hero_facing
+35A1 LDA #1#256
+35A3 STA redraw,X
+35A5 LDA hero_target_direction
+35A8 CMP #DIRECTION_LEFT
+35AA BNE skip
+35AC JMP if{temp}
+35AF skip:
+35AF LDA #DIRECTION_LEFT#256
+35B1 STA hero_target_direction
+35B4 LDA #1#256
+35B6 STA redraw,X
+35B8 JMP if{temp2}
+35BB LDA display_X
+35BE CLC
+35BF ADC hero_X
+35C2 CMP #1
+35C4 BCS skip
+35C6 JMP if{temp}
+35C9 skip:
+35C9 DEC
+35CA STA mX,X
+35CC LDA display_Y
+35CF CLC
+35D0 ADC hero_Y
+35D3 STA mY,X
+35D5 LDA #map_data#256
+35D7 STA call_offset,X
+35D9 LDA #map_data>>8
+35DB STA call_offset+1,X
+35DD LDA mX,X
+35DF STA call_offset,X
+35E1 LDA mY,X
+35E3 STA call_offset,X
+35E5 JSR MapXY
+35E8 LDA ret_val
+35EA CMP #MAP_ROCK
+35EC BNE skip
+35EE JMP if{temp}
+35F1 skip:
+35F1 LDA mX,X
+35F3 STA call_offset,X
+35F5 LDA mY,X
+35F7 STA call_offset,X
+35F9 JSR CheckForMonster
+35FC LDA ret_val
+35FE EOR #$FF
+3600 STA or_buff,X
+3602 LDY #SKILL_GHOST
+3604 LDA skill_list,Y
+3607 ORA or_buff,X
+3609 BNE skip
+360B JMP if{temp}
+360E skip:
+360E LDA hero_X
+3611 CMP #2
+3613 BCS skip
+3615 JMP if{temp}
+3618 skip:
+3618 DEC hero_X
+361B LDA #true#256
+361D STA moved,X
+361F JMP if{temp2}
+3622 CMP #1
+3624 BEQ skip
+3626 JMP if{temp}
+3629 skip:
+3629 LDA display_X
+362C BEQ skip
+362E JMP if{temp}
+3631 skip:
+3631 STZ hero_X
+3634 LDA #true#256
+3636 STA moved,X
+3638 JMP if{temp2}
+363B DEC display_X
+363E LDA #true#256
+3640 STA moved,X
+3642 LDA moved,X
+3644 BNE skip
+3646 JMP if{temp}
+3649 skip:
+3649 JSR CheckLavaExit
+364C JMP s{ts}done
+364F CMP #'d'
+3651 BEQ skip
+3653 JMP s{ts}c{tc}
+3656 skip:
+3656 LDA hero_facing
+3659 CMP #DIRECTION_LEFT
+365B BEQ skip
+365D JMP if{temp}
+3660 skip:
+3660 LDA #DIRECTION_RIGHT#256
+3662 STA hero_facing
+3665 LDA #1#256
+3667 STA redraw,X
+3669 LDA hero_target_direction
+366C CMP #DIRECTION_RIGHT
+366E BNE skip
+3670 JMP if{temp}
+3673 skip:
+3673 LDA #DIRECTION_RIGHT#256
+3675 STA hero_target_direction
+3678 LDA #1#256
+367A STA redraw,X
+367C JMP if{temp2}
+367F LDA display_X
+3682 SEC
+3683 ADC hero_X
+3686 CMP #MAP_WIDTH
+3688 BCC skip
+368A JMP if{temp}
+368D skip:
+368D STA mX,X
+368F LDA display_Y
+3692 CLC
+3693 ADC hero_Y
+3696 STA mY,X
+3698 LDA #map_data#256
+369A STA call_offset,X
+369C LDA #map_data>>8
+369E STA call_offset+1,X
+36A0 LDA mX,X
+36A2 STA call_offset,X
+36A4 LDA mY,X
+36A6 STA call_offset,X
+36A8 JSR MapXY
+36AB LDA ret_val
+36AD CMP #MAP_ROCK
+36AF BNE skip
+36B1 JMP if{temp}
+36B4 skip:
+36B4 LDA mX,X
+36B6 STA call_offset,X
+36B8 LDA mY,X
+36BA STA call_offset,X
+36BC JSR CheckForMonster
+36BF LDA ret_val
+36C1 EOR #$FF
+36C3 STA or_buff,X
+36C5 LDY #SKILL_GHOST
+36C7 LDA skill_list,Y
+36CA ORA or_buff,X
+36CC BNE skip
+36CE JMP if{temp}
+36D1 skip:
+36D1 LDA hero_X
+36D4 CMP #3
+36D6 BCC skip
+36D8 JMP if{temp}
+36DB skip:
+36DB INC hero_X
+36DE LDA #true#256
+36E0 STA moved,X
+36E2 JMP if{temp2}
+36E5 CMP #FRAME_WIDTH-2
+36E7 BEQ skip
+36E9 JMP if{temp}
+36EC skip:
+36EC LDA display_X
+36EF CMP #MAP_WIDTH-FRAME_WIDTH
+36F1 BEQ skip
+36F3 JMP if{temp}
+36F6 skip:
+36F6 LDA #FRAME_WIDTH-1#256
+36F8 STA hero_X
+36FB LDA #true#256
+36FD STA moved,X
+36FF JMP if{temp2}
+3702 INC display_X
+3705 LDA #true#256
+3707 STA moved,X
+3709 LDA moved,X
+370B BNE skip
+370D JMP if{temp}
+3710 skip:
+3710 JSR CheckLavaExit
+3713 JMP s{ts}done
+3716 CMP #' '
+3718 BEQ skip
+371A JMP s{ts}c{tc}
+371D skip:
+371D LDA hero_target_type
+3720 BRA s{ts}c{tc}
+3722 JMP s{ts}done
+3725 CMP #target_crystal
+3727 BEQ skip
+3729 JMP s{ts}c{tc}
+372C skip:
+372C LDA hero_Mine_Speed
+372F STA hero_activity_ticks_max
+3732 LDA hero_Mine_Speed+1
+3735 STA hero_activity_ticks_max+1
+3738 STZ hero_activity_ticks
+373B STZ hero_activity_ticks+1
+373E LDA #true#256
+3740 STA hero_activity
+3743 LDA #true#256
+3745 STA redraw,X
+3747 JMP s{ts}done
+374A CMP #target_rock
+374C BEQ skip
+374E JMP s{ts}c{tc}
+3751 skip:
+3751 LDA hero_Drill_Speed
+3754 STA hero_activity_ticks_max
+3757 LDA hero_Drill_Speed+1
+375A STA hero_activity_ticks_max+1
+375D STZ hero_activity_ticks
+3760 STZ hero_activity_ticks+1
+3763 LDA #true#256
+3765 STA hero_activity
+3768 LDA #true#256
+376A STA redraw,X
+376C JMP s{ts}done
+376F CMP #target_monster
+3771 BEQ skip
+3773 JMP s{ts}c{tc}
+3776 skip:
+3776 LDA #MONSTER_HP#256
+3778 STA hero_activity_ticks_max
+377B LDA #MONSTER_HP>>8
+377D STA hero_activity_ticks_max+1
+3780 LDA #MONSTER_HP#256
+3782 STA hero_activity_ticks
+3785 LDA #MONSTER_HP>>8
+3787 STA hero_activity_ticks+1
+378A LDA #true#256
+378C STA hero_activity
+378F LDA #true#256
+3791 STA redraw,X
+3793 LDA redraw,X
+3795 ORA moved,X
+3797 BNE skip
+3799 JMP if{temp}
+379C skip:
+379C JSR UpdateTarget
+379F JSR DrawFrame
+37A2 JSR DrawLegend
+37A5 PLX
+37A6 RTS
+37A7 KeyHandlerMenu:
+37A7 key:
+37A7 discount:
+37A7 bought:
+37A7 redraw:
+37A7 PHX
+37A8 TXA ;2
+37A9 SEC ;2
+37AA SBC #xcounter ;2
+37AC TAX ;2
+37AD STX saveX
+37AF LDX #zpcounter
+37B1 LDA ZP_locals-1,X
+37B3 PHA
+37B4 DEX
+37B5 BNE ZP_push
+37B7 LDX saveX
+37B9 LDA #false#256
+37BB STA bought,X
+37BD LDA #false#256
+37BF STA redraw,X
+37C1 LDA #false#256
+37C3 STA redraw_skills,X
+37C5 LDA #false#256
+37C7 STA redraw_resources,X
+37C9 LDA KB_INPUT
+37CC STA key,X
+37CE BRA s{ts}c{tc}
+37D0 JMP s{ts}done
+37D3 CMP #'m'
+37D5 BEQ skip
+37D7 JMP s{ts}c{tc}
+37DA skip:
+37DA LDA #OUTPUT_GAME#256
+37DC STA output_mode
+37DF JSR DrawFrame
+37E2 JSR DrawLegend
+37E5 JMP khm.done
+37E8 JMP s{ts}done
+37EB CMP #'c'
+37ED BEQ skip
+37EF JMP s{ts}c{tc}
+37F2 skip:
+37F2 LDA #OUTPUT_CHARACTER#256
+37F4 STA output_mode
+37F7 JSR DrawMenu
+37FA JMP khm.done
+37FD JMP s{ts}done
+3800 CMP #'k'
+3802 BEQ skip
+3804 JMP s{ts}c{tc}
+3807 skip:
+3807 LDA #OUTPUT_SKILLS#256
+3809 STA output_mode
+380C JSR DrawMenu
+380F JMP khm.done
+3812 JMP s{ts}done
+3815 CMP #'r'
+3817 BEQ skip
+3819 JMP s{ts}c{tc}
+381C skip:
+381C LDA #OUTPUT_RESOURCES#256
+381E STA output_mode
+3821 JSR DrawMenu
+3824 JMP khm.done
+3827 LDA output_mode
+382A BRA s{ts}c{tc}
+382C JMP s{ts}done
+382F CMP #OUTPUT_CHARACTER
+3831 BEQ skip
+3833 JMP s{ts}c{tc}
+3836 skip:
+3836 LDA key,X
+3838 BRA s{ts}c{tc}
+383A JMP s{ts}done
+383D CMP #'w'
+383F BEQ skip
+3841 JMP s{ts}c{tc}
+3844 skip:
+3844 LDA menu_char_y
+3847 CMP #1
+3849 BCS skip
+384B JMP if{temp}
+384E skip:
+384E DEC menu_char_y
+3851 JSR DrawMenuInventory
+3854 JMP s{ts}done
+3857 CMP #'s'
+3859 BEQ skip
+385B JMP s{ts}c{tc}
+385E skip:
+385E LDA menu_char_y
+3861 CMP #MENU_CHAR_BOX_Y_COUNT-1
+3863 BCC skip
+3865 JMP if{temp}
+3868 skip:
+3868 INC menu_char_y
+386B JSR DrawMenuInventory
+386E JMP s{ts}done
+3871 CMP #'d'
+3873 BEQ skip
+3875 JMP s{ts}c{tc}
+3878 skip:
+3878 LDA menu_char_x
+387B CMP #MENU_CHAR_BOX_X_COUNT-1
+387D BCC skip
+387F JMP if{temp}
+3882 skip:
+3882 INC menu_char_x
+3885 JSR DrawMenuInventory
+3888 JMP if{temp2}
+388B LDA menu_char_y
+388E CMP #MENU_CHAR_BOX_Y_COUNT-1
+3890 BCC skip
+3892 JMP if{temp}
+3895 skip:
+3895 STZ menu_char_x
+3898 INC menu_char_y
+389B JSR DrawMenuInventory
+389E JMP s{ts}done
+38A1 CMP #'a'
+38A3 BEQ skip
+38A5 JMP s{ts}c{tc}
+38A8 skip:
+38A8 LDA menu_char_x
+38AB CMP #1
+38AD BCS skip
+38AF JMP if{temp}
+38B2 skip:
+38B2 DEC menu_char_x
+38B5 JSR DrawMenuInventory
+38B8 JMP if{temp2}
+38BB LDA menu_char_y
+38BE CMP #1
+38C0 BCS skip
+38C2 JMP if{temp}
+38C5 skip:
+38C5 LDA #MENU_CHAR_BOX_X_COUNT-1#256
+38C7 STA menu_char_x
+38CA DEC menu_char_y
+38CD JSR DrawMenuInventory
+38D0 JMP s{ts}done
+38D3 CMP #KEY_ENTER
+38D5 BEQ skip
+38D7 JMP s{ts}c{tc}
+38DA skip:
+38DA LDA menu_char_y
+38DD ASL
+38DE ASL
+38DF ADC menu_char_y
+38E2 ADC menu_char_x
+38E5 TAY
+38E6 LDA hero_inventory,Y
+38E9 CMP #item_none
+38EB BNE skip
+38ED JMP if{temp}
+38F0 skip:
+38F0 STA temp_item,X
+38F2 STY temp_index,X
+38F4 ASL
+38F5 TAY
+38F6 LDA item_stats,Y
+38F9 STA item_ptr
+38FB LDA item_stats+1,Y
+38FE STA item_ptr+1
+3900 LDY #type
+3902 LDA (item_ptr),Y
+3904 TAY
+3905 LDA hero_equipped,Y
+3908 PHY
+3909 LDY temp_index,X
+390B STA hero_inventory,Y
+390E LDA temp_item,X
+3910 PLY
+3911 STA hero_equipped,Y
+3914 JSR ColorHero
+3917 JSR CalcStats
+391A JSR DrawMenu
+391D JMP s{ts}done
+3920 CMP #OUTPUT_SKILLS
+3922 BEQ skip
+3924 JMP s{ts}c{tc}
+3927 skip:
+3927 LDA key,X
+3929 BRA s{ts}c{tc}
+392B JMP s{ts}done
+392E CMP #'w'
+3930 BEQ skip
+3932 JMP s{ts}c{tc}
+3935 skip:
+3935 LDA menu_skills_y
+3938 BNE skip
+393A JMP if{temp}
+393D skip:
+393D DEC menu_skills_y
+3940 JSR DrawSkills
+3943 JMP s{ts}done
+3946 CMP #'s'
+3948 BEQ skip
+394A JMP s{ts}c{tc}
+394D skip:
+394D LDA menu_skills_y
+3950 CMP #2
+3952 BCC skip
+3954 JMP if{temp}
+3957 skip:
+3957 INC menu_skills_y
+395A JSR DrawSkills
+395D JMP s{ts}done
+3960 CMP #'a'
+3962 BEQ skip
+3964 JMP s{ts}c{tc}
+3967 skip:
+3967 LDA menu_skills_x
+396A BNE skip
+396C JMP if{temp}
+396F skip:
+396F DEC menu_skills_x
+3972 JSR DrawSkills
+3975 JMP s{ts}done
+3978 CMP #'d'
+397A BEQ skip
+397C JMP s{ts}c{tc}
+397F skip:
+397F LDA menu_skills_x
+3982 CMP #4
+3984 BCC skip
+3986 JMP if{temp}
+3989 skip:
+3989 INC menu_skills_x
+398C JSR DrawSkills
+398F JMP s{ts}done
+3992 CMP #KEY_ENTER
+3994 BEQ skip
+3996 JMP s{ts}c{tc}
+3999 skip:
+3999 LDA hero_Points
+399C BNE skip
+399E JMP if{temp}
+39A1 skip:
+39A1 LDA menu_skills_y
+39A4 ASL
+39A5 ASL
+39A6 CLC
+39A7 ADC menu_skills_y
+39AA ADC menu_skills_x
+39AD TAY
+39AE LDA skill_list,Y
+39B1 BEQ skip
+39B3 JMP if{temp}
+39B6 skip:
+39B6 LDA menu_skills_x
+39B9 BEQ khm.skills
+39BB LDA skill_list-1,Y
+39BE BEQ khm.skills_done
+39C0 DEC hero_Points
+39C3 LDA #true
+39C5 STA skill_list,Y
+39C8 JSR CalcStats
+39CB LDA #true#256
+39CD STA redraw,X
+39CF JMP s{ts}done
+39D2 CMP #OUTPUT_RESOURCES
+39D4 BEQ skip
+39D6 JMP s{ts}c{tc}
+39D9 skip:
+39D9 LDA key,X
+39DB BRA s{ts}c{tc}
+39DD JMP s{ts}done
+39E0 CMP #'w'
+39E2 BEQ skip
+39E4 JMP s{ts}c{tc}
+39E7 skip:
+39E7 LDA menu_res_y
+39EA BNE skip
+39EC JMP if{temp}
+39EF skip:
+39EF DEC menu_res_y
+39F2 JSR DrawResources
+39F5 JMP s{ts}done
+39F8 CMP #'s'
+39FA BEQ skip
+39FC JMP s{ts}c{tc}
+39FF skip:
+39FF LDA menu_res_y
+3A02 CMP #4
+3A04 BCC skip
+3A06 JMP if{temp}
+3A09 skip:
+3A09 INC menu_res_y
+3A0C JSR DrawResources
+3A0F JMP s{ts}done
+3A12 CMP #'a'
+3A14 BEQ skip
+3A16 JMP s{ts}c{tc}
+3A19 skip:
+3A19 LDA menu_res_x
+3A1C BNE skip
+3A1E JMP if{temp}
+3A21 skip:
+3A21 DEC menu_res_x
+3A24 JSR DrawResources
+3A27 JMP s{ts}done
+3A2A CMP #'d'
+3A2C BEQ skip
+3A2E JMP s{ts}c{tc}
+3A31 skip:
+3A31 LDA menu_res_x
+3A34 CMP #5
+3A36 BCC skip
+3A38 JMP if{temp}
+3A3B skip:
+3A3B INC menu_res_x
+3A3E JSR DrawResources
+3A41 JMP s{ts}done
+3A44 CMP #KEY_ENTER
+3A46 BEQ skip
+3A48 JMP s{ts}c{tc}
+3A4B skip:
+3A4B LDA menu_res_target
+3A4E CMP #item_none
+3A50 BNE skip
+3A52 JMP if{temp}
+3A55 skip:
+3A55 STZ discount,X
+3A57 LDA menu_res_x
+3A5A CMP #4
+3A5C BCC skip
+3A5E JMP if{temp}
+3A61 skip:
+3A61 LDA skill_list+Big_Discount
+3A64 BNE skip
+3A66 JMP if{temp}
+3A69 skip:
+3A69 LDA #1#256
+3A6B STA discount,X
+3A6D LDA menu_res_target
+3A70 ASL
+3A71 TAY
+3A72 LDA item_stats,Y
+3A75 STA item_ptr
+3A77 LDA item_stats+1,Y
+3A7A STA item_ptr+1
+3A7C LDA skill_list+Crystalsmith
+3A7F BNE skip
+3A81 JMP if{temp}
+3A84 skip:
+3A84 STZ res_total+1,X
+3A86 LDA hero_Red
+3A89 CLC
+3A8A ADC hero_Blue
+3A8D BCC skip
+3A8F INC res_total+1,X
+3A91 skip:
+3A91 CLC
+3A92 ADC hero_Yellow
+3A95 BCC skip
+3A97 INC res_total+1,X
+3A99 skip:
+3A99 STA res_total,X
+3A9B LDA res_total+1,X
+3A9D BNE khm.res_enough
+3A9F LDY #cost
+3AA1 LDA (item_ptr),Y
+3AA3 SEC
+3AA4 SBC discount,X
+3AA6 STA temp_index,X
+3AA8 LDA res_total,X
+3AAA CMP temp_index,X
+3AAC BCS skip
+3AAE JMP if{temp}
+3AB1 skip:
+3AB1 LDA skill_list+Free_Lunch
+3AB4 BEQ khm.res_csmith
+3AB6 LDA #5#256
+3AB8 STA call_offset,X
+3ABA JSR rand8
+3ABD LDA ret_val
+3ABF BEQ khm.res_csmith_done
+3AC1 LDY #cost
+3AC3 LDA (item_ptr),Y
+3AC5 SEC
+3AC6 SBC discount,X
+3AC8 STA res_total,X
+3ACA LDA res_total,X
+3ACC BEQ khm.res_loop_blue
+3ACE LDA hero_Red
+3AD1 BEQ khm.res_loop_blue
+3AD3 DEC res_total,X
+3AD5 DEC hero_Red
+3AD8 BRA khm.res_loop_red
+3ADA LDA res_total,X
+3ADC BEQ khm.res_loop_yellow
+3ADE LDA hero_Blue
+3AE1 BEQ khm.res_loop_yellow
+3AE3 DEC res_total,X
+3AE5 DEC hero_Blue
+3AE8 BRA khm.res_loop_blue
+3AEA LDA res_total,X
+3AEC BEQ khm.res_csmith_done
+3AEE LDA hero_Yellow
+3AF1 BEQ khm.res_csmith_done
+3AF3 DEC res_total,X
+3AF5 DEC hero_Yellow
+3AF8 BRA khm.res_loop_yellow
+3AFA LDA #true#256
+3AFC STA bought,X
+3AFE LDA #true#256
+3B00 STA redraw,X
+3B02 JMP if{temp2}
+3B05 LDY #cost_type
+3B07 LDA (item_ptr),Y
+3B09 PHA
+3B0A LDY #cost
+3B0C LDA (item_ptr),Y
+3B0E CLC ;extra -1 for <= not <
+3B0F SBC discount,X
+3B11 TAY
+3B12 PLA
+3B13 BRA s{ts}c{tc}
+3B15 JMP s{ts}done
+3B18 CMP #CRYSTAL_RED_TYPE
+3B1A BEQ skip
+3B1C JMP s{ts}c{tc}
+3B1F skip:
+3B1F TYA
+3B20 CMP hero_Red
+3B23 BCC skip
+3B25 JMP if{temp}
+3B28 skip:
+3B28 STA temp_index,X
+3B2A LDA skill_list+Free_Lunch
+3B2D BEQ khm.res_red
+3B2F LDA #5#256
+3B31 STA call_offset,X
+3B33 JSR rand8
+3B36 LDA ret_val
+3B38 BEQ khm.res_red_done
+3B3A LDA hero_Red
+3B3D CLC ;extra -1 for <= not <
+3B3E SBC temp_index,X
+3B40 STA hero_Red
+3B43 LDA #true#256
+3B45 STA bought,X
+3B47 LDA #true#256
+3B49 STA redraw,X
+3B4B JMP s{ts}done
+3B4E CMP #CRYSTAL_BLUE_TYPE
+3B50 BEQ skip
+3B52 JMP s{ts}c{tc}
+3B55 skip:
+3B55 TYA
+3B56 CMP hero_Blue
+3B59 BCC skip
+3B5B JMP if{temp}
+3B5E skip:
+3B5E STA temp_index,X
+3B60 LDA skill_list+Free_Lunch
+3B63 BEQ khm.res_blue
+3B65 LDA #5#256
+3B67 STA call_offset,X
+3B69 JSR rand8
+3B6C LDA ret_val
+3B6E BEQ khm.res_blue_done
+3B70 LDA hero_Blue
+3B73 CLC ;extra -1 for <= not <
+3B74 SBC temp_index,X
+3B76 STA hero_Blue
+3B79 LDA #true#256
+3B7B STA bought,X
+3B7D LDA #true#256
+3B7F STA redraw,X
+3B81 JMP s{ts}done
+3B84 CMP #CRYSTAL_YELLOW_TYPE
+3B86 BEQ skip
+3B88 JMP s{ts}c{tc}
+3B8B skip:
+3B8B TYA
+3B8C CMP hero_Yellow
+3B8F BCC skip
+3B91 JMP if{temp}
+3B94 skip:
+3B94 STA temp_index,X
+3B96 LDA skill_list+Free_Lunch
+3B99 BEQ khm.res_yellow
+3B9B LDA #5#256
+3B9D STA call_offset,X
+3B9F JSR rand8
+3BA2 LDA ret_val
+3BA4 BEQ khm.res_yellow_done
+3BA6 LDA hero_Yellow
+3BA9 CLC ;extra -1 for <= not <
+3BAA SBC temp_index,X
+3BAC STA hero_Yellow
+3BAF LDA #true#256
+3BB1 STA bought,X
+3BB3 LDA #true#256
+3BB5 STA redraw,X
+3BB7 LDA bought,X
+3BB9 BNE skip
+3BBB JMP if{temp}
+3BBE skip:
+3BBE LDA menu_res_target
+3BC1 BRA s{ts}c{tc}
+3BC3 JMP s{ts}done
+3BC6 CMP #Res_HP_Heal_ID
+3BC8 BEQ skip
+3BCA JMP s{ts}c{tc}
+3BCD skip:
+3BCD LDA hero_HP_Max
+3BD0 STA hero_HP
+3BD3 LDA hero_HP_Max+1
+3BD6 STA hero_HP+1
+3BD9 JMP s{ts}done
+3BDC CMP #Res_HP_Upgrade_ID
+3BDE BEQ skip
+3BE0 JMP s{ts}c{tc}
+3BE3 skip:
+3BE3 INC hero_HP_Upgrade
+3BE6 JSR CalcStats
+3BE9 LDA hero_HP_Max
+3BEC STA hero_HP
+3BEF LDA hero_HP_Max+1
+3BF2 STA hero_HP+1
+3BF5 JMP s{ts}done
+3BF8 CMP #Res_Batt_Heal_ID
+3BFA BEQ skip
+3BFC JMP s{ts}c{tc}
+3BFF skip:
+3BFF LDA hero_Batt_Max
+3C02 STA hero_Batt
+3C05 JMP s{ts}done
+3C08 CMP #Res_Batt_Upgrade_ID
+3C0A BEQ skip
+3C0C JMP s{ts}c{tc}
+3C0F skip:
+3C0F INC hero_Batt_Upgrade
+3C12 JSR CalcStats
+3C15 LDA hero_Batt_Max
+3C18 STA hero_Batt
+3C1B JMP s{ts}done
+3C1E CMP #Res_Exp_Upgrade_ID
+3C20 BEQ skip
+3C22 JMP s{ts}c{tc}
+3C25 skip:
+3C25 LDA #10#256
+3C27 STA call_offset,X
+3C29 JSR AddExp
+3C2C JMP s{ts}done
+3C2F CMP #Res_Dmg_Upgrade_ID
+3C31 BEQ skip
+3C33 JMP s{ts}c{tc}
+3C36 skip:
+3C36 INC hero_Dmg_Upgrade
+3C39 JSR CalcStats
+3C3C JMP s{ts}done
+3C3F LDY #0
+3C41 LDA hero_inventory,Y
+3C44 CMP #item_none
+3C46 BEQ skip
+3C48 JMP if{temp}
+3C4B skip:
+3C4B LDA skill_list+Only_the_Best
+3C4E BNE skip
+3C50 JMP if{temp}
+3C53 skip:
+3C53 LDA #10#256
+3C55 STA call_offset,X
+3C57 JSR rand8
+3C5A LDA ret_val
+3C5C BNE khm.no_upgrade
+3C5E PHY
+3C5F LDA menu_res_target
+3C62 ASL
+3C63 TAY
+3C64 LDA item_stats,Y
+3C67 STA item_ptr
+3C69 LDA item_stats+1,Y
+3C6C STA item_ptr+1
+3C6E LDY #type
+3C70 LDA (item_ptr),Y
+3C72 BRA s{ts}c{tc}
+3C74 JMP s{ts}done
+3C77 CMP #head
+3C79 BEQ skip
+3C7B JMP s{ts}c{tc}
+3C7E skip:
+3C7E LDA #Lightning
+3C80 JMP s{ts}done
+3C83 CMP #body
+3C85 BEQ skip
+3C87 JMP s{ts}c{tc}
+3C8A skip:
+3C8A LDA #Fortress
+3C8C JMP s{ts}done
+3C8F CMP #legs
+3C91 BEQ skip
+3C93 JMP s{ts}c{tc}
+3C96 skip:
+3C96 LDA #Mustang
+3C98 JMP s{ts}done
+3C9B CMP #gun
+3C9D BEQ skip
+3C9F JMP s{ts}c{tc}
+3CA2 skip:
+3CA2 LDA #Death_Ray
+3CA4 JMP s{ts}done
+3CA7 CMP #tool
+3CA9 BEQ skip
+3CAB JMP s{ts}c{tc}
+3CAE skip:
+3CAE LDA #Laser_Bit
+3CB0 PLY
+3CB1 STA hero_inventory,Y
+3CB4 JMP if{temp2}
+3CB7 LDA menu_res_target
+3CBA STA hero_inventory,Y
+3CBD BRA khm.loop_done
+3CBF INY
+3CC0 CPY #INVENTORY_COUNT
+3CC2 BEQ skip
+3CC4 JMP khm.loop
+3CC7 skip:
+3CC7 LDA redraw,X
+3CC9 BNE skip
+3CCB JMP if{temp}
+3CCE skip:
+3CCE JSR DrawMenu
+3CD1 LDA redraw_skills,X
+3CD3 BNE skip
+3CD5 JMP if{temp}
+3CD8 skip:
+3CD8 JSR DrawSkills
+3CDB LDA redraw_resources,X
+3CDD BNE skip
+3CDF JMP if{temp}
+3CE2 skip:
+3CE2 JSR DrawResources
+3CE5 STX saveX
+3CE7 LDX #0
+3CE9 PLA
+3CEA STA ZP_locals,X
+3CEC INX
+3CED CPX #zpcounter
+3CEF BNE ZP_pull
+3CF1 LDX saveX
+3CF3 PLX
+3CF4 RTS
+3CF5 InitHero:
+3CF5 STZ hero_Exp
+3CF8 LDA #40#256
+3CFA STA hero_Exp_Max
+3CFD STZ hero_HP_Upgrade
+3D00 STZ hero_Batt_Upgrade
+3D03 STZ hero_Dmg_Upgrade
+3D06 LDA #1#256
+3D08 STA hero_Level
+3D0B STZ hero_Red
+3D0E STZ hero_Blue
+3D11 STZ hero_Yellow
+3D14 STZ hero_Points
+3D17 LDA #false#256
+3D19 STA hero_activity
+3D1C LDA #Basic_Head#256
+3D1E STA hero_equipped+head
+3D21 LDA #Basic_Body#256
+3D23 STA hero_equipped+body
+3D26 LDA #Basic_Legs#256
+3D28 STA hero_equipped+legs
+3D2B LDA #Basic_Gun#256
+3D2D STA hero_equipped+gun
+3D30 LDA #Basic_Tool#256
+3D32 STA hero_equipped+tool
+3D35 LDA #item_none
+3D37 LDY #0
+3D39 STA hero_inventory,Y
+3D3C INY
+3D3D CPY #INVENTORY_COUNT
+3D3F BNE ih.iloop
+3D41 LDY #SKILL_COUNT
+3D43 LDA #false
+3D45 STA skill_list,Y
+3D48 DEY
+3D49 BNE ih.sloop
+3D4B RTS
+3D4C ResetGame:
+3D4C STZ display_X
+3D4F STZ display_Y
+3D52 LDA #HERO_START_X#256
+3D54 STA hero_X
+3D57 LDA #HERO_START_Y#256
+3D59 STA hero_Y
+3D5C LDA #false#256
+3D5E STA hero_activity
+3D61 LDA hero_HP_Max
+3D64 STA hero_HP
+3D67 LDA hero_Batt_Max
+3D6A STA hero_Batt
+3D6D LDA #DIRECTION_RIGHT#256
+3D6F STA hero_facing
+3D72 LDA #DIRECTION_RIGHT#256
+3D74 STA hero_target_direction
+3D77 LDA #OUTPUT_GAME#256
+3D79 STA output_mode
+3D7C JSR UpdateTarget
+3D7F RTS
+3D80 main:
+3D80 PHX
+3D81 DEX
+3D82 JSR Setup
+3D85 JSR LoadTiles
+3D88 JSR MakeMap
+3D8B JSR LoadMonsters
+3D8E JSR LoadCrystals
+3D91 JSR InitHero
+3D94 JSR CalcStats
+3D97 JSR ColorHero
+3D9A JSR ResetGame
+3D9D JSR DrawFrame
+3DA0 JSR DrawLegend
+3DA3 LDA TIMER_S
+3DA6 CMP timer_save,X
+3DA8 BNE skip
+3DAA JMP if{temp}
+3DAD skip:
+3DAD STA timer_save,X
+3DAF LDA output_mode
+3DB2 CMP #OUTPUT_GAME
+3DB4 BEQ skip
+3DB6 JMP if{temp}
+3DB9 skip:
+3DB9 JSR TickHandler
+3DBC LDA output_mode
+3DBF CMP #OUTPUT_GAME
+3DC1 BEQ skip
+3DC3 JMP if{temp}
+3DC6 skip:
+3DC6 JSR KeyHandlerGame
+3DC9 JMP if{temp2}
+3DCC JSR KeyHandlerMenu
+3DCF BRA m.loop
+3DD1 PLX
+3DD2 RTS

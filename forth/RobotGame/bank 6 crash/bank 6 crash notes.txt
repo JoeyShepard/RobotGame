@@ -1,0 +1,70 @@
+Bank 00
+	One byte diff with 03 here and 06 in other (as expected)
+	No other differences
+
+Bank 01
+	identical
+
+Bank 02
+	identical
+
+Bank 03
+	same up to 2C90
+
+Bank 06
+	same up to 2C90
+
+Bank 03 Working - Bank 06 Not working
+	bank4 at FFE3 different - 3/6
+	no vectors in bank 6
+
+Bank 06 Working - Bank 03 Not working
+	bank4 in both is 0!
+	no vectors in bank 6
+
+Working
+	03:3FE0 00 04 05 03 00 00 00 0A 00 00 00 00 00 00 00 00 | ...............................
+	03:3FF0 00 00 00 00 00 00 00 00 00 00 4A E8 4A E8 4A E8 | ....................J...J...J..
+	06:3FE0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 | ...............................
+	06:3FF0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 | ...............................
+
+Not working
+	03:3FE0 00 04 05 00 00 00 00 20 00 00 00 00 00 00 00 00 | .............. ................
+	03:3FF0 00 00 00 00 00 00 00 00 00 00 4A E8 4A E8 4A E8 | ....................J...J...J..
+	06:3FE0 00 04 05 06 00 00 00 0A 00 00 00 00 00 00 00 00 | ...............................
+	06:3FF0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 | ...............................
+
+Should not matter since value is internal, not read from memory
+
+Copy entire bank, not just to end of code?
+	Still didnt work
+
+Compare at point where known that differs - namely DrawFrame
+	Ok, definitely some weird differences but what do I do with them???
+	Working:
+	03:3FE0 00 01 02 03 00 00 00 0A 00 00 00 00 00 00 00 00 | ...............................
+	06:3FE0 00 06 05 00 0A D3 69 20 00 00 00 00 00 00 00 00 | ............i. ................
+
+	Not working:
+	03:3FE0 00 04 05 00 00 00 00 20 00 00 00 00 00 00 00 00 | .............. ................
+	06:3FE0 00 01 02 06 0A BA C0 0A 00 00 00 00 00 00 00 00 | ...............................
+
+	Also differences in Bank 00 which is big red flag
+
+Right before EnableBankRom, differences all good
+Hmm, actually good after too. v weird
+
+problem is with wrong val from display_Y!
+	confirmed in crunched.f that v1 is 2535 in both versions 0_0
+	display_Y is messed up before and after the EnableBankRom
+	
+	Got it: display_Y is good before call to DrawFrame then messed up on very first line of DrawFrame
+	also very strange that c@ somehow yields 16 bit number
+	significant perhaps that DrawFrame is first word in DictGame
+
+	review worker.js too
+
+Found it: compared cycle logs and for some reason STZ 01,X is calculated as 00,X
+	This is consistent with observed behavior!
+	(ie overwrite real value with 0 but dont overwrite high byte)
+	memZPX was assuming no banking of PC!

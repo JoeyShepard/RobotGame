@@ -1,0 +1,695 @@
+Replaced symbols
+================
+x0    3drop
+x1    3dup
+x2    >>r
+x3    >>>r
+x4    r>>
+x5    r>>>
+x6    byte
+x7    0>=
+x8    hw_key
+x9    mywordlist
+xa    rand_val
+xb    setup
+xc    startup
+xd    break
+xe    halt
+xf    bank2
+xg    bank3
+xh    bankrom
+xi    bankgfx
+xj    enablebankrom
+xk    dictbankrom
+xl    dictmainram
+xm    enablegfxram
+xn    tile_ground_0
+xo    tile_ground_90
+xp    tile_ground_180
+xq    tile_ground_270
+xr    tile_rock
+xs    tile_lava
+xt    tile_crystal_red
+xu    tile_crystal_yellow
+xv    tile_crystal_blue
+xw    tile_robot_left
+xx    tile_robot_right
+xy    tile_menu_head_temp
+xz    tile_menu_body_temp
+x10   tile_menu_legs_temp
+x11   tile_menu_gun_temp
+x12   tile_menu_tool_temp
+x13   tile_skill_temp
+x14   tile_menu_head
+x15   tile_menu_body
+x16   tile_menu_legs
+x17   tile_menu_gun
+x18   tile_menu_tool
+x19   tile_robot_left_raw
+x1a   tile_robot_right_raw
+x1b   tile_crystal_raw
+x1c   tile_ground_raw
+x1d   tile_hero_target
+x1e   tile_menu_item_selector
+x1f   tile_menu_skill_selector
+x1g   tile_exit
+x1h   tile_res_hp_heal
+x1i   tile_res_batt_heal
+x1j   tile_res_hp_upgrade
+x1k   tile_res_batt_upgrade
+x1l   tile_res_exp_upgrade
+x1m   tile_res_dmg_upgrade
+x1n   tile_skill0
+x1o   tile_skill1
+x1p   tile_skill2
+x1q   tile_skill3
+x1r   tile_skill4
+x1s   tile_skill5
+x1t   tile_skill6
+x1u   tile_skill7
+x1v   tile_skill8
+x1w   tile_skill9
+x1x   tile_skill10
+x1y   tile_skill11
+x1z   tile_skill12
+x20   tile_skill13
+x21   tile_skill14
+x22   tile_monster
+x23   tile_monster_dead
+x24   tile_menu_item_slot
+x25   tile_crystal_base
+x26   tiles
+x27   color_basic_head
+x28   color_head_mkii
+x29   color_head_mkiii
+x2a   color_head_mkiv
+x2b   color_lightning
+x2c   color_basic_body
+x2d   color_tin_body
+x2e   color_iron_body
+x2f   color_steel_body
+x2g   color_fortress
+x2h   color_basic_legs
+x2i   color_fast_legs
+x2j   color_quick_legs
+x2k   color_agile_legs
+x2l   color_mustang
+x2m   color_basic_gun
+x2n   color_blaster
+x2o   color_laser
+x2p   color_phaser
+x2q   color_death_ray
+x2r   color_basic_tool
+x2s   color_rock_pick
+x2t   color_rock_drill
+x2u   color_rock_borer
+x2v   color_laser_bit
+x2w   color_ground_0
+x2x   color_ground_90
+x2y   color_ground_180
+x2z   color_ground_270
+x30   color_crystal_red
+x31   color_crystal_yellow
+x32   color_crystal_blue
+x33   color_rock_tile
+x34   color_lava_tile
+x35   tile_colors
+x36   item_colors
+x37   display_x
+x38   display_y
+x39   hero_x
+x3a   hero_y
+x3b   hero_hp
+x3c   hero_hp_max
+x3d   hero_hp_max_temp
+x3e   hero_hp_upgrade
+x3f   hero_batt
+x3g   hero_batt_max
+x3h   hero_batt_upgrade
+x3i   hero_dmg
+x3j   hero_dmg_upgrade
+x3k   hero_mine_speed
+x3l   hero_drill_speed
+x3m   hero_lava_res
+x3n   hero_batt_recharge
+x3o   hero_crit_rate
+x3p   hero_hp_recharge
+x3q   hero_lava_dmg
+x3r   hero_dmg_cost
+x3s   hero_mine_cost
+x3t   hero_drill_cost
+x3u   hero_exp
+x3v   hero_exp_max
+x3w   hero_level
+x3x   hero_red
+x3y   hero_blue
+x3z   hero_yellow
+x40   hero_points
+x41   hero_facing
+x42   hero_target_direction
+x43   hero_target_type
+x44   hero_target_index
+x45   hero_target_index2
+x46   hero_activity
+x47   hero_activity_ticks
+x48   hero_activity_ticks_max
+x49   hero_equipped
+x4a   hero_inventory
+x4b   skill_list
+x4c   menu_char_x
+x4d   menu_char_y
+x4e   menu_skills_x
+x4f   menu_skills_y
+x4g   menu_res_x
+x4h   menu_res_y
+x4i   menu_res_target
+x4j   map_data
+x4k   map_data_temp
+x4l   output_mode
+x4m   rand
+x4n   rand8
+x4o   rand5050
+x4p   drawrect
+x4q   tileid>
+x4r   tilehw
+x4s   copybyte
+x4t   copytile
+x4u   colortile
+x4v   drawtile
+x4w   screencolor
+x4x   rotatetile90
+x4y   rotatetile90_var
+x4z   loadtiles
+x50   maphorizstripe
+x51   makemap
+x52   drawframe
+x53   drawlegend
+x54   initgame
+x55   resetgame
+x56   inithero
+x57   colorhero
+x58   clrscr
+w     w
+s     s
+q     q
+
+
+Replaced constants and enums
+============================
+cp                            0
+bank_mode                     86
+cp_save                       88
+cp_banked                     8A
+no_print                      8C
+bank2_register                FFE1
+bank3_register                FFE2
+bank_gen_ram2                 1
+bank_gfx_ram1                 4
+SCREEN_WIDTH                  100
+SCREEN_HEIGHT                 80
+SCREEN_ADDRESS                4000
+MAP_WIDTH                     28
+MAP_HEIGHT                    14
+LEGEND_WIDTH                  60
+LEGEND_HEIGHT                 80
+LEGEND_LEFT                   A0
+LEGEND_TOP                    0
+FRAME_WIDTH                   5
+FRAME_HEIGHT                  4
+DIRECTION_NONE                0
+DIRECTION_UP                  1
+DIRECTION_DOWN                2
+DIRECTION_LEFT                3
+DIRECTION_RIGHT               4
+OUTPUT_GAME                   0
+OUTPUT_CHARACTER              1
+OUTPUT_SKILLS                 2
+OUTPUT_RESOURCES              3
+OUTPUT_GAME_OVER              4
+MAP_LAVA_COUNT                14
+MAP_WALL_COUNT                3C
+MAP_LAVA_SIZE                 5
+MAP_WALL_SIZE                 5
+MAP_BLANK                     0
+MAP_BLANK_90                  1
+MAP_BLANK_180                 2
+MAP_BLANK_270                 3
+MAP_ROCK                      4
+MAP_LAVA                      5
+MAP_EXIT                      6
+HERO_START_X                  1
+HERO_START_Y                  1
+BOT_HP                        1E
+SKILL_BATTERY_SAVER           0
+SKILL_BOUNTY_HUNTER           1
+SKILL_FAST_DIGGER             2
+SKILL_LUCKY_DRILLER           3
+SKILL_MASTER_MINER            4
+SKILL_LUCKY_CRIT              5
+SKILL_CRIT_LORD               6
+SKILL_EXPERIENCED             7
+SKILL_INSTAKILL               8
+SKILL_GHOST                   9
+SKILL_FREE_LUNCH              A
+SKILL_WISE_REWARDS            B
+SKILL_BIG_DISCOUNT            C
+SKILL_ONLY_THE_BEST           D
+SKILL_CRYSTALSMITH            E
+SKILL_COUNT                   F
+COLOR_BLACK                   0
+COLOR_WHITE                   3F
+COLOR_GREEN                   C
+COLOR_RED                     3
+COLOR_DARK_RED                2
+COLOR_BLUE                    30
+COLOR_DARK_BLUE               20
+COLOR_DARK_GREEN              8
+COLOR_PURPLE                  32
+COLOR_DARK_PURPLE             21
+COLOR_ORANGE                  B
+COLOR_DARK_ORANGE             6
+COLOR_YELLOW                  F
+COLOR_DARK_YELLOW             A
+COLOR_GRAY_1                  15
+COLOR_GRAY_2                  2A
+COLOR_TRANSPARENT             40
+COLOR_LEGEND_BG               15
+COLOR_ROCK                    21
+COLOR_DIRT                    3B
+COLOR_LAVA                    B
+COLOR_CRYSTAL_RED1            17
+COLOR_CRYSTAL_RED2            2B
+COLOR_CRYSTAL_YELLOW1         1F
+COLOR_CRYSTAL_YELLOW2         2F
+COLOR_CRYSTAL_BLUE1           35
+COLOR_CRYSTAL_BLUE2           3A
+COLOR_EXIT                    35
+COLOR_MONSTER                 1
+COLOR_HP                      3
+COLOR_BATT                    30
+COLOR_DMG                     1
+COLOR_CRIT                    1
+COLOR_MINE                    17
+COLOR_DRILL                   32
+COLOR_LAVA_RES                B
+COLOR_MENU_CHAR               8
+COLOR_MENU_SKILLS             20
+COLOR_MENU_RESOURCES          2
+COLOR_MENU_BORDER             2A
+INVENTORY_COUNT               1E
+TEXT_LINE_HEIGHT              8
+TEXT_CHAR_WIDTH               6
+TEXT_SPACING_Y                A
+MONSTER_COUNT                 28
+MONSTER_HP                    A
+CRYSTAL_COUNT                 28
+BAR_WIDTH                     50
+BAR_HEIGHT                    6
+LEGEND_MAZE_TOP               54
+LEGEND_MAZE_LEFT              8
+LEGEND_MAZE_MONSTER_COLOR     3
+LEGEND_MAZE_CRYSTAL_COLOR     F
+LEGEND_BOX_WIDTH              A
+LEGEND_BOX_HEIGHT             8
+LEGEND_STATS_LEFT             8
+LEGEND_HP_TOP                 4
+LEGEND_HP_BAR_TOP             D
+LEGEND_BATT_TOP               18
+LEGEND_BATT_BAR_TOP           21
+LEGEND_EXP_TOP                2C
+LEGEND_EXP_BAR_TOP            35
+LEGEND_TARGET_TOP             40
+LEGEND_TARGET_BAR_TOP         49
+DRAWITEM_RES_LEFT             2
+DRAWITEM_RES_TOP              2
+DRAWITEM_ITEM_LEFT            12
+DRAWITEM_ITEM_TOP             4
+DRAWITEM_STAT_TOP             F
+DRAWITEM_STAT_HEIGHT          A
+MENU_CHAR_LEFT                9
+MENU_TITLE_TOP                9
+MENU_SKILL_LEFT               4C
+MENU_RES_LEFT                 7C
+MENU_BG_LEFT                  9
+MENU_BG_TOP                   11
+MENU_BG_WIDTH                 EE
+MENU_BG_HEIGHT                66
+MENU_CHAR_ROBOT_LEFT          1B
+MENU_CHAR_ROBOT_TOP           15
+MENU_CHAR_STAT_LEFT           D
+MENU_CHAR_HP_TOP              38
+MENU_CHAR_BATT_TOP            41
+MENU_CHAR_DMG_TOP             4A
+MENU_CHAR_CRIT_TOP            53
+MENU_CHAR_MINE_TOP            5C
+MENU_CHAR_DRILL_TOP           65
+MENU_CHAR_LAVA_TOP            6E
+MENU_CHAR_BOX_COLOR           4
+MENU_CHAR_BOX_LEFT            50
+MENU_CHAR_BOX1_TOP            16
+MENU_CHAR_BOX2_TOP            46
+MENU_CHAR_BOX_WIDTH           50
+MENU_CHAR_BOX_HEIGHT          2D
+MENU_CHAR_BOX_TITLE_OFFSET_X  12
+MENU_CHAR_BOX_TITLE_OFFSET_Y  4
+MENU_CHAR_BOX_STAT_OFFSET_X   12
+MENU_CHAR_BOX_STAT_OFFSET_Y   F
+MENU_CHAR_GRID_LEFT           A4
+MENU_CHAR_GRID_TOP            14
+MENU_CHAR_GRID_LINE_TOP       74
+MENU_CHAR_GRID_LINE_WIDTH     50
+MENU_CHAR_GRID_LINE_LEFT      F4
+MENU_CHAR_GRID_LINE_HEIGHT    61
+MENU_CHAR_BOX_X_COUNT         5
+MENU_CHAR_BOX_Y_COUNT         6
+MENU_SKILL_POINTS_LEFT        B
+MENU_SKILL_POINTS_TOP         14
+MENU_SKILL_BOX1_COLOR         2E
+MENU_SKILL_BOX2_COLOR         3A
+MENU_SKILL_BOX3_COLOR         2B
+MENU_SKILL_BOX_LEFT           9
+MENU_SKILL_BOX1_TOP           1D
+MENU_SKILL_BOX2_TOP           3B
+MENU_SKILL_BOX3_TOP           59
+MENU_SKILL_BOX_WIDTH          8C
+MENU_SKILL_BOX_HEIGHT         1E
+MENU_SKILL_X_SPACING          1C
+MENU_SKILL_Y_SPACING          1E
+MENU_SKILL_SKILL_LEFT         B
+MENU_SKILL_SKILL_TOP          20
+MENU_SKILL_DBOX_COLOR         10
+MENU_SKILL_DBOX_LEFT          98
+MENU_SKILL_DBOX_TOP           1D
+MENU_SKILL_DBOX_WIDTH         5C
+MENU_SKILL_DBOX_HEIGHT        57
+MENU_SKILL_DBOX_TEXT_LEFT     9A
+MENU_SKILL_DBOX_TEXT_TOP      2B
+MENU_SKILL_DBOX_TITLE_TOP     1F
+MENU_SKILL_TITLE1_COLOR       8
+MENU_SKILL_TITLE2_COLOR       35
+MENU_SKILL_TITLE3_COLOR       17
+MENU_SKILL_UPGRADE_LEFT       9A
+MENU_SKILL_UPGRADE_TOP        6A
+MENU_RES_BLOCK_HEIGHT         13
+MENU_RES_BLOCK_WIDTH          17
+MENU_RES_BLOCK_LEFT           B
+MENU_RES_BLOCK_TOP            13
+MENU_RES_BLOCK_TOTAL_HEIGHT   61
+MENU_RES_ITEM_LEFT            E
+MENU_RES_ITEM_TOP             15
+MENU_RES_BOX_WIDTH            5C
+MENU_RES_BOX_HEIGHT           57
+MENU_RES_BOX_COLOR            1
+MENU_RES_BOX_LEFT             98
+MENU_RES_BOX_TOP              1D
+MENU_RES_MONEY_LEFT           98
+MENU_RES_MONEY_TOP            13
+MENU_RES_MONEY_WIDTH          5C
+MENU_RES_MONEY_HEIGHT         A
+MENU_RES_MONEY_VAL_TOP        15
+MENU_RES_MONEY_RED_LEFT       AB
+MENU_RES_MONEY_BLUE_LEFT      C3
+MENU_RES_MONEY_YELLOW_LEFT    DB
+MENU_RES_COST_LEFT            9A
+MENU_RES_COST_TOP             6B
+MENU_RES_HP_COLOR1            1
+MENU_RES_HP_COLOR2            17
+MENU_RES_BATT_COLOR1          10
+MENU_RES_BATT_COLOR2          35
+MENU_RES_EXP_COLOR1           5
+MENU_RES_EXP_COLOR2           1F
+MENU_BORDER_SIZE              8
+HERO_HP_BASE                  2
+HERO_BATT_BASE                3
+HERO_MINE_BASE                8
+HERO_DRILL_BASE               C
+HERO_LAVA_RES_BASE            0
+HERO_BATT_RATE_BASE           1
+HERO_CRIT_BASE                5
+HERO_HP_RECHARGE_BASE         0
+HERO_LAVA_DMG_BASE            4
+HERO_ATTACK_COST_BASE         4
+HERO_MINE_COST_BASE           2
+HERO_DRILL_COST_BASE          2
+HERO_EXP_MAX_BASE             28
+HERO_STAT_COUNT               7
+DEAD_LEFT                     64
+DEAD_TOP                      38
+DEAD_WIDTH                    37
+DEAD_HEIGHT                   F
+DEAD_MSG_LEFT                 68
+DEAD_MSG_TOP                  3C
+NO_MONSTER                    FF
+NO_CRYSTAL                    FF
+CRYSTAL_RED_TYPE              0
+CRYSTAL_BLUE_TYPE             1
+CRYSTAL_YELLOW_TYPE           2
+head                          0
+body                          1
+legs                          2
+gun                           3
+tool                          4
+ground                        5
+crystal                       6
+Basic_Head                    0
+Head_MKII                     1
+Head_MKIII                    2
+Head_MKIV                     3
+Lightning                     4
+Basic_Body                    5
+Tin_Body                      6
+Iron_Body                     7
+Steel_Body                    8
+Fortress                      9
+Basic_Legs                    a
+Fast_Legs                     b
+Quick_Legs                    c
+Agile_Legs                    d
+Mustang                       e
+Basic_Gun                     f
+Blaster                       10
+Laser                         11
+Phaser                        12
+Death_Ray                     13
+Basic_Tool                    14
+Rock_Pick                     15
+Rock_Drill                    16
+Rock_Borer                    17
+Laser_Bit                     18
+Res_HP_Heal_ID                19
+Res_HP_Upgrade_ID             1a
+Res_Batt_Heal_ID              1b
+Res_Batt_Upgrade_ID           1c
+Res_Exp_Upgrade_ID            1d
+Res_Dmg_Upgrade_ID            1e
+item_IDs_size                 1f
+item_none                     20
+Ground_0                      0
+Ground_90                     1
+Ground_180                    2
+Ground_270                    3
+Rock                          4
+Lava                          5
+Crystal_red                   6
+Crystal_yellow                7
+Crystal_blue                  8
+Robot_left                    9
+Robot_right                   a
+Menu_head_temp                b
+Menu_body_temp                c
+Menu_legs_temp                d
+Menu_gun_temp                 e
+Menu_tool_temp                f
+Skill_temp                    10
+Menu_head                     11
+Menu_body                     12
+Menu_legs                     13
+Menu_gun                      14
+Menu_tool                     15
+Robot_left_raw                16
+Robot_right_raw               17
+Crystal_raw                   18
+Ground_raw                    19
+Monster                       1a
+Monster_dead                  1b
+Menu_item_slot                1c
+Crystal_base                  1d
+Hero_target                   1e
+Menu_item_selector            1f
+Menu_skill_selector           20
+ExitID                        21
+Res_HP_Heal                   22
+Res_HP_Upgrade                23
+Res_Batt_Heal                 24
+Res_Batt_Upgrade              25
+Res_Exp_Upgrade               26
+Res_Dmg_Upgrade               27
+Skill0                        28
+Skill1                        29
+Skill2                        2a
+Skill3                        2b
+Skill4                        2c
+Skill5                        2d
+Skill6                        2e
+Skill7                        2f
+Skill8                        30
+Skill9                        31
+Skill10                       32
+Skill11                       33
+Skill12                       34
+Skill13                       35
+Skill14                       36
+tile_IDs_size                 37
+
+
+Unused Forth words
+=================
+cold
+abort
+abort"
+abs
+accept
+action-of
+align
+aligned
+allow-native
+also
+always-native
+at-xy
+base
+bell
+bl
+bounds
+[']
+bye
+cell+
+char
+char+
+chars
+cleave
+cmove
+cmove>
+:NONAME
+compare
+compile,
+count
+d-
+d+
+d>s
+dabs
+defer
+defer@
+defer!
+definitions
+depth
+digit?
+dnegate
+?do
+does>
+.
+.(
+.r
+d.
+d.r
+emit
+blank
+erase
+execute-parsing
+find
+find-name
+fm/mod
+evaluate
+get-current
+get-order
+hexstore
+hold
+immediate
+input
+input>r
+int>name
+invert
+is
+key
+latestnt
+latestxt
+<#
+<
+m*
+marker
+max
+min
+-leading
+-trailing
+name>int
+name>string
+nc-limit
+negate
+never-native
+<>
+number
+#
+#>
+#s
+only
+output
+pad
+page
+parse-name
+parse
++!
+postpone
+?
+?dup
+r>input
+recurse
+refill
+s"
+see
+s>d
+search
+sign
+/
+/mod
+/string
+sliteral
+sm/rem
+source
+source-id
+space
+*/
+*/mod
+state
+strip-underflow
+list
+'
+to
+>body
+>in
+>number
+true
+tuck
+2@
+2over
+2r@
+2r>
+2/
+2!
+2>r
+2constant
+2literal
+2variable
+type
+u.r
+u>
+u<
+ud.
+ud.r
+um*
+unloop
+unused
+useraddr
+value
+word
+words
+wordsize
+0<

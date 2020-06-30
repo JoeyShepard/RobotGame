@@ -1,0 +1,945 @@
+% Internals of Tali Forth 2
+% Scot W. Stevenson 
+% This version: 13. June 2018
+% ---------------------------------------
+\section{Stack}\index{stack|textbf}
+
+Tali Forth 2 uses the lowest part of the top half of Zero Page\index{Zero Page}
+for the Data Stack (DS). This leaves the lower half of the Zero Page for any
+kernel stuff the user might require. The DS therefore grows towards the initial
+user variables. See the file \texttt{definitions.asm} for details.  Because of
+the danger of underflow\index{underflow}, it is recommended that the user
+kernel's variables are keep closer to \texttt{\$0100} than to \texttt{\$007f}.
+
+The X register\index{X register} is used as the Data Stack Pointer (DSP). It
+points to the least significant byte of the current top element of the stack
+(`Top of the Stack', TOS).\footnote{In the first versions of Tali\index{Tali
+Forth 1}, the DSP pointed to the next \textit{free} element of the stack. The
+new system makes detecting underflow easier and parallels the structure of Liara
+Forth\index{Liara Forth}.}
+
+Initially, the DSP points to \texttt{\$78}, not \texttt{\$7F} as might be
+expected. This provides a few bytes as a `floodplain'\index{floodplain (stack)}
+in case of underflow\index{underflow}. The initial value of the DSP is defined
+as \texttt{dsp0} in the code.
+
+\subsection{Single cell values} Since the cell size is 16 bits, each stack entry
+consists of two bytes. They are stored little endian\index{little endian} (least
+significant byte first). Therefore, the DSP points to the LSB of the current
+TOS.\footnote{Try reading that last sentence to a friend who isn't into
+computers. Aren't abbreviations fun?}
+
+Because the DSP points to the current top of the stack, the byte it points to
+after boot -- \texttt{dsp0} -- will never be accessed: The DSP is decremented first with
+two \texttt{dex} instructions, and then the new value is placed on the stack. This
+means that the initial byte is garbage and can be considered part of the floodplain. 
+
+\begin{lstlisting}[frame=single]
+              +--------------+           
+              |          ... |  
+              +-            -+ 
+              |              |   ...
+              +-  (empty)   -+
+              |              |  FE,X
+              +-            -+ 
+        ...   |              |  FF,X
+              +==============+  
+       $0076  |           LSB|  00,X   <-- DSP (X Register)
+              +-    TOS     -+ 
+       $0077  |           MSB|  01,X
+              +==============+ 
+       $0078  |  (garbage)   |  02,X   <-- DSP0 
+              +--------------+           
+       $0079  |              |  03,X
+              + (floodplain) + 
+       $007A  |              |  04,X
+              +--------------+           
+\end{lstlisting}
+
+\textit{Snapshot of the Data Stack with one entry as Top of the Stack (TOS). The
+DSP has been increased by one and the value written.}
+
+Note that the 65c02 system stack -- used as the Return Stack (RS) by Tali --
+pushes the MSB on first and then the LSB (preserving little endian), so the
+basic structure is the same for both stacks. 
+
+Because of this stack design, the second entry (`next on stack', NOS) starts at
+\texttt{02,X} and the third entry (`third on stack', 3OS) at \texttt{04,X}. 
+
+\subsection{Underflow detection}\index{underflow!detection} In contrast to Tali
+Forth 1\index{Tali Forth 1}, this version contains underflow detection for most
+words. It does this by comparing the Data Stack Pointer (X)\index{X register} to
+values that it must be smaller than (because the stack grows towards 0000). For
+instance, to make sure we have one element on the stack, we write
+
+\begin{lstlisting}[frame=lines]
+                cpx #dsp0-1
+                bmi okay
+                jmp underflow
+okay:
+                (...)
+\end{lstlisting}
+
+\noindent For the most common cases, this gives us:
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{ | c | c | }
+        \hline
+        Test for &  Pointer offset\\
+        \hline
+        1 cell   &  dsp0-1\\
+        2 cells  &  dsp0-3\\
+        3 cells  &  dsp0-5\\
+        4 cells  &  dsp0-7\\
+        \hline
+\end{tabular}
+        \caption{DSP values for underflow testing}
+        \label{table_uf}
+\end{table}
+
+Underflow detection\index{underflow!detection} adds seven bytes 
+to the words that have it. However, it increases the stability of the
+program enormously.
+
+\subsection{Double cell values}\index{double cell}
+
+The double cell is stored on top of the single cell.  Note this places the sign
+bit at the beginning of the byte below the DSP.
+
+\begin{lstlisting}[frame=single]
+              +---------------+
+              |               |  
+              +===============+  
+              |            LSB|  $0,x   <-- DSP (X Register) 
+              +-+  Top Cell  -+         
+              |S|          MSB|  $1,x
+              +-+-------------+ 
+              |            LSB|  $2,x
+              +- Bottom Cell -+         
+              |            MSB|  $3,x   
+              +===============+ 
+\end{lstlisting}
+
+Tali Forth 2 does not check for overflow\index{overflow}, which in normal
+operation is too rare to justify the computing expense. 
+
+% ---------------------------------------
+\section{Dictionary}\index{dictionary|textbf}
+
+Tali Forth 2 follows the traditional model of a Forth dictionary -- a linked list
+of words terminated with a zero pointer. The headers and code are kept separate
+to allow various tricks in the code.
+
+
+\subsection{Elements of the Header}\index{header|textbf}
+
+Each header is at least eight bytes long:
+
+\begin{lstlisting}[frame=single]
+              8 bit     8 bit
+               LSB       MSB
+nt_word ->  +--------+--------+
+         +0 | Length | Status |
+            +--------+--------+
+         +2 | Next Header     | nt_next_word
+            +-----------------+
+         +4 | Start of Code   | xt_word 
+            +-----------------+
+         +6 | End of Code     | z_word
+            +--------+--------+
+         +8 | Name   |        |
+            +--------+--------+
+            |        |        |
+            +--------+--------+
+            |        |  ...   |
+         +n +--------+--------+
+\end{lstlisting}
+
+Each word has a \texttt{name token}\index{name token} (nt\index{nt|see {name
+token}}, \texttt{nt\_word} in the code) that
+points to the first byte of the header. This is the length of the word's name
+string, which is limited to 255 characters. 
+
+The second byte in the header (index 1) is the \texttt{status byte}. It is created by
+the flags\index{header!flags} defined in the file \texttt{definitions.asm}: 
+
+\begin{table}[h!]
+        \label{tab:table_flags}
+        \centering
+\begin{tabular}{ | c | l | }
+        \hline
+        Flag & Function\\
+        \hline
+        CO & Compile Only\\
+        IM & Immediate Word\\
+        NN & Never Native Compile\\
+        AN & Always Native Compile\\
+        UF & Underflow dectection\\
+        \hline
+\end{tabular}
+        \caption{Header flags}
+\end{table}
+
+Note there are currently three bits unused. The status byte\index{status byte}
+is followed by the \textbf{pointer to the next header} in the linked list, which
+makes it the name token\index{name token} of the next word. A \texttt{0000} in
+this position signales the end of the linked list, which by convention is the
+word \texttt{bye}. 
+
+This is followed by the current word's \textbf{execution token}\index{execution
+token} (xt\index{xt|see {execution token}},
+\texttt{xt\_word}) that points to the start of the actual code. Some words that
+have the same functionality point to the same code block. The \textbf{end of the
+code} is referenced through the next pointer (\texttt{z\_word}) to enable native
+compilation of the word if allowed. 
+
+The \textbf{name string} starts at the eighth byte. The string is \textit{not}
+zero-terminated. By default, the strings of Tali Forth 2 are lower
+case\index{case, lower}, but case is respected for words the user defines, so
+`quarian' is a different words than `QUARIAN'. 
+
+
+\subsection{Structure of the Header List}
+
+Tali Forth 2 distinguishes between three different list sources: The
+\textbf{native words}\index{native words} that are hard-coded in the file
+\texttt{native\_words.asm}, the \textbf{Forth words}\index{Forth words} which
+are defined as high-level words and then generated at run-time when Tali Forth
+starts up, and \textbf{user words} in the file
+\texttt{user\_words.asm}\index{user words}. 
+
+Tali has an unusually high number of native words in an attempt to make the
+Forth as fast as possible on the 65c02\index{65c02}. The first word in the list
+-- the one that is checked first -- is always
+\texttt{drop}\index{drop@\texttt{drop}}, the last one -- the one checked for
+last -- is always \texttt{bye}\index{bye@\texttt{bye}}. The words which are (or
+are assumed to be) used more than others come first. Since humans are slow,
+words that are used more interactively like
+\texttt{words}\index{words@\texttt{words}} come later. 
+
+The list of Forth words ends with the intro strings\index{intro string}. This
+functions as a primitive form of a self-test\index{self-test}: If you see the
+string and only the string, the compilation of the Forth words worked.
+
+\pagebreak
+
+% ---------------------------------------
+\section{Memory Map}\index{memory map|textbf}
+
+Tali Forth 2 was developed with a simple 32 KiB RAM\index{RAM}, 32 KiB
+ROM\index{ROM} design. 
+
+\begin{lstlisting}[frame=single]
+   $0000  +-------------------+  ram_start, zpage, user0
+          |  User varliables  |
+          +-------------------+  
+          |                   |
+          |  ^  Data Stack    |  <-- dsp
+          |  |                |
+   $0078  +-------------------+  dsp0, stack
+          |                   |
+          |   (Reserved for   |
+          |      kernel)      |
+          |                   |
+   $0100  +===================+  
+          |                   |
+          |  ^  Return Stack  |  <-- rsp 
+          |  |                |
+   $0200  +-------------------+  rsp0, buffer, buffer0
+          |  |                |
+          |  v  Input Buffer  |
+          |                   |
+   $0300  +-------------------+  cp0
+          |  |                |
+          |  v  Dictionary    |
+          |       (RAM)       |
+          |                   |
+          ~~~~~~~~~~~~~~~~~~~~~  <-- cp
+          |                   |
+          |                   |
+          +-------------------+     
+          |                   |
+          | ACCEPT history    | 
+          |                   |
+   $7FFF  #####################  ram_end
+   $8000  |                   |  forth, code0
+          |                   |
+          |                   |
+          |    Tali Forth     |
+          |     (24 KiB)      |
+          |                   |
+          |                   |
+   $E000  +-------------------+
+          |                   |  kernel_putc, kernel_getc   
+          |      Kernel       |
+          |                   |
+   $F000  +-------------------+  
+          |   I/O addresses   |
+          +-------------------+     
+          |                   |
+          |      Kernel       |
+          |                   |
+   $FFFA  +-------------------+     
+          |  65c02 vectors    |
+   $FFFF  +-------------------+     
+\end{lstlisting}
+
+Note that some of these values are hard-coded into the test\index{testing}
+suite; see the file \texttt{definitions.txt} for details.
+
+\pagebreak
+
+% ---------------------------------------
+\section{Input}
+
+Tali Forth 2, like Liara Forth, follows the ANSI\index{ANSI Forth} input model
+with \texttt{refill} instead of older forms. There are up to four possible input
+sources in Forth (see C\&D p. 155):
+
+\begin{enumerate}
+        \item The keyboard (`user input device')\index{keyboard}
+        \item A character string in memory
+        \item A block file\index{file!block}
+        \item A text file\index{file!text}
+\end{enumerate}
+
+To check which one is being used, we first call
+\texttt{blk}\index{blk@\texttt{blk}} which gives us the number of a mass storage
+block being used, or 0 for the `user input device' (keyboard). In the second
+case, we use SOURCE-ID to find out where input is coming from: 0 for the
+keyboard, \texttt{-1 (\$FFFF)} for a string in memory, and a number \texttt{n}
+for a file-id\index{file-id}. Since Tali currently doesn't support blocks, we
+can skip the \texttt{blk} instruction and go right to \texttt{source-id}. 
+
+One gotcha with Tali Forth's input is that current it only sees spaces, but not
+other whitespace, as delimiters. This means that Forth text files that are fed
+to Tali should not contain tabs. This behavior might be changed in the future.
+
+
+\subsection{Starting up}\index{booting}
+
+The intial commands after reboot flow into each other: \texttt{cold} to
+\texttt{abort} to \texttt{quit}. This is the same as with pre-ANSI Forths.
+However, \texttt{quit} now calls \texttt{refill} to get the input.
+\texttt{refill} does different things based on which of the four input sources
+(see above) is active: 
+
+\begin{description} 
+        \item [Keyboard entry] This is the default. Get line of input via
+                \texttt{accept} and return \texttt{true} even if the input string was
+                empty.
+        \item [\texttt{evaluate} string] Return a \texttt{false} flag.
+        \item [Input from a buffer] Not implemented at this time.
+        \item [Input from a file] Not implemented at this time.
+\end{description}
+
+
+\subsection{The Command Line Interface}\index{command line interface}
+
+Tali Forth accepts input\index{input|textbf} lines of up to 256 characters. The
+address of the current input buffer\index{current input buffer} is stored in
+\texttt{cib}\index{cib|see {current input buffer}}.  The length of the current
+buffer is stored in \texttt{ciblen} -- this is the address that
+\texttt{>in}\index{>in@\texttt{>in}} returns.
+\texttt{source}\index{source@\texttt{source}} by default returns \texttt{cib}
+and \texttt{ciblen} as the address and length of the input buffer. 
+
+
+\subsection{\texttt{evaluate}}\index{evaluate@\texttt{evaluate}}
+
+\texttt{evaluate} is used to execute commands that are in a string. A simple
+example would be:
+
+\begin{lstlisting}[frame=lines]
+        s" 1 2 + ." evaluate
+\end{lstlisting}
+
+\noindent Tali Forth uses \texttt{evaluate} to load high-level Forth words from
+the file
+\texttt{forth\_words.asc}\index{forth\_words.asc@\texttt{forth\_words.asc}} and
+extra, user-defined words from
+\texttt{user\_words.asc}\index{user\_words.asc@\texttt{user\_words.asc}}. 
+
+% ---------------------------------------
+\section{\texttt{create}/\texttt{does>}}
+\index{create@\texttt{create}|textbf}
+\index{does>@\texttt{does>}|textbf}
+
+\texttt{create/does>} is the most complex, but also most powerful part of Forth.
+Understanding how it works in Tali Forth is important if you want to be able to
+modify the code. In this text, we walk through the generation process for a
+subroutine threaded code (STC)\index{threading} such as Tali Forth. For a more
+general take, see Brad Rodriguez' series of articles at
+\href{http://www.bradrodriguez.com/papers/moving3.htm}{http://www.bradrodriguez.com/papers/moving3.htm}.
+There is a discussion of this walkthrough at
+\href{http://forum.6502.org/viewtopic.php?f=9\&t=3153}{http://forum.6502.org/viewtopic.php?f=9\&t=3153}. 
+
+We start with the following standard example, the Forth version of
+\texttt{constant}:\index{constant@\texttt{constant}}. 
+
+\begin{lstlisting}[frame=lines]
+        : constant create , does> @ ; 
+\end{lstlisting}
+
+\noindent We examine this in three phases or "sequences", following Rodriguez
+based on\cite{derickbaker}:
+
+\subsubsection{Sequence 1: Compiling the word \texttt{constant}}
+
+\texttt{constant} is a `defining word', one that makes new words. In pseudocode, and
+ignoring any compilation to native 65c02 assembler, the above compiles to: 
+\begin{lstlisting}[frame=lines]
+        jsr CREATE
+        jsr COMMA
+        jsr (DOES>)         ; from DOES>
+   a:   jsr DODOES          ; from DOES>
+   b:   jsr FETCH
+        rts
+\end{lstlisting}
+
+\noindent To make things easier to explain later, we've added the labels `a' and
+`b' in the listing.\footnote{This example uses the word \texttt{(does>)}, which
+in Tali Forth 2 is actually an internal routine that does not appear as a
+separate word. This version is easier to explain.} \texttt{does>} is an
+immediate word that adds not one, but two subroutine jumps, one to
+\texttt{(does>)} and one to \texttt{dodoes}, which is a pre-defined system
+routine like \texttt{dovar}. We'll discuss those later.
+
+In Tali Forth, a number of words such as \texttt{defer} are
+`hand-compiled', that is, instead of using forth such as
+
+\begin{lstlisting}[frame=lines]
+        : defer create ['] abort , does> @ execute ; 
+\end{lstlisting}
+
+\noindent we write an opimized assembler version ourselves (see the actual \texttt{defer}
+code). In these cases, we need to use \texttt{(does>)} and \texttt{dodoes}
+instead of \texttt{does>} as well.
+
+
+\subsubsection{Sequence 2: Executing the word \texttt{constant}/creating
+\texttt{life}}
+
+Now when we execute
+
+\begin{lstlisting}[frame=lines]
+        42 constant life
+\end{lstlisting}
+
+\noindent this pushes the \texttt{rts} of the calling routine -- call it `main'
+-- to the 65c02's stack (the Return Stack, as Forth calls it), which now looks
+like this:
+
+\begin{lstlisting}[frame=lines]
+        (1) RTS               ; to main routine 
+\end{lstlisting}
+
+\noindent Without going into detail, the first two subroutine jumps of \texttt{constant} give us
+this word: 
+
+\begin{lstlisting}[frame=lines]
+        (Header "LIFE")
+        jsr DOVAR               ; in CFA, from LIFE's CREATE
+        4200                    ; in PFA (little-endian)
+\end{lstlisting}
+
+\noindent Next, we \texttt{jsr} to \texttt{(does>)}. The address that this
+pushes on the Return Stack is the instruction of \texttt{constant} we had
+labeled `a'. 
+
+\begin{lstlisting}[frame=lines]
+        (2) RTS to CONSTANT ("a") 
+        (1) RTS to main routine 
+\end{lstlisting}
+
+\noindent Now the tricks start. \texttt{(does>)} takes this address off the stack and uses
+it to replace the \texttt{dovar jsr} target in the CFA of our freshly created
+\texttt{life} word. We now have this: 
+
+\begin{lstlisting}[frame=lines]
+        (Header "LIFE")
+        jsr a                   ; in CFA, modified by (DOES>)
+   c:   4200                    ; in PFA (little-endian)
+\end{lstlisting}
+
+\noindent Note we added a label `c'. Now, when \texttt{(does>)} reaches its own
+\texttt{rts}, it finds the \texttt{rtrs} to the main routine on its stack. This
+is Good Thingi\textsuperscript{TM}, because it aborts the execution of the rest
+of \texttt{constant}, and we don't want to do \texttt{dodoes} or \texttt{fetch}
+now.  We're back at the main routine. 
+
+
+\subsubsection{Sequence 3: Executing \texttt{life}}
+
+Now we execute the word \texttt{life} from our `main' program. In a STC Forth
+such as Tali Forth, this executes a subroutine jump.
+
+\begin{lstlisting}[frame=lines]
+        jsr LIFE
+\end{lstlisting}
+
+\noindent The first thing this call does is push the return address to the main routine
+on the 65c02's stack: 
+
+\begin{lstlisting}[frame=lines]
+        (1) RTS to main
+\end{lstlisting}
+
+\noindent The CFA of \texttt{life} executes a subroutine jump to label `a' in
+\texttt{constant}. This pushes the \texttt{rts} of \texttt{life} on the 65c02's
+stack:
+
+\begin{lstlisting}[frame=lines]
+        (2) RTS to LIFE ("c")
+        (1) RTS to main
+\end{lstlisting}
+
+\noindent This \texttt{jsr} to a lands us at the subroutine jump to \texttt{dodoes}, so
+the return address to \texttt{constant} gets pushed on the stack as well. We had
+given this instruction the label `b'. After all of this, we have three addresses
+on the 65c02's stack: 
+
+\begin{lstlisting}[frame=lines]
+        (3) RTS to CONSTANT ("b") 
+        (2) RTS to LIFE ("c") 
+        (1) RTS to main
+\end{lstlisting}
+
+\noindent \texttt{dodoes} pops address `b' off the 65c02's stack and puts it in a nice
+safe place on Zero Page, which we'll call `z'. More on that in a moment. First,
+\texttt{dodoes} pops the \texttt{rts} to \texttt{life}. This is `c', the
+address of the PFA or \texttt{life}, where we stored the payload of this
+constant. Basically, \texttt{dodoes} performs a \texttt{dovar} here, and
+pushes `c' on the Data Stack. Now all we have left on the 65c02's stack is the
+\texttt{rts} to the main routine.  
+ 
+\begin{lstlisting}[frame=lines]
+        [1] RTS to main
+\end{lstlisting}
+
+\noindent This is where `z' comes in, the location in Zero Page where we stored address
+`b' of \texttt{constant}. Remember, this is where \texttt{constant}'s own PFA
+begins, the \texttt{fetch} command we had originally codes after \texttt{does>}
+in the very first definition. The really clever part: We perform an indirect
+\texttt{jmp} -- not a \texttt{jsr}! -- to this address.
+
+\begin{lstlisting}[frame=lines]
+        jmp (z) 
+\end{lstlisting}
+
+\noindent Now \texttt{constant}'s little payload programm is executed, the subroutine jump
+to \texttt{fetch}. Since we just put the PFA (`c') on the Data Stack,
+\texttt{fetch} replaces this by 42, which is what we were aiming for all along.
+And since \texttt{constant} ends with a \texttt{rts}, we pull the last remaining
+address off the 65c02's stack, which is the return address to the main routine
+where we started. And that's all. 
+
+Put together, this is what we have to code: 
+
+\begin{description}
+        \item [\texttt{does>}:] Compiles a subroutine jump to \texttt{(does>)},
+                then compiles a subroutine jump to \texttt{dodoes}.
+
+        \item [\texttt{(does>)}:] Pops the stack (address of subroutine jump to
+                \texttt{dodoes} in \texttt{constant}, increase this by one,
+                replace the original \texttt{dovar} jump target in \texttt{life}. 
+
+        \item [\texttt{dodoes}:] Pop stack (\texttt{constant}'s PFA), increase
+                address by one, store on Zero Page; pop stack (\texttt{life}'s
+                PFA), increase by one, store on Data Stack; \texttt{jmp} to
+                address we stored in Zero Page.\index{Zero Page} 
+\end{description}
+
+Remember we have to increase the addresses by one because of the way
+\texttt{jsr} stores the return address for \texttt{rts} on the stack on the
+65c02: It points to the third byte of the \texttt{jsr} instruction itself, not
+the actual return address. This can be annoying, because it requires a sequence
+like:
+
+\begin{lstlisting}[frame=lines]
+        inc z
+        bne +
+        inc z+1 
+*       (...) 
+\end{lstlisting}
+
+\noindent Note that with most words in Tali Forth, as any STC Forth, the distinction
+between PFA and CFA is meaningless or at least blurred, because we go native
+anyway. It is only with words generated by \texttt{create/does>} where this
+really makes sense.
+
+% ---------------------------------------
+\section{Control Flow} 
+
+\subsection{Branches} 
+
+For \texttt{if/then}, we need to compile something called a `conditional forward
+branch', traditionally called \texttt{0branch}.\footnote{Many Forths now use the
+words \texttt{cs-pick} and \texttt{cs-roll} instead of the \texttt{branch}
+variants, see
+\href{http://lars.nocrew.org/forth2012/rationale.html\#rat:tools:CS-PICK}
+{http://lars.nocrew.org/forth2012/rationale.html\#rat:tools:CS-PICK}. Tali Forth
+might switch to this construction in the future.} Then, at run-time, if the
+value on the Data Stack is false (flag is zero), the branch is taken (`branch on
+zero', therefore the name). Execpt that we don't have the target of that branch
+yet -- it will later be added by \texttt{then}. For this to work, we remember
+the address after the \texttt{0branch} instruction during the compilation of
+\texttt{if}. This is put on the Data Stack, so that \texttt{then} knows where to
+compile it's address in the second step. Until then, a dummy value is compiled
+after \texttt{0branch} to reserve the space we need.\footnote{This section and
+the next one are based on a discussion at
+\href{http://forum.6502.org/viewtopic.php?f=9\&t=3176}
+{http://forum.6502.org/viewtopic.php?f=9\&t=3176}, see there for more details.
+Another take on this subject that handles things a bit differently is at
+\href{http://blogs.msdn.com/b/ashleyf/archive/2011/02/06/loopty-do-i-loop.aspx}{http://blogs.msdn.com/b/ashleyf/archive/2011/02/06/loopty-do-i-loop.aspx}
+}
+
+In Forth, this can be realized by
+
+\begin{lstlisting}[frame=lines]
+        : if  postpone 0branch here 0 , ; immediate
+\end{lstlisting}
+
+\noindent and 
+
+\begin{lstlisting}[frame=lines]
+        : then here swap ! ; immediate
+\end{lstlisting}
+
+\noindent Note \texttt{then} doesn't actually compile anything at the location in memory
+where it is at. It's job is simply to help \texttt{if} out of the mess it
+created.  If we have an \texttt{else}, we have to add an unconditional
+\texttt{branch} and manipulate the address that \texttt{if} left on the Data
+Stack. The Forth for this is: 
+
+\begin{lstlisting}[frame=lines]
+        : else  postpone branch here 0 , here rot ! ; immediate
+\end{lstlisting}
+
+\noindent Note that \texttt{then} has no idea what has just happened, and just like before
+compiles its address where the value on the top of the Data Stack told it to --
+except that this value now comes from \texttt{else}, not \texttt{if}. 
+
+
+\subsection{Loops} 
+
+Loops are far more complicated, because we have \texttt{do}, \texttt{?do},
+\texttt{loop}, \texttt{+loop}, \texttt{unloop}, and \texttt{leave} to take care
+of. These can call up to three addresses: One for the normal looping action
+(\texttt{loop}/\texttt{+loop}), one to skip over the loop at the beginning
+(\texttt{?do}) and one to skip out of the loop (\texttt{leave}). 
+
+Based on a suggestion by Garth Wilson, we begin each loop in run-time by saving
+the address after the whole loop construct to the Return Stack. That way,
+\texttt{leave} and \texttt{?do} know where to jump to when called, and we don't
+interfere with any \texttt{if/then} structures. On top of that address, we place
+the limit and start values for the loop. 
+
+The key to staying sane while designing these constructs is to first make
+a list of what we want to happen at compile-time and what at run-time. Let's
+start with a simple \texttt{do}/\texttt{loop}.
+
+\subsubsection{\texttt{do} at compile-time:}
+
+\begin{itemize}
+
+        \item Remember current address (in other words, \texttt{here}) on the
+                Return Stack (!) so we can later compile the code for the
+                post-loop address to the Return Stack
+
+        \item Compile some dummy values to reserve the space for said code
+
+        \item Compile the run-time code; we'll call that fragment (\texttt{do})
+
+        \item Push the current address (the new \texttt{here}) to the Data Stack
+                so \texttt{loop} knows where the loop contents begin
+
+\end{itemize}
+
+\subsubsection{\texttt{do} at run-time:}
+
+\begin{itemize}
+        \item Take limit and start off Data Stack and push them to the Return Stack
+\end{itemize}
+
+\noindent Since \texttt{loop} is just a special case of \texttt{+loop} with an index of
+one, we can get away with considering them at the same time. 
+
+
+\subsubsection{\texttt{loop} at compile time:}
+
+\begin{itemize}
+
+        \item Compile the run-time part \texttt{(+loop)}
+
+        \item Consume the address that is on top of the Data Stack as the jump
+                target for normal looping and compile it
+
+        \item Compile \texttt{unloop} for when we're done with the loop, getting
+                rid of the limit/start and post-loop addresses on the Return
+                Stack 
+
+        \item  Get the address on the top of the Return Stack which points to
+                the dummy code compiled by \texttt{do}
+
+        \item At that address, compile the code that pushes the address after
+                the list construct to the Return Stack at run-time
+
+\end{itemize}
+
+\subsubsection{\texttt{loop} at run-time (which is \texttt{(+loop)}) }
+
+\begin{itemize}
+
+        \item Add loop step to count
+
+        \item Loop again if we haven't crossed the limit, otherwise continue
+                after loop
+
+\end{itemize}
+
+At one glance, we can see that the complicated stuff happens at compile-time.
+This is good, because we only have to do that once for each loop. 
+
+In Tali Forth, these routines are coded in assembler. With this setup,
+\texttt{unloop} becomes simple (six \texttt{pla} instructions -- four for the
+limit/count of \texttt{do}, two for the address pushed to the stack just before
+it) and \texttt{leave} even simpler (four \texttt{pla} instructions for the
+address). 
+
+\section{Native Compiling}\index{compiling, native|textbf}
+
+In a pure subroutine threaded code, higher-level words are merely a series of
+subroutine jumps. For instance, the Forth word
+\texttt{[char]}\index{[char]@\texttt{[char]}}, formally defined in high-level
+Forth as
+
+\begin{lstlisting}[frame=lines]
+        : [char] char postpone literal ; immediate
+\end{lstlisting}
+
+\noindent in assembler is simply
+
+\begin{lstlisting}[frame=lines]
+                jsr xt_char
+                jsr xt_literal
+\end{lstlisting}
+
+\noindent as an immediate, compile-only word. Theare are two obvious problems
+with this method: First, it is slow, because each \texttt{jsr/rts} pair consumes
+four bytes and 12 cycles overhead. Second, for smaller words, the jumps use far
+more bytes than the actual code. Take for instance
+\texttt{drop}\index{drop@\texttt{drop}}, which in its naive form is simply
+
+\begin{lstlisting}[frame=lines]
+                inx
+                inx
+\end{lstlisting}
+
+\noindent for two bytes and four cycles. If we jump to this word as is assumed
+with pure subroutine threaded Forth, we add four bytes and 12 cycles -- double
+the space and three times the time required by the actual working code. (In
+practice, it's even worse, because \texttt{drop} checks for
+underflow\index{underflow}. The actual assembler code is
+
+\begin{lstlisting}[frame=lines]
+                cpx #dsp0-1
+                bmi +
+                lda #11         ; error code for underflow
+                jmp error
+*
+                inx
+                inx
+\end{lstlisting}
+
+\noindent for eleven bytes. We'll discuss the underflow checks further below.)
+
+To get rid of this problem, Tali Forth supports \textbf{native
+compiling}\index{compiling, native}. The system variable
+\texttt{nc-limit}\index{nc-limit@\texttt{nc-limit}} sets
+the threshhold up to which a word will be included not as a subroutine jump, but
+machine language. Let's start with an example where \texttt{nc-limit} is set to
+zero, that is, all words are compiled as subroutine jumps. Take a simple word
+such as
+
+\begin{lstlisting}[frame=lines]
+        : aaa 0 drop ;
+\end{lstlisting}
+
+\noindent and check the actual code with \texttt{see}\index{see@\texttt{see}}
+
+\begin{lstlisting}[frame=lines]
+        see aaa
+          nt: 7CD  xt: 7D8
+         size (decimal): 6
+
+        07D8  20 52 99 20 6B 88  ok
+\end{lstlisting}
+
+\noindent (The actual addresses might be different, this is from the ALPHA release).  Our
+word \texttt{aaa} consists of two subroutine jumps, one to zero and one to
+\texttt{drop}. Now, if we increase the threshhold to 20, we get different code,
+as this console session shows:
+
+\begin{lstlisting}[frame=lines]
+        20 nc-limit !  ok
+        : bbb 0 drop ;  ok
+        see bbb
+          nt: 7DF  xt: 7EA
+         size (decimal): 17
+
+        07EA  CA CA 74 00 74 01 E0 77  30 05 A9 0B 4C C7 AC E8
+        07FA  E8  ok
+\end{lstlisting}
+
+\noindent Even though the definition of \texttt{bbb} is the same as \texttt{aaa}, we have
+totally different code: The number 0001 is pushed to the Data Stack (the first
+six bytes), then we check for underflow\index{underflow} (the next nine bytes),
+and finally we \texttt{drop} by moving X\index{X register}, the Data Stack
+Pointer. Our word is definitely longer, but have just saved 12 cycles.
+
+To experiment with various parameters for native compiling, the Forth word
+\texttt{words\&sizes}\index{words\&sizes@\texttt{words\&sizes}} is included in
+\texttt{user\_words.fs} (but commented out by default). The Forth is:
+
+\begin{lstlisting}[frame=lines]
+: words&sizes ( -- )
+        latestnt
+        begin
+                dup
+        0<> while
+                dup name>string type space
+                dup wordsize u. cr
+                2 + @
+        repeat
+        drop ;
+\end{lstlisting}
+
+\noindent An alternative is \texttt{see}\index{see@\texttt{see}}, which also
+displays the length of a word. One way or another, changing \texttt{nc-limit}
+should show differences in the Forth words.
+
+\subsection{Return Stack special cases}\index{Return Stack}
+
+There are a few words that cause problems with subroutine threaded
+code\index{threading}: Those that access the Return Stack such as
+\texttt{r>}\index{r>@\texttt{r>}}, \texttt{>r}\index{>r@\texttt{>r}},
+\texttt{r@}\index{r\@@\texttt{r@}}, \texttt{2r>}\index{2r>@\texttt{2r>}}, and
+\texttt{2>r}\index{2>r@\texttt{2>r}}. For them to work correctly, we first
+have to remove the return address on the top of the stack, only to replace it
+again before we return to the caller. This mechanism would normally prevent the
+word from being natively compiled\index{compiling!native} at all, because we'd
+try to remove a return address that doesn't exit.
+
+This becomes clearer when we examine the code for \texttt{>r} (comments
+removed):
+
+\begin{lstlisting}[frame=lines]
+xt_r_from:
+                pla
+                sta tmptos
+                ply
+
+                ; --- CUT FOR NATIVE CODING ---
+
+                dex
+                dex
+                pla
+                sta 0,x
+                pla
+                sta 1,x
+
+                ; --- CUT FOR NATIVE CODING ---
+     
+                phy
+                lda tmptos
+                pha
+
+z_r_from:       rts
+\end{lstlisting}
+
+\noindent The first three and last three instructions are purely for
+housekeeping with subroutine threaded code. To enable this routine to be
+included as native code, they are removed when native compiling is enabled by
+the word \texttt{compile,}\index{compile,@\texttt{compile,}}. This leaves us
+with just the six actual instructions in the center of the routine to be
+compiled into the new word.
+
+\subsection{Underflow stripping}\index{underflow!stripping}
+
+As described above, every underflow check adds seven bytes to the
+word being coded. Stripping this check by setting the
+\texttt{uf-strip}\index{uf-strip@\texttt{uf-strip}} system variable to
+\texttt{true}\index{true@\texttt{true}} simply removes these seven bytes from new
+natively compiled words. 
+
+It is possible, of course, to have lice and fleas at the some time. For
+instance, this is the code for \texttt{>r}\index{>r@\texttt{>r}}:
+
+\begin{lstlisting}[frame=lines]
+xt_to_r:
+                pla
+                sta tmptos
+                ply
+
+                ; --- CUT HERE FOR NATIVE CODING ---
+
+                cpx #dsp0-1
+                bmi +
+                jmp underflow
+*
+                lda 1,x
+                pha
+                lda 0,x
+                pha
+
+                inx
+                inx
+
+                ; --- CUT HERE FOR NATIVE CODING ---
+
+                phy
+                lda tmptos
+                pha
+
+z_to_r:         rts
+\end{lstlisting}
+
+\noindent This word has \textit{both} native compile stripping and underflow
+detection. However, both can be removed from newly native code words, leaving
+only the eight byte core of the word to be compiled.
+
+% ---------------------------------------
+\section{\texttt{cmove, cmove>} and \texttt{move}}
+
+The three moving words \texttt{cmove}\index{cmove@\texttt{cmove}},
+\texttt{cmove>}\index{cmove>@\texttt{cmove>}}, and
+\texttt{move}\index{move@\texttt{move}} show subtle differences that can trip up
+new users and are reflected by different code under the hood. \texttt{cmove} and
+\texttt{cmove>} are the traditional Forth words that work on characters (which
+in the case of Tali Forth are bytes), whereas \texttt{move} is a more modern
+word that works on address units (which in our case is also bytes). 
+
+If the source and destination regions show no overlap, all three words work the
+same. However, if there is overlap, \texttt{cmove} and \texttt{cmove>}
+demonstrate a behavior called ``propagation''\index{propagation} or
+``clobbering''\index{clobbering}: Some of the characters are overwritten.
+\texttt{move} does not show this behavior. This example shows the difference:
+
+\begin{lstlisting}[frame=lines]
+create testbuf char a c, char b c, char c c, char d c,  ( ok ) 
+testbuf 4 type ( abcd ok ) 
+testbuf dup char+ 3 cmove  ( ok )
+testbuf 4 type ( aaaa ok )
+\end{lstlisting}
+
+Note the propagation in the result. \texttt{move}, however, doesn't propagate.
+The last two lines would be:
+
+\begin{lstlisting}[frame=lines]
+testbuf dup char+ 3 move  ( ok )
+testbuf 4 type ( aabc ok )
+\end{lstlisting}
+
+In practice, \texttt{move} is usually what you want to use.

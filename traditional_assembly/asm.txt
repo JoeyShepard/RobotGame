@@ -1,0 +1,24 @@
+ 
+
+Memory usage
+
+============
+
+ROM size:	12,397 bytes (75%) of 16k bank
+
+RAM size:	15,315 bytes (96%) of 15.8k bank
+
+END
+
+ 
+
+Memory usage
+
+============
+
+ROM size:	12,397 bytes (75%) of 16k bank
+
+RAM size:	15,315 bytes (96%) of 15.8k bank
+
+END
+

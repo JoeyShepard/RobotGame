@@ -1,0 +1,5948 @@
+0004 saveA:
+0005 dummy:
+C000 CharTable:
+C2F8 RTS
+C2F9 debug:
+C2F9 RTS
+EE9B tiles:
+0CDE EnableGfxRAM:
+0CDE LDA #$4
+0CE0 STA $FFE1
+0CE3 STA RB2_COPY
+0CE5 LDA #$5
+0CE7 STA $FFE2
+0CEA STA RB3_COPY
+0CEC RTS
+0CED EnableBankROM:
+0CED LDA #$1
+0CEF STA $FFE1
+0CF2 STA RB2_COPY
+0CF4 LDA #$2
+0CF6 STA $FFE2
+0CF9 STA RB3_COPY
+0CFB RTS
+0CFC Setup:
+0CFC LDX #$0
+0CFE LDA #$0
+0D00 STA $FFE0
+0D03 STA RB1_COPY
+0D05 JSR EnableGfxRAM
+0D08 LDA #$20
+0D0A STA rand_val
+0D0C LDA #$0
+0D0E STA rand_val+$1
+0D10 RTS
+0D11 clrscr:
+0D11 LDX #$80
+0D13 LDA #$0
+0D15 STA dummy
+0D17 LDA #$40
+0D19 STA dummy+$1
+0D1B LDA dummy
+0D1D LDY #$0
+0D1F STA (dummy),Y
+0D21 DEY
+0D22 BNE .loop_inner
+0D24 INC dummy+$1
+0D26 DEX
+0D27 BNE .loop_outer
+0D29 RTS
+0D2A CalcXY:
+0D2A LDA $61 ;posx
+0D2C STA ret_val
+0D2E LDA #$40
+0D30 CLC
+0D31 ADC $62 ;posy
+0D33 STA ret_val+$1
+0D35 RTS
+0D36 TileAddress:
+0D36 LDA $61 ;tile_id
+0D38 ASL
+0D39 ADC #tiles # $100
+0D3B STA ret_val
+0D3D LDA #$0
+0D3F ADC #tiles>>$8
+0D41 STA ret_val+$1
+0D43 LDA (ret_val)
+0D45 PHA
+0D46 INC ret_val
+0D48 BNE .._304.no_carry
+0D4A INC ret_val+$1
+0D4C LDA (ret_val)
+0D4E STA ret_val+$1
+0D50 PLA
+0D51 STA ret_val
+0D53 RTS
+0D54 CopyTile:
+0D54 LDA $54 ;dest_id
+0D56 STA $61 ;TileAddress.tile_id
+0D58 JSR TileAddress
+0D5B LDA ret_val
+0D5D STA $56 ;dest_ptr
+0D5F LDA ret_val+$1
+0D61 STA $57 ;dest_ptr
+0D63 LDA $55 ;source_id
+0D65 STA $61 ;TileAddress.tile_id
+0D67 JSR TileAddress
+0D6A LDA ret_val
+0D6C STA $58 ;source_ptr
+0D6E LDA ret_val+$1
+0D70 STA $59 ;source_ptr
+0D72 LDY #$0
+0D74 LDA ($58),Y ;source_ptr
+0D76 STA ($56),Y ;dest_ptr
+0D78 INY
+0D79 LDA ($58),Y ;source_ptr
+0D7B STA ($56),Y ;dest_ptr
+0D7D TAX
+0D7E INY
+0D7F LDA ($58),Y ;source_ptr
+0D81 STA ($56),Y ;dest_ptr
+0D83 BNE .._410.skip
+0D85 JMP .if0
+0D88 INY
+0D89 LDA ($58),Y ;source_ptr
+0D8B STA ($56),Y ;dest_ptr
+0D8D INY
+0D8E BRA .ct.loop
+0D90 JMP .if1
+0D93 .if0:
+0D93 DEX
+0D94 BEQ .ct.done
+0D96 INY
+0D97 CPY #$C8
+0D99 BCC .ct.loop
+0D9B TYA
+0D9C SEC
+0D9D SBC #$C8
+0D9F TAY
+0DA0 LDA #$C8
+0DA2 CLC
+0DA3 ADC $58 ;source_ptr
+0DA5 STA $58 ;source_ptr
+0DA7 BCC .._413.skip
+0DA9 INC $59 ;source_ptr
+0DAB LDA #$C8
+0DAD CLC
+0DAE ADC $56 ;dest_ptr
+0DB0 STA $56 ;dest_ptr
+0DB2 BCC .._423.skip
+0DB4 INC $57 ;dest_ptr
+0DB6 BRA .ct.loop
+0DB8 .if1:
+0DB8 RTS
+0DB9 DrawTile:
+0DB9 LDA $55 ;xpos
+0DBB STA $61 ;CalcXY.posx
+0DBD LDA $56 ;ypos
+0DBF STA $62 ;CalcXY.posy
+0DC1 JSR CalcXY
+0DC4 LDA ret_val
+0DC6 STA $5B ;gfx_ptr
+0DC8 LDA ret_val+$1
+0DCA STA $5C ;gfx_ptr
+0DCC LDA # (tiles) # $100
+0DCE STA $5D ;tile_ptr
+0DD0 LDA # (tiles)/$100
+0DD2 STA $5E ;tile_ptr
+0DD4 LDA $54 ;tile
+0DD6 STA $61 ;TileAddress.tile_id
+0DD8 JSR TileAddress
+0DDB LDA ret_val
+0DDD STA $5D ;tile_ptr
+0DDF LDA ret_val+$1
+0DE1 STA $5E ;tile_ptr
+0DE3 LDA ($5D) ;tile_ptr
+0DE5 STA $57 ;t_width
+0DE7 LDY #$1
+0DE9 LDA ($5D),Y ;tile_ptr
+0DEB TAX
+0DEC INY
+0DED LDA ($5D),Y ;tile_ptr
+0DEF STA $59 ;t_count
+0DF1 INY
+0DF2 BEQ .._617.skip
+0DF4 JMP .if2
+0DF7 INC $5E ;tile_ptr
+0DF9 .if2:
+0DF9 CMP #$0
+0DFB BEQ .._622.skip
+0DFD JMP .if3
+0E00 DEX
+0E01 BEQ .dt.return
+0E03 LDA #$0
+0E05 SEC
+0E06 SBC $57 ;t_width
+0E08 CLC
+0E09 ADC $5B ;gfx_ptr
+0E0B STA $5B ;gfx_ptr
+0E0D BCC .._623.skip
+0E0F INC $5C ;gfx_ptr
+0E11 BRA .dt.loop
+0E13 JMP .if4
+0E16 .if3:
+0E16 LDA ($5D),Y ;tile_ptr
+0E18 STA $5A ;t_color
+0E1A INY
+0E1B BEQ .._643.skip
+0E1D JMP .if5
+0E20 INC $5E ;tile_ptr
+0E22 .if5:
+0E22 CMP #$40
+0E24 BEQ .._647.skip
+0E26 JMP .if6
+0E29 LDA $59 ;t_count
+0E2B CLC
+0E2C ADC $5B ;gfx_ptr
+0E2E STA $5B ;gfx_ptr
+0E30 BCC .._648.skip
+0E32 INC $5C ;gfx_ptr
+0E34 BRA .dt.loop
+0E36 JMP .if7
+0E39 .if6:
+0E39 PHY
+0E3A LDY $59 ;t_count
+0E3C DEY
+0E3D LDA $5A ;t_color
+0E3F STA ($5B),Y ;gfx_ptr
+0E41 DEY
+0E42 BPL .color.for
+0E44 LDA $59 ;t_count
+0E46 CLC
+0E47 ADC $5B ;gfx_ptr
+0E49 STA $5B ;gfx_ptr
+0E4B PLY
+0E4C .if7:
+0E4C .if4:
+0E4C BRA .dt.loop
+0E4E RTS
+0E4F DrawTile1bpp:
+0E4F STZ $4D ;byte_count
+0E51 STZ $4E ;bit_count
+0E53 LDA $41 ;xpos
+0E55 STA $61 ;CalcXY.posx
+0E57 LDA $42 ;ypos
+0E59 STA $62 ;CalcXY.posy
+0E5B JSR CalcXY
+0E5E LDA ret_val
+0E60 STA $45 ;gfx_ptr
+0E62 LDA ret_val+$1
+0E64 STA $46 ;gfx_ptr
+0E66 LDA # (tiles) # $100
+0E68 STA $47 ;tile_ptr
+0E6A LDA # (tiles)/$100
+0E6C STA $48 ;tile_ptr
+0E6E LDA $40 ;tile
+0E70 STA $61 ;TileAddress.tile_id
+0E72 JSR TileAddress
+0E75 LDA ret_val
+0E77 STA $47 ;tile_ptr
+0E79 LDA ret_val+$1
+0E7B STA $48 ;tile_ptr
+0E7D LDA ($47) ;tile_ptr
+0E7F STA $49 ;t_width
+0E81 LDY #$1
+0E83 LDA ($47),Y ;tile_ptr
+0E85 STA $4A ;t_height
+0E87 STA $4C ;row_count
+0E89 INY
+0E8A LDA ($47),Y ;tile_ptr
+0E8C STA $4B ;edge_style
+0E8E INY
+0E8F CPX #$0
+0E91 BEQ .._1002.skip
+0E93 JMP .if8
+0E96 LDA ($47),Y ;tile_ptr
+0E98 STA $4F ;t_pixel
+0E9A INY
+0E9B LDA $4E ;bit_count
+0E9D BEQ .._1005.skip
+0E9F JMP .if9
+0EA2 LDA $4B ;edge_style
+0EA4 BEQ .._1008.skip
+0EA6 JMP .if10
+0EA9 LDA #$0
+0EAB STA $51 ;trans_row
+0EAD JMP .if11
+0EB0 .if10:
+0EB0 LDA $4C ;row_count
+0EB2 CMP #$1
+0EB4 BEQ .dt1.row1
+0EB6 CMP $4A ;t_height
+0EB8 BNE .dt1.row1_done
+0EBA STZ $52 ;t0
+0EBC LDA $49 ;t_width
+0EBE DEC
+0EBF STA $53 ;t1
+0EC1 LDA $4B ;edge_style
+0EC3 CMP #$2
+0EC5 BEQ .._1037.skip
+0EC7 JMP .if12
+0ECA LDA #$1
+0ECC STA $54 ;t2
+0ECE LDA $49 ;t_width
+0ED0 DEC
+0ED1 DEC
+0ED2 STA $55 ;t3
+0ED4 JMP .if13
+0ED7 .if12:
+0ED7 LDA #$FF
+0ED9 STA $54 ;t2
+0EDB STA $55 ;t3
+0EDD .if13:
+0EDD LDA #$FF
+0EDF STA $51 ;trans_row
+0EE1 BRA .dt1.rows_done
+0EE3 LDA $4C ;row_count
+0EE5 CMP #$2
+0EE7 BEQ .dt1.row2a
+0EE9 LDA $4A ;t_height
+0EEB DEC
+0EEC CMP $4C ;row_count
+0EEE BEQ .dt1.row2a
+0EF0 BRA .dt1.row_else
+0EF2 LDA $4B ;edge_style
+0EF4 CMP #$2
+0EF6 BEQ .._1067.skip
+0EF8 JMP .if14
+0EFB STZ $52 ;t0
+0EFD LDA $49 ;t_width
+0EFF DEC
+0F00 STA $53 ;t1
+0F02 LDA #$FF
+0F04 STA $54 ;t2
+0F06 STA $55 ;t3
+0F08 LDA #$FF
+0F0A STA $51 ;trans_row
+0F0C JMP .if15
+0F0F .if14:
+0F0F BRA .dt1.row_else
+0F11 .if15:
+0F11 BRA .dt1.rows_done
+0F13 LDA #$0
+0F15 STA $51 ;trans_row
+0F17 .if11:
+0F17 .if9:
+0F17 .if8:
+0F17 LDA #$0
+0F19 STA $50 ;skip_pixel
+0F1B LDA $51 ;trans_row
+0F1D BNE .._1132.skip
+0F1F JMP .if16
+0F22 LDA $4E ;bit_count
+0F24 BRA .s1c0
+0F26 JMP .s1done
+0F29 .s1c0:
+0F29 CMP $52 ;t0
+0F2B BEQ .._1135.skip
+0F2D JMP .s1c1
+0F30 BRA .s1b1
+0F32 .s1c1:
+0F32 CMP $53 ;t1
+0F34 BNE .s1c2
+0F36 BRA .s1b1
+0F38 BRA .s1b1
+0F3A .s1c2:
+0F3A CMP $54 ;t2
+0F3C BNE .s1c3
+0F3E BRA .s1b1
+0F40 BRA .s1b1
+0F42 .s1c3:
+0F42 CMP $55 ;t3
+0F44 BNE .s1c4
+0F46 BRA .s1b1
+0F48 .s1b1:
+0F48 LDA #$FF
+0F4A STA $50 ;skip_pixel
+0F4C .s1c4:
+0F4C .s1done:
+0F4C .if16:
+0F4C LDA $50 ;skip_pixel
+0F4E BEQ .._1166.skip
+0F50 JMP .if17
+0F53 LDA $4F ;t_pixel
+0F55 BMI .._1168.skip
+0F57 JMP .if18
+0F5A LDA $43 ;color1
+0F5C JMP .if19
+0F5F .if18:
+0F5F LDA $44 ;color2
+0F61 .if19:
+0F61 CMP #$40
+0F63 BNE .._1174.skip
+0F65 JMP .if20
+0F68 STA ($45) ;gfx_ptr
+0F6A .if20:
+0F6A .if17:
+0F6A INC $45 ;gfx_ptr
+0F6C BNE .._1179.no_carry
+0F6E INC $46 ;gfx_ptr
+0F70 ASL $4F ;t_pixel
+0F72 INC $4E ;bit_count
+0F74 LDA $4E ;bit_count
+0F76 CMP $49 ;t_width
+0F78 BEQ .._1181.skip
+0F7A JMP .if21
+0F7D STZ $4E ;bit_count
+0F7F LDX #$0
+0F81 DEC $4C ;row_count
+0F83 LDA #$0
+0F85 SEC
+0F86 SBC $49 ;t_width
+0F88 CLC
+0F89 ADC $45 ;gfx_ptr
+0F8B STA $45 ;gfx_ptr
+0F8D BCC .._1199.skip
+0F8F INC $46 ;gfx_ptr
+0F91 JMP .if22
+0F94 .if21:
+0F94 CPX #$7
+0F96 BEQ .._1228.skip
+0F98 JMP .if23
+0F9B LDX #$0
+0F9D JMP .if24
+0FA0 .if23:
+0FA0 INX
+0FA1 .if24:
+0FA1 .if22:
+0FA1 LDA $4C ;row_count
+0FA3 BEQ .._1235.skip
+0FA5 JMP .dt1.loop
+0FA8 RTS
+0FA9 RotateTile90:
+0FA9 LDA $23 ;src
+0FAB STA $54 ;DrawTile.tile
+0FAD STZ $55 ;DrawTile.xpos
+0FAF STZ $56 ;DrawTile.ypos
+0FB1 JSR DrawTile
+0FB4 LDA $22 ;dest
+0FB6 STA $61 ;TileAddress.tile_id
+0FB8 JSR TileAddress
+0FBB LDA ret_val
+0FBD STA $26 ;dest_ptr
+0FBF LDA ret_val+$1
+0FC1 STA $27 ;dest_ptr
+0FC3 LDA $23 ;src
+0FC5 STA $61 ;TileAddress.tile_id
+0FC7 JSR TileAddress
+0FCA LDA ret_val
+0FCC STA $24 ;gfx_ptr
+0FCE LDA ret_val+$1
+0FD0 STA $25 ;gfx_ptr
+0FD2 LDY #$1
+0FD4 LDA ($24),Y ;gfx_ptr
+0FD6 STA $29 ;row_count
+0FD8 STA ($26),Y ;dest_ptr
+0FDA DEY
+0FDB LDA ($24),Y ;gfx_ptr
+0FDD STA $28 ;t_width
+0FDF STA ($26),Y ;dest_ptr
+0FE1 LDY #$2
+0FE3 STZ $24 ;gfx_ptr
+0FE5 LDA $28 ;t_width
+0FE7 CLC
+0FE8 ADC #$3F
+0FEA STA $25 ;gfx_ptr
+0FEC LDA ($24) ;gfx_ptr
+0FEE STA $2B ;new_color
+0FF0 LDA #$1
+0FF2 STA $2C ;new_count
+0FF4 DEC $25 ;gfx_ptr
+0FF6 LDA $28 ;t_width
+0FF8 DEC
+0FF9 LDX $28 ;t_width
+0FFB DEX
+0FFC LDA ($24) ;gfx_ptr
+0FFE CMP $2B ;new_color
+1000 BEQ .._1468.skip
+1002 JMP .if25
+1005 INC $2C ;new_count
+1007 JMP .if26
+100A .if25:
+100A PHA
+100B LDA $2C ;new_count
+100D STA ($26),Y ;dest_ptr
+100F INY
+1010 LDA $2B ;new_color
+1012 STA ($26),Y ;dest_ptr
+1014 INY
+1015 PLA
+1016 STA $2B ;new_color
+1018 LDA #$1
+101A STA $2C ;new_count
+101C .if26:
+101C DEC $25 ;gfx_ptr
+101E DEX
+101F BNE .rt.loop_inner
+1021 LDA $2C ;new_count
+1023 STA ($26),Y ;dest_ptr
+1025 INY
+1026 LDA $2B ;new_color
+1028 STA ($26),Y ;dest_ptr
+102A INY
+102B LDA #$0
+102D STA ($26),Y ;dest_ptr
+102F INY
+1030 INC $24 ;gfx_ptr
+1032 CPY #$C8
+1034 BCS .._1474.skip
+1036 JMP .if27
+1039 TYA
+103A SEC
+103B SBC #$C8
+103D TAY
+103E LDA #$C8
+1040 CLC
+1041 ADC $26 ;dest_ptr
+1043 STA $26 ;dest_ptr
+1045 BCC .._1475.skip
+1047 INC $27 ;dest_ptr
+1049 .if27:
+1049 DEC $29 ;row_count
+104B BNE .rt.loop_outer
+104D RTS
+104E ColorTile:
+104E LDA $54 ;tile
+1050 STA $61 ;TileAddress.tile_id
+1052 JSR TileAddress
+1055 LDA ret_val
+1057 STA $56 ;tile_ptr
+1059 LDA ret_val+$1
+105B STA $57 ;tile_ptr
+105D LDA $54 ;tile
+105F BRA .s2c0
+1061 JMP .s2done
+1064 .s2c0:
+1064 CMP #$9
+1066 BEQ .._1563.skip
+1068 JMP .s2c1
+106B BRA .s2b1
+106D .s2c1:
+106D CMP #$A
+106F BNE .s2c2
+1071 BRA .s2b1
+1073 BRA .s2b1
+1075 .s2c2:
+1075 CMP #$B
+1077 BNE .s2c3
+1079 BRA .s2b1
+107B .s2b1:
+107B LDA # (item_colors) # $100
+107D STA $58 ;color_table
+107F LDA # (item_colors)/$100
+1081 STA $59 ;color_table
+1083 JMP .s2done
+1086 .s2c3:
+1086 LDA # (tile_colors) # $100
+1088 STA $58 ;color_table
+108A LDA # (tile_colors)/$100
+108C STA $59 ;color_table
+108E .s2c4:
+108E .s2done:
+108E LDA $55 ;color_index
+1090 ASL
+1091 CLC
+1092 ADC $58 ;color_table
+1094 STA $58 ;color_table
+1096 BCC .._1608.skip
+1098 INC $59 ;color_table
+109A LDA ($58) ;color_table
+109C PHA
+109D LDY #$1
+109F LDA ($58),Y ;color_table
+10A1 STA $59 ;color_table
+10A3 PLA
+10A4 STA $58 ;color_table
+10A6 LDA ($56),Y ;tile_ptr
+10A8 STA $5A ;row_count
+10AA LDA ($58),Y ;color_table
+10AC STA $5C ;c_size
+10AE INY
+10AF LDA ($56),Y ;tile_ptr
+10B1 BEQ .._1623.skip
+10B3 JMP .if28
+10B6 INY
+10B7 CPY #$C8
+10B9 BCS .._1626.skip
+10BB JMP .if29
+10BE TYA
+10BF SEC
+10C0 SBC #$C8
+10C2 TAY
+10C3 LDA #$C8
+10C5 CLC
+10C6 ADC $56 ;tile_ptr
+10C8 STA $56 ;tile_ptr
+10CA BCC .._1627.skip
+10CC INC $57 ;tile_ptr
+10CE .if29:
+10CE DEC $5A ;row_count
+10D0 BNE .color.loop1
+10D2 JMP .if30
+10D5 .if28:
+10D5 INY
+10D6 LDA ($56),Y ;tile_ptr
+10D8 STA $5B ;t_color
+10DA CMP #$41
+10DC BCS .._1647.skip
+10DE JMP .if31
+10E1 PHY
+10E2 LDY #$2
+10E4 LDX $5C ;c_size
+10E6 LDA $5B ;t_color
+10E8 CMP ($58),Y ;color_table
+10EA BEQ .._1649.skip
+10EC JMP .if32
+10EF INY
+10F0 LDA ($58),Y ;color_table
+10F2 PLY
+10F3 STA ($56),Y ;tile_ptr
+10F5 INY
+10F6 BRA .color.loop1
+10F8 JMP .if33
+10FB .if32:
+10FB INY
+10FC INY
+10FD DEX
+10FE BNE .color.loop2
+1100 PLY
+1101 .if33:
+1101 .if31:
+1101 INY
+1102 BRA .color.loop1
+1104 .if30:
+1104 RTS
+110E LoadTiles:
+110E LDA #$0
+1110 STA $54 ;CopyTile.dest_id
+1112 LDA #$15
+1114 STA $55 ;CopyTile.source_id
+1116 JSR CopyTile
+1119 LDA #$1
+111B STA $22 ;RotateTile90.dest
+111D LDA #$0
+111F STA $23 ;RotateTile90.src
+1121 JSR RotateTile90
+1124 LDA #$2
+1126 STA $22 ;RotateTile90.dest
+1128 LDA #$1
+112A STA $23 ;RotateTile90.src
+112C JSR RotateTile90
+112F LDA #$3
+1131 STA $22 ;RotateTile90.dest
+1133 LDA #$2
+1135 STA $23 ;RotateTile90.src
+1137 JSR RotateTile90
+113A LDA #$4
+113C STA $54 ;CopyTile.dest_id
+113E LDA #$15
+1140 STA $55 ;CopyTile.source_id
+1142 JSR CopyTile
+1145 LDA #$5
+1147 STA $54 ;CopyTile.dest_id
+1149 LDA #$15
+114B STA $55 ;CopyTile.source_id
+114D JSR CopyTile
+1150 LDA #$6
+1152 STA $54 ;CopyTile.dest_id
+1154 LDA #$14
+1156 STA $55 ;CopyTile.source_id
+1158 JSR CopyTile
+115B LDA #$8
+115D STA $54 ;CopyTile.dest_id
+115F LDA #$14
+1161 STA $55 ;CopyTile.source_id
+1163 JSR CopyTile
+1166 LDA #$7
+1168 STA $54 ;CopyTile.dest_id
+116A LDA #$14
+116C STA $55 ;CopyTile.source_id
+116E JSR CopyTile
+1171 LDY #$0
+1173 LDA tiles_to_color,Y
+1176 STA $21 ;color_tile
+1178 PHY
+1179 LDA $21 ;color_tile
+117B STA $54 ;ColorTile.tile
+117D LDA $21 ;color_tile
+117F STA $55 ;ColorTile.color_index
+1181 JSR ColorTile
+1184 PLY
+1185 INY
+1186 CPY #$9
+1188 BNE .lt.loop
+118A RTS
+118B ColorHero:
+118B LDA #$9
+118D STA $54 ;CopyTile.dest_id
+118F LDA #$12
+1191 STA $55 ;CopyTile.source_id
+1193 JSR CopyTile
+1196 LDA #$9
+1198 STA $54 ;ColorTile.tile
+119A LDA hero_equipped+$0
+119D STA $55 ;ColorTile.color_index
+119F JSR ColorTile
+11A2 LDA #$9
+11A4 STA $54 ;ColorTile.tile
+11A6 LDA hero_equipped+$1
+11A9 STA $55 ;ColorTile.color_index
+11AB JSR ColorTile
+11AE LDA #$9
+11B0 STA $54 ;ColorTile.tile
+11B2 LDA hero_equipped+$2
+11B5 STA $55 ;ColorTile.color_index
+11B7 JSR ColorTile
+11BA LDA #$9
+11BC STA $54 ;ColorTile.tile
+11BE LDA hero_equipped+$3
+11C1 STA $55 ;ColorTile.color_index
+11C3 JSR ColorTile
+11C6 LDA #$9
+11C8 STA $54 ;ColorTile.tile
+11CA LDA hero_equipped+$4
+11CD STA $55 ;ColorTile.color_index
+11CF JSR ColorTile
+11D2 LDA #$A
+11D4 STA $54 ;CopyTile.dest_id
+11D6 LDA #$13
+11D8 STA $55 ;CopyTile.source_id
+11DA JSR CopyTile
+11DD LDA #$A
+11DF STA $54 ;ColorTile.tile
+11E1 LDA hero_equipped+$0
+11E4 STA $55 ;ColorTile.color_index
+11E6 JSR ColorTile
+11E9 LDA #$A
+11EB STA $54 ;ColorTile.tile
+11ED LDA hero_equipped+$1
+11F0 STA $55 ;ColorTile.color_index
+11F2 JSR ColorTile
+11F5 LDA #$A
+11F7 STA $54 ;ColorTile.tile
+11F9 LDA hero_equipped+$2
+11FC STA $55 ;ColorTile.color_index
+11FE JSR ColorTile
+1201 LDA #$A
+1203 STA $54 ;ColorTile.tile
+1205 LDA hero_equipped+$3
+1208 STA $55 ;ColorTile.color_index
+120A JSR ColorTile
+120D LDA #$A
+120F STA $54 ;ColorTile.tile
+1211 LDA hero_equipped+$4
+1214 STA $55 ;ColorTile.color_index
+1216 JSR ColorTile
+1219 RTS
+121A rand:
+121A LDA rand_val+$1
+121C CLC
+121D ROR
+121E LDA rand_val
+1220 ROR
+1221 EOR rand_val+$1
+1223 STA rand_val+$1
+1225 LDA #$0
+1227 ROR
+1228 EOR rand_val
+122A STA rand_val
+122C LDA rand_val+$1
+122E CLC
+122F ROR
+1230 EOR rand_val
+1232 STA rand_val
+1234 LDA rand_val
+1236 EOR rand_val+$1
+1238 STA rand_val+$1
+123A RTS
+123B rand8:
+123B JSR rand
+123E LDA rand_val
+1240 STA ret_val
+1242 LDA rand_val+$1
+1244 STA ret_val+$1
+1246 LDA $2F ;max
+1248 STA $31 ;divisor
+124A STZ $30 ;divisor
+124C LDA ret_val
+124E SEC
+124F SBC $30 ;divisor
+1251 STA ret_val
+1253 LDA ret_val+$1
+1255 SBC $31 ;divisor
+1257 STA ret_val+$1
+1259 BCS .r8.loop
+125B LDA $30 ;divisor
+125D CLC
+125E ADC ret_val
+1260 STA ret_val
+1262 LDA $31 ;divisor
+1264 ADC ret_val+$1
+1266 STA ret_val+$1
+1268 CLC
+1269 ROR $31 ;divisor
+126B ROR $30 ;divisor
+126D LDA ret_val+$1
+126F BNE .r8.loop
+1271 LDA ret_val
+1273 CMP $2F ;max
+1275 BCS .r8.loop
+1277 RTS
+1278 rand5050:
+1278 JSR rand
+127B LDA rand_val
+127D AND #$1
+127F STA ret_val
+1281 RTS
+1282 CalcStats:
+1282 LDA hero_HP_Upgrade
+1285 CLC
+1286 ADC #$2
+1288 STA hero_HP_Max_temp
+128B LDA hero_Batt_Upgrade
+128E CLC
+128F ADC #$3
+1291 STA hero_Batt_Max
+1294 LDA hero_Dmg_Upgrade
+1297 STA hero_Dmg
+129A LDA #$8
+129C STA hero_Mine_Speed
+129F LDA #$C
+12A1 STA hero_Drill_Speed
+12A4 LDA #$1
+12A6 STA hero_Batt_Recharge
+12A9 LDA #$5
+12AB STA hero_Crit_Rate
+12AE STZ hero_HP_Recharge
+12B1 STZ hero_Lava_Res
+12B4 LDA #$4
+12B6 STA hero_Lava_Dmg
+12B9 LDA #$0
+12BB STA hero_Lava_Dmg+$1
+12BE LDA #$4
+12C0 STA hero_Dmg_Cost
+12C3 LDA #$2
+12C5 STA hero_Mine_Cost
+12C8 LDA #$2
+12CA STA hero_Drill_Cost
+12CD LDA #$0
+12CF STA $2D ;Mine1s
+12D1 LDA #$0
+12D3 STA $2E ;Drill1s
+12D5 STZ $2F ;item_counter
+12D7 LDY $2F ;item_counter
+12D9 LDA hero_equipped,Y
+12DC ASL
+12DD TAY
+12DE LDA item_stats,Y
+12E1 STA $34 ;item_ptr
+12E3 LDA item_stats+$1,Y
+12E6 STA $35 ;item_ptr
+12E8 LDY #$4
+12EA LDA ($34),Y ;item_ptr
+12EC STA $31 ;stat_max
+12EE LDX #$0
+12F0 TXA
+12F1 ASL
+12F2 ADC #$5
+12F4 TAY
+12F5 LDA ($34),Y ;item_ptr
+12F7 PHY
+12F8 STA $32 ;stat_ID
+12FA ASL
+12FB TAY
+12FC LDA stat_pointers,Y
+12FF STA $36 ;stat_ptr
+1301 LDA stat_pointers+$1,Y
+1304 STA $37 ;stat_ptr
+1306 PLY
+1307 INY
+1308 LDA ($34),Y ;item_ptr
+130A STA $33 ;stat_val
+130C LDA $36 ;stat_ptr
+130E ORA $37 ;stat_ptr
+1310 BEQ .._2590.skip
+1312 JMP .if34
+1315 LDA $32 ;stat_ID
+1317 BRA .s3c0
+1319 JMP .s3done
+131C .s3c0:
+131C CMP #$3
+131E BEQ .._2593.skip
+1320 JMP .s3c1
+1323 .s3b1:
+1323 LDA hero_Mine_Speed
+1326 SEC
+1327 SBC $33 ;stat_val
+1329 STA hero_Mine_Speed
+132C JMP .s3done
+132F .s3c1:
+132F CMP #$4
+1331 BEQ .._2602.skip
+1333 JMP .s3c2
+1336 .s3b2:
+1336 LDA #$FF
+1338 STA $2D ;Mine1s
+133A JMP .s3done
+133D .s3c2:
+133D CMP #$7
+133F BEQ .._2626.skip
+1341 JMP .s3c3
+1344 .s3b3:
+1344 LDA hero_Drill_Speed
+1347 SEC
+1348 SBC $33 ;stat_val
+134A STA hero_Drill_Speed
+134D JMP .s3done
+1350 .s3c3:
+1350 CMP #$8
+1352 BEQ .._2635.skip
+1354 JMP .s3c4
+1357 .s3b4:
+1357 LDA #$FF
+1359 STA $2E ;Drill1s
+135B JMP .s3done
+135E .s3c4:
+135E CMP #$B
+1360 BEQ .._2658.skip
+1362 JMP .s3c5
+1365 .s3b5:
+1365 LDA #$FF
+1367 STA hero_Lava_Dmg
+136A LDA #$FF
+136C STA hero_Lava_Dmg+$1
+136F JMP .s3done
+1372 .s3c5:
+1372 CMP #$C
+1374 BEQ .._2684.skip
+1376 JMP .s3c6
+1379 .s3b6:
+1379 LDA #$2
+137B STA hero_Dmg_Cost
+137E JMP .s3done
+1381 .s3c6:
+1381 CMP #$D
+1383 BEQ .._2710.skip
+1385 JMP .s3c7
+1388 .s3b7:
+1388 LDA #$1
+138A STA hero_Mine_Cost
+138D .s3c7:
+138D .s3done:
+138D JMP .if35
+1390 .if34:
+1390 LDA $33 ;stat_val
+1392 CLC
+1393 ADC ($36) ;stat_ptr
+1395 STA ($36) ;stat_ptr
+1397 .if35:
+1397 INX
+1398 CPX $31 ;stat_max
+139A BEQ .._2744.skip
+139C JMP .cs.stats
+139F INC $2F ;item_counter
+13A1 LDA $2F ;item_counter
+13A3 CMP #$5
+13A5 BEQ .._2745.skip
+13A7 JMP .cs.loop
+13AA LDA skill_list+$2
+13AD BNE .._2748.skip
+13AF JMP .if36
+13B2 DEC hero_Mine_Speed
+13B5 DEC hero_Mine_Speed
+13B8 DEC hero_Drill_Speed
+13BB DEC hero_Drill_Speed
+13BE .if36:
+13BE LDA $2D ;Mine1s
+13C0 BNE .._2753.skip
+13C2 JMP .if37
+13C5 LDA #$1
+13C7 STA hero_Mine_Speed
+13CA .if37:
+13CA LDA $2E ;Drill1s
+13CC BNE .._2775.skip
+13CE JMP .if38
+13D1 LDA #$1
+13D3 STA hero_Drill_Speed
+13D6 .if38:
+13D6 LDA skill_list+$5
+13D9 BNE .._2797.skip
+13DB JMP .if39
+13DE LDA hero_Crit_Rate
+13E1 CLC
+13E2 ADC #$14
+13E4 STA hero_Crit_Rate
+13E7 .if39:
+13E7 LDA hero_Lava_Dmg
+13EA AND hero_Lava_Dmg+$1
+13ED CMP #$FF
+13EF BNE .._2801.skip
+13F1 JMP .if40
+13F4 LDA hero_Lava_Res
+13F7 BRA .s4c0
+13F9 JMP .s4done
+13FC .s4c0:
+13FC CMP #$19
+13FE BEQ .._2804.skip
+1400 JMP .s4c1
+1403 .s4b1:
+1403 LDA #$3
+1405 STA hero_Lava_Dmg
+1408 LDA #$0
+140A STA hero_Lava_Dmg+$1
+140D JMP .s4done
+1410 .s4c1:
+1410 CMP #$32
+1412 BEQ .._2830.skip
+1414 JMP .s4c2
+1417 .s4b2:
+1417 LDA #$2
+1419 STA hero_Lava_Dmg
+141C LDA #$0
+141E STA hero_Lava_Dmg+$1
+1421 .s4c2:
+1421 .s4done:
+1421 .if40:
+1421 LDA hero_HP_Max_temp
+1424 STA hero_HP_Max
+1427 LDA hero_HP_Max
+142A CMP hero_HP
+142D BCC .._2890.skip
+142F JMP .if41
+1432 LDA hero_HP_Max
+1435 STA hero_HP
+1438 LDA hero_HP_Max+$1
+143B STA hero_HP+$1
+143E .if41:
+143E LDA hero_Batt_Max
+1441 CMP hero_Batt
+1444 BCC .._2921.skip
+1446 JMP .if42
+1449 LDA hero_Batt_Max
+144C STA hero_Batt
+144F .if42:
+144F RTS
+1450 MazeHorizStripe:
+1450 LDA #$28
+1452 STA $2F ;rand8.max
+1454 JSR rand8
+1457 LDA ret_val
+1459 STA $25 ;stripe_X
+145B LDA #$14
+145D STA $2F ;rand8.max
+145F JSR rand8
+1462 LDA ret_val
+1464 STA $26 ;stripe_Y
+1466 LDA #$4
+1468 STA $2F ;rand8.max
+146A JSR rand8
+146D LDA ret_val
+146F CLC
+1470 ADC #$1
+1472 STA $27 ;stripe_width
+1474 LDA #$4
+1476 STA $2F ;rand8.max
+1478 JSR rand8
+147B LDA ret_val
+147D CLC
+147E ADC #$1
+1480 STA $28 ;stripe_height
+1482 JSR rand5050
+1485 LDA ret_val
+1487 STA $29 ;stripe_dx
+1489 JSR rand5050
+148C LDA ret_val
+148E STA $2A ;stripe_dy
+1490 LDA #map_data # $100
+1492 CLC
+1493 ADC $25 ;stripe_X
+1495 STA $2B ;map_ptr
+1497 LDA #map_data>>$8
+1499 ADC #$0
+149B STA $2C ;map_ptr
+149D LDY $26 ;stripe_Y
+149F BNE .._3181.skip
+14A1 JMP .if43
+14A4 LDA #$28
+14A6 CLC
+14A7 ADC $2B ;map_ptr
+14A9 STA $2B ;map_ptr
+14AB BCC .._3182.skip
+14AD INC $2C ;map_ptr
+14AF DEY
+14B0 BNE .mhs.mult
+14B2 .if43:
+14B2 LDY $27 ;stripe_width
+14B4 LDA $25 ;stripe_X
+14B6 CMP #$28
+14B8 BCS .mhs.done
+14BA LDA $26 ;stripe_Y
+14BC CMP #$14
+14BE BCS .mhs.done
+14C0 LDA $24 ;value
+14C2 STA ($2B) ;map_ptr
+14C4 LDA $29 ;stripe_dx
+14C6 BNE .._3202.skip
+14C8 JMP .if44
+14CB DEC $25 ;stripe_X
+14CD BMI .mhs.done
+14CF LDA $2B ;map_ptr
+14D1 SEC
+14D2 SBC #$1
+14D4 STA $2B ;map_ptr
+14D6 BCS .._3203.no_underflow
+14D8 DEC $2C ;map_ptr
+14DA JMP .if45
+14DD .if44:
+14DD INC $25 ;stripe_X
+14DF INC $2B ;map_ptr
+14E1 BNE .._3206.no_carry
+14E3 INC $2C ;map_ptr
+14E5 .if45:
+14E5 DEY
+14E6 BNE .mhs.width
+14E8 LDA $2A ;stripe_dy
+14EA BNE .._3211.skip
+14EC JMP .if46
+14EF DEC $26 ;stripe_Y
+14F1 BMI .mhs.done
+14F3 LDA $2B ;map_ptr
+14F5 SEC
+14F6 SBC #$28
+14F8 STA $2B ;map_ptr
+14FA BCS .._3212.skip
+14FC DEC $2C ;map_ptr
+14FE JMP .if47
+1501 .if46:
+1501 INC $26 ;stripe_Y
+1503 LDA #$28
+1505 CLC
+1506 ADC $2B ;map_ptr
+1508 STA $2B ;map_ptr
+150A BCC .._3230.skip
+150C INC $2C ;map_ptr
+150E .if47:
+150E DEC $28 ;stripe_height
+1510 BNE .mhs.height
+1512 RTS
+1513 FillMap:
+1513 LDA $24 ;ptr_in
+1515 STA $27 ;map_ptr
+1517 LDA $25 ;ptr_in
+1519 STA $28 ;map_ptr
+151B LDA #$4
+151D STA $29 ;counter
+151F LDA $26 ;value
+1521 LDY #$C8
+1523 DEY
+1524 STA ($27),Y ;map_ptr
+1526 BNE .fm.loop
+1528 LDA #$C8
+152A CLC
+152B ADC $27 ;map_ptr
+152D STA $27 ;map_ptr
+152F BCC .._3286.skip
+1531 INC $28 ;map_ptr
+1533 DEC $29 ;counter
+1535 BNE .fm.loop_outer
+1537 RTS
+1538 OffsetXY:
+1538 LDA $2D ;map
+153A STA ret_val
+153C LDA $2E ;map
+153E STA ret_val+$1
+1540 LDY $30 ;mY
+1542 BNE .._3322.skip
+1544 JMP .if48
+1547 LDA #$28
+1549 CLC
+154A ADC ret_val
+154C STA ret_val
+154E BCC .._3323.skip
+1550 INC ret_val+$1
+1552 DEY
+1553 BRA .oxy.mult
+1555 .if48:
+1555 LDA $2F ;mX
+1557 CLC
+1558 ADC ret_val
+155A STA ret_val
+155C BCC .._3334.skip
+155E INC ret_val+$1
+1560 RTS
+1561 MapXY:
+1561 LDA $2D ;map
+1563 STA ret_val
+1565 LDA $2E ;map
+1567 STA ret_val+$1
+1569 LDY $30 ;mY
+156B BNE .._3372.skip
+156D JMP .if49
+1570 LDA #$28
+1572 CLC
+1573 ADC ret_val
+1575 STA ret_val
+1577 BCC .._3373.skip
+1579 INC ret_val+$1
+157B DEY
+157C BRA .mxy.mult
+157E .if49:
+157E LDY $2F ;mX
+1580 LDA (ret_val),Y
+1582 STA ret_val
+1584 RTS
+1585 MakeMap:
+1585 LDA # (map_data) # $100
+1587 STA $24 ;FillMap.ptr_in
+1589 LDA # (map_data)/$100
+158B STA $25 ;FillMap.ptr_in
+158D LDA #$0
+158F STA $26 ;FillMap.value
+1591 JSR FillMap
+1594 LDX #$14
+1596 LDA #$5
+1598 STA $24 ;MazeHorizStripe.value
+159A JSR MazeHorizStripe
+159D DEX
+159E BNE .mm.lava_loop
+15A0 LDX #$3C
+15A2 LDA #$4
+15A4 STA $24 ;MazeHorizStripe.value
+15A6 JSR MazeHorizStripe
+15A9 DEX
+15AA BNE .mm.rock_loop
+15AC LDA # (map_data) # $100
+15AE STA $21 ;map_ptr
+15B0 LDA # (map_data)/$100
+15B2 STA $22 ;map_ptr
+15B4 LDX #$4
+15B6 LDY #$0
+15B8 LDA ($21),Y ;map_ptr
+15BA CMP #$0
+15BC BEQ .._3479.skip
+15BE JMP .if50
+15C1 LDA #$4
+15C3 STA $2F ;rand8.max
+15C5 JSR rand8
+15C8 LDA ret_val
+15CA BRA .s5c0
+15CC JMP .s5done
+15CF .s5c0:
+15CF CMP #$1
+15D1 BEQ .._3503.skip
+15D3 JMP .s5c1
+15D6 .s5b1:
+15D6 LDA #$1
+15D8 JMP .s5done
+15DB .s5c1:
+15DB CMP #$2
+15DD BEQ .._3512.skip
+15DF JMP .s5c2
+15E2 .s5b2:
+15E2 LDA #$2
+15E4 JMP .s5done
+15E7 .s5c2:
+15E7 CMP #$3
+15E9 BEQ .._3521.skip
+15EB JMP .s5c3
+15EE .s5b3:
+15EE LDA #$3
+15F0 JMP .s5done
+15F3 .s5c3:
+15F3 LDA #$0
+15F5 .s5c4:
+15F5 .s5done:
+15F5 STA ($21),Y ;map_ptr
+15F7 .if50:
+15F7 INY
+15F8 CPY #$C8
+15FA BNE .mm.blank_loop
+15FC LDY #$0
+15FE LDA #$C8
+1600 CLC
+1601 ADC $21 ;map_ptr
+1603 STA $21 ;map_ptr
+1605 BCC .._3538.skip
+1607 INC $22 ;map_ptr
+1609 DEX
+160A BNE .mm.blank_loop
+160C LDA # (map_data) # $100
+160E STA $2D ;OffsetXY.map
+1610 LDA # (map_data)/$100
+1612 STA $2E ;OffsetXY.map
+1614 LDA #$1
+1616 STA $2F ;OffsetXY.mX
+1618 LDA #$1
+161A STA $30 ;OffsetXY.mY
+161C JSR OffsetXY
+161F LDA #$0
+1621 STA (ret_val)
+1623 LDA #$A
+1625 STA $2F ;rand8.max
+1627 JSR rand8
+162A LDA ret_val
+162C CLC
+162D ADC #$A
+162F STA $23 ;counter
+1631 LDA #$14
+1633 STA $2F ;rand8.max
+1635 JSR rand8
+1638 LDA ret_val
+163A CLC
+163B ADC #$14
+163D STA ret_val
+163F LDA # (map_data) # $100
+1641 STA $2D ;OffsetXY.map
+1643 LDA # (map_data)/$100
+1645 STA $2E ;OffsetXY.map
+1647 LDA ret_val
+1649 STA $2F ;OffsetXY.mX
+164B LDA $23 ;counter
+164D STA $30 ;OffsetXY.mY
+164F JSR OffsetXY
+1652 LDA #$6
+1654 STA (ret_val)
+1656 RTS
+1657 CheckForMonster:
+1657 LDA # (monster_map) # $100
+1659 STA $2D ;MapXY.map
+165B LDA # (monster_map)/$100
+165D STA $2E ;MapXY.map
+165F LDA $31 ;mX
+1661 STA $2F ;MapXY.mX
+1663 LDA $32 ;mY
+1665 STA $30 ;MapXY.mY
+1667 JSR MapXY
+166A LDA ret_val
+166C STZ ret_val
+166E STA $31 ;mX
+1670 CMP #$FF
+1672 BNE .._3748.skip
+1674 JMP .if51
+1677 ASL
+1678 CLC
+1679 ADC $31 ;mX
+167B ADC #$2
+167D TAY
+167E LDA monster_list,Y
+1681 STA ret_val
+1683 .if51:
+1683 RTS
+1684 CheckForCrystal:
+1684 LDA # (crystal_map) # $100
+1686 STA $2D ;MapXY.map
+1688 LDA # (crystal_map)/$100
+168A STA $2E ;MapXY.map
+168C LDA $31 ;mX
+168E STA $2F ;MapXY.mX
+1690 LDA $32 ;mY
+1692 STA $30 ;MapXY.mY
+1694 JSR MapXY
+1697 LDA ret_val
+1699 STZ ret_val
+169B CMP #$FF
+169D BNE .._3806.skip
+169F JMP .if52
+16A2 ASL
+16A3 ASL
+16A4 CLC
+16A5 ADC #$2
+16A7 TAY
+16A8 LDA crystal_list,Y
+16AB STA ret_val
+16AD .if52:
+16AD RTS
+16AE LoadMonsters:
+16AE LDA # (monster_map) # $100
+16B0 STA $24 ;FillMap.ptr_in
+16B2 LDA # (monster_map)/$100
+16B4 STA $25 ;FillMap.ptr_in
+16B6 LDA #$FF
+16B8 STA $26 ;FillMap.value
+16BA JSR FillMap
+16BD STZ $23 ;counter
+16BF LDA #$28
+16C1 STA $2F ;rand8.max
+16C3 JSR rand8
+16C6 LDA ret_val
+16C8 STA $21 ;mX
+16CA LDA #$14
+16CC STA $2F ;rand8.max
+16CE JSR rand8
+16D1 LDA ret_val
+16D3 STA $22 ;mY
+16D5 CMP #$1
+16D7 BEQ .._3933.skip
+16D9 JMP .if53
+16DC LDA $21 ;mX
+16DE CMP #$1
+16E0 BEQ .._3935.skip
+16E2 JMP .if54
+16E5 BRA .lm.loop
+16E7 .if54:
+16E7 .if53:
+16E7 LDA $21 ;mX
+16E9 STA $31 ;CheckForMonster.mX
+16EB LDA $22 ;mY
+16ED STA $32 ;CheckForMonster.mY
+16EF JSR CheckForMonster
+16F2 LDA ret_val
+16F4 BEQ .._3980.skip
+16F6 JMP .if55
+16F9 LDA # (map_data) # $100
+16FB STA $2D ;MapXY.map
+16FD LDA # (map_data)/$100
+16FF STA $2E ;MapXY.map
+1701 LDA $21 ;mX
+1703 STA $2F ;MapXY.mX
+1705 LDA $22 ;mY
+1707 STA $30 ;MapXY.mY
+1709 JSR MapXY
+170C LDA ret_val
+170E BRA .s6c0
+1710 JMP .s6done
+1713 .s6c0:
+1713 CMP #$0
+1715 BEQ .._4032.skip
+1717 JMP .s6c1
+171A BRA .s6b1
+171C .s6c1:
+171C CMP #$1
+171E BNE .s6c2
+1720 BRA .s6b1
+1722 BRA .s6b1
+1724 .s6c2:
+1724 CMP #$2
+1726 BNE .s6c3
+1728 BRA .s6b1
+172A BRA .s6b1
+172C .s6c3:
+172C CMP #$3
+172E BNE .s6c4
+1730 BRA .s6b1
+1732 .s6b1:
+1732 LDA # (monster_map) # $100
+1734 STA $2D ;OffsetXY.map
+1736 LDA # (monster_map)/$100
+1738 STA $2E ;OffsetXY.map
+173A LDA $21 ;mX
+173C STA $2F ;OffsetXY.mX
+173E LDA $22 ;mY
+1740 STA $30 ;OffsetXY.mY
+1742 JSR OffsetXY
+1745 LDA $23 ;counter
+1747 STA (ret_val)
+1749 ASL
+174A ADC $23 ;counter
+174C TAY
+174D LDA $21 ;mX
+174F STA monster_list,Y
+1752 INY
+1753 LDA $22 ;mY
+1755 STA monster_list,Y
+1758 INY
+1759 LDA #$FF
+175B STA monster_list,Y
+175E LDA $23 ;counter
+1760 INC
+1761 CMP #$28
+1763 BEQ .lm.done
+1765 STA $23 ;counter
+1767 JMP .lm.loop
+176A .s6c4:
+176A .s6done:
+176A .if55:
+176A JMP .lm.loop
+176D RTS
+176E LoadCrystals:
+176E LDA # (crystal_map) # $100
+1770 STA $24 ;FillMap.ptr_in
+1772 LDA # (crystal_map)/$100
+1774 STA $25 ;FillMap.ptr_in
+1776 LDA #$FF
+1778 STA $26 ;FillMap.value
+177A JSR FillMap
+177D LDX #$0
+177F LDA #$28
+1781 STA $2F ;rand8.max
+1783 JSR rand8
+1786 LDA ret_val
+1788 STA $21 ;mX
+178A LDA #$14
+178C STA $2F ;rand8.max
+178E JSR rand8
+1791 LDA ret_val
+1793 STA $22 ;mY
+1795 CMP #$1
+1797 BEQ .._4211.skip
+1799 JMP .if56
+179C LDA $21 ;mX
+179E CMP #$1
+17A0 BEQ .._4213.skip
+17A2 JMP .if57
+17A5 BRA .lc.loop
+17A7 .if57:
+17A7 .if56:
+17A7 LDA $21 ;mX
+17A9 STA $31 ;CheckForMonster.mX
+17AB LDA $22 ;mY
+17AD STA $32 ;CheckForMonster.mY
+17AF JSR CheckForMonster
+17B2 LDA ret_val
+17B4 BEQ .._4258.skip
+17B6 JMP .if58
+17B9 LDA $21 ;mX
+17BB STA $31 ;CheckForCrystal.mX
+17BD LDA $22 ;mY
+17BF STA $32 ;CheckForCrystal.mY
+17C1 JSR CheckForCrystal
+17C4 LDA ret_val
+17C6 BEQ .._4299.skip
+17C8 JMP .if59
+17CB LDA # (map_data) # $100
+17CD STA $2D ;MapXY.map
+17CF LDA # (map_data)/$100
+17D1 STA $2E ;MapXY.map
+17D3 LDA $21 ;mX
+17D5 STA $2F ;MapXY.mX
+17D7 LDA $22 ;mY
+17D9 STA $30 ;MapXY.mY
+17DB JSR MapXY
+17DE LDA ret_val
+17E0 BRA .s7c0
+17E2 JMP .s7done
+17E5 .s7c0:
+17E5 CMP #$0
+17E7 BEQ .._4351.skip
+17E9 JMP .s7c1
+17EC BRA .s7b1
+17EE .s7c1:
+17EE CMP #$1
+17F0 BNE .s7c2
+17F2 BRA .s7b1
+17F4 BRA .s7b1
+17F6 .s7c2:
+17F6 CMP #$2
+17F8 BNE .s7c3
+17FA BRA .s7b1
+17FC BRA .s7b1
+17FE .s7c3:
+17FE CMP #$3
+1800 BNE .s7c4
+1802 BRA .s7b1
+1804 .s7b1:
+1804 LDA # (crystal_map) # $100
+1806 STA $2D ;OffsetXY.map
+1808 LDA # (crystal_map)/$100
+180A STA $2E ;OffsetXY.map
+180C LDA $21 ;mX
+180E STA $2F ;OffsetXY.mX
+1810 LDA $22 ;mY
+1812 STA $30 ;OffsetXY.mY
+1814 JSR OffsetXY
+1817 TXA
+1818 STA (ret_val)
+181A ASL
+181B ASL
+181C TAY
+181D LDA $21 ;mX
+181F STA crystal_list,Y
+1822 INY
+1823 LDA $22 ;mY
+1825 STA crystal_list,Y
+1828 INY
+1829 LDA #$FF
+182B STA crystal_list,Y
+182E INY
+182F LDA #$3
+1831 STA $2F ;rand8.max
+1833 JSR rand8
+1836 LDA ret_val
+1838 BRA .s8c0
+183A JMP .s8done
+183D .s8c0:
+183D CMP #$0
+183F BEQ .._4432.skip
+1841 JMP .s8c1
+1844 .s8b1:
+1844 LDA #$0
+1846 JMP .s8done
+1849 .s8c1:
+1849 CMP #$1
+184B BEQ .._4441.skip
+184D JMP .s8c2
+1850 .s8b2:
+1850 LDA #$1
+1852 JMP .s8done
+1855 .s8c2:
+1855 CMP #$2
+1857 BEQ .._4450.skip
+1859 JMP .s8c3
+185C .s8b3:
+185C LDA #$2
+185E .s8c3:
+185E .s8done:
+185E STA crystal_list,Y
+1861 INX
+1862 CPX #$28
+1864 BEQ .lc.done
+1866 JMP .lc.loop
+1869 .s7c4:
+1869 .s7done:
+1869 .if59:
+1869 .if58:
+1869 JMP .lc.loop
+186C RTS
+186D UpdateTarget:
+186D LDA display_X
+1870 CLC
+1871 ADC hero_X
+1874 STA $21 ;tX
+1876 LDA display_Y
+1879 CLC
+187A ADC hero_Y
+187D STA $22 ;tY
+187F LDA #$0
+1881 STA hero_target_type
+1884 LDA hero_target_direction
+1887 BRA .s9c0
+1889 JMP .s9done
+188C .s9c0:
+188C CMP #$1
+188E BEQ .._4495.skip
+1890 JMP .s9c1
+1893 .s9b1:
+1893 LDA hero_Y
+1896 BNE .._4503.skip
+1898 JMP .ut.done
+189B DEC $22 ;tY
+189D JMP .s9done
+18A0 .s9c1:
+18A0 CMP #$2
+18A2 BEQ .._4505.skip
+18A4 JMP .s9c2
+18A7 .s9b2:
+18A7 LDA hero_Y
+18AA CMP #$3
+18AC BNE .._4513.skip
+18AE JMP .ut.done
+18B1 INC $22 ;tY
+18B3 JMP .s9done
+18B6 .s9c2:
+18B6 CMP #$3
+18B8 BEQ .._4515.skip
+18BA JMP .s9c3
+18BD .s9b3:
+18BD LDA hero_X
+18C0 BNE .._4523.skip
+18C2 JMP .ut.done
+18C5 DEC $21 ;tX
+18C7 JMP .s9done
+18CA .s9c3:
+18CA CMP #$4
+18CC BEQ .._4525.skip
+18CE JMP .s9c4
+18D1 .s9b4:
+18D1 LDA hero_X
+18D4 CMP #$4
+18D6 BNE .._4533.skip
+18D8 JMP .ut.done
+18DB INC $21 ;tX
+18DD .s9c4:
+18DD .s9done:
+18DD LDA $21 ;tX
+18DF STA hero_target_index
+18E2 LDA $22 ;tY
+18E4 STA hero_target_index2
+18E7 LDA # (map_data) # $100
+18E9 STA $2D ;MapXY.map
+18EB LDA # (map_data)/$100
+18ED STA $2E ;MapXY.map
+18EF LDA $21 ;tX
+18F1 STA $2F ;MapXY.mX
+18F3 LDA $22 ;tY
+18F5 STA $30 ;MapXY.mY
+18F7 JSR MapXY
+18FA LDA ret_val
+18FC BRA .s10c0
+18FE JMP .s10done
+1901 .s10c0:
+1901 CMP #$4
+1903 BEQ .._4608.skip
+1905 JMP .s10c1
+1908 .s10b1:
+1908 LDA #$1
+190A STA hero_target_type
+190D JMP .s10done
+1910 .s10c1:
+1910 CMP #$6
+1912 BEQ .._4627.skip
+1914 JMP .s10c2
+1917 .s10b2:
+1917 LDA #$2
+1919 STA hero_target_type
+191C JMP .s10done
+191F .s10c2:
+191F LDA $21 ;tX
+1921 STA $31 ;CheckForMonster.mX
+1923 LDA $22 ;tY
+1925 STA $32 ;CheckForMonster.mY
+1927 JSR CheckForMonster
+192A LDA ret_val
+192C BNE .._4683.skip
+192E JMP .if60
+1931 LDA #$3
+1933 STA hero_target_type
+1936 LDA # (monster_map) # $100
+1938 STA $2D ;MapXY.map
+193A LDA # (monster_map)/$100
+193C STA $2E ;MapXY.map
+193E LDA $21 ;tX
+1940 STA $2F ;MapXY.mX
+1942 LDA $22 ;tY
+1944 STA $30 ;MapXY.mY
+1946 JSR MapXY
+1949 LDA ret_val
+194B STA hero_target_index
+194E JMP .if61
+1951 .if60:
+1951 LDA $21 ;tX
+1953 STA $31 ;CheckForCrystal.mX
+1955 LDA $22 ;tY
+1957 STA $32 ;CheckForCrystal.mY
+1959 JSR CheckForCrystal
+195C LDA ret_val
+195E BNE .._4788.skip
+1960 JMP .if62
+1963 LDA #$4
+1965 STA hero_target_type
+1968 LDA # (crystal_map) # $100
+196A STA $2D ;MapXY.map
+196C LDA # (crystal_map)/$100
+196E STA $2E ;MapXY.map
+1970 LDA $21 ;tX
+1972 STA $2F ;MapXY.mX
+1974 LDA $22 ;tY
+1976 STA $30 ;MapXY.mY
+1978 JSR MapXY
+197B LDA ret_val
+197D STA hero_target_index
+1980 .if62:
+1980 .if61:
+1980 .s10c3:
+1980 .s10done:
+1980 RTS
+1981 DrawRect:
+1981 LDA $44 ;width
+1983 BEQ .dr.done
+1985 STZ $61 ;CalcXY.posx
+1987 LDA $43 ;ypos
+1989 STA $62 ;CalcXY.posy
+198B JSR CalcXY
+198E LDA ret_val
+1990 STA $47 ;gfx_ptr
+1992 LDA ret_val+$1
+1994 STA $48 ;gfx_ptr
+1996 LDY $42 ;xpos
+1998 LDA $46 ;color
+199A LDX $44 ;width
+199C STA ($47),Y ;gfx_ptr
+199E INY
+199F DEX
+19A0 BNE .dr.loop
+19A2 INC $48 ;gfx_ptr
+19A4 DEC $45 ;height
+19A6 BNE .dr.loop_outer
+19A8 RTS
+19A9 DrawText:
+19A9 LDA draw_X
+19AC STA $5E ;original_X
+19AE LDA draw_X
+19B1 STA $61 ;CalcXY.posx
+19B3 LDA $53 ;ypos
+19B5 STA $62 ;CalcXY.posy
+19B7 JSR CalcXY
+19BA LDA ret_val
+19BC STA $56 ;gfx_ptr
+19BE LDA ret_val+$1
+19C0 STA $57 ;gfx_ptr
+19C2 STZ $5A ;digit_count
+19C4 LDA $5A ;digit_count
+19C6 BNE .._5098.skip
+19C8 JMP .if63
+19CB LDA $5A ;digit_count
+19CD BRA .s11c0
+19CF JMP .s11done
+19D2 .s11c0:
+19D2 CMP #$1
+19D4 BEQ .._5101.skip
+19D6 JMP .s11c1
+19D9 .s11b1:
+19D9 LDA #$1
+19DB JMP .s11done
+19DE .s11c1:
+19DE CMP #$2
+19E0 BEQ .._5110.skip
+19E2 JMP .s11c2
+19E5 .s11b2:
+19E5 LDA #$A
+19E7 JMP .s11done
+19EA .s11c2:
+19EA CMP #$3
+19EC BEQ .._5119.skip
+19EE JMP .s11c3
+19F1 .s11b3:
+19F1 LDA #$64
+19F3 .s11c3:
+19F3 .s11done:
+19F3 DEC $5A ;digit_count
+19F5 STA $5C ;subtractor
+19F7 LDA #$30
+19F9 STA $5D ;character
+19FB LDA $5B ;digit
+19FD SEC
+19FE SBC $5C ;subtractor
+1A00 BCS .._5143.skip
+1A02 JMP .if64
+1A05 STA $5B ;digit
+1A07 INC $5D ;character
+1A09 BRA .dtxt.digit
+1A0B JMP .if65
+1A0E .if64:
+1A0E CLC
+1A0F ADC $5C ;subtractor
+1A11 STA $5B ;digit
+1A13 .if65:
+1A13 LDA $5D ;character
+1A15 JMP .if66
+1A18 .if63:
+1A18 LDA ($4F) ;str_ptr
+1A1A BNE .._5150.skip
+1A1C JMP .dtxt.done
+1A1F INC $4F ;str_ptr
+1A21 BNE .._5151.no_carry
+1A23 INC $50 ;str_ptr
+1A25 CMP #$24
+1A27 BEQ .._5153.skip
+1A29 JMP .if67
+1A2C LDA #$1
+1A2E STA $5A ;digit_count
+1A30 LDA $51 ;arg1
+1A32 STA $5B ;digit
+1A34 PHA
+1A35 LDA $52 ;arg2
+1A37 STA $51 ;arg1
+1A39 PLA
+1A3A CMP #$A
+1A3C BCC .dtxt.loop
+1A3E INC $5A ;digit_count
+1A40 CMP #$64
+1A42 BCC .dtxt.loop
+1A44 INC $5A ;digit_count
+1A46 JMP .dtxt.loop
+1A49 JMP .if68
+1A4C .if67:
+1A4C CMP #$2A
+1A4E BEQ .._5220.skip
+1A50 JMP .if69
+1A53 LDA $5E ;original_X
+1A55 STA $56 ;gfx_ptr
+1A57 LDA #$0
+1A59 CLC
+1A5A ADC $56 ;gfx_ptr
+1A5C STA $56 ;gfx_ptr
+1A5E LDA #$A
+1A60 ADC $57 ;gfx_ptr
+1A62 STA $57 ;gfx_ptr
+1A64 BRA .dtxt.next
+1A66 .if69:
+1A66 .if68:
+1A66 .if66:
+1A66 SEC
+1A67 SBC #$20
+1A69 STZ $59 ;char_ptr
+1A6B ASL
+1A6C ROL $59 ;char_ptr
+1A6E ROL
+1A6F ROL $59 ;char_ptr
+1A71 ROL
+1A72 ROL $59 ;char_ptr
+1A74 ADC #CharTable # $100
+1A76 STA $58 ;char_ptr
+1A78 LDA $59 ;char_ptr
+1A7A ADC #CharTable>>$8
+1A7C STA $59 ;char_ptr
+1A7E LDY #$0
+1A80 LDA ($58),Y ;char_ptr
+1A82 LDX #$6
+1A84 CLC
+1A85 ROR
+1A86 PHA
+1A87 BCC .._5231.skip
+1A89 JMP .if70
+1A8C LDA $55 ;bg_color
+1A8E JMP .if71
+1A91 .if70:
+1A91 CLC
+1A92 LDA $54 ;fg_color
+1A94 .if71:
+1A94 STA ($56) ;gfx_ptr
+1A96 INC $56 ;gfx_ptr
+1A98 PLA
+1A99 DEX
+1A9A BNE .dtxt.pixel
+1A9C LDA $56 ;gfx_ptr
+1A9E SEC
+1A9F SBC #$6
+1AA1 STA $56 ;gfx_ptr
+1AA3 INC $57 ;gfx_ptr
+1AA5 INY
+1AA6 CPY #$8
+1AA8 BNE .dtxt.row
+1AAA LDA $56 ;gfx_ptr
+1AAC CLC
+1AAD ADC #$6
+1AAF STA $56 ;gfx_ptr
+1AB1 LDA $57 ;gfx_ptr
+1AB3 SEC
+1AB4 SBC #$8
+1AB6 STA $57 ;gfx_ptr
+1AB8 JMP .dtxt.loop
+1ABB RTS
+1ABC DrawBar:
+1ABC LDA $2F ;stat1
+1ABE STA $33 ;bar_width
+1AC0 STZ $34 ;bar_width
+1AC2 CLC
+1AC3 ROL $33 ;bar_width
+1AC5 ROL $34 ;bar_width
+1AC7 ROL $33 ;bar_width
+1AC9 ROL $34 ;bar_width
+1ACB ROL $33 ;bar_width
+1ACD ROL $34 ;bar_width
+1ACF ROL $33 ;bar_width
+1AD1 ROL $34 ;bar_width
+1AD3 LDA $33 ;bar_width
+1AD5 STA $35 ;mult_buff
+1AD7 LDA $34 ;bar_width
+1AD9 STA $36 ;mult_buff
+1ADB ROL $33 ;bar_width
+1ADD ROL $34 ;bar_width
+1ADF ROL $33 ;bar_width
+1AE1 ROL $34 ;bar_width
+1AE3 LDA $33 ;bar_width
+1AE5 CLC
+1AE6 ADC $35 ;mult_buff
+1AE8 STA $35 ;mult_buff
+1AEA LDA $34 ;bar_width
+1AEC ADC $36 ;mult_buff
+1AEE STA $36 ;mult_buff
+1AF0 STZ $33 ;bar_width
+1AF2 STZ $34 ;bar_width
+1AF4 LDA $30 ;stat2
+1AF6 STA $38 ;div_buff
+1AF8 STZ $37 ;div_buff
+1AFA LDA #$0
+1AFC STA ret_val
+1AFE LDA #$1
+1B00 STA ret_val+$1
+1B02 LDA $35 ;mult_buff
+1B04 SEC
+1B05 SBC $37 ;div_buff
+1B07 STA $35 ;mult_buff
+1B09 LDA $36 ;mult_buff
+1B0B SBC $38 ;div_buff
+1B0D STA $36 ;mult_buff
+1B0F BCS .._5357.skip
+1B11 JMP .if72
+1B14 LDA ret_val
+1B16 CLC
+1B17 ADC $33 ;bar_width
+1B19 STA $33 ;bar_width
+1B1B LDA ret_val+$1
+1B1D ADC $34 ;bar_width
+1B1F STA $34 ;bar_width
+1B21 BRA .dbar.div1
+1B23 .if72:
+1B23 LDA $37 ;div_buff
+1B25 CLC
+1B26 ADC $35 ;mult_buff
+1B28 STA $35 ;mult_buff
+1B2A LDA $38 ;div_buff
+1B2C ADC $36 ;mult_buff
+1B2E STA $36 ;mult_buff
+1B30 CLC
+1B31 ROR $38 ;div_buff
+1B33 ROR $37 ;div_buff
+1B35 CLC
+1B36 ROR ret_val+$1
+1B38 ROR ret_val
+1B3A LDA ret_val
+1B3C ORA ret_val+$1
+1B3E BNE .dbar.div1
+1B40 LDA $2D ;xpos
+1B42 STA $42 ;DrawRect.xpos
+1B44 LDA $2E ;ypos
+1B46 STA $43 ;DrawRect.ypos
+1B48 LDA $33 ;bar_width
+1B4A STA $44 ;DrawRect.width
+1B4C LDA #$6
+1B4E STA $45 ;DrawRect.height
+1B50 LDA $31 ;fg_color
+1B52 STA $46 ;DrawRect.color
+1B54 JSR DrawRect
+1B57 LDA $2D ;xpos
+1B59 CLC
+1B5A ADC $33 ;bar_width
+1B5C STA $2D ;xpos
+1B5E LDA #$50
+1B60 SEC
+1B61 SBC $33 ;bar_width
+1B63 STA $33 ;bar_width
+1B65 LDA $2D ;xpos
+1B67 STA $42 ;DrawRect.xpos
+1B69 LDA $2E ;ypos
+1B6B STA $43 ;DrawRect.ypos
+1B6D LDA $33 ;bar_width
+1B6F STA $44 ;DrawRect.width
+1B71 LDA #$6
+1B73 STA $45 ;DrawRect.height
+1B75 LDA $32 ;bg_color
+1B77 STA $46 ;DrawRect.color
+1B79 JSR DrawRect
+1B7C RTS
+1B7D DrawLegend:
+1B7D LDA #$A0
+1B7F STA $42 ;DrawRect.xpos
+1B81 LDA #$0
+1B83 STA $43 ;DrawRect.ypos
+1B85 LDA #$60
+1B87 STA $44 ;DrawRect.width
+1B89 LDA #$80
+1B8B STA $45 ;DrawRect.height
+1B8D LDA #$15
+1B8F STA $46 ;DrawRect.color
+1B91 JSR DrawRect
+1B94 LDA #$A8
+1B96 STA draw_X
+1B99 BRA .._5734.str_skip
+1BA2 LDA # (.._5734.str_addr) # $100
+1BA4 STA $4F ;DrawText.str_ptr
+1BA6 LDA # (.._5734.str_addr)/$100
+1BA8 STA $50 ;DrawText.str_ptr
+1BAA LDA hero_HP
+1BAD STA $51 ;DrawText.arg1
+1BAF LDA hero_HP_Max
+1BB2 STA $52 ;DrawText.arg2
+1BB4 LDA #$4
+1BB6 STA $53 ;DrawText.ypos
+1BB8 LDA #$3F
+1BBA STA $54 ;DrawText.fg_color
+1BBC LDA #$15
+1BBE STA $55 ;DrawText.bg_color
+1BC0 JSR DrawText
+1BC3 LDA #$A8
+1BC5 STA $2D ;DrawBar.xpos
+1BC7 LDA #$D
+1BC9 STA $2E ;DrawBar.ypos
+1BCB LDA hero_HP
+1BCE STA $2F ;DrawBar.stat1
+1BD0 LDA hero_HP_Max
+1BD3 STA $30 ;DrawBar.stat2
+1BD5 LDA #$3
+1BD7 STA $31 ;DrawBar.fg_color
+1BD9 LDA #$2
+1BDB STA $32 ;DrawBar.bg_color
+1BDD JSR DrawBar
+1BE0 LDA #$A8
+1BE2 STA draw_X
+1BE5 BRA .._5979.str_skip
+1BF0 LDA # (.._5979.str_addr) # $100
+1BF2 STA $4F ;DrawText.str_ptr
+1BF4 LDA # (.._5979.str_addr)/$100
+1BF6 STA $50 ;DrawText.str_ptr
+1BF8 LDA hero_Batt
+1BFB STA $51 ;DrawText.arg1
+1BFD LDA hero_Batt_Max
+1C00 STA $52 ;DrawText.arg2
+1C02 LDA #$18
+1C04 STA $53 ;DrawText.ypos
+1C06 LDA #$3F
+1C08 STA $54 ;DrawText.fg_color
+1C0A LDA #$15
+1C0C STA $55 ;DrawText.bg_color
+1C0E JSR DrawText
+1C11 LDA #$A8
+1C13 STA $2D ;DrawBar.xpos
+1C15 LDA #$21
+1C17 STA $2E ;DrawBar.ypos
+1C19 LDA hero_Batt
+1C1C STA $2F ;DrawBar.stat1
+1C1E LDA hero_Batt_Max
+1C21 STA $30 ;DrawBar.stat2
+1C23 LDA #$30
+1C25 STA $31 ;DrawBar.fg_color
+1C27 LDA #$20
+1C29 STA $32 ;DrawBar.bg_color
+1C2B JSR DrawBar
+1C2E LDA #$A8
+1C30 STA draw_X
+1C33 BRA .._6224.str_skip
+1C3D LDA # (.._6224.str_addr) # $100
+1C3F STA $4F ;DrawText.str_ptr
+1C41 LDA # (.._6224.str_addr)/$100
+1C43 STA $50 ;DrawText.str_ptr
+1C45 LDA hero_Exp
+1C48 STA $51 ;DrawText.arg1
+1C4A LDA hero_Exp_Max
+1C4D STA $52 ;DrawText.arg2
+1C4F LDA #$2C
+1C51 STA $53 ;DrawText.ypos
+1C53 LDA #$3F
+1C55 STA $54 ;DrawText.fg_color
+1C57 LDA #$15
+1C59 STA $55 ;DrawText.bg_color
+1C5B JSR DrawText
+1C5E LDA #$A8
+1C60 STA $2D ;DrawBar.xpos
+1C62 LDA #$35
+1C64 STA $2E ;DrawBar.ypos
+1C66 LDA hero_Exp
+1C69 STA $2F ;DrawBar.stat1
+1C6B LDA hero_Exp_Max
+1C6E STA $30 ;DrawBar.stat2
+1C70 LDA #$C
+1C72 STA $31 ;DrawBar.fg_color
+1C74 LDA #$8
+1C76 STA $32 ;DrawBar.bg_color
+1C78 JSR DrawBar
+1C7B LDA hero_target_type
+1C7E BRA .s12c0
+1C80 JMP .s12done
+1C83 .s12c0:
+1C83 CMP #$1
+1C85 BEQ .._6453.skip
+1C87 JMP .s12c1
+1C8A .s12b1:
+1C8A LDA #$A8
+1C8C STA draw_X
+1C8F BRA .._6479.str_skip
+1C96 LDA # (.._6479.str_addr) # $100
+1C98 STA $4F ;DrawText.str_ptr
+1C9A LDA # (.._6479.str_addr)/$100
+1C9C STA $50 ;DrawText.str_ptr
+1C9E STZ $51 ;DrawText.arg1
+1CA0 STZ $52 ;DrawText.arg2
+1CA2 LDA #$40
+1CA4 STA $53 ;DrawText.ypos
+1CA6 LDA #$21
+1CA8 STA $54 ;DrawText.fg_color
+1CAA LDA #$15
+1CAC STA $55 ;DrawText.bg_color
+1CAE JSR DrawText
+1CB1 JMP .s12done
+1CB4 .s12c1:
+1CB4 CMP #$2
+1CB6 BEQ .._6578.skip
+1CB8 JMP .s12c2
+1CBB .s12b2:
+1CBB LDA #$A8
+1CBD STA draw_X
+1CC0 BRA .._6604.str_skip
+1CC7 LDA # (.._6604.str_addr) # $100
+1CC9 STA $4F ;DrawText.str_ptr
+1CCB LDA # (.._6604.str_addr)/$100
+1CCD STA $50 ;DrawText.str_ptr
+1CCF STZ $51 ;DrawText.arg1
+1CD1 STZ $52 ;DrawText.arg2
+1CD3 LDA #$40
+1CD5 STA $53 ;DrawText.ypos
+1CD7 LDA #$35
+1CD9 STA $54 ;DrawText.fg_color
+1CDB LDA #$15
+1CDD STA $55 ;DrawText.bg_color
+1CDF JSR DrawText
+1CE2 JMP .s12done
+1CE5 .s12c2:
+1CE5 CMP #$3
+1CE7 BEQ .._6703.skip
+1CE9 JMP .s12c3
+1CEC .s12b3:
+1CEC LDA #$A8
+1CEE STA draw_X
+1CF1 BRA .._6729.str_skip
+1CFE LDA # (.._6729.str_addr) # $100
+1D00 STA $4F ;DrawText.str_ptr
+1D02 LDA # (.._6729.str_addr)/$100
+1D04 STA $50 ;DrawText.str_ptr
+1D06 STZ $51 ;DrawText.arg1
+1D08 STZ $52 ;DrawText.arg2
+1D0A LDA #$40
+1D0C STA $53 ;DrawText.ypos
+1D0E LDA #$1
+1D10 STA $54 ;DrawText.fg_color
+1D12 LDA #$15
+1D14 STA $55 ;DrawText.bg_color
+1D16 JSR DrawText
+1D19 JMP .s12done
+1D1C .s12c3:
+1D1C CMP #$4
+1D1E BEQ .._6828.skip
+1D20 JMP .s12c4
+1D23 .s12b4:
+1D23 LDA #$A8
+1D25 STA draw_X
+1D28 LDA hero_target_index
+1D2B ASL
+1D2C ASL
+1D2D ADC #$3
+1D2F TAY
+1D30 LDA crystal_list,Y
+1D33 BRA .s13c0
+1D35 JMP .s13done
+1D38 .s13c0:
+1D38 CMP #$0
+1D3A BEQ .._6853.skip
+1D3C JMP .s13c1
+1D3F .s13b1:
+1D3F BRA .._6864.str_skip
+1D49 LDA # (.._6864.str_addr) # $100
+1D4B STA $4F ;DrawText.str_ptr
+1D4D LDA # (.._6864.str_addr)/$100
+1D4F STA $50 ;DrawText.str_ptr
+1D51 STZ $51 ;DrawText.arg1
+1D53 STZ $52 ;DrawText.arg2
+1D55 LDA #$40
+1D57 STA $53 ;DrawText.ypos
+1D59 LDA #$17
+1D5B STA $54 ;DrawText.fg_color
+1D5D LDA #$15
+1D5F STA $55 ;DrawText.bg_color
+1D61 JSR DrawText
+1D64 JMP .s13done
+1D67 .s13c1:
+1D67 CMP #$1
+1D69 BEQ .._6963.skip
+1D6B JMP .s13c2
+1D6E .s13b2:
+1D6E BRA .._6974.str_skip
+1D78 LDA # (.._6974.str_addr) # $100
+1D7A STA $4F ;DrawText.str_ptr
+1D7C LDA # (.._6974.str_addr)/$100
+1D7E STA $50 ;DrawText.str_ptr
+1D80 STZ $51 ;DrawText.arg1
+1D82 STZ $52 ;DrawText.arg2
+1D84 LDA #$40
+1D86 STA $53 ;DrawText.ypos
+1D88 LDA #$35
+1D8A STA $54 ;DrawText.fg_color
+1D8C LDA #$15
+1D8E STA $55 ;DrawText.bg_color
+1D90 JSR DrawText
+1D93 JMP .s13done
+1D96 .s13c2:
+1D96 CMP #$2
+1D98 BEQ .._7073.skip
+1D9A JMP .s13c3
+1D9D .s13b3:
+1D9D BRA .._7084.str_skip
+1DA7 LDA # (.._7084.str_addr) # $100
+1DA9 STA $4F ;DrawText.str_ptr
+1DAB LDA # (.._7084.str_addr)/$100
+1DAD STA $50 ;DrawText.str_ptr
+1DAF STZ $51 ;DrawText.arg1
+1DB1 STZ $52 ;DrawText.arg2
+1DB3 LDA #$40
+1DB5 STA $53 ;DrawText.ypos
+1DB7 LDA #$1F
+1DB9 STA $54 ;DrawText.fg_color
+1DBB LDA #$15
+1DBD STA $55 ;DrawText.bg_color
+1DBF JSR DrawText
+1DC2 .s13c3:
+1DC2 .s13done:
+1DC2 .s12c4:
+1DC2 .s12done:
+1DC2 LDA hero_activity
+1DC5 BNE .._7194.skip
+1DC7 JMP .if73
+1DCA LDA #$A8
+1DCC STA $2D ;DrawBar.xpos
+1DCE LDA #$49
+1DD0 STA $2E ;DrawBar.ypos
+1DD2 LDA hero_activity_ticks
+1DD5 STA $2F ;DrawBar.stat1
+1DD7 LDA hero_activity_ticks_max
+1DDA STA $30 ;DrawBar.stat2
+1DDC LDA #$32
+1DDE STA $31 ;DrawBar.fg_color
+1DE0 LDA #$21
+1DE2 STA $32 ;DrawBar.bg_color
+1DE4 JSR DrawBar
+1DE7 .if73:
+1DE7 LDA # (map_data) # $100
+1DE9 STA $3B ;map_ptr
+1DEB LDA # (map_data)/$100
+1DED STA $3C ;map_ptr
+1DEF LDA #$A8
+1DF1 STA $61 ;CalcXY.posx
+1DF3 LDA #$54
+1DF5 STA $62 ;CalcXY.posy
+1DF7 JSR CalcXY
+1DFA LDA ret_val
+1DFC STA $39 ;gfx_ptr
+1DFE LDA ret_val+$1
+1E00 STA $3A ;gfx_ptr
+1E02 LDA #$14
+1E04 STA $3D ;height
+1E06 STZ $3E ;mX
+1E08 STZ $3F ;mY
+1E0A LDY #$0
+1E0C LDA #$0
+1E0E STA $40 ;if_monster
+1E10 LDA #$0
+1E12 STA $41 ;if_crystal
+1E14 PHY
+1E15 LDA $3E ;mX
+1E17 STA $31 ;CheckForMonster.mX
+1E19 LDA $3F ;mY
+1E1B STA $32 ;CheckForMonster.mY
+1E1D JSR CheckForMonster
+1E20 LDA ret_val
+1E22 STA $40 ;if_monster
+1E24 LDA $3E ;mX
+1E26 STA $31 ;CheckForCrystal.mX
+1E28 LDA $3F ;mY
+1E2A STA $32 ;CheckForCrystal.mY
+1E2C JSR CheckForCrystal
+1E2F LDA ret_val
+1E31 STA $41 ;if_crystal
+1E33 PLY
+1E34 LDA $3E ;mX
+1E36 INC
+1E37 CMP #$28
+1E39 BNE .._7574.skip
+1E3B JMP .if74
+1E3E STA $3E ;mX
+1E40 JMP .if75
+1E43 .if74:
+1E43 STZ $3E ;mX
+1E45 INC $3F ;mY
+1E47 .if75:
+1E47 LDA $40 ;if_monster
+1E49 BNE .._7581.skip
+1E4B JMP .if76
+1E4E LDA #$3
+1E50 BRA .dl.pixel
+1E52 .if76:
+1E52 LDA $41 ;if_crystal
+1E54 BNE .._7586.skip
+1E56 JMP .if77
+1E59 LDA #$F
+1E5B BRA .dl.pixel
+1E5D .if77:
+1E5D LDA ($3B),Y ;map_ptr
+1E5F BRA .s14c0
+1E61 JMP .s14done
+1E64 .s14c0:
+1E64 CMP #$0
+1E66 BEQ .._7591.skip
+1E68 JMP .s14c1
+1E6B BRA .s14b1
+1E6D .s14c1:
+1E6D CMP #$1
+1E6F BNE .s14c2
+1E71 BRA .s14b1
+1E73 BRA .s14b1
+1E75 .s14c2:
+1E75 CMP #$2
+1E77 BNE .s14c3
+1E79 BRA .s14b1
+1E7B BRA .s14b1
+1E7D .s14c3:
+1E7D CMP #$3
+1E7F BNE .s14c4
+1E81 BRA .s14b1
+1E83 .s14b1:
+1E83 LDA #$3B
+1E85 JMP .s14done
+1E88 .s14c4:
+1E88 CMP #$4
+1E8A BEQ .._7600.skip
+1E8C JMP .s14c5
+1E8F .s14b2:
+1E8F LDA #$21
+1E91 JMP .s14done
+1E94 .s14c5:
+1E94 CMP #$5
+1E96 BEQ .._7609.skip
+1E98 JMP .s14c6
+1E9B .s14b3:
+1E9B LDA #$B
+1E9D JMP .s14done
+1EA0 .s14c6:
+1EA0 CMP #$6
+1EA2 BEQ .._7618.skip
+1EA4 JMP .s14c7
+1EA7 .s14b4:
+1EA7 LDA #$35
+1EA9 JMP .s14done
+1EAC .s14c7:
+1EAC LDA #$3F
+1EAE .s14c8:
+1EAE .s14done:
+1EAE PHY
+1EAF PHA
+1EB0 TYA
+1EB1 ASL
+1EB2 TAY
+1EB3 PLA
+1EB4 STA ($39),Y ;gfx_ptr
+1EB6 INY
+1EB7 STA ($39),Y ;gfx_ptr
+1EB9 INC $3A ;gfx_ptr
+1EBB STA ($39),Y ;gfx_ptr
+1EBD DEY
+1EBE STA ($39),Y ;gfx_ptr
+1EC0 DEC $3A ;gfx_ptr
+1EC2 PLY
+1EC3 INY
+1EC4 CPY #$28
+1EC6 BEQ .._7633.skip
+1EC8 JMP .dl.loop
+1ECB LDA #$A8
+1ECD STA $39 ;gfx_ptr
+1ECF INC $3A ;gfx_ptr
+1ED1 INC $3A ;gfx_ptr
+1ED3 LDA #$28
+1ED5 CLC
+1ED6 ADC $3B ;map_ptr
+1ED8 STA $3B ;map_ptr
+1EDA BCC .._7634.skip
+1EDC INC $3C ;map_ptr
+1EDE DEC $3D ;height
+1EE0 BEQ .._7646.skip
+1EE2 JMP .dl.loop_outer
+1EE5 LDA display_X
+1EE8 ASL
+1EE9 ADC #$A8
+1EEB STA $39 ;gfx_ptr
+1EED STA $3B ;map_ptr
+1EEF LDA display_Y
+1EF2 ASL
+1EF3 ADC #$94
+1EF5 STA $3A ;gfx_ptr
+1EF7 ADC #$7
+1EF9 STA $3C ;map_ptr
+1EFB LDY #$0
+1EFD LDA #$C
+1EFF STA ($39),Y ;gfx_ptr
+1F01 STA ($3B),Y ;map_ptr
+1F03 INY
+1F04 CPY #$A
+1F06 BNE .dl.hline
+1F08 LDA $39 ;gfx_ptr
+1F0A CLC
+1F0B ADC #$9
+1F0D STA $3B ;map_ptr
+1F0F INC $3A ;gfx_ptr
+1F11 LDA $3A ;gfx_ptr
+1F13 STA $3C ;map_ptr
+1F15 LDY #$6
+1F17 LDA #$C
+1F19 STA ($39) ;gfx_ptr
+1F1B STA ($3B) ;map_ptr
+1F1D INC $3A ;gfx_ptr
+1F1F INC $3C ;map_ptr
+1F21 DEY
+1F22 BNE .dh.vline
+1F24 RTS
+1F25 DrawFrame:
+1F25 LDA # (map_data) # $100
+1F27 STA $2D ;OffsetXY.map
+1F29 LDA # (map_data)/$100
+1F2B STA $2E ;OffsetXY.map
+1F2D LDA display_X
+1F30 STA $2F ;OffsetXY.mX
+1F32 LDA display_Y
+1F35 STA $30 ;OffsetXY.mY
+1F37 JSR OffsetXY
+1F3A LDA ret_val
+1F3C STA $34 ;map_ptr
+1F3E LDA ret_val+$1
+1F40 STA $35 ;map_ptr
+1F42 LDA # (monster_map) # $100
+1F44 STA $2D ;OffsetXY.map
+1F46 LDA # (monster_map)/$100
+1F48 STA $2E ;OffsetXY.map
+1F4A LDA display_X
+1F4D STA $2F ;OffsetXY.mX
+1F4F LDA display_Y
+1F52 STA $30 ;OffsetXY.mY
+1F54 JSR OffsetXY
+1F57 LDA ret_val
+1F59 STA $36 ;monster_ptr
+1F5B LDA ret_val+$1
+1F5D STA $37 ;monster_ptr
+1F5F LDA # (crystal_map) # $100
+1F61 STA $2D ;OffsetXY.map
+1F63 LDA # (crystal_map)/$100
+1F65 STA $2E ;OffsetXY.map
+1F67 LDA display_X
+1F6A STA $2F ;OffsetXY.mX
+1F6C LDA display_Y
+1F6F STA $30 ;OffsetXY.mY
+1F71 JSR OffsetXY
+1F74 LDA ret_val
+1F76 STA $38 ;crystal_ptr
+1F78 LDA ret_val+$1
+1F7A STA $39 ;crystal_ptr
+1F7C STZ $32 ;i
+1F7E STZ $33 ;j
+1F80 LDA ($34) ;map_ptr
+1F82 BRA .s15c0
+1F84 JMP .s15done
+1F87 .s15c0:
+1F87 CMP #$0
+1F89 BEQ .._7934.skip
+1F8B JMP .s15c1
+1F8E .s15b1:
+1F8E LDA #$0
+1F90 STA $31 ;tile
+1F92 JMP .s15done
+1F95 .s15c1:
+1F95 CMP #$1
+1F97 BEQ .._7954.skip
+1F99 JMP .s15c2
+1F9C .s15b2:
+1F9C LDA #$1
+1F9E STA $31 ;tile
+1FA0 JMP .s15done
+1FA3 .s15c2:
+1FA3 CMP #$2
+1FA5 BEQ .._7974.skip
+1FA7 JMP .s15c3
+1FAA .s15b3:
+1FAA LDA #$2
+1FAC STA $31 ;tile
+1FAE JMP .s15done
+1FB1 .s15c3:
+1FB1 CMP #$3
+1FB3 BEQ .._7994.skip
+1FB5 JMP .s15c4
+1FB8 .s15b4:
+1FB8 LDA #$3
+1FBA STA $31 ;tile
+1FBC JMP .s15done
+1FBF .s15c4:
+1FBF CMP #$4
+1FC1 BEQ .._8014.skip
+1FC3 JMP .s15c5
+1FC6 .s15b5:
+1FC6 LDA #$4
+1FC8 STA $31 ;tile
+1FCA JMP .s15done
+1FCD .s15c5:
+1FCD CMP #$5
+1FCF BEQ .._8034.skip
+1FD1 JMP .s15c6
+1FD4 .s15b6:
+1FD4 LDA #$5
+1FD6 STA $31 ;tile
+1FD8 JMP .s15done
+1FDB .s15c6:
+1FDB CMP #$6
+1FDD BEQ .._8054.skip
+1FDF JMP .s15c7
+1FE2 .s15b7:
+1FE2 LDA #$1D
+1FE4 STA $31 ;tile
+1FE6 .s15c7:
+1FE6 .s15done:
+1FE6 CMP #$1D
+1FE8 BEQ .._8079.skip
+1FEA JMP .if78
+1FED LDA #$1D
+1FEF STA $40 ;DrawTile1bpp.tile
+1FF1 LDA $32 ;i
+1FF3 STA $41 ;DrawTile1bpp.xpos
+1FF5 LDA $33 ;j
+1FF7 STA $42 ;DrawTile1bpp.ypos
+1FF9 LDA #$0
+1FFB STA $43 ;DrawTile1bpp.color1
+1FFD LDA #$30
+1FFF STA $44 ;DrawTile1bpp.color2
+2001 JSR DrawTile1bpp
+2004 JMP .if79
+2007 .if78:
+2007 LDA $31 ;tile
+2009 STA $54 ;DrawTile.tile
+200B LDA $32 ;i
+200D STA $55 ;DrawTile.xpos
+200F LDA $33 ;j
+2011 STA $56 ;DrawTile.ypos
+2013 JSR DrawTile
+2016 .if79:
+2016 INC $34 ;map_ptr
+2018 BNE .._8227.no_carry
+201A INC $35 ;map_ptr
+201C LDA ($36) ;monster_ptr
+201E CMP #$FF
+2020 BNE .._8229.skip
+2022 JMP .if80
+2025 ASL
+2026 ADC ($36) ;monster_ptr
+2028 ADC #$2
+202A TAY
+202B LDA monster_list,Y
+202E BNE .._8232.skip
+2030 JMP .if81
+2033 LDA #$16
+2035 STA $54 ;DrawTile.tile
+2037 LDA $32 ;i
+2039 STA $55 ;DrawTile.xpos
+203B LDA $33 ;j
+203D STA $56 ;DrawTile.ypos
+203F JSR DrawTile
+2042 JMP .if82
+2045 .if81:
+2045 LDA #$17
+2047 STA $54 ;DrawTile.tile
+2049 LDA $32 ;i
+204B STA $55 ;DrawTile.xpos
+204D LDA $33 ;j
+204F STA $56 ;DrawTile.ypos
+2051 JSR DrawTile
+2054 .if82:
+2054 .if80:
+2054 INC $36 ;monster_ptr
+2056 BNE .._8351.no_carry
+2058 INC $37 ;monster_ptr
+205A LDA ($38) ;crystal_ptr
+205C CMP #$FF
+205E BNE .._8353.skip
+2060 JMP .if83
+2063 ASL
+2064 ASL
+2065 PHA
+2066 ADC #$2
+2068 TAY
+2069 LDA crystal_list,Y
+206C BNE .._8356.skip
+206E JMP .if84
+2071 PLA
+2072 CLC
+2073 ADC #$3
+2075 TAY
+2076 LDA crystal_list,Y
+2079 BRA .s16c0
+207B JMP .s16done
+207E .s16c0:
+207E CMP #$0
+2080 BEQ .._8359.skip
+2082 JMP .s16c1
+2085 .s16b1:
+2085 LDA #$6
+2087 STA $54 ;DrawTile.tile
+2089 LDA $32 ;i
+208B STA $55 ;DrawTile.xpos
+208D LDA $33 ;j
+208F STA $56 ;DrawTile.ypos
+2091 JSR DrawTile
+2094 JMP .s16done
+2097 .s16c1:
+2097 CMP #$1
+2099 BEQ .._8424.skip
+209B JMP .s16c2
+209E .s16b2:
+209E LDA #$8
+20A0 STA $54 ;DrawTile.tile
+20A2 LDA $32 ;i
+20A4 STA $55 ;DrawTile.xpos
+20A6 LDA $33 ;j
+20A8 STA $56 ;DrawTile.ypos
+20AA JSR DrawTile
+20AD JMP .s16done
+20B0 .s16c2:
+20B0 CMP #$2
+20B2 BEQ .._8489.skip
+20B4 JMP .s16c3
+20B7 .s16b3:
+20B7 LDA #$7
+20B9 STA $54 ;DrawTile.tile
+20BB LDA $32 ;i
+20BD STA $55 ;DrawTile.xpos
+20BF LDA $33 ;j
+20C1 STA $56 ;DrawTile.ypos
+20C3 JSR DrawTile
+20C6 .s16c3:
+20C6 .s16done:
+20C6 JMP .if85
+20C9 .if84:
+20C9 PLA
+20CA LDA #$19
+20CC STA $54 ;DrawTile.tile
+20CE LDA $32 ;i
+20D0 STA $55 ;DrawTile.xpos
+20D2 LDA $33 ;j
+20D4 STA $56 ;DrawTile.ypos
+20D6 JSR DrawTile
+20D9 .if85:
+20D9 .if83:
+20D9 INC $38 ;crystal_ptr
+20DB BNE .._8620.no_carry
+20DD INC $39 ;crystal_ptr
+20DF LDA $32 ;i
+20E1 CLC
+20E2 ADC #$20
+20E4 STA $32 ;i
+20E6 CMP #$A0
+20E8 BEQ .._8621.skip
+20EA JMP .df.loop_x
+20ED LDA #$23
+20EF CLC
+20F0 ADC $34 ;map_ptr
+20F2 STA $34 ;map_ptr
+20F4 BCC .._8622.skip
+20F6 INC $35 ;map_ptr
+20F8 LDA #$23
+20FA CLC
+20FB ADC $36 ;monster_ptr
+20FD STA $36 ;monster_ptr
+20FF BCC .._8634.skip
+2101 INC $37 ;monster_ptr
+2103 LDA #$23
+2105 CLC
+2106 ADC $38 ;crystal_ptr
+2108 STA $38 ;crystal_ptr
+210A BCC .._8645.skip
+210C INC $39 ;crystal_ptr
+210E STZ $32 ;i
+2110 LDA $33 ;j
+2112 CLC
+2113 ADC #$20
+2115 STA $33 ;j
+2117 CMP #$80
+2119 BNE .._8656.skip
+211B JMP .if86
+211E JMP .df.loop_y
+2121 .if86:
+2121 LDA hero_X
+2124 ASL
+2125 ASL
+2126 ASL
+2127 ASL
+2128 ASL
+2129 STA $32 ;i
+212B LDA hero_Y
+212E ASL
+212F ASL
+2130 ASL
+2131 ASL
+2132 ASL
+2133 STA $33 ;j
+2135 LDA hero_facing
+2138 CMP #$3
+213A BEQ .._8660.skip
+213C JMP .if87
+213F LDA #$9
+2141 STA $54 ;DrawTile.tile
+2143 LDA $32 ;i
+2145 STA $55 ;DrawTile.xpos
+2147 LDA $33 ;j
+2149 STA $56 ;DrawTile.ypos
+214B JSR DrawTile
+214E JMP .if88
+2151 .if87:
+2151 LDA #$A
+2153 STA $54 ;DrawTile.tile
+2155 LDA $32 ;i
+2157 STA $55 ;DrawTile.xpos
+2159 LDA $33 ;j
+215B STA $56 ;DrawTile.ypos
+215D JSR DrawTile
+2160 .if88:
+2160 LDA hero_target_direction
+2163 BRA .s17c0
+2165 JMP .s17done
+2168 .s17c0:
+2168 CMP #$1
+216A BEQ .._8779.skip
+216C JMP .s17c1
+216F .s17b1:
+216F LDA $33 ;j
+2171 BEQ .df.no_draw
+2173 SEC
+2174 SBC #$20
+2176 STA $33 ;j
+2178 JMP .s17done
+217B .s17c1:
+217B CMP #$2
+217D BEQ .._8788.skip
+217F JMP .s17c2
+2182 .s17b2:
+2182 LDA $33 ;j
+2184 CMP #$60
+2186 BEQ .df.no_draw
+2188 CLC
+2189 ADC #$20
+218B STA $33 ;j
+218D JMP .s17done
+2190 .s17c2:
+2190 CMP #$3
+2192 BEQ .._8797.skip
+2194 JMP .s17c3
+2197 .s17b3:
+2197 LDA $32 ;i
+2199 BEQ .df.no_draw
+219B SEC
+219C SBC #$20
+219E STA $32 ;i
+21A0 JMP .s17done
+21A3 .s17c3:
+21A3 CMP #$4
+21A5 BEQ .._8806.skip
+21A7 JMP .s17c4
+21AA .s17b4:
+21AA LDA $32 ;i
+21AC CMP #$80
+21AE BEQ .df.no_draw
+21B0 CLC
+21B1 ADC #$20
+21B3 STA $32 ;i
+21B5 .s17c4:
+21B5 .s17done:
+21B5 LDA #$1A
+21B7 STA $40 ;DrawTile1bpp.tile
+21B9 LDA $32 ;i
+21BB STA $41 ;DrawTile1bpp.xpos
+21BD LDA $33 ;j
+21BF STA $42 ;DrawTile1bpp.ypos
+21C1 LDA #$C
+21C3 STA $43 ;DrawTile1bpp.color1
+21C5 LDA #$40
+21C7 STA $44 ;DrawTile1bpp.color2
+21C9 JSR DrawTile1bpp
+21CC RTS
+21CD DrawBorder:
+21CD DEC $23 ;width
+21CF DEC $24 ;height
+21D1 LDA $21 ;xpos
+21D3 STA $26 ;gfx_ptr1
+21D5 STA $28 ;gfx_ptr2
+21D7 LDA $22 ;ypos
+21D9 CLC
+21DA ADC #$40
+21DC STA $27 ;gfx_ptr1
+21DE ADC $24 ;height
+21E0 STA $29 ;gfx_ptr2
+21E2 LDY $23 ;width
+21E4 LDA $25 ;color
+21E6 STA ($26),Y ;gfx_ptr1
+21E8 STA ($28),Y ;gfx_ptr2
+21EA DEY
+21EB BNE .db.hline
+21ED LDA $26 ;gfx_ptr1
+21EF CLC
+21F0 ADC $23 ;width
+21F2 STA $28 ;gfx_ptr2
+21F4 LDA $27 ;gfx_ptr1
+21F6 STA $29 ;gfx_ptr2
+21F8 LDY $24 ;height
+21FA INY
+21FB LDA $25 ;color
+21FD STA ($26) ;gfx_ptr1
+21FF STA ($28) ;gfx_ptr2
+2201 INC $27 ;gfx_ptr1
+2203 INC $29 ;gfx_ptr2
+2205 DEY
+2206 BNE .db.vline
+2208 RTS
+2209 DrawMenuBorder:
+2209 LDA #$1
+220B STA $42 ;DrawRect.xpos
+220D LDA #$1
+220F STA $43 ;DrawRect.ypos
+2211 LDA #$FE
+2213 STA $44 ;DrawRect.width
+2215 LDA #$10
+2217 STA $45 ;DrawRect.height
+2219 LDA #$2A
+221B STA $46 ;DrawRect.color
+221D JSR DrawRect
+2220 LDA #$1
+2222 STA $42 ;DrawRect.xpos
+2224 LDA #$78
+2226 STA $43 ;DrawRect.ypos
+2228 LDA #$FE
+222A STA $44 ;DrawRect.width
+222C LDA #$7
+222E STA $45 ;DrawRect.height
+2230 LDA #$2A
+2232 STA $46 ;DrawRect.color
+2234 JSR DrawRect
+2237 LDA #$1
+2239 STA $42 ;DrawRect.xpos
+223B LDA #$11
+223D STA $43 ;DrawRect.ypos
+223F LDA #$7
+2241 STA $44 ;DrawRect.width
+2243 LDA #$67
+2245 STA $45 ;DrawRect.height
+2247 LDA #$2A
+2249 STA $46 ;DrawRect.color
+224B JSR DrawRect
+224E LDA #$F8
+2250 STA $42 ;DrawRect.xpos
+2252 LDA #$11
+2254 STA $43 ;DrawRect.ypos
+2256 LDA #$7
+2258 STA $44 ;DrawRect.width
+225A LDA #$67
+225C STA $45 ;DrawRect.height
+225E LDA #$2A
+2260 STA $46 ;DrawRect.color
+2262 JSR DrawRect
+2265 STZ $21 ;DrawBorder.xpos
+2267 STZ $22 ;DrawBorder.ypos
+2269 LDA #$0
+226B STA $23 ;DrawBorder.width
+226D LDA #$80
+226F STA $24 ;DrawBorder.height
+2271 LDA #$0
+2273 STA $25 ;DrawBorder.color
+2275 JSR DrawBorder
+2278 LDA #$8
+227A STA $21 ;DrawBorder.xpos
+227C LDA #$8
+227E STA $22 ;DrawBorder.ypos
+2280 LDA #$F0
+2282 STA $23 ;DrawBorder.width
+2284 LDA #$70
+2286 STA $24 ;DrawBorder.height
+2288 LDA #$0
+228A STA $25 ;DrawBorder.color
+228C JSR DrawBorder
+228F LDA #$1
+2291 STA $2A ;counter
+2293 LDA #$0
+2295 CLC
+2296 SBC $2A ;counter
+2298 STA $2B ;width
+229A LDA #$80
+229C CLC
+229D SBC $2A ;counter
+229F STA $2C ;height
+22A1 LDA $2A ;counter
+22A3 STA $61 ;CalcXY.posx
+22A5 LDA $2A ;counter
+22A7 STA $62 ;CalcXY.posy
+22A9 JSR CalcXY
+22AC LDA #$0
+22AE STA (ret_val)
+22B0 LDA $2B ;width
+22B2 STA $61 ;CalcXY.posx
+22B4 LDA $2A ;counter
+22B6 STA $62 ;CalcXY.posy
+22B8 JSR CalcXY
+22BB LDA #$0
+22BD STA (ret_val)
+22BF LDA $2B ;width
+22C1 STA $61 ;CalcXY.posx
+22C3 LDA $2C ;height
+22C5 STA $62 ;CalcXY.posy
+22C7 JSR CalcXY
+22CA LDA #$0
+22CC STA (ret_val)
+22CE LDA $2A ;counter
+22D0 STA $61 ;CalcXY.posx
+22D2 LDA $2C ;height
+22D4 STA $62 ;CalcXY.posy
+22D6 JSR CalcXY
+22D9 LDA #$0
+22DB STA (ret_val)
+22DD LDA $2A ;counter
+22DF INC
+22E0 CMP #$8
+22E2 STA $2A ;counter
+22E4 BNE .dmb.loop
+22E6 LDA #$9
+22E8 STA draw_X
+22EB BRA .._9540.str_skip
+22F9 LDA # (.._9540.str_addr) # $100
+22FB STA $4F ;DrawText.str_ptr
+22FD LDA # (.._9540.str_addr)/$100
+22FF STA $50 ;DrawText.str_ptr
+2301 STZ $51 ;DrawText.arg1
+2303 STZ $52 ;DrawText.arg2
+2305 LDA #$9
+2307 STA $53 ;DrawText.ypos
+2309 LDA #$3F
+230B STA $54 ;DrawText.fg_color
+230D LDA #$8
+230F STA $55 ;DrawText.bg_color
+2311 JSR DrawText
+2314 LDA #$4C
+2316 STA draw_X
+2319 BRA .._9628.str_skip
+2324 LDA # (.._9628.str_addr) # $100
+2326 STA $4F ;DrawText.str_ptr
+2328 LDA # (.._9628.str_addr)/$100
+232A STA $50 ;DrawText.str_ptr
+232C STZ $51 ;DrawText.arg1
+232E STZ $52 ;DrawText.arg2
+2330 LDA #$9
+2332 STA $53 ;DrawText.ypos
+2334 LDA #$3F
+2336 STA $54 ;DrawText.fg_color
+2338 LDA #$20
+233A STA $55 ;DrawText.bg_color
+233C JSR DrawText
+233F LDA #$7C
+2341 STA draw_X
+2344 BRA .._9716.str_skip
+2352 LDA # (.._9716.str_addr) # $100
+2354 STA $4F ;DrawText.str_ptr
+2356 LDA # (.._9716.str_addr)/$100
+2358 STA $50 ;DrawText.str_ptr
+235A STZ $51 ;DrawText.arg1
+235C STZ $52 ;DrawText.arg2
+235E LDA #$9
+2360 STA $53 ;DrawText.ypos
+2362 LDA #$3F
+2364 STA $54 ;DrawText.fg_color
+2366 LDA #$2
+2368 STA $55 ;DrawText.bg_color
+236A JSR DrawText
+236D LDA #$4B
+236F STA $42 ;DrawRect.xpos
+2371 LDA #$9
+2373 STA $43 ;DrawRect.ypos
+2375 LDA #$1
+2377 STA $44 ;DrawRect.width
+2379 LDA #$8
+237B STA $45 ;DrawRect.height
+237D LDA #$20
+237F STA $46 ;DrawRect.color
+2381 JSR DrawRect
+2384 RTS
+238A DrawItem:
+238A LDA $4F ;tile
+238C ASL
+238D TAY
+238E LDA item_stats,Y
+2391 STA $52 ;temp_ptr
+2393 LDA item_stats+$1,Y
+2396 STA $53 ;temp_ptr
+2398 LDY #$0
+239A LDA ($52),Y ;temp_ptr
+239C TAY
+239D LDA tile_src,Y
+23A0 STA $52 ;temp_ptr
+23A2 LDA #$B
+23A4 STA $54 ;CopyTile.dest_id
+23A6 LDA $52 ;temp_ptr
+23A8 STA $55 ;CopyTile.source_id
+23AA JSR CopyTile
+23AD LDA #$B
+23AF STA $54 ;ColorTile.tile
+23B1 LDA $4F ;tile
+23B3 STA $55 ;ColorTile.color_index
+23B5 JSR ColorTile
+23B8 LDA #$B
+23BA STA $54 ;DrawTile.tile
+23BC LDA $50 ;xpos
+23BE STA $55 ;DrawTile.xpos
+23C0 LDA $51 ;ypos
+23C2 STA $56 ;DrawTile.ypos
+23C4 JSR DrawTile
+23C7 RTS
+23C8 DrawItemStats:
+23C8 LDA $40 ;item
+23CA ASL
+23CB TAY
+23CC LDA item_stats,Y
+23CF STA $4B ;stat_ptr
+23D1 LDA item_stats+$1,Y
+23D4 STA $4C ;stat_ptr
+23D6 LDY #$0
+23D8 LDA ($4B),Y ;stat_ptr
+23DA CMP #$E
+23DC BEQ .._10010.skip
+23DE JMP .if89
+23E1 LDY #$3
+23E3 LDA ($4B),Y ;stat_ptr
+23E5 ASL
+23E6 TAY
+23E7 LDA res_descriptions,Y
+23EA STA $4B ;stat_ptr
+23EC LDA res_descriptions+$1,Y
+23EF STA $4C ;stat_ptr
+23F1 LDA $41 ;xpos
+23F3 INC
+23F4 INC
+23F5 STA draw_X
+23F8 INC $42 ;ypos
+23FA INC $42 ;ypos
+23FC LDA $4B ;stat_ptr
+23FE STA $4F ;DrawText.str_ptr
+2400 LDA $4C ;stat_ptr
+2402 STA $50 ;DrawText.str_ptr
+2404 STZ $51 ;DrawText.arg1
+2406 STZ $52 ;DrawText.arg2
+2408 LDA $42 ;ypos
+240A STA $53 ;DrawText.ypos
+240C LDA #$3F
+240E STA $54 ;DrawText.fg_color
+2410 LDA $43 ;bg_color
+2412 STA $55 ;DrawText.bg_color
+2414 JSR DrawText
+2417 JMP .if90
+241A .if89:
+241A LDA $40 ;item
+241C STA $4F ;DrawItem.tile
+241E LDA $41 ;xpos
+2420 STA $50 ;DrawItem.xpos
+2422 LDA $42 ;ypos
+2424 STA $51 ;DrawItem.ypos
+2426 JSR DrawItem
+2429 LDA $40 ;item
+242B ASL
+242C TAY
+242D LDA item_titles,Y
+2430 STA $49 ;title
+2432 LDA item_titles+$1,Y
+2435 STA $4A ;title
+2437 LDA $41 ;xpos
+2439 CLC
+243A ADC #$12
+243C STA draw_X
+243F LDA $42 ;ypos
+2441 CLC
+2442 ADC #$4
+2444 STA $44 ;stat_y
+2446 LDA $40 ;item
+2448 ASL
+2449 TAY
+244A LDA item_stats,Y
+244D STA $4B ;stat_ptr
+244F LDA item_stats+$1,Y
+2452 STA $4C ;stat_ptr
+2454 LDY #$3
+2456 LDA ($4B),Y ;stat_ptr
+2458 TAY
+2459 LDA title_colors,Y
+245C STA $47 ;temp_color
+245E LDA $49 ;title
+2460 STA $4F ;DrawText.str_ptr
+2462 LDA $4A ;title
+2464 STA $50 ;DrawText.str_ptr
+2466 STZ $51 ;DrawText.arg1
+2468 STZ $52 ;DrawText.arg2
+246A LDA $44 ;stat_y
+246C STA $53 ;DrawText.ypos
+246E LDA #$0
+2470 STA $54 ;DrawText.fg_color
+2472 LDA $47 ;temp_color
+2474 STA $55 ;DrawText.bg_color
+2476 JSR DrawText
+2479 LDA $42 ;ypos
+247B CLC
+247C ADC #$F
+247E STA $44 ;stat_y
+2480 LDA $40 ;item
+2482 ASL
+2483 TAY
+2484 LDA item_stats,Y
+2487 STA $4D ;item_ptr
+2489 LDA item_stats+$1,Y
+248C STA $4E ;item_ptr
+248E LDY #$4
+2490 LDA ($4D),Y ;item_ptr
+2492 STA $45 ;count
+2494 STZ $46 ;counter
+2496 LDA $46 ;counter
+2498 ASL
+2499 ADC #$5
+249B TAY
+249C LDA ($4D),Y ;item_ptr
+249E TAY
+249F LDA stat_description_colors,Y
+24A2 STA $47 ;temp_color
+24A4 TYA
+24A5 ASL
+24A6 TAY
+24A7 LDA stat_descriptions,Y
+24AA STA $49 ;title
+24AC LDA stat_descriptions+$1,Y
+24AF STA $4A ;title
+24B1 LDA $46 ;counter
+24B3 ASL
+24B4 ADC #$6
+24B6 TAY
+24B7 LDA ($4D),Y ;item_ptr
+24B9 STA $48 ;temp_stat
+24BB LDA $41 ;xpos
+24BD CLC
+24BE ADC #$12
+24C0 LDA $47 ;temp_color
+24C2 CMP $43 ;bg_color
+24C4 BEQ .._10414.skip
+24C6 JMP .if91
+24C9 LDA #$3
+24CB STA $47 ;temp_color
+24CD .if91:
+24CD LDA $49 ;title
+24CF STA $4F ;DrawText.str_ptr
+24D1 LDA $4A ;title
+24D3 STA $50 ;DrawText.str_ptr
+24D5 LDA $48 ;temp_stat
+24D7 STA $51 ;DrawText.arg1
+24D9 STZ $52 ;DrawText.arg2
+24DB LDA $44 ;stat_y
+24DD STA $53 ;DrawText.ypos
+24DF LDA $47 ;temp_color
+24E1 STA $54 ;DrawText.fg_color
+24E3 LDA $43 ;bg_color
+24E5 STA $55 ;DrawText.bg_color
+24E7 JSR DrawText
+24EA LDA $44 ;stat_y
+24EC CLC
+24ED ADC #$A
+24EF STA $44 ;stat_y
+24F1 INC $46 ;counter
+24F3 LDA $46 ;counter
+24F5 CMP $45 ;count
+24F7 BNE .dis.stats
+24F9 .if90:
+24F9 RTS
+24FA DrawMenuInventory:
+24FA LDA #$50
+24FC STA $42 ;DrawRect.xpos
+24FE LDA #$16
+2500 STA $43 ;DrawRect.ypos
+2502 LDA #$50
+2504 STA $44 ;DrawRect.width
+2506 LDA #$2D
+2508 STA $45 ;DrawRect.height
+250A LDA #$4
+250C STA $46 ;DrawRect.color
+250E JSR DrawRect
+2511 LDA #$50
+2513 STA $42 ;DrawRect.xpos
+2515 LDA #$46
+2517 STA $43 ;DrawRect.ypos
+2519 LDA #$50
+251B STA $44 ;DrawRect.width
+251D LDA #$2D
+251F STA $45 ;DrawRect.height
+2521 LDA #$4
+2523 STA $46 ;DrawRect.color
+2525 JSR DrawRect
+2528 STZ $37 ;index
+252A STZ $33 ;i
+252C STZ $34 ;j
+252E LDA $34 ;j
+2530 ASL
+2531 ASL
+2532 ASL
+2533 ASL
+2534 ADC #$A4
+2536 STA $36 ;xpos
+2538 LDA $33 ;i
+253A ASL
+253B ASL
+253C ASL
+253D ASL
+253E ADC #$14
+2540 STA $35 ;ypos
+2542 LDA #$18
+2544 STA $54 ;DrawTile.tile
+2546 LDA $36 ;xpos
+2548 STA $55 ;DrawTile.xpos
+254A LDA $35 ;ypos
+254C STA $56 ;DrawTile.ypos
+254E JSR DrawTile
+2551 LDY $37 ;index
+2553 LDA hero_inventory,Y
+2556 CMP #$20
+2558 BNE .._10860.skip
+255A JMP .if92
+255D ASL
+255E TAY
+255F LDA item_stats,Y
+2562 STA $39 ;item_ptr
+2564 LDA item_stats+$1,Y
+2567 STA $3A ;item_ptr
+2569 LDY #$0
+256B LDA ($39),Y ;item_ptr
+256D CMP #$E
+256F BNE .._10862.skip
+2571 JMP .if93
+2574 STA $38 ;item_type
+2576 LDY $37 ;index
+2578 LDA hero_inventory,Y
+257B STA $39 ;item_ptr
+257D LDA $39 ;item_ptr
+257F STA $4F ;DrawItem.tile
+2581 LDA $36 ;xpos
+2583 STA $50 ;DrawItem.xpos
+2585 LDA $35 ;ypos
+2587 STA $51 ;DrawItem.ypos
+2589 JSR DrawItem
+258C LDA menu_char_x
+258F CMP $34 ;j
+2591 BEQ .._10934.skip
+2593 JMP .if94
+2596 LDA menu_char_y
+2599 CMP $33 ;i
+259B BEQ .._10936.skip
+259D JMP .if95
+25A0 LDY $38 ;item_type
+25A2 LDA hero_equipped,Y
+25A5 STA $39 ;item_ptr
+25A7 LDA $39 ;item_ptr
+25A9 STA $40 ;DrawItemStats.item
+25AB LDA #$50
+25AD STA $41 ;DrawItemStats.xpos
+25AF LDA #$16
+25B1 STA $42 ;DrawItemStats.ypos
+25B3 LDA #$4
+25B5 STA $43 ;DrawItemStats.bg_color
+25B7 JSR DrawItemStats
+25BA LDY $37 ;index
+25BC LDA hero_inventory,Y
+25BF STA $39 ;item_ptr
+25C1 LDA $39 ;item_ptr
+25C3 STA $40 ;DrawItemStats.item
+25C5 LDA #$50
+25C7 STA $41 ;DrawItemStats.xpos
+25C9 LDA #$46
+25CB STA $42 ;DrawItemStats.ypos
+25CD LDA #$4
+25CF STA $43 ;DrawItemStats.bg_color
+25D1 JSR DrawItemStats
+25D4 LDA #$1B
+25D6 STA $40 ;DrawTile1bpp.tile
+25D8 LDA #$50
+25DA STA $41 ;DrawTile1bpp.xpos
+25DC LDA #$46
+25DE STA $42 ;DrawTile1bpp.ypos
+25E0 LDA #$40
+25E2 STA $43 ;DrawTile1bpp.color1
+25E4 LDA #$C
+25E6 STA $44 ;DrawTile1bpp.color2
+25E8 JSR DrawTile1bpp
+25EB .if95:
+25EB .if94:
+25EB .if93:
+25EB .if92:
+25EB INC $37 ;index
+25ED INC $34 ;j
+25EF LDA $34 ;j
+25F1 CMP #$5
+25F3 BEQ .._11187.skip
+25F5 JMP .dmi.loopx
+25F8 INC $33 ;i
+25FA LDA $33 ;i
+25FC CMP #$6
+25FE BEQ .._11188.skip
+2600 JMP .dmi.loopy
+2603 LDA #$A4
+2605 STA $42 ;DrawRect.xpos
+2607 LDA #$74
+2609 STA $43 ;DrawRect.ypos
+260B LDA #$50
+260D STA $44 ;DrawRect.width
+260F LDA #$1
+2611 STA $45 ;DrawRect.height
+2613 LDA #$0
+2615 STA $46 ;DrawRect.color
+2617 JSR DrawRect
+261A LDA #$F4
+261C STA $42 ;DrawRect.xpos
+261E LDA #$14
+2620 STA $43 ;DrawRect.ypos
+2622 LDA #$1
+2624 STA $44 ;DrawRect.width
+2626 LDA #$61
+2628 STA $45 ;DrawRect.height
+262A LDA #$0
+262C STA $46 ;DrawRect.color
+262E JSR DrawRect
+2631 LDA menu_char_x
+2634 ASL
+2635 ASL
+2636 ASL
+2637 ASL
+2638 CLC
+2639 ADC #$A4
+263B STA $36 ;xpos
+263D LDA menu_char_y
+2640 ASL
+2641 ASL
+2642 ASL
+2643 ASL
+2644 CLC
+2645 ADC #$14
+2647 STA $35 ;ypos
+2649 LDA #$1B
+264B STA $40 ;DrawTile1bpp.tile
+264D LDA $36 ;xpos
+264F STA $41 ;DrawTile1bpp.xpos
+2651 LDA $35 ;ypos
+2653 STA $42 ;DrawTile1bpp.ypos
+2655 LDA #$40
+2657 STA $43 ;DrawTile1bpp.color1
+2659 LDA #$C
+265B STA $44 ;DrawTile1bpp.color2
+265D JSR DrawTile1bpp
+2660 RTS
+266D DrawSkills:
+266D LDA #$98
+266F STA $42 ;DrawRect.xpos
+2671 LDA #$1D
+2673 STA $43 ;DrawRect.ypos
+2675 LDA #$5C
+2677 STA $44 ;DrawRect.width
+2679 LDA #$57
+267B STA $45 ;DrawRect.height
+267D LDA #$10
+267F STA $46 ;DrawRect.color
+2681 JSR DrawRect
+2684 LDA #$24
+2686 STA $35 ;index
+2688 STZ $33 ;row
+268A LDY $33 ;row
+268C LDA ds.tops,Y
+268F STA $37 ;top
+2691 LDA ds.colors,Y
+2694 STA $38 ;color
+2696 LDA #$9
+2698 STA $42 ;DrawRect.xpos
+269A LDA $37 ;top
+269C STA $43 ;DrawRect.ypos
+269E LDA #$8C
+26A0 STA $44 ;DrawRect.width
+26A2 LDA #$1E
+26A4 STA $45 ;DrawRect.height
+26A6 LDA $38 ;color
+26A8 STA $46 ;DrawRect.color
+26AA JSR DrawRect
+26AD STZ $34 ;column
+26AF LDA $34 ;column
+26B1 ASL
+26B2 ASL
+26B3 STA $3A ;mult_buff
+26B5 ASL
+26B6 ASL
+26B7 ASL
+26B8 SEC
+26B9 SBC $3A ;mult_buff
+26BB CLC
+26BC ADC #$B
+26BE STA $36 ;tleft
+26C0 LDA $33 ;row
+26C2 ASL
+26C3 STA $3A ;mult_buff
+26C5 ASL
+26C6 ASL
+26C7 ASL
+26C8 ASL
+26C9 SEC
+26CA SBC $3A ;mult_buff
+26CC CLC
+26CD ADC #$20
+26CF STA $37 ;top
+26D1 LDA $35 ;index
+26D3 SEC
+26D4 SBC #$24
+26D6 TAY
+26D7 LDA skill_list,Y
+26DA BNE .._11727.skip
+26DC JMP .if96
+26DF LDY $33 ;row
+26E1 LDA ds.color1,Y
+26E4 STA $38 ;color
+26E6 LDA ds.color2,Y
+26E9 STA $39 ;color2
+26EB LDA $35 ;index
+26ED STA $40 ;DrawTile1bpp.tile
+26EF LDA $36 ;tleft
+26F1 STA $41 ;DrawTile1bpp.xpos
+26F3 LDA $37 ;top
+26F5 STA $42 ;DrawTile1bpp.ypos
+26F7 LDA $38 ;color
+26F9 STA $43 ;DrawTile1bpp.color1
+26FB LDA $39 ;color2
+26FD STA $44 ;DrawTile1bpp.color2
+26FF JSR DrawTile1bpp
+2702 JMP .if97
+2705 .if96:
+2705 LDA $35 ;index
+2707 STA $40 ;DrawTile1bpp.tile
+2709 LDA $36 ;tleft
+270B STA $41 ;DrawTile1bpp.xpos
+270D LDA $37 ;top
+270F STA $42 ;DrawTile1bpp.ypos
+2711 LDA #$15
+2713 STA $43 ;DrawTile1bpp.color1
+2715 LDA #$2A
+2717 STA $44 ;DrawTile1bpp.color2
+2719 JSR DrawTile1bpp
+271C .if97:
+271C LDA menu_skills_x
+271F CMP $34 ;column
+2721 BEQ .._11978.skip
+2723 JMP .if98
+2726 LDA menu_skills_y
+2729 CMP $33 ;row
+272B BEQ .._11980.skip
+272D JMP .if99
+2730 LDA #$1C
+2732 STA $40 ;DrawTile1bpp.tile
+2734 LDA $36 ;tleft
+2736 STA $41 ;DrawTile1bpp.xpos
+2738 LDA $37 ;top
+273A STA $42 ;DrawTile1bpp.ypos
+273C LDA #$40
+273E STA $43 ;DrawTile1bpp.color1
+2740 LDA #$C
+2742 STA $44 ;DrawTile1bpp.color2
+2744 JSR DrawTile1bpp
+2747 LDA menu_skills_y
+274A ASL
+274B ASL
+274C CLC
+274D ADC menu_skills_y
+2750 ADC menu_skills_x
+2753 ASL
+2754 STA $3B ;index_buff
+2756 TAY
+2757 LDA skill_titles,Y
+275A STA $3C ;str_ptr
+275C LDA skill_titles+$1,Y
+275F STA $3D ;str_ptr
+2761 LDY #$0
+2763 LDA ($3C),Y ;str_ptr
+2765 BEQ .ds.title_done
+2767 INY
+2768 BNE .ds.title
+276A TYA
+276B ASL
+276C STA $3A ;mult_buff
+276E ASL
+276F CLC
+2770 ADC $3A ;mult_buff
+2772 STA $3A ;mult_buff
+2774 LDA #$5C
+2776 SEC
+2777 SBC $3A ;mult_buff
+2779 LSR
+277A CLC
+277B ADC #$98
+277D STA draw_X
+2780 LDY menu_skills_y
+2783 LDA ds.color2,Y
+2786 STA $38 ;color
+2788 LDA $3C ;str_ptr
+278A STA $4F ;DrawText.str_ptr
+278C LDA $3D ;str_ptr
+278E STA $50 ;DrawText.str_ptr
+2790 STZ $51 ;DrawText.arg1
+2792 STZ $52 ;DrawText.arg2
+2794 LDA #$1F
+2796 STA $53 ;DrawText.ypos
+2798 LDA #$3F
+279A STA $54 ;DrawText.fg_color
+279C LDA $38 ;color
+279E STA $55 ;DrawText.bg_color
+27A0 JSR DrawText
+27A3 LDY $3B ;index_buff
+27A5 LDA skill_descriptions,Y
+27A8 STA $3C ;str_ptr
+27AA LDA skill_descriptions+$1,Y
+27AD STA $3D ;str_ptr
+27AF LDA #$9A
+27B1 STA draw_X
+27B4 LDA $3C ;str_ptr
+27B6 STA $4F ;DrawText.str_ptr
+27B8 LDA $3D ;str_ptr
+27BA STA $50 ;DrawText.str_ptr
+27BC STZ $51 ;DrawText.arg1
+27BE STZ $52 ;DrawText.arg2
+27C0 LDA #$2B
+27C2 STA $53 ;DrawText.ypos
+27C4 LDA #$3F
+27C6 STA $54 ;DrawText.fg_color
+27C8 LDA #$10
+27CA STA $55 ;DrawText.bg_color
+27CC JSR DrawText
+27CF LDA $3B ;index_buff
+27D1 LSR
+27D2 TAY
+27D3 LDA skill_list,Y
+27D6 BEQ .._12375.skip
+27D8 JMP .if100
+27DB LDA menu_skills_x
+27DE BEQ .ds.upgrade
+27E0 DEY
+27E1 LDA skill_list,Y
+27E4 BNE .._12378.skip
+27E6 JMP .if101
+27E9 LDA #$9A
+27EB STA draw_X
+27EE BRA .._12400.str_skip
+27FF LDA # (.._12400.str_addr) # $100
+2801 STA $4F ;DrawText.str_ptr
+2803 LDA # (.._12400.str_addr)/$100
+2805 STA $50 ;DrawText.str_ptr
+2807 STZ $51 ;DrawText.arg1
+2809 STZ $52 ;DrawText.arg2
+280B LDA #$6A
+280D STA $53 ;DrawText.ypos
+280F LDA #$F
+2811 STA $54 ;DrawText.fg_color
+2813 LDA #$10
+2815 STA $55 ;DrawText.bg_color
+2817 JSR DrawText
+281A .if101:
+281A .if100:
+281A .if99:
+281A .if98:
+281A INC $35 ;index
+281C INC $34 ;column
+281E LDA $34 ;column
+2820 CMP #$5
+2822 BEQ .._12524.skip
+2824 JMP .ds.columns
+2827 INC $33 ;row
+2829 LDA $33 ;row
+282B CMP #$3
+282D BEQ .._12525.skip
+282F JMP .ds.rows
+2832 RTS
+283F DrawResources:
+283F LDA #$20
+2841 STA menu_res_target
+2844 STA $36 ;draw_item
+2846 LDA #$98
+2848 STA $42 ;DrawRect.xpos
+284A LDA #$1D
+284C STA $43 ;DrawRect.ypos
+284E LDA #$5C
+2850 STA $44 ;DrawRect.width
+2852 LDA #$57
+2854 STA $45 ;DrawRect.height
+2856 LDA #$1
+2858 STA $46 ;DrawRect.color
+285A JSR DrawRect
+285D STZ $33 ;row
+285F LDA $33 ;row
+2861 INC
+2862 STA $35 ;tile_index
+2864 LDA #$0
+2866 CLC
+2867 LDY $33 ;row
+2869 BEQ .._12669.done
+286B ADC #$17
+286D DEY
+286E BNE .._12669.loop
+2870 ADC #$B
+2872 STA $37 ;tleft
+2874 LDY $33 ;row
+2876 LDA dres.colors,Y
+2879 STA $39 ;color
+287B LDA $37 ;tleft
+287D STA $42 ;DrawRect.xpos
+287F LDA #$13
+2881 STA $43 ;DrawRect.ypos
+2883 LDA #$17
+2885 STA $44 ;DrawRect.width
+2887 LDA #$61
+2889 STA $45 ;DrawRect.height
+288B LDA $39 ;color
+288D STA $46 ;DrawRect.color
+288F JSR DrawRect
+2892 STZ $34 ;column
+2894 LDA $33 ;row
+2896 CMP #$4
+2898 BCC .._12813.skip
+289A JMP .if102
+289D LDA #$0
+289F CLC
+28A0 LDY $33 ;row
+28A2 BEQ .._12814.done
+28A4 ADC #$17
+28A6 DEY
+28A7 BNE .._12814.loop
+28A9 ADC #$E
+28AB STA $37 ;tleft
+28AD LDA #$0
+28AF CLC
+28B0 LDY $34 ;column
+28B2 BEQ .._12815.done
+28B4 ADC #$13
+28B6 DEY
+28B7 BNE .._12815.loop
+28B9 ADC #$15
+28BB STA $38 ;top
+28BD LDA $35 ;tile_index
+28BF STA $4F ;DrawItem.tile
+28C1 LDA $37 ;tleft
+28C3 STA $50 ;DrawItem.xpos
+28C5 LDA $38 ;top
+28C7 STA $51 ;DrawItem.ypos
+28C9 JSR DrawItem
+28CC LDA $35 ;tile_index
+28CE STA $36 ;draw_item
+28D0 LDA $35 ;tile_index
+28D2 CLC
+28D3 ADC #$5
+28D5 STA $35 ;tile_index
+28D7 JMP .if103
+28DA .if102:
+28DA LDA $34 ;column
+28DC CMP #$3
+28DE BCC .._12938.skip
+28E0 JMP .if104
+28E3 LDA $33 ;row
+28E5 SEC
+28E6 SBC #$4
+28E8 STA $3D ;mult_buff
+28EA ASL
+28EB ADC $3D ;mult_buff
+28ED ADC $34 ;column
+28EF TAY
+28F0 LDA dres.items,Y
+28F3 STA $3B ;item
+28F5 LDA #$0
+28F7 CLC
+28F8 LDY $33 ;row
+28FA BEQ .._12939.done
+28FC ADC #$17
+28FE DEY
+28FF BNE .._12939.loop
+2901 ADC #$E
+2903 STA $37 ;tleft
+2905 LDA #$0
+2907 CLC
+2908 LDY $34 ;column
+290A BEQ .._12940.done
+290C ADC #$13
+290E DEY
+290F BNE .._12940.loop
+2911 ADC #$15
+2913 STA $38 ;top
+2915 LDA $3B ;item
+2917 BRA .s18c0
+2919 JMP .s18done
+291C .s18c0:
+291C CMP #$1E
+291E BEQ .._12943.skip
+2920 JMP .s18c1
+2923 BRA .s18b1
+2925 .s18c1:
+2925 CMP #$1F
+2927 BNE .s18c2
+2929 BRA .s18b1
+292B .s18b1:
+292B LDA #$1
+292D STA $39 ;color
+292F LDA #$17
+2931 STA $3A ;color2
+2933 JMP .s18done
+2936 .s18c2:
+2936 CMP #$20
+2938 BEQ .._12977.skip
+293A JMP .s18c3
+293D BRA .s18b2
+293F .s18c3:
+293F CMP #$21
+2941 BNE .s18c4
+2943 BRA .s18b2
+2945 .s18b2:
+2945 LDA #$10
+2947 STA $39 ;color
+2949 LDA #$35
+294B STA $3A ;color2
+294D JMP .s18done
+2950 .s18c4:
+2950 CMP #$22
+2952 BEQ .._13011.skip
+2954 JMP .s18c5
+2957 BRA .s18b3
+2959 .s18c5:
+2959 CMP #$23
+295B BNE .s18c6
+295D BRA .s18b3
+295F .s18b3:
+295F LDA #$5
+2961 STA $39 ;color
+2963 LDA #$1F
+2965 STA $3A ;color2
+2967 .s18c6:
+2967 .s18done:
+2967 LDA $3B ;item
+2969 STA $40 ;DrawTile1bpp.tile
+296B LDA $37 ;tleft
+296D STA $41 ;DrawTile1bpp.xpos
+296F LDA $38 ;top
+2971 STA $42 ;DrawTile1bpp.ypos
+2973 LDA $39 ;color
+2975 STA $43 ;DrawTile1bpp.color1
+2977 LDA $3A ;color2
+2979 STA $44 ;DrawTile1bpp.color2
+297B JSR DrawTile1bpp
+297E LDA $34 ;column
+2980 ASL
+2981 CLC
+2982 ADC $33 ;row
+2984 CLC
+2985 ADC #$15
+2987 STA $36 ;draw_item
+2989 JMP .if105
+298C .if104:
+298C LDA #$20
+298E STA $36 ;draw_item
+2990 .if105:
+2990 .if103:
+2990 LDA $33 ;row
+2992 CMP menu_res_x
+2995 BEQ .._13208.skip
+2997 JMP .if106
+299A LDA $34 ;column
+299C CMP menu_res_y
+299F BEQ .._13210.skip
+29A1 JMP .if107
+29A4 LDA #$0
+29A6 CLC
+29A7 LDY $34 ;column
+29A9 BEQ .._13211.done
+29AB ADC #$13
+29AD DEY
+29AE BNE .._13211.loop
+29B0 ADC #$15
+29B2 STA $38 ;top
+29B4 LDA #$1B
+29B6 STA $40 ;DrawTile1bpp.tile
+29B8 LDA $37 ;tleft
+29BA STA $41 ;DrawTile1bpp.xpos
+29BC LDA $38 ;top
+29BE STA $42 ;DrawTile1bpp.ypos
+29C0 LDA #$40
+29C2 STA $43 ;DrawTile1bpp.color1
+29C4 LDA #$C
+29C6 STA $44 ;DrawTile1bpp.color2
+29C8 JSR DrawTile1bpp
+29CB LDA $36 ;draw_item
+29CD CMP #$20
+29CF BNE .._13337.skip
+29D1 JMP .if108
+29D4 LDA $36 ;draw_item
+29D6 STA $40 ;DrawItemStats.item
+29D8 LDA #$98
+29DA STA $41 ;DrawItemStats.xpos
+29DC LDA #$1D
+29DE STA $42 ;DrawItemStats.ypos
+29E0 LDA #$1
+29E2 STA $43 ;DrawItemStats.bg_color
+29E4 JSR DrawItemStats
+29E7 LDA $36 ;draw_item
+29E9 STA menu_res_target
+29EC .if108:
+29EC .if107:
+29EC .if106:
+29EC INC $34 ;column
+29EE LDA $34 ;column
+29F0 CMP #$5
+29F2 BEQ .._13471.skip
+29F4 JMP .dres.columns
+29F7 INC $33 ;row
+29F9 LDA $33 ;row
+29FB CMP #$6
+29FD BEQ .._13472.skip
+29FF JMP .dres.rows
+2A02 LDA menu_res_target
+2A05 CMP #$20
+2A07 BNE .._13474.skip
+2A09 JMP .if109
+2A0C ASL
+2A0D TAY
+2A0E LDA item_stats,Y
+2A11 STA $3E ;item_ptr
+2A13 LDA item_stats+$1,Y
+2A16 STA $3F ;item_ptr
+2A18 LDY #$1
+2A1A LDA ($3E),Y ;item_ptr
+2A1C STA $3C ;temp_cost
+2A1E LDY #$2
+2A20 LDA ($3E),Y ;item_ptr
+2A22 TAY
+2A23 LDA crystal_colors,Y
+2A26 STA $39 ;color
+2A28 LDA #$9A
+2A2A STA draw_X
+2A2D BRA .._13498.str_skip
+2A37 LDA # (.._13498.str_addr) # $100
+2A39 STA $4F ;DrawText.str_ptr
+2A3B LDA # (.._13498.str_addr)/$100
+2A3D STA $50 ;DrawText.str_ptr
+2A3F LDA $3C ;temp_cost
+2A41 STA $51 ;DrawText.arg1
+2A43 STZ $52 ;DrawText.arg2
+2A45 LDA #$6B
+2A47 STA $53 ;DrawText.ypos
+2A49 LDA $39 ;color
+2A4B STA $54 ;DrawText.fg_color
+2A4D LDA #$1
+2A4F STA $55 ;DrawText.bg_color
+2A51 JSR DrawText
+2A54 .if109:
+2A54 RTS
+2A55 DrawMenu:
+2A55 LDA output_mode
+2A58 BRA .s19c0
+2A5A JMP .s19done
+2A5D .s19c0:
+2A5D CMP #$1
+2A5F BEQ .._13648.skip
+2A61 JMP .s19c1
+2A64 .s19b1:
+2A64 LDA #$9
+2A66 STA $42 ;DrawRect.xpos
+2A68 LDA #$11
+2A6A STA $43 ;DrawRect.ypos
+2A6C LDA #$EE
+2A6E STA $44 ;DrawRect.width
+2A70 LDA #$66
+2A72 STA $45 ;DrawRect.height
+2A74 LDA #$8
+2A76 STA $46 ;DrawRect.color
+2A78 JSR DrawRect
+2A7B LDA #$A
+2A7D STA $54 ;DrawTile.tile
+2A7F LDA #$1B
+2A81 STA $55 ;DrawTile.xpos
+2A83 LDA #$15
+2A85 STA $56 ;DrawTile.ypos
+2A87 JSR DrawTile
+2A8A LDA #$38
+2A8C STA $2D ;stat_y
+2A8E STZ $2E ;counter
+2A90 LDA $2E ;counter
+2A92 ASL
+2A93 TAY
+2A94 LDA hero_stat_pointers,Y
+2A97 STA $31 ;stat_ptr
+2A99 LDA hero_stat_pointers+$1,Y
+2A9C STA $32 ;stat_ptr
+2A9E ORA hero_stat_pointers,Y
+2AA1 BEQ .._13796.skip
+2AA3 JMP .if110
+2AA6 LDA hero_HP_Max
+2AA9 STA $2F ;temp_stat
+2AAB JMP .if111
+2AAE .if110:
+2AAE LDA ($31) ;stat_ptr
+2AB0 STA $2F ;temp_stat
+2AB2 .if111:
+2AB2 LDA hero_stat_texts,Y
+2AB5 STA $31 ;stat_ptr
+2AB7 LDA hero_stat_texts+$1,Y
+2ABA STA $32 ;stat_ptr
+2ABC LDY $2E ;counter
+2ABE LDA hero_stat_colors,Y
+2AC1 STA $30 ;temp_color
+2AC3 LDA #$D
+2AC5 STA draw_X
+2AC8 LDA $31 ;stat_ptr
+2ACA STA $4F ;DrawText.str_ptr
+2ACC LDA $32 ;stat_ptr
+2ACE STA $50 ;DrawText.str_ptr
+2AD0 LDA $2F ;temp_stat
+2AD2 STA $51 ;DrawText.arg1
+2AD4 STZ $52 ;DrawText.arg2
+2AD6 LDA $2D ;stat_y
+2AD8 STA $53 ;DrawText.ypos
+2ADA LDA $30 ;temp_color
+2ADC STA $54 ;DrawText.fg_color
+2ADE LDA #$8
+2AE0 STA $55 ;DrawText.bg_color
+2AE2 JSR DrawText
+2AE5 LDA $2D ;stat_y
+2AE7 CLC
+2AE8 ADC #$9
+2AEA STA $2D ;stat_y
+2AEC LDA $2E ;counter
+2AEE INC
+2AEF STA $2E ;counter
+2AF1 CMP #$7
+2AF3 BNE .dm.loop
+2AF5 JSR DrawMenuInventory
+2AF8 JMP .s19done
+2AFB .s19c1:
+2AFB CMP #$2
+2AFD BEQ .._13933.skip
+2AFF JMP .s19c2
+2B02 .s19b2:
+2B02 LDA #$9
+2B04 STA $42 ;DrawRect.xpos
+2B06 LDA #$11
+2B08 STA $43 ;DrawRect.ypos
+2B0A LDA #$EE
+2B0C STA $44 ;DrawRect.width
+2B0E LDA #$66
+2B10 STA $45 ;DrawRect.height
+2B12 LDA #$20
+2B14 STA $46 ;DrawRect.color
+2B16 JSR DrawRect
+2B19 LDA #$B
+2B1B STA draw_X
+2B1E BRA .._14033.str_skip
+2B2A LDA # (.._14033.str_addr) # $100
+2B2C STA $4F ;DrawText.str_ptr
+2B2E LDA # (.._14033.str_addr)/$100
+2B30 STA $50 ;DrawText.str_ptr
+2B32 LDA hero_Points
+2B35 STA $51 ;DrawText.arg1
+2B37 STZ $52 ;DrawText.arg2
+2B39 LDA #$14
+2B3B STA $53 ;DrawText.ypos
+2B3D LDA #$3F
+2B3F STA $54 ;DrawText.fg_color
+2B41 LDA #$20
+2B43 STA $55 ;DrawText.bg_color
+2B45 JSR DrawText
+2B48 JSR DrawSkills
+2B4B JMP .s19done
+2B4E .s19c2:
+2B4E CMP #$3
+2B50 BEQ .._14127.skip
+2B52 JMP .s19c3
+2B55 .s19b3:
+2B55 LDA #$9
+2B57 STA $42 ;DrawRect.xpos
+2B59 LDA #$11
+2B5B STA $43 ;DrawRect.ypos
+2B5D LDA #$EE
+2B5F STA $44 ;DrawRect.width
+2B61 LDA #$66
+2B63 STA $45 ;DrawRect.height
+2B65 LDA #$2
+2B67 STA $46 ;DrawRect.color
+2B69 JSR DrawRect
+2B6C LDA #$98
+2B6E STA $42 ;DrawRect.xpos
+2B70 LDA #$13
+2B72 STA $43 ;DrawRect.ypos
+2B74 LDA #$5C
+2B76 STA $44 ;DrawRect.width
+2B78 LDA #$A
+2B7A STA $45 ;DrawRect.height
+2B7C LDA #$0
+2B7E STA $46 ;DrawRect.color
+2B80 JSR DrawRect
+2B83 LDA #$AB
+2B85 STA draw_X
+2B88 BRA .._14303.str_skip
+2B8C LDA # (.._14303.str_addr) # $100
+2B8E STA $4F ;DrawText.str_ptr
+2B90 LDA # (.._14303.str_addr)/$100
+2B92 STA $50 ;DrawText.str_ptr
+2B94 LDA hero_Red
+2B97 STA $51 ;DrawText.arg1
+2B99 STZ $52 ;DrawText.arg2
+2B9B LDA #$15
+2B9D STA $53 ;DrawText.ypos
+2B9F LDA #$17
+2BA1 STA $54 ;DrawText.fg_color
+2BA3 LDA #$0
+2BA5 STA $55 ;DrawText.bg_color
+2BA7 JSR DrawText
+2BAA LDA #$C3
+2BAC STA draw_X
+2BAF BRA .._14410.str_skip
+2BB3 LDA # (.._14410.str_addr) # $100
+2BB5 STA $4F ;DrawText.str_ptr
+2BB7 LDA # (.._14410.str_addr)/$100
+2BB9 STA $50 ;DrawText.str_ptr
+2BBB LDA hero_Blue
+2BBE STA $51 ;DrawText.arg1
+2BC0 STZ $52 ;DrawText.arg2
+2BC2 LDA #$15
+2BC4 STA $53 ;DrawText.ypos
+2BC6 LDA #$35
+2BC8 STA $54 ;DrawText.fg_color
+2BCA LDA #$0
+2BCC STA $55 ;DrawText.bg_color
+2BCE JSR DrawText
+2BD1 LDA #$DB
+2BD3 STA draw_X
+2BD6 BRA .._14517.str_skip
+2BDA LDA # (.._14517.str_addr) # $100
+2BDC STA $4F ;DrawText.str_ptr
+2BDE LDA # (.._14517.str_addr)/$100
+2BE0 STA $50 ;DrawText.str_ptr
+2BE2 LDA hero_Yellow
+2BE5 STA $51 ;DrawText.arg1
+2BE7 STZ $52 ;DrawText.arg2
+2BE9 LDA #$15
+2BEB STA $53 ;DrawText.ypos
+2BED LDA #$1F
+2BEF STA $54 ;DrawText.fg_color
+2BF1 LDA #$0
+2BF3 STA $55 ;DrawText.bg_color
+2BF5 JSR DrawText
+2BF8 JSR DrawResources
+2BFB .s19c3:
+2BFB .s19done:
+2BFB RTS
+2BFC CheckHP:
+2BFC LDA hero_HP+$1
+2BFF BMI .chp.dead
+2C01 ORA hero_HP
+2C04 BEQ .chp.dead
+2C06 BRA .chp.alive
+2C08 STZ hero_HP
+2C0B STZ hero_HP+$1
+2C0E JSR DrawFrame
+2C11 JSR DrawLegend
+2C14 LDA #$64
+2C16 STA $42 ;DrawRect.xpos
+2C18 LDA #$38
+2C1A STA $43 ;DrawRect.ypos
+2C1C LDA #$36
+2C1E STA $44 ;DrawRect.width
+2C20 LDA #$10
+2C22 STA $45 ;DrawRect.height
+2C24 LDA #$0
+2C26 STA $46 ;DrawRect.color
+2C28 JSR DrawRect
+2C2B LDA #$68
+2C2D STA draw_X
+2C30 BRA .._14706.str_skip
+2C3B LDA # (.._14706.str_addr) # $100
+2C3D STA $4F ;DrawText.str_ptr
+2C3F LDA # (.._14706.str_addr)/$100
+2C41 STA $50 ;DrawText.str_ptr
+2C43 STZ $51 ;DrawText.arg1
+2C45 STZ $52 ;DrawText.arg2
+2C47 LDA #$3C
+2C49 STA $53 ;DrawText.ypos
+2C4B LDA #$3F
+2C4D STA $54 ;DrawText.fg_color
+2C4F LDA #$0
+2C51 STA $55 ;DrawText.bg_color
+2C53 JSR DrawText
+2C56 BRA .chp.loop
+2C58 LDA hero_HP_Max
+2C5B CMP hero_HP
+2C5E BCC .._14770.skip
+2C60 JMP .if112
+2C63 LDA hero_HP_Max
+2C66 STA hero_HP
+2C69 LDA hero_HP_Max+$1
+2C6C STA hero_HP+$1
+2C6F .if112:
+2C6F RTS
+2C70 CheckLavaExit:
+2C70 LDA display_X
+2C73 CLC
+2C74 ADC hero_X
+2C77 STA $6B ;mX
+2C79 LDA display_Y
+2C7C CLC
+2C7D ADC hero_Y
+2C80 STA $6C ;mY
+2C82 LDA # (map_data) # $100
+2C84 STA $2D ;MapXY.map
+2C86 LDA # (map_data)/$100
+2C88 STA $2E ;MapXY.map
+2C8A LDA $6B ;mX
+2C8C STA $2F ;MapXY.mX
+2C8E LDA $6C ;mY
+2C90 STA $30 ;MapXY.mY
+2C92 JSR MapXY
+2C95 LDA ret_val
+2C97 BRA .s20c0
+2C99 JMP .s20done
+2C9C .s20c0:
+2C9C CMP #$5
+2C9E BEQ .._14839.skip
+2CA0 JMP .s20c1
+2CA3 .s20b1:
+2CA3 LDA hero_HP
+2CA6 SEC
+2CA7 SBC hero_Lava_Dmg
+2CAA STA hero_HP
+2CAD LDA hero_HP+$1
+2CB0 SBC hero_Lava_Dmg+$1
+2CB3 STA hero_HP+$1
+2CB6 JSR CheckHP
+2CB9 LDA #$FF
+2CBB STA ret_val
+2CBD BRA .cle.done
+2CBF JMP .s20done
+2CC2 .s20c1:
+2CC2 CMP #$6
+2CC4 BEQ .._14865.skip
+2CC6 JMP .s20c2
+2CC9 .s20b2:
+2CC9 JSR MakeMap
+2CCC JSR LoadMonsters
+2CCF JSR LoadCrystals
+2CD2 JSR ResetGame
+2CD5 LDA #$FF
+2CD7 STA ret_val
+2CD9 BRA .cle.done
+2CDB .s20c2:
+2CDB .s20done:
+2CDB LDA #$0
+2CDD STA ret_val
+2CDF RTS
+2CE0 AddExp:
+2CE0 LDA hero_Exp
+2CE3 CLC
+2CE4 ADC $2D ;exp
+2CE6 STA hero_Exp
+2CE9 CMP hero_Exp_Max
+2CEC BCS .._14918.skip
+2CEE JMP .if113
+2CF1 LDA hero_Exp
+2CF4 SEC
+2CF5 SBC hero_Exp_Max
+2CF8 STA hero_Exp
+2CFB LDA hero_Exp_Max
+2CFE CLC
+2CFF ADC #$A
+2D01 STA hero_Exp_Max
+2D04 INC hero_Level
+2D07 INC hero_Points
+2D0A LDA hero_HP_Max
+2D0D STA hero_HP
+2D10 LDA hero_HP_Max+$1
+2D13 STA hero_HP+$1
+2D16 LDA hero_Batt_Max
+2D19 STA hero_Batt
+2D1C LDA skill_list+$B
+2D1F BNE .._14941.skip
+2D21 JMP .if114
+2D24 LDA #$3
+2D26 STA $2F ;rand8.max
+2D28 JSR rand8
+2D2B LDA ret_val
+2D2D BRA .s21c0
+2D2F JMP .s21done
+2D32 .s21c0:
+2D32 CMP #$0
+2D34 BEQ .._14964.skip
+2D36 JMP .s21c1
+2D39 .s21b1:
+2D39 LDA hero_Blue
+2D3C CLC
+2D3D ADC #$5
+2D3F STA hero_Blue
+2D42 JMP .s21done
+2D45 .s21c1:
+2D45 CMP #$1
+2D47 BEQ .._14973.skip
+2D49 JMP .s21c2
+2D4C .s21b2:
+2D4C LDA hero_Red
+2D4F CLC
+2D50 ADC #$5
+2D52 STA hero_Red
+2D55 JMP .s21done
+2D58 .s21c2:
+2D58 CMP #$2
+2D5A BEQ .._14982.skip
+2D5C JMP .s21c3
+2D5F .s21b3:
+2D5F LDA hero_Yellow
+2D62 CLC
+2D63 ADC #$5
+2D65 STA hero_Yellow
+2D68 .s21c3:
+2D68 .s21done:
+2D68 .if114:
+2D68 .if113:
+2D68 RTS
+2D69 TickHandler:
+2D69 LDA #$0
+2D6B STA $63 ;redraw
+2D6D LDA hero_HP
+2D70 STA $64 ;original_hp
+2D72 LDA hero_Batt
+2D75 STA $65 ;original_batt
+2D77 LDA hero_HP_Recharge
+2D7A CLC
+2D7B ADC hero_HP
+2D7E STA hero_HP
+2D81 BCC .._15063.skip
+2D83 INC hero_HP+$1
+2D86 LDA hero_Batt_Recharge
+2D89 CLC
+2D8A ADC hero_Batt
+2D8D STA hero_Batt
+2D90 BCC .._15083.skip
+2D92 INC hero_Batt+$1
+2D95 LDA hero_activity
+2D98 BNE .._15105.skip
+2D9A JMP .if115
+2D9D LDA hero_target_type
+2DA0 BRA .s22c0
+2DA2 JMP .s22done
+2DA5 .s22c0:
+2DA5 CMP #$4
+2DA7 BEQ .._15108.skip
+2DA9 JMP .s22c1
+2DAC .s22b1:
+2DAC LDA hero_Batt
+2DAF CMP hero_Mine_Cost
+2DB2 BCS .._15118.skip
+2DB4 JMP .if116
+2DB7 LDA skill_list+$0
+2DBA BEQ .th.batt_saver
+2DBC LDA #$5
+2DBE STA $2F ;rand8.max
+2DC0 JSR rand8
+2DC3 LDA ret_val
+2DC5 BEQ .th.batt_saver_done
+2DC7 LDA hero_Batt
+2DCA SEC
+2DCB SBC hero_Mine_Cost
+2DCE STA hero_Batt
+2DD1 INC hero_activity_ticks
+2DD4 LDA #$FF
+2DD6 STA $63 ;redraw
+2DD8 LDA hero_activity_ticks
+2DDB CMP hero_activity_ticks_max
+2DDE BEQ .._15160.skip
+2DE0 JMP .if117
+2DE3 LDA hero_target_index
+2DE6 ASL
+2DE7 ASL
+2DE8 CLC
+2DE9 STA $68 ;index5
+2DEB ADC #$3
+2DED TAY
+2DEE LDA crystal_list,Y
+2DF1 BRA .s23c0
+2DF3 JMP .s23done
+2DF6 .s23c0:
+2DF6 CMP #$0
+2DF8 BEQ .._15163.skip
+2DFA JMP .s23c1
+2DFD .s23b1:
+2DFD INC hero_Red
+2E00 JMP .s23done
+2E03 .s23c1:
+2E03 CMP #$1
+2E05 BEQ .._15172.skip
+2E07 JMP .s23c2
+2E0A .s23b2:
+2E0A INC hero_Blue
+2E0D JMP .s23done
+2E10 .s23c2:
+2E10 CMP #$2
+2E12 BEQ .._15181.skip
+2E14 JMP .s23c3
+2E17 .s23b3:
+2E17 INC hero_Yellow
+2E1A .s23c3:
+2E1A .s23done:
+2E1A LDA skill_list+$4
+2E1D BNE .._15196.skip
+2E1F JMP .if118
+2E22 LDA crystal_list,Y
+2E25 BRA .s24c0
+2E27 JMP .s24done
+2E2A .s24c0:
+2E2A CMP #$0
+2E2C BEQ .._15199.skip
+2E2E JMP .s24c1
+2E31 .s24b1:
+2E31 INC hero_Red
+2E34 JMP .s24done
+2E37 .s24c1:
+2E37 CMP #$1
+2E39 BEQ .._15208.skip
+2E3B JMP .s24c2
+2E3E .s24b2:
+2E3E INC hero_Blue
+2E41 JMP .s24done
+2E44 .s24c2:
+2E44 CMP #$2
+2E46 BEQ .._15217.skip
+2E48 JMP .s24c3
+2E4B .s24b3:
+2E4B INC hero_Yellow
+2E4E .s24c3:
+2E4E .s24done:
+2E4E LDA #$2
+2E50 STA $2D ;AddExp.exp
+2E52 JSR AddExp
+2E55 .if118:
+2E55 LDA $68 ;index5
+2E57 CLC
+2E58 ADC #$2
+2E5A TAY
+2E5B LDA #$0
+2E5D STA crystal_list,Y
+2E60 LDA #$2
+2E62 STA $2D ;AddExp.exp
+2E64 JSR AddExp
+2E67 LDA #$0
+2E69 STA hero_target_type
+2E6C LDA #$0
+2E6E STA hero_activity
+2E71 JSR DrawFrame
+2E74 LDA #$FF
+2E76 STA $63 ;redraw
+2E78 .if117:
+2E78 .if116:
+2E78 JMP .s22done
+2E7B .s22c1:
+2E7B CMP #$1
+2E7D BEQ .._15335.skip
+2E7F JMP .s22c2
+2E82 .s22b2:
+2E82 LDA hero_Batt
+2E85 CMP hero_Drill_Cost
+2E88 BCS .._15345.skip
+2E8A JMP .if119
+2E8D LDA hero_Batt
+2E90 SEC
+2E91 SBC hero_Drill_Cost
+2E94 STA hero_Batt
+2E97 INC hero_activity_ticks
+2E9A LDA #$FF
+2E9C STA $63 ;redraw
+2E9E LDA hero_activity_ticks
+2EA1 CMP hero_activity_ticks_max
+2EA4 BEQ .._15361.skip
+2EA6 JMP .if120
+2EA9 LDA # (map_data) # $100
+2EAB STA $2D ;OffsetXY.map
+2EAD LDA # (map_data)/$100
+2EAF STA $2E ;OffsetXY.map
+2EB1 LDA hero_target_index
+2EB4 STA $2F ;OffsetXY.mX
+2EB6 LDA hero_target_index2
+2EB9 STA $30 ;OffsetXY.mY
+2EBB JSR OffsetXY
+2EBE LDA #$0
+2EC0 STA (ret_val)
+2EC2 LDA #$1
+2EC4 STA $2D ;AddExp.exp
+2EC6 JSR AddExp
+2EC9 LDA #$0
+2ECB STA hero_target_type
+2ECE LDA #$0
+2ED0 STA hero_activity
+2ED3 LDA skill_list+$3
+2ED6 BNE .._15490.skip
+2ED8 JMP .if121
+2EDB LDA #$4
+2EDD STA $2F ;rand8.max
+2EDF JSR rand8
+2EE2 LDA ret_val
+2EE4 BEQ .._15519.skip
+2EE6 JMP .if122
+2EE9 LDA #$3
+2EEB STA $2F ;rand8.max
+2EED JSR rand8
+2EF0 LDA ret_val
+2EF2 BRA .s25c0
+2EF4 JMP .s25done
+2EF7 .s25c0:
+2EF7 CMP #$0
+2EF9 BEQ .._15548.skip
+2EFB JMP .s25c1
+2EFE .s25b1:
+2EFE INC hero_Red
+2F01 JMP .s25done
+2F04 .s25c1:
+2F04 CMP #$1
+2F06 BEQ .._15557.skip
+2F08 JMP .s25c2
+2F0B .s25b2:
+2F0B INC hero_Blue
+2F0E JMP .s25done
+2F11 .s25c2:
+2F11 CMP #$2
+2F13 BEQ .._15566.skip
+2F15 JMP .s25c3
+2F18 .s25b3:
+2F18 INC hero_Yellow
+2F1B .s25c3:
+2F1B .s25done:
+2F1B LDA #$2
+2F1D STA $2D ;AddExp.exp
+2F1F JSR AddExp
+2F22 .if122:
+2F22 .if121:
+2F22 JSR DrawFrame
+2F25 LDA #$FF
+2F27 STA $63 ;redraw
+2F29 .if120:
+2F29 .if119:
+2F29 JMP .s22done
+2F2C .s22c2:
+2F2C CMP #$3
+2F2E BEQ .._15630.skip
+2F30 JMP .s22c3
+2F33 .s22b3:
+2F33 LDA hero_Batt
+2F36 CMP hero_Dmg_Cost
+2F39 BCS .._15640.skip
+2F3B JMP .if123
+2F3E LDA hero_Batt
+2F41 SEC
+2F42 SBC hero_Dmg_Cost
+2F45 STA hero_Batt
+2F48 LDA skill_list+$8
+2F4B BNE .._15643.skip
+2F4D JMP .if124
+2F50 LDA #$14
+2F52 STA $2F ;rand8.max
+2F54 JSR rand8
+2F57 LDA ret_val
+2F59 BEQ .._15672.skip
+2F5B JMP .if125
+2F5E STZ hero_activity_ticks
+2F61 .if125:
+2F61 .if124:
+2F61 LDA hero_activity_ticks
+2F64 BNE .._15694.skip
+2F66 JMP .if126
+2F69 LDA hero_activity_ticks
+2F6C SEC
+2F6D SBC hero_Dmg
+2F70 STA hero_activity_ticks
+2F73 BCS .._15695.skip
+2F75 DEC hero_activity_ticks+$1
+2F78 LDA #$64
+2F7A STA $2F ;rand8.max
+2F7C JSR rand8
+2F7F LDA ret_val
+2F81 CMP hero_Crit_Rate
+2F84 BCC .._15743.skip
+2F86 JMP .if127
+2F89 LDA skill_list+$6
+2F8C BNE .._15746.skip
+2F8E JMP .if128
+2F91 LDA hero_activity_ticks
+2F94 SEC
+2F95 SBC hero_Dmg
+2F98 STA hero_activity_ticks
+2F9B BCS .._15747.skip
+2F9D DEC hero_activity_ticks+$1
+2FA0 JMP .if129
+2FA3 .if128:
+2FA3 LDA hero_Dmg
+2FA6 LSR
+2FA7 STA $67 ;mult_buff
+2FA9 LDA hero_activity_ticks
+2FAC SEC
+2FAD SBC $67 ;mult_buff
+2FAF STA hero_activity_ticks
+2FB2 BCS .._15769.skip
+2FB4 DEC hero_activity_ticks+$1
+2FB7 .if129:
+2FB7 .if127:
+2FB7 .if126:
+2FB7 LDA hero_activity_ticks+$1
+2FBA BMI .th.mob_dead
+2FBC ORA hero_activity_ticks
+2FBF BEQ .th.mob_dead
+2FC1 BRA .th.mob_done
+2FC3 LDA hero_target_index
+2FC6 ASL
+2FC7 CLC
+2FC8 ADC hero_target_index
+2FCB ADC #$2
+2FCD TAY
+2FCE LDA #$0
+2FD0 STA monster_list,Y
+2FD3 LDA skill_list+$7
+2FD6 BNE .._15792.skip
+2FD8 JMP .if130
+2FDB LDA #$B
+2FDD STA $2D ;AddExp.exp
+2FDF JSR AddExp
+2FE2 JMP .if131
+2FE5 .if130:
+2FE5 LDA #$A
+2FE7 STA $2D ;AddExp.exp
+2FE9 JSR AddExp
+2FEC .if131:
+2FEC LDA #$0
+2FEE STA hero_target_type
+2FF1 LDA #$0
+2FF3 STA hero_activity
+2FF6 LDA skill_list+$1
+2FF9 BNE .._15881.skip
+2FFB JMP .if132
+2FFE LDA #$A
+3000 STA $2F ;rand8.max
+3002 JSR rand8
+3005 LDA ret_val
+3007 BEQ .._15910.skip
+3009 JMP .if133
+300C LDA #$3
+300E STA $2F ;rand8.max
+3010 JSR rand8
+3013 LDA ret_val
+3015 BRA .s26c0
+3017 JMP .s26done
+301A .s26c0:
+301A CMP #$0
+301C BEQ .._15939.skip
+301E JMP .s26c1
+3021 .s26b1:
+3021 INC hero_Red
+3024 JMP .s26done
+3027 .s26c1:
+3027 CMP #$1
+3029 BEQ .._15948.skip
+302B JMP .s26c2
+302E .s26b2:
+302E INC hero_Blue
+3031 JMP .s26done
+3034 .s26c2:
+3034 CMP #$2
+3036 BEQ .._15957.skip
+3038 JMP .s26c3
+303B .s26b3:
+303B INC hero_Yellow
+303E .s26c3:
+303E .s26done:
+303E .if133:
+303E .if132:
+303E JSR DrawFrame
+3041 LDA #$FF
+3043 STA $63 ;redraw
+3045 .if123:
+3045 JSR rand5050
+3048 LDA ret_val
+304A BNE .._15996.skip
+304C JMP .if134
+304F LDA hero_HP
+3052 SEC
+3053 SBC #$2
+3055 STA hero_HP
+3058 BCS .._15997.skip
+305A DEC hero_HP+$1
+305D .if134:
+305D .s22c3:
+305D .s22done:
+305D .if115:
+305D LDA hero_Batt_Max
+3060 CMP hero_Batt
+3063 BCC .._16021.skip
+3065 JMP .if135
+3068 LDA hero_Batt_Max
+306B STA hero_Batt
+306E .if135:
+306E LDA hero_Batt
+3071 CMP $65 ;original_batt
+3073 BNE .._16047.skip
+3075 JMP .if136
+3078 LDA #$FF
+307A STA $63 ;redraw
+307C .if136:
+307C JSR CheckHP
+307F LDA hero_HP
+3082 CMP $64 ;original_hp
+3084 BNE .._16067.skip
+3086 JMP .if137
+3089 LDA #$FF
+308B STA $63 ;redraw
+308D .if137:
+308D JSR CheckLavaExit
+3090 LDA ret_val
+3092 BNE .._16088.skip
+3094 JMP .if138
+3097 LDA #$FF
+3099 STA $63 ;redraw
+309B .if138:
+309B LDA $63 ;redraw
+309D BNE .._16107.skip
+309F JMP .if139
+30A2 JSR DrawLegend
+30A5 .if139:
+30A5 RTS
+30A6 KeyHandlerGame:
+30A6 LDA $FFE4
+30A9 STA $63 ;key
+30AB LDA $63 ;key
+30AD BRA .s27c0
+30AF JMP .s27done
+30B2 .s27c0:
+30B2 CMP #$6D
+30B4 BEQ .._16145.skip
+30B6 JMP .s27c1
+30B9 BRA .s27b1
+30BB .s27c1:
+30BB CMP #$63
+30BD BNE .s27c2
+30BF BRA .s27b1
+30C1 .s27b1:
+30C1 LDA #$1
+30C3 STA output_mode
+30C6 JMP .s27done
+30C9 .s27c2:
+30C9 CMP #$6B
+30CB BEQ .._16168.skip
+30CD JMP .s27c3
+30D0 .s27b2:
+30D0 LDA #$2
+30D2 STA output_mode
+30D5 JMP .s27done
+30D8 .s27c3:
+30D8 CMP #$72
+30DA BEQ .._16191.skip
+30DC JMP .s27c4
+30DF .s27b3:
+30DF LDA #$3
+30E1 STA output_mode
+30E4 .s27c4:
+30E4 .s27done:
+30E4 LDA output_mode
+30E7 CMP #$0
+30E9 BNE .._16219.skip
+30EB JMP .if140
+30EE JSR DrawMenuBorder
+30F1 JSR DrawMenu
+30F4 JMP .if141
+30F7 .if140:
+30F7 LDA #$0
+30F9 STA $64 ;redraw
+30FB LDA #$0
+30FD STA $68 ;moved
+30FF LDA hero_activity
+3102 BEQ .._16250.skip
+3104 JMP .if142
+3107 LDA $63 ;key
+3109 BRA .s28c0
+310B JMP .s28done
+310E .s28c0:
+310E CMP #$77
+3110 BEQ .._16253.skip
+3112 JMP .s28c1
+3115 .s28b1:
+3115 LDA hero_target_direction
+3118 CMP #$1
+311A BNE .._16262.skip
+311C JMP .if143
+311F LDA #$1
+3121 STA hero_target_direction
+3124 LDA #$FF
+3126 STA $64 ;redraw
+3128 JMP .if144
+312B .if143:
+312B LDA display_Y
+312E CLC
+312F ADC hero_Y
+3132 CMP #$1
+3134 BCS .._16294.skip
+3136 JMP .if145
+3139 DEC
+313A STA $66 ;mY
+313C LDA display_X
+313F CLC
+3140 ADC hero_X
+3143 STA $65 ;mX
+3145 LDA # (map_data) # $100
+3147 STA $2D ;MapXY.map
+3149 LDA # (map_data)/$100
+314B STA $2E ;MapXY.map
+314D LDA $65 ;mX
+314F STA $2F ;MapXY.mX
+3151 LDA $66 ;mY
+3153 STA $30 ;MapXY.mY
+3155 JSR MapXY
+3158 LDA ret_val
+315A CMP #$4
+315C BNE .._16356.skip
+315E JMP .if146
+3161 LDA $65 ;mX
+3163 STA $31 ;CheckForMonster.mX
+3165 LDA $66 ;mY
+3167 STA $32 ;CheckForMonster.mY
+3169 JSR CheckForMonster
+316C LDA ret_val
+316E EOR #$FF
+3170 STA $67 ;or_buff
+3172 LDY #$9
+3174 LDA skill_list,Y
+3177 ORA $67 ;or_buff
+3179 BNE .._16405.skip
+317B JMP .if147
+317E LDA hero_Y
+3181 CMP #$2
+3183 BCS .._16408.skip
+3185 JMP .if148
+3188 DEC hero_Y
+318B LDA #$FF
+318D STA $68 ;moved
+318F JMP .if149
+3192 .if148:
+3192 CMP #$1
+3194 BEQ .._16421.skip
+3196 JMP .if150
+3199 LDA display_Y
+319C BEQ .._16423.skip
+319E JMP .if151
+31A1 STZ hero_Y
+31A4 LDA #$FF
+31A6 STA $68 ;moved
+31A8 JMP .if152
+31AB .if151:
+31AB DEC display_Y
+31AE LDA #$FF
+31B0 STA $68 ;moved
+31B2 .if152:
+31B2 .if150:
+31B2 .if149:
+31B2 .if147:
+31B2 LDA $68 ;moved
+31B4 BNE .._16468.skip
+31B6 JMP .if153
+31B9 JSR CheckLavaExit
+31BC .if153:
+31BC .if146:
+31BC .if145:
+31BC .if144:
+31BC JMP .s28done
+31BF .s28c1:
+31BF CMP #$73
+31C1 BEQ .._16480.skip
+31C3 JMP .s28c2
+31C6 .s28b2:
+31C6 LDA hero_target_direction
+31C9 CMP #$2
+31CB BNE .._16489.skip
+31CD JMP .if154
+31D0 LDA #$2
+31D2 STA hero_target_direction
+31D5 LDA #$1
+31D7 STA $64 ;redraw
+31D9 JMP .if155
+31DC .if154:
+31DC LDA display_Y
+31DF SEC
+31E0 ADC hero_Y
+31E3 CMP #$14
+31E5 BCC .._16521.skip
+31E7 JMP .if156
+31EA STA $66 ;mY
+31EC LDA display_X
+31EF CLC
+31F0 ADC hero_X
+31F3 STA $65 ;mX
+31F5 LDA # (map_data) # $100
+31F7 STA $2D ;MapXY.map
+31F9 LDA # (map_data)/$100
+31FB STA $2E ;MapXY.map
+31FD LDA $65 ;mX
+31FF STA $2F ;MapXY.mX
+3201 LDA $66 ;mY
+3203 STA $30 ;MapXY.mY
+3205 JSR MapXY
+3208 LDA ret_val
+320A CMP #$4
+320C BNE .._16583.skip
+320E JMP .if157
+3211 LDA $65 ;mX
+3213 STA $31 ;CheckForMonster.mX
+3215 LDA $66 ;mY
+3217 STA $32 ;CheckForMonster.mY
+3219 JSR CheckForMonster
+321C LDA ret_val
+321E EOR #$FF
+3220 STA $67 ;or_buff
+3222 LDY #$9
+3224 LDA skill_list,Y
+3227 ORA $67 ;or_buff
+3229 BNE .._16632.skip
+322B JMP .if158
+322E LDA hero_Y
+3231 CMP #$2
+3233 BCC .._16635.skip
+3235 JMP .if159
+3238 INC hero_Y
+323B LDA #$FF
+323D STA $68 ;moved
+323F JMP .if160
+3242 .if159:
+3242 CMP #$2
+3244 BEQ .._16648.skip
+3246 JMP .if161
+3249 LDA display_Y
+324C CMP #$10
+324E BEQ .._16650.skip
+3250 JMP .if162
+3253 LDA #$3
+3255 STA hero_Y
+3258 LDA #$FF
+325A STA $68 ;moved
+325C JMP .if163
+325F .if162:
+325F INC display_Y
+3262 LDA #$FF
+3264 STA $68 ;moved
+3266 .if163:
+3266 .if161:
+3266 .if160:
+3266 .if158:
+3266 LDA $68 ;moved
+3268 BNE .._16695.skip
+326A JMP .if164
+326D JSR CheckLavaExit
+3270 .if164:
+3270 .if157:
+3270 .if156:
+3270 .if155:
+3270 JMP .s28done
+3273 .s28c2:
+3273 CMP #$61
+3275 BEQ .._16707.skip
+3277 JMP .s28c3
+327A .s28b3:
+327A LDA hero_facing
+327D CMP #$4
+327F BEQ .._16716.skip
+3281 JMP .if165
+3284 LDA #$3
+3286 STA hero_facing
+3289 LDA #$1
+328B STA $64 ;redraw
+328D .if165:
+328D LDA hero_target_direction
+3290 CMP #$3
+3292 BNE .._16747.skip
+3294 JMP .if166
+3297 LDA #$3
+3299 STA hero_target_direction
+329C LDA #$1
+329E STA $64 ;redraw
+32A0 JMP .if167
+32A3 .if166:
+32A3 LDA display_X
+32A6 CLC
+32A7 ADC hero_X
+32AA CMP #$1
+32AC BCS .._16779.skip
+32AE JMP .if168
+32B1 DEC
+32B2 STA $65 ;mX
+32B4 LDA display_Y
+32B7 CLC
+32B8 ADC hero_Y
+32BB STA $66 ;mY
+32BD LDA # (map_data) # $100
+32BF STA $2D ;MapXY.map
+32C1 LDA # (map_data)/$100
+32C3 STA $2E ;MapXY.map
+32C5 LDA $65 ;mX
+32C7 STA $2F ;MapXY.mX
+32C9 LDA $66 ;mY
+32CB STA $30 ;MapXY.mY
+32CD JSR MapXY
+32D0 LDA ret_val
+32D2 CMP #$4
+32D4 BNE .._16841.skip
+32D6 JMP .if169
+32D9 LDA $65 ;mX
+32DB STA $31 ;CheckForMonster.mX
+32DD LDA $66 ;mY
+32DF STA $32 ;CheckForMonster.mY
+32E1 JSR CheckForMonster
+32E4 LDA ret_val
+32E6 EOR #$FF
+32E8 STA $67 ;or_buff
+32EA LDY #$9
+32EC LDA skill_list,Y
+32EF ORA $67 ;or_buff
+32F1 BNE .._16890.skip
+32F3 JMP .if170
+32F6 LDA hero_X
+32F9 CMP #$2
+32FB BCS .._16893.skip
+32FD JMP .if171
+3300 DEC hero_X
+3303 LDA #$FF
+3305 STA $68 ;moved
+3307 JMP .if172
+330A .if171:
+330A CMP #$1
+330C BEQ .._16906.skip
+330E JMP .if173
+3311 LDA display_X
+3314 BEQ .._16909.skip
+3316 JMP .if174
+3319 STZ hero_X
+331C LDA #$FF
+331E STA $68 ;moved
+3320 JMP .if175
+3323 .if174:
+3323 DEC display_X
+3326 LDA #$FF
+3328 STA $68 ;moved
+332A .if175:
+332A .if173:
+332A .if172:
+332A .if170:
+332A LDA $68 ;moved
+332C BNE .._16954.skip
+332E JMP .if176
+3331 JSR CheckLavaExit
+3334 .if176:
+3334 .if169:
+3334 .if168:
+3334 .if167:
+3334 JMP .s28done
+3337 .s28c3:
+3337 CMP #$64
+3339 BEQ .._16966.skip
+333B JMP .s28c4
+333E .s28b4:
+333E LDA hero_facing
+3341 CMP #$3
+3343 BEQ .._16975.skip
+3345 JMP .if177
+3348 LDA #$4
+334A STA hero_facing
+334D LDA #$1
+334F STA $64 ;redraw
+3351 .if177:
+3351 LDA hero_target_direction
+3354 CMP #$4
+3356 BNE .._17006.skip
+3358 JMP .if178
+335B LDA #$4
+335D STA hero_target_direction
+3360 LDA #$1
+3362 STA $64 ;redraw
+3364 JMP .if179
+3367 .if178:
+3367 LDA display_X
+336A SEC
+336B ADC hero_X
+336E CMP #$28
+3370 BCC .._17038.skip
+3372 JMP .if180
+3375 STA $65 ;mX
+3377 LDA display_Y
+337A CLC
+337B ADC hero_Y
+337E STA $66 ;mY
+3380 LDA # (map_data) # $100
+3382 STA $2D ;MapXY.map
+3384 LDA # (map_data)/$100
+3386 STA $2E ;MapXY.map
+3388 LDA $65 ;mX
+338A STA $2F ;MapXY.mX
+338C LDA $66 ;mY
+338E STA $30 ;MapXY.mY
+3390 JSR MapXY
+3393 LDA ret_val
+3395 CMP #$4
+3397 BNE .._17100.skip
+3399 JMP .if181
+339C LDA $65 ;mX
+339E STA $31 ;CheckForMonster.mX
+33A0 LDA $66 ;mY
+33A2 STA $32 ;CheckForMonster.mY
+33A4 JSR CheckForMonster
+33A7 LDA ret_val
+33A9 EOR #$FF
+33AB STA $67 ;or_buff
+33AD LDY #$9
+33AF LDA skill_list,Y
+33B2 ORA $67 ;or_buff
+33B4 BNE .._17149.skip
+33B6 JMP .if182
+33B9 LDA hero_X
+33BC CMP #$3
+33BE BCC .._17152.skip
+33C0 JMP .if183
+33C3 INC hero_X
+33C6 LDA #$FF
+33C8 STA $68 ;moved
+33CA JMP .if184
+33CD .if183:
+33CD CMP #$3
+33CF BEQ .._17165.skip
+33D1 JMP .if185
+33D4 LDA display_X
+33D7 CMP #$23
+33D9 BEQ .._17167.skip
+33DB JMP .if186
+33DE LDA #$4
+33E0 STA hero_X
+33E3 LDA #$FF
+33E5 STA $68 ;moved
+33E7 JMP .if187
+33EA .if186:
+33EA INC display_X
+33ED LDA #$FF
+33EF STA $68 ;moved
+33F1 .if187:
+33F1 .if185:
+33F1 .if184:
+33F1 .if182:
+33F1 LDA $68 ;moved
+33F3 BNE .._17212.skip
+33F5 JMP .if188
+33F8 JSR CheckLavaExit
+33FB .if188:
+33FB .if181:
+33FB .if180:
+33FB .if179:
+33FB JMP .s28done
+33FE .s28c4:
+33FE CMP #$20
+3400 BEQ .._17224.skip
+3402 JMP .s28c5
+3405 .s28b5:
+3405 LDA hero_target_type
+3408 BRA .s29c0
+340A JMP .s29done
+340D .s29c0:
+340D CMP #$4
+340F BEQ .._17234.skip
+3411 JMP .s29c1
+3414 .s29b1:
+3414 LDA hero_Mine_Speed
+3417 STA hero_activity_ticks_max
+341A LDA hero_Mine_Speed+$1
+341D STA hero_activity_ticks_max+$1
+3420 STZ hero_activity_ticks
+3423 STZ hero_activity_ticks+$1
+3426 LDA #$FF
+3428 STA hero_activity
+342B LDA #$FF
+342D STA $64 ;redraw
+342F JMP .s29done
+3432 .s29c1:
+3432 CMP #$1
+3434 BEQ .._17304.skip
+3436 JMP .s29c2
+3439 .s29b2:
+3439 LDA hero_Drill_Speed
+343C STA hero_activity_ticks_max
+343F LDA hero_Drill_Speed+$1
+3442 STA hero_activity_ticks_max+$1
+3445 STZ hero_activity_ticks
+3448 STZ hero_activity_ticks+$1
+344B LDA #$FF
+344D STA hero_activity
+3450 LDA #$FF
+3452 STA $64 ;redraw
+3454 JMP .s29done
+3457 .s29c2:
+3457 CMP #$3
+3459 BEQ .._17374.skip
+345B JMP .s29c3
+345E .s29b3:
+345E LDA #$1E
+3460 STA hero_activity_ticks_max
+3463 LDA #$0
+3465 STA hero_activity_ticks_max+$1
+3468 LDA #$1E
+346A STA hero_activity_ticks
+346D LDA #$0
+346F STA hero_activity_ticks+$1
+3472 LDA #$FF
+3474 STA hero_activity
+3477 LDA #$FF
+3479 STA $64 ;redraw
+347B .s29c3:
+347B .s29done:
+347B .s28c5:
+347B .s28done:
+347B .if142:
+347B LDA $64 ;redraw
+347D ORA $68 ;moved
+347F BNE .._17451.skip
+3481 JMP .if189
+3484 JSR UpdateTarget
+3487 JSR DrawFrame
+348A JSR DrawLegend
+348D .if189:
+348D .if141:
+348D RTS
+348E KeyHandlerMenu:
+348E LDA #$0
+3490 STA $25 ;bought
+3492 LDA #$0
+3494 STA $26 ;redraw
+3496 LDA #$0
+3498 STA $27 ;redraw_skills
+349A LDA #$0
+349C STA $28 ;redraw_resources
+349E LDA $FFE4
+34A1 STA $21 ;key
+34A3 BRA .s30c0
+34A5 JMP .s30done
+34A8 .s30c0:
+34A8 CMP #$6D
+34AA BEQ .._17546.skip
+34AC JMP .s30c1
+34AF .s30b1:
+34AF LDA #$0
+34B1 STA output_mode
+34B4 JSR DrawFrame
+34B7 JSR DrawLegend
+34BA JMP .khm.done
+34BD JMP .s30done
+34C0 .s30c1:
+34C0 CMP #$63
+34C2 BEQ .._17577.skip
+34C4 JMP .s30c2
+34C7 .s30b2:
+34C7 LDA #$1
+34C9 STA output_mode
+34CC JSR DrawMenu
+34CF JMP .khm.done
+34D2 JMP .s30done
+34D5 .s30c2:
+34D5 CMP #$6B
+34D7 BEQ .._17606.skip
+34D9 JMP .s30c3
+34DC .s30b3:
+34DC LDA #$2
+34DE STA output_mode
+34E1 JSR DrawMenu
+34E4 JMP .khm.done
+34E7 JMP .s30done
+34EA .s30c3:
+34EA CMP #$72
+34EC BEQ .._17635.skip
+34EE JMP .s30c4
+34F1 .s30b4:
+34F1 LDA #$3
+34F3 STA output_mode
+34F6 JSR DrawMenu
+34F9 JMP .khm.done
+34FC .s30c4:
+34FC .s30done:
+34FC LDA output_mode
+34FF BRA .s31c0
+3501 JMP .s31done
+3504 .s31c0:
+3504 CMP #$1
+3506 BEQ .._17670.skip
+3508 JMP .s31c1
+350B .s31b1:
+350B LDA $21 ;key
+350D BRA .s32c0
+350F JMP .s32done
+3512 .s32c0:
+3512 CMP #$77
+3514 BEQ .._17680.skip
+3516 JMP .s32c1
+3519 .s32b1:
+3519 LDA menu_char_y
+351C CMP #$1
+351E BCS .._17690.skip
+3520 JMP .if190
+3523 DEC menu_char_y
+3526 JSR DrawMenuInventory
+3529 .if190:
+3529 JMP .s32done
+352C .s32c1:
+352C CMP #$73
+352E BEQ .._17696.skip
+3530 JMP .s32c2
+3533 .s32b2:
+3533 LDA menu_char_y
+3536 CMP #$5
+3538 BCC .._17706.skip
+353A JMP .if191
+353D INC menu_char_y
+3540 JSR DrawMenuInventory
+3543 .if191:
+3543 JMP .s32done
+3546 .s32c2:
+3546 CMP #$64
+3548 BEQ .._17712.skip
+354A JMP .s32c3
+354D .s32b3:
+354D LDA menu_char_x
+3550 CMP #$4
+3552 BCC .._17722.skip
+3554 JMP .if192
+3557 INC menu_char_x
+355A JSR DrawMenuInventory
+355D JMP .if193
+3560 .if192:
+3560 LDA menu_char_y
+3563 CMP #$5
+3565 BCC .._17729.skip
+3567 JMP .if194
+356A STZ menu_char_x
+356D INC menu_char_y
+3570 JSR DrawMenuInventory
+3573 .if194:
+3573 .if193:
+3573 JMP .s32done
+3576 .s32c3:
+3576 CMP #$61
+3578 BEQ .._17737.skip
+357A JMP .s32c4
+357D .s32b4:
+357D LDA menu_char_x
+3580 CMP #$1
+3582 BCS .._17747.skip
+3584 JMP .if195
+3587 DEC menu_char_x
+358A JSR DrawMenuInventory
+358D JMP .if196
+3590 .if195:
+3590 LDA menu_char_y
+3593 CMP #$1
+3595 BCS .._17754.skip
+3597 JMP .if197
+359A LDA #$4
+359C STA menu_char_x
+359F DEC menu_char_y
+35A2 JSR DrawMenuInventory
+35A5 .if197:
+35A5 .if196:
+35A5 JMP .s32done
+35A8 .s32c4:
+35A8 CMP #$D
+35AA BEQ .._17780.skip
+35AC JMP .s32c5
+35AF .s32b5:
+35AF LDA menu_char_y
+35B2 ASL
+35B3 ASL
+35B4 ADC menu_char_y
+35B7 ADC menu_char_x
+35BA TAY
+35BB LDA hero_inventory,Y
+35BE CMP #$20
+35C0 BNE .._17789.skip
+35C2 JMP .if198
+35C5 STA $22 ;temp_item
+35C7 STY $23 ;temp_index
+35C9 ASL
+35CA TAY
+35CB LDA item_stats,Y
+35CE STA $2B ;item_ptr
+35D0 LDA item_stats+$1,Y
+35D3 STA $2C ;item_ptr
+35D5 LDY #$0
+35D7 LDA ($2B),Y ;item_ptr
+35D9 TAY
+35DA LDA hero_equipped,Y
+35DD PHY
+35DE LDY $23 ;temp_index
+35E0 STA hero_inventory,Y
+35E3 LDA $22 ;temp_item
+35E5 PLY
+35E6 STA hero_equipped,Y
+35E9 JSR ColorHero
+35EC JSR CalcStats
+35EF JSR DrawMenu
+35F2 .if198:
+35F2 .s32c5:
+35F2 .s32done:
+35F2 JMP .s31done
+35F5 .s31c1:
+35F5 CMP #$2
+35F7 BEQ .._17804.skip
+35F9 JMP .s31c2
+35FC .s31b2:
+35FC LDA $21 ;key
+35FE BRA .s33c0
+3600 JMP .s33done
+3603 .s33c0:
+3603 CMP #$77
+3605 BEQ .._17814.skip
+3607 JMP .s33c1
+360A .s33b1:
+360A LDA menu_skills_y
+360D BNE .._17824.skip
+360F JMP .if199
+3612 DEC menu_skills_y
+3615 JSR DrawSkills
+3618 .if199:
+3618 JMP .s33done
+361B .s33c1:
+361B CMP #$73
+361D BEQ .._17830.skip
+361F JMP .s33c2
+3622 .s33b2:
+3622 LDA menu_skills_y
+3625 CMP #$2
+3627 BCC .._17840.skip
+3629 JMP .if200
+362C INC menu_skills_y
+362F JSR DrawSkills
+3632 .if200:
+3632 JMP .s33done
+3635 .s33c2:
+3635 CMP #$61
+3637 BEQ .._17846.skip
+3639 JMP .s33c3
+363C .s33b3:
+363C LDA menu_skills_x
+363F BNE .._17856.skip
+3641 JMP .if201
+3644 DEC menu_skills_x
+3647 JSR DrawSkills
+364A .if201:
+364A JMP .s33done
+364D .s33c3:
+364D CMP #$64
+364F BEQ .._17862.skip
+3651 JMP .s33c4
+3654 .s33b4:
+3654 LDA menu_skills_x
+3657 CMP #$4
+3659 BCC .._17872.skip
+365B JMP .if202
+365E INC menu_skills_x
+3661 JSR DrawSkills
+3664 .if202:
+3664 JMP .s33done
+3667 .s33c4:
+3667 CMP #$D
+3669 BEQ .._17878.skip
+366B JMP .s33c5
+366E .s33b5:
+366E LDA hero_Points
+3671 BNE .._17888.skip
+3673 JMP .if203
+3676 LDA menu_skills_y
+3679 ASL
+367A ASL
+367B CLC
+367C ADC menu_skills_y
+367F ADC menu_skills_x
+3682 TAY
+3683 LDA skill_list,Y
+3686 BEQ .._17891.skip
+3688 JMP .if204
+368B LDA menu_skills_x
+368E BEQ .khm.skills
+3690 LDA skill_list-$1,Y
+3693 BEQ .khm.skills_done
+3695 DEC hero_Points
+3698 LDA #$FF
+369A STA skill_list,Y
+369D JSR CalcStats
+36A0 LDA #$FF
+36A2 STA $26 ;redraw
+36A4 .if204:
+36A4 .if203:
+36A4 .s33c5:
+36A4 .s33done:
+36A4 JMP .s31done
+36A7 .s31c2:
+36A7 CMP #$3
+36A9 BEQ .._17915.skip
+36AB JMP .s31c3
+36AE .s31b3:
+36AE LDA $21 ;key
+36B0 BRA .s34c0
+36B2 JMP .s34done
+36B5 .s34c0:
+36B5 CMP #$77
+36B7 BEQ .._17925.skip
+36B9 JMP .s34c1
+36BC .s34b1:
+36BC LDA menu_res_y
+36BF BNE .._17935.skip
+36C1 JMP .if205
+36C4 DEC menu_res_y
+36C7 JSR DrawResources
+36CA .if205:
+36CA JMP .s34done
+36CD .s34c1:
+36CD CMP #$73
+36CF BEQ .._17941.skip
+36D1 JMP .s34c2
+36D4 .s34b2:
+36D4 LDA menu_res_y
+36D7 CMP #$4
+36D9 BCC .._17951.skip
+36DB JMP .if206
+36DE INC menu_res_y
+36E1 JSR DrawResources
+36E4 .if206:
+36E4 JMP .s34done
+36E7 .s34c2:
+36E7 CMP #$61
+36E9 BEQ .._17957.skip
+36EB JMP .s34c3
+36EE .s34b3:
+36EE LDA menu_res_x
+36F1 BNE .._17967.skip
+36F3 JMP .if207
+36F6 DEC menu_res_x
+36F9 JSR DrawResources
+36FC .if207:
+36FC JMP .s34done
+36FF .s34c3:
+36FF CMP #$64
+3701 BEQ .._17973.skip
+3703 JMP .s34c4
+3706 .s34b4:
+3706 LDA menu_res_x
+3709 CMP #$5
+370B BCC .._17983.skip
+370D JMP .if208
+3710 INC menu_res_x
+3713 JSR DrawResources
+3716 .if208:
+3716 JMP .s34done
+3719 .s34c4:
+3719 CMP #$D
+371B BEQ .._17989.skip
+371D JMP .s34c5
+3720 .s34b5:
+3720 LDA menu_res_target
+3723 CMP #$20
+3725 BNE .._17998.skip
+3727 JMP .if209
+372A STZ $24 ;discount
+372C LDA menu_res_x
+372F CMP #$4
+3731 BCC .._18014.skip
+3733 JMP .if210
+3736 LDA skill_list+$C
+3739 BNE .._18017.skip
+373B JMP .if211
+373E LDA #$1
+3740 STA $24 ;discount
+3742 .if211:
+3742 .if210:
+3742 LDA menu_res_target
+3745 ASL
+3746 TAY
+3747 LDA item_stats,Y
+374A STA $2B ;item_ptr
+374C LDA item_stats+$1,Y
+374F STA $2C ;item_ptr
+3751 LDA skill_list+$E
+3754 BNE .._18037.skip
+3756 JMP .if212
+3759 STZ $2A ;res_total
+375B LDA hero_Red
+375E CLC
+375F ADC hero_Blue
+3762 BCC .._18038.skip
+3764 INC $2A ;res_total
+3766 CLC
+3767 ADC hero_Yellow
+376A BCC .._18051.skip
+376C INC $2A ;res_total
+376E STA $29 ;res_total
+3770 LDA $2A ;res_total
+3772 BNE .khm.res_enough
+3774 LDY #$1
+3776 LDA ($2B),Y ;item_ptr
+3778 SEC
+3779 SBC $24 ;discount
+377B STA $23 ;temp_index
+377D LDA $29 ;res_total
+377F CMP $23 ;temp_index
+3781 BCS .._18066.skip
+3783 JMP .if213
+3786 LDA skill_list+$A
+3789 BEQ .khm.res_csmith
+378B LDA #$5
+378D STA $2F ;rand8.max
+378F JSR rand8
+3792 LDA ret_val
+3794 BEQ .khm.res_csmith_done
+3796 LDY #$1
+3798 LDA ($2B),Y ;item_ptr
+379A SEC
+379B SBC $24 ;discount
+379D STA $29 ;res_total
+379F LDA $29 ;res_total
+37A1 BEQ .khm.res_loop_blue
+37A3 LDA hero_Red
+37A6 BEQ .khm.res_loop_blue
+37A8 DEC $29 ;res_total
+37AA DEC hero_Red
+37AD BRA .khm.res_loop_red
+37AF LDA $29 ;res_total
+37B1 BEQ .khm.res_loop_yellow
+37B3 LDA hero_Blue
+37B6 BEQ .khm.res_loop_yellow
+37B8 DEC $29 ;res_total
+37BA DEC hero_Blue
+37BD BRA .khm.res_loop_blue
+37BF LDA $29 ;res_total
+37C1 BEQ .khm.res_csmith_done
+37C3 LDA hero_Yellow
+37C6 BEQ .khm.res_csmith_done
+37C8 DEC $29 ;res_total
+37CA DEC hero_Yellow
+37CD BRA .khm.res_loop_yellow
+37CF LDA #$FF
+37D1 STA $25 ;bought
+37D3 LDA #$FF
+37D5 STA $26 ;redraw
+37D7 .if213:
+37D7 JMP .if214
+37DA .if212:
+37DA LDY #$2
+37DC LDA ($2B),Y ;item_ptr
+37DE PHA
+37DF LDY #$1
+37E1 LDA ($2B),Y ;item_ptr
+37E3 CLC
+37E4 SBC $24 ;discount
+37E6 TAY
+37E7 PLA
+37E8 BRA .s35c0
+37EA JMP .s35done
+37ED .s35c0:
+37ED CMP #$0
+37EF BEQ .._18125.skip
+37F1 JMP .s35c1
+37F4 .s35b1:
+37F4 TYA
+37F5 CMP hero_Red
+37F8 BCC .._18135.skip
+37FA JMP .if215
+37FD STA $23 ;temp_index
+37FF LDA skill_list+$A
+3802 BEQ .khm.res_red
+3804 LDA #$5
+3806 STA $2F ;rand8.max
+3808 JSR rand8
+380B LDA ret_val
+380D BEQ .khm.res_red_done
+380F LDA hero_Red
+3812 CLC
+3813 SBC $23 ;temp_index
+3815 STA hero_Red
+3818 LDA #$FF
+381A STA $25 ;bought
+381C LDA #$FF
+381E STA $26 ;redraw
+3820 .if215:
+3820 JMP .s35done
+3823 .s35c1:
+3823 CMP #$1
+3825 BEQ .._18191.skip
+3827 JMP .s35c2
+382A .s35b2:
+382A TYA
+382B CMP hero_Blue
+382E BCC .._18201.skip
+3830 JMP .if216
+3833 STA $23 ;temp_index
+3835 LDA skill_list+$A
+3838 BEQ .khm.res_blue
+383A LDA #$5
+383C STA $2F ;rand8.max
+383E JSR rand8
+3841 LDA ret_val
+3843 BEQ .khm.res_blue_done
+3845 LDA hero_Blue
+3848 CLC
+3849 SBC $23 ;temp_index
+384B STA hero_Blue
+384E LDA #$FF
+3850 STA $25 ;bought
+3852 LDA #$FF
+3854 STA $26 ;redraw
+3856 .if216:
+3856 JMP .s35done
+3859 .s35c2:
+3859 CMP #$2
+385B BEQ .._18257.skip
+385D JMP .s35c3
+3860 .s35b3:
+3860 TYA
+3861 CMP hero_Yellow
+3864 BCC .._18267.skip
+3866 JMP .if217
+3869 STA $23 ;temp_index
+386B LDA skill_list+$A
+386E BEQ .khm.res_yellow
+3870 LDA #$5
+3872 STA $2F ;rand8.max
+3874 JSR rand8
+3877 LDA ret_val
+3879 BEQ .khm.res_yellow_done
+387B LDA hero_Yellow
+387E CLC
+387F SBC $23 ;temp_index
+3881 STA hero_Yellow
+3884 LDA #$FF
+3886 STA $25 ;bought
+3888 LDA #$FF
+388A STA $26 ;redraw
+388C .if217:
+388C .s35c3:
+388C .s35done:
+388C .if214:
+388C .if209:
+388C LDA $25 ;bought
+388E BNE .._18333.skip
+3890 JMP .if218
+3893 LDA menu_res_target
+3896 BRA .s36c0
+3898 JMP .s36done
+389B .s36c0:
+389B CMP #$19
+389D BEQ .._18336.skip
+389F JMP .s36c1
+38A2 .s36b1:
+38A2 LDA hero_HP_Max
+38A5 STA hero_HP
+38A8 LDA hero_HP_Max+$1
+38AB STA hero_HP+$1
+38AE JMP .s36done
+38B1 .s36c1:
+38B1 CMP #$1A
+38B3 BEQ .._18373.skip
+38B5 JMP .s36c2
+38B8 .s36b2:
+38B8 INC hero_HP_Upgrade
+38BB JSR CalcStats
+38BE LDA hero_HP_Max
+38C1 STA hero_HP
+38C4 LDA hero_HP_Max+$1
+38C7 STA hero_HP+$1
+38CA JMP .s36done
+38CD .s36c2:
+38CD CMP #$1B
+38CF BEQ .._18412.skip
+38D1 JMP .s36c3
+38D4 .s36b3:
+38D4 LDA hero_Batt_Max
+38D7 STA hero_Batt
+38DA JMP .s36done
+38DD .s36c3:
+38DD CMP #$1C
+38DF BEQ .._18449.skip
+38E1 JMP .s36c4
+38E4 .s36b4:
+38E4 INC hero_Batt_Upgrade
+38E7 JSR CalcStats
+38EA LDA hero_Batt_Max
+38ED STA hero_Batt
+38F0 JMP .s36done
+38F3 .s36c4:
+38F3 CMP #$1D
+38F5 BEQ .._18488.skip
+38F7 JMP .s36c5
+38FA .s36b5:
+38FA LDA #$A
+38FC STA $2D ;AddExp.exp
+38FE JSR AddExp
+3901 JMP .s36done
+3904 .s36c5:
+3904 CMP #$1E
+3906 BEQ .._18526.skip
+3908 JMP .s36c6
+390B .s36b6:
+390B INC hero_Dmg_Upgrade
+390E JSR CalcStats
+3911 JMP .s36done
+3914 .s36c6:
+3914 LDY #$0
+3916 LDA hero_inventory,Y
+3919 CMP #$20
+391B BEQ .._18539.skip
+391D JMP .if219
+3920 LDA skill_list+$D
+3923 BNE .._18542.skip
+3925 JMP .if220
+3928 LDA #$A
+392A STA $2F ;rand8.max
+392C JSR rand8
+392F LDA ret_val
+3931 BNE .khm.no_upgrade
+3933 PHY
+3934 LDA menu_res_target
+3937 ASL
+3938 TAY
+3939 LDA item_stats,Y
+393C STA $2B ;item_ptr
+393E LDA item_stats+$1,Y
+3941 STA $2C ;item_ptr
+3943 LDY #$0
+3945 LDA ($2B),Y ;item_ptr
+3947 BRA .s37c0
+3949 JMP .s37done
+394C .s37c0:
+394C CMP #$0
+394E BEQ .._18574.skip
+3950 JMP .s37c1
+3953 .s37b1:
+3953 LDA #$4
+3955 JMP .s37done
+3958 .s37c1:
+3958 CMP #$1
+395A BEQ .._18583.skip
+395C JMP .s37c2
+395F .s37b2:
+395F LDA #$9
+3961 JMP .s37done
+3964 .s37c2:
+3964 CMP #$2
+3966 BEQ .._18592.skip
+3968 JMP .s37c3
+396B .s37b3:
+396B LDA #$E
+396D JMP .s37done
+3970 .s37c3:
+3970 CMP #$3
+3972 BEQ .._18601.skip
+3974 JMP .s37c4
+3977 .s37b4:
+3977 LDA #$13
+3979 JMP .s37done
+397C .s37c4:
+397C CMP #$4
+397E BEQ .._18610.skip
+3980 JMP .s37c5
+3983 .s37b5:
+3983 LDA #$18
+3985 .s37c5:
+3985 .s37done:
+3985 PLY
+3986 STA hero_inventory,Y
+3989 JMP .if221
+398C .if220:
+398C LDA menu_res_target
+398F STA hero_inventory,Y
+3992 .if221:
+3992 BRA .khm.loop_done
+3994 .if219:
+3994 INY
+3995 CPY #$1E
+3997 BEQ .._18629.skip
+3999 JMP .khm.loop
+399C .s36c7:
+399C .s36done:
+399C .if218:
+399C .s34c5:
+399C .s34done:
+399C .s31c3:
+399C .s31done:
+399C LDA $26 ;redraw
+399E BNE .._18649.skip
+39A0 JMP .if222
+39A3 JSR DrawMenu
+39A6 .if222:
+39A6 LDA $27 ;redraw_skills
+39A8 BNE .._18656.skip
+39AA JMP .if223
+39AD JSR DrawSkills
+39B0 .if223:
+39B0 LDA $28 ;redraw_resources
+39B2 BNE .._18663.skip
+39B4 JMP .if224
+39B7 JSR DrawResources
+39BA .if224:
+39BA RTS
+39BB InitHero:
+39BB STZ hero_Exp
+39BE LDA #$28
+39C0 STA hero_Exp_Max
+39C3 STZ hero_HP_Upgrade
+39C6 STZ hero_Batt_Upgrade
+39C9 STZ hero_Dmg_Upgrade
+39CC LDA #$1
+39CE STA hero_Level
+39D1 STZ hero_Red
+39D4 STZ hero_Blue
+39D7 STZ hero_Yellow
+39DA STZ hero_Points
+39DD LDA #$0
+39DF STA hero_activity
+39E2 LDA #$0
+39E4 STA hero_equipped+$0
+39E7 LDA #$5
+39E9 STA hero_equipped+$1
+39EC LDA #$A
+39EE STA hero_equipped+$2
+39F1 LDA #$F
+39F3 STA hero_equipped+$3
+39F6 LDA #$14
+39F8 STA hero_equipped+$4
+39FB LDA #$20
+39FD LDY #$0
+39FF STA hero_inventory,Y
+3A02 INY
+3A03 CPY #$1E
+3A05 BNE .ih.iloop
+3A07 LDY #$F
+3A09 LDA #$0
+3A0B STA skill_list,Y
+3A0E DEY
+3A0F BNE .ih.sloop
+3A11 RTS
+3A12 ResetGame:
+3A12 STZ display_X
+3A15 STZ display_Y
+3A18 LDA #$1
+3A1A STA hero_X
+3A1D LDA #$1
+3A1F STA hero_Y
+3A22 LDA #$0
+3A24 STA hero_activity
+3A27 LDA hero_HP_Max
+3A2A STA hero_HP
+3A2D LDA hero_Batt_Max
+3A30 STA hero_Batt
+3A33 LDA #$4
+3A35 STA hero_facing
+3A38 LDA #$4
+3A3A STA hero_target_direction
+3A3D LDA #$0
+3A3F STA output_mode
+3A42 JSR UpdateTarget
+3A45 RTS
+3A46 main:
+3A46 JSR Setup
+3A49 JSR LoadTiles
+3A4C JSR MakeMap
+3A4F JSR LoadMonsters
+3A52 JSR LoadCrystals
+3A55 JSR InitHero
+3A58 JSR CalcStats
+3A5B JSR ColorHero
+3A5E JSR ResetGame
+3A61 JSR DrawFrame
+3A64 JSR DrawLegend
+3A67 LDA $FFE6
+3A6A CMP $20 ;timer_save
+3A6C BNE .._18921.skip
+3A6E JMP .if225
+3A71 STA $20 ;timer_save
+3A73 LDA output_mode
+3A76 CMP #$0
+3A78 BEQ .._18923.skip
+3A7A JMP .if226
+3A7D JSR TickHandler
+3A80 .if226:
+3A80 .if225:
+3A80 LDA output_mode
+3A83 CMP #$0
+3A85 BEQ .._18931.skip
+3A87 JMP .if227
+3A8A JSR KeyHandlerGame
+3A8D JMP .if228
+3A90 .if227:
+3A90 JSR KeyHandlerMenu
+3A93 .if228:
+3A93 BRA .m.loop
+3A95 RTS

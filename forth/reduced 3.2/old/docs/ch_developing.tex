@@ -1,0 +1,230 @@
+% Developing Tali Forth 2
+
+\begin{quote}
+        Programming computers can be crazy-making.
+\end{quote}
+\begin{flushright}
+        -- Leo Brodie,\index{Brodie, Leo}\textit{Thinking Forth}\cite{brodie84}
+\end{flushright}
+
+
+
+\section{Adding new words}\index{words, adding}
+
+The simplest way to add new words to Tali Forth is to include them in the file
+\texttt{forth\_code/user\_words.fs}. This is the place to put them for personal
+use. 
+
+To add words to the permament set, it is best to start a pull request\index{pull
+request} on the GitHub\index{GitHub} page of Tali Forth. The use of
+git\index{git} and GitHub is beyond the scope of this document -- we'll just
+point out it they are not as complicated as they look, and the make
+experimenting a lot easier.
+
+Internally, Tali Forth 2 tends to follow a sequence of steps for new words:
+\begin{itemize}
+
+        \item If it is an ANSI\index{ANSI Forth} Forth word, review the standard
+                online. In some cases, there is a reference implementation that
+                can be used.
+        \item Otherwise, check other sources for a high-level realization of the
+                word. This can be Jonesforth\index{Jonesforth} or
+                Gforth\index{Gforth}. A direct copy is usually not possible (or
+                legally allowed, given different licenses), but gives hints for
+                a Tali Forth version of the word.
+        \item After the new word has been tested interactively, add a high-level
+                version to the file \texttt{forth\_code/forth\_words.fs}. 
+        \item Add tests for the new word to the test suite. Ideally, there will
+                be tests code included in the ANSI\index{ANSI Forth} specification.
+        \item If appropriate, convert the word to assembler, adding an entry to
+                \texttt{headers.asm} and the code itself to
+                \texttt{native\_words.asm}. In this first step, it will usually
+                be a simple sequence of \texttt{JSR} subroutine jumps to the
+                existing native Forth words.
+        \item If appropriate, rewrite all or some of the subroutine jumps in
+                direct assembler.
+\end{itemize}
+
+Note that if you are contributing code, feel free to happily ignore this
+sequence and just submit whatever is working. 
+
+\section{Deeper changes}
+
+Tali Forth was not only placed in the public domain to honor the tradition of
+giving the code away freely. It is also to let people play around with it and
+adapt it to their own machines. This is also the reason it is (perversely)
+overcommented.
+
+To work on the internals of Tali Forth, you will need the Ophis\index{Ophis
+assembler|textbf} assembler.
+
+\subsection{The Ophis Assembler}
+
+Michael Martin's\index{Martin, Michael} Ophis Cross-Assember can be downloaded from
+\href{http://michaelcmartin.github.io/Ophis/}{http://michaelcmartin.github.io/Ophis/}.
+It uses a slightly different format than other assemblers, but is in
+Python\index{Python} and
+therefore will run on almost any operating system. To install Ophis on Windows,
+use the link provided above. For Linux\index{Linux}:
+
+\begin{lstlisting}[frame=lines]
+        git clone https://github.com/michaelcmartin/Ophis
+        cd Ophis/src
+        sudo python setup.py install
+\end{lstlisting}
+
+Switch to the folder where the Tali code lives, and run the Makefile with a
+simple \texttt{make} command. This also updates the file listings in the
+\texttt{docs} folder. 
+
+Ophis has some quirks. For instance, you cannot use math symbols in label names,
+because it will try to perform those operations. Use underscores for label names
+instead.
+
+\subsection{General notes}
+
+\begin{itemize}
+
+        \item The X register\index{X register} should not be changed without
+                saving its pointer status.
+
+        \item The Y register\index{Y register} is free to be changed by
+                subroutines. This means it should not be expected to survive
+                subroutines unchanged.
+
+        \item All words should have one point of entry -- the \texttt{xt\_word}
+                link -- and one point of exit at \texttt{z\_word}. In may cases,
+                this means a branch to an internal label \texttt{done} right
+                before \texttt{z\_word}.
+
+        \item Because of the way native compiling works, the usual trick of
+                combining \texttt{jsr/rts} pairs to a single \texttt{jmp}
+                (usually) doesn't work.
+
+\end{itemize}
+
+
+\subsection{Coding style}\index{style, coding}
+
+Until I get around to writing a tool for Ophis\index{Ophis assembler} assembler
+code that formats the source file the way gofmt does for Go\index{Go} (golang),
+I work with the following rules:
+
+\begin{itemize}
+
+        \item Actual opcodes are indented by \textbf{two tabs}
+
+        \item Tabs are \textbf{eight characters long} and converted to spaces
+
+        \item Function-like routines are followed by a one-tab indented
+                `function doc' based on the Python 3\index{Python} model: Three
+                quotation marks at the start, three at the end it its own line,
+                unless it is a one-liner. This should make it easier to
+                automatically extract the docs for them at some point.
+
+        \item The native words have a special commentary format that allows the
+                automatic generation of word list by a tool in the tools folder,
+                see there for details.
+
+        \item Assembler mnenomics are lower case. I get enough uppercase
+                insanity writing German, thank you very much.
+
+        \item Hex numbers are also lower case, such as \texttt{\$FFFE}
+
+        \item Numbers in mnemonics are a stripped-down as possible to reduce
+                visual clutter: \texttt{lda 0,x} instead of \texttt{lda \$00,x}.
+
+        \item Comments are included like popcorn to help readers who are new
+                both to Forth and 6502 assembler.
+
+\end{itemize}
+
+
+\section{Code Cheat Sheet}\index{cheat sheet, code}
+
+\subsection{The Stack Drawing}\index{stack}
+This is your friend and should probably go on your wall or something.
+
+\begin{lstlisting}[frame=single]
+                +--------------+
+                |          ... |
+                +-            -+
+                |              |   ...
+                +-  (empty)   -+
+                |              |  FE,X
+                +-            -+
+          ...   |              |  FF,X
+                +==============+
+         $0076  |           LSB|  00,X   <-- DSP (X Register)
+                +-    TOS     -+
+         $0077  |           MSB|  01,X
+                +==============+
+         $0078  |  (garbage)   |  02,X   <-- DSP0
+                +--------------+
+         $0079  |              |  03,X
+                + (floodplain) +
+         $007A  |              |  04,X
+                +--------------+
+\end{lstlisting}
+
+\subsection{Coding idioms}
+While coding a Forth, there are certain assembler fragments that get repeated
+over and over again. These could be included as macros, but that can make the
+code harder to read for somebody only familiar with basic assembly.
+
+Some of these fragments could be written in other variants, such as the `push
+value' version, which could increment the DSP twice before storing a value. We
+try to keep these in the same sequence (a "dialect" or "code mannerism" if you
+will) so we have the option of adding code analysis tools later.
+
+\begin{description}
+
+        \item [\texttt{drop}] cell of top of the Data Stack 
+
+                \begin{lstlisting}[frame=lines]
+                inx
+                inx
+                \end{lstlisting}
+
+        \item [\texttt{push}] a value to the Data Stack.  Remember the Data Stack
+                Pointer (DSP, the X register of the 65c02) points to the LSB of
+                the TOS value.
+
+                \begin{lstlisting}[frame=lines]
+                dex
+                dex
+                lda $<LSB>      ; or pla, jsr kernel_getc, etc.
+                sta 0,x
+                lda $<LSB>      ; or pla, jsr kernel_getc, etc.
+                sta 1,x
+                \end{lstlisting}
+
+        \item [\texttt{pop}] a value off the Data Stack
+
+                \begin{lstlisting}[frame=lines]
+                lda 0,x
+                sta $<LSB>      ; or pha, jsr kernel_putc, etc
+                lda 1,x
+                sta $<MSB>      ; or pha, jsr kernel_putc, etc
+                inx
+                inx
+                \end{lstlisting}
+
+\end{description}
+
+\subsection{vi shortcuts}
+
+One option for these is to add abbreviations to your favorite editor, which
+should of course be vim, because vim is cool. There are examples for that
+further down. They all assume that auto-indent is on and we are two tabs in with
+the code, and use \texttt{\#} at the end of the abbreviation to keep them
+separate from the normal words. My \texttt{\textasciitilde/.vimrc} file contains the following
+lines for work on \texttt{.asm} files:
+ 
+
+\begin{lstlisting}[frame=lines]
+ ab drop# inx<tab><tab>; drop<cr>inx<cr><left>
+ ab push# dex<tab><tab>; push<cr>dex<cr>lda $<LSB><cr>sta $00,x<cr>lda $<MSB><cr>sta $01,x<cr><up><up><up><up><end>
+ ab pop# lda $00,x<tab><tab>; pop<cr>sta $<LSB><cr>lda $01,x<cr>sta $<MSB><cr>inx<cr>inx<cr><up><up><up><up><up><end>
+\end{lstlisting}
+ 

@@ -1,0 +1,604 @@
+Modules list:
+-------------
+main.o:
+    CODE              Offs=000000  Size=003154  Align=00001  Fill=0000
+    RODATA            Offs=000000  Size=00089D  Align=00001  Fill=0000
+    BSS               Offs=000000  Size=00339A  Align=00001  Fill=0000
+    DATA              Offs=000000  Size=000002  Align=00001  Fill=0000
+    BANK_ROM          Offs=000000  Size=002F63  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(add.o):
+    CODE              Offs=003154  Size=00001C  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(addysp.o):
+    CODE              Offs=003170  Size=00000E  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(aslax3.o):
+    CODE              Offs=00317E  Size=00000E  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(aslax4.o):
+    CODE              Offs=00318C  Size=000011  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(bneg.o):
+    CODE              Offs=00319D  Size=00000E  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(condes.o):
+    CODE              Offs=0031AB  Size=00000C  Align=00001  Fill=0000
+    DATA              Offs=000002  Size=000025  Align=00001  Fill=0000
+    ONCE              Offs=000000  Size=00000C  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(crt0.o):
+    STARTUP           Offs=000000  Size=000017  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(decsp1.o):
+    CODE              Offs=0031B7  Size=000009  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(decsp2.o):
+    CODE              Offs=0031C0  Size=00000D  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(decsp3.o):
+    CODE              Offs=0031CD  Size=00000D  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(decsp4.o):
+    CODE              Offs=0031DA  Size=00000D  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(decsp5.o):
+    CODE              Offs=0031E7  Size=00000D  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(decsp6.o):
+    CODE              Offs=0031F4  Size=00000D  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(decsp7.o):
+    CODE              Offs=003201  Size=00000D  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(icmp.o):
+    CODE              Offs=00320E  Size=00002E  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(incsp1.o):
+    CODE              Offs=00323C  Size=000007  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(incsp2.o):
+    CODE              Offs=003243  Size=000016  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(incsp3.o):
+    CODE              Offs=003259  Size=000005  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(incsp4.o):
+    CODE              Offs=00325E  Size=000005  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(incsp5.o):
+    CODE              Offs=003263  Size=000005  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(incsp6.o):
+    CODE              Offs=003268  Size=000005  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(incsp7.o):
+    CODE              Offs=00326D  Size=000005  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(incsp8.o):
+    CODE              Offs=003272  Size=000005  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(makebool.o):
+    CODE              Offs=003277  Size=00002C  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(mul8.o):
+    CODE              Offs=0032A3  Size=00003A  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(mulax3.o):
+    CODE              Offs=0032DD  Size=000011  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(mulax5.o):
+    CODE              Offs=0032EE  Size=000014  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(mulax6.o):
+    CODE              Offs=003302  Size=000016  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(popptr1.o):
+    CODE              Offs=003318  Size=00000E  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(pusha.o):
+    CODE              Offs=003326  Size=000016  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(pushax.o):
+    CODE              Offs=00333C  Size=00001A  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(pushwsp.o):
+    CODE              Offs=003356  Size=00001C  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(staspidx.o):
+    CODE              Offs=003372  Size=000016  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(staxsp.o):
+    CODE              Offs=003388  Size=00000B  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(staxspi.o):
+    CODE              Offs=003393  Size=00001B  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(sub.o):
+    CODE              Offs=0033AE  Size=000015  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(subysp.o):
+    CODE              Offs=0033C3  Size=00000D  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(udiv.o):
+    CODE              Offs=0033D0  Size=00004F  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(umod.o):
+    CODE              Offs=00341F  Size=000011  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(zerobss.o):
+    CODE              Offs=003430  Size=000023  Align=00001  Fill=0000
+C:\Users\druzy\Google Drive\Electronics\6502\CC65\lib/none.lib(zeropage.o):
+    ZEROPAGE          Offs=000000  Size=00001A  Align=00001  Fill=0000
+
+
+Segment list:
+-------------
+Name                   Start     End    Size  Align
+----------------------------------------------------
+ZEROPAGE              000080  000099  00001A  00001
+BSS                   000200  003599  00339A  00001
+BANK_ROM              008000  00AF62  002F63  00001
+STARTUP               00C000  00C016  000017  00001
+ONCE                  00C017  00C022  00000C  00001
+CODE                  00C023  00F475  003453  00001
+RODATA                00F476  00FD12  00089D  00001
+DATA                  00FD13  00FD39  000027  00001
+
+
+Exports list by name:
+---------------------
+__BSS_RUN__               000200 RLA    __BSS_SIZE__              00339A REA    
+__CONSTRUCTOR_COUNT__     000000 REA    __CONSTRUCTOR_TABLE__     00C023 RLA    
+__DESTRUCTOR_COUNT__      000000 REA    __DESTRUCTOR_TABLE__      00FD13 RLA    
+__PERIPHSTART__           00FFE0 REA    __RAMSIZE__               004000 REA    
+__RAMSTART__              000200 REA    __STACKSIZE__             000400 REA    
+__STACKSTART__            004000 REA    __STARTUP__               000001 REA    
+__ZPSTART__               000080 REA    _main                     00E8EC RLA    
+addysp                    00F194 RLA    addysp1                   00F193 RLA    
+aslax3                    00F1A1 RLA    bnega                     00F1C4 RLA    
+booleq                    00F2A0 RLA    decsp1                    00F1DA RLA    
+decsp2                    00F1E3 RLA    decsp3                    00F1F0 RLA    
+decsp4                    00F1FD RLA    decsp5                    00F20A RLA    
+decsp6                    00F217 RLA    decsp7                    00F224 RLA    
+donelib                   00F1CE RLA    incsp1                    00F25F RLA    
+incsp2                    00F26E RLA    incsp3                    00F27C RLA    
+incsp4                    00F281 RLA    incsp5                    00F286 RLA    
+incsp6                    00F28B RLA    incsp7                    00F290 RLA    
+incsp8                    00F295 RLA    initlib                   00C017 RLA    
+mulax3                    00F300 RLA    mulax5                    00F311 RLA    
+mulax6                    00F325 RLA    popptr1                   00F33B RLA    
+ptr1                      000088 RLZ    ptr4                      00008E RLZ    
+push0                     00F35F RLA    pusha                     00F34D RLA    
+pusha0                    00F361 RLA    pushax                    00F363 RLA    
+pushw0sp                  00F379 RLA    pushwysp                  00F37B RLA    
+regbank                   000094 RLZ    regsave                   000084 RLZ    
+shlax3                    00F1A1 RLA    shlax4                    00F1AF RLA    
+sp                        000080 RLZ    sreg                      000082 RLZ    
+staspidx                  00F395 RLA    stax0sp                   00F3AB RLA    
+staxspidx                 00F3B6 RLA    staxysp                   00F3AD RLA    
+subysp                    00F3E6 RLA    tmp1                      000090 RLZ    
+tosaddax                  00F179 RLA    tosicmp                   00F233 RLA    
+tosicmp0                  00F231 RLA    tosmula0                  00F2C6 RLA    
+tossubax                  00F3D3 RLA    tosudiva0                 00F3F3 RLA    
+tosumoda0                 00F442 RLA    tosumula0                 00F2C6 RLA    
+udiv16                    00F404 RLA    zerobss                   00F453 RLA    
+
+
+
+Exports list by value:
+----------------------
+__DESTRUCTOR_COUNT__      000000 REA    __CONSTRUCTOR_COUNT__     000000 REA    
+__STARTUP__               000001 REA    __ZPSTART__               000080 REA    
+sp                        000080 RLZ    sreg                      000082 RLZ    
+regsave                   000084 RLZ    ptr1                      000088 RLZ    
+ptr4                      00008E RLZ    tmp1                      000090 RLZ    
+regbank                   000094 RLZ    __BSS_RUN__               000200 RLA    
+__RAMSTART__              000200 REA    __STACKSIZE__             000400 REA    
+__BSS_SIZE__              00339A REA    __RAMSIZE__               004000 REA    
+__STACKSTART__            004000 REA    initlib                   00C017 RLA    
+__CONSTRUCTOR_TABLE__     00C023 RLA    _main                     00E8EC RLA    
+tosaddax                  00F179 RLA    addysp1                   00F193 RLA    
+addysp                    00F194 RLA    shlax3                    00F1A1 RLA    
+aslax3                    00F1A1 RLA    shlax4                    00F1AF RLA    
+bnega                     00F1C4 RLA    donelib                   00F1CE RLA    
+decsp1                    00F1DA RLA    decsp2                    00F1E3 RLA    
+decsp3                    00F1F0 RLA    decsp4                    00F1FD RLA    
+decsp5                    00F20A RLA    decsp6                    00F217 RLA    
+decsp7                    00F224 RLA    tosicmp0                  00F231 RLA    
+tosicmp                   00F233 RLA    incsp1                    00F25F RLA    
+incsp2                    00F26E RLA    incsp3                    00F27C RLA    
+incsp4                    00F281 RLA    incsp5                    00F286 RLA    
+incsp6                    00F28B RLA    incsp7                    00F290 RLA    
+incsp8                    00F295 RLA    booleq                    00F2A0 RLA    
+tosmula0                  00F2C6 RLA    tosumula0                 00F2C6 RLA    
+mulax3                    00F300 RLA    mulax5                    00F311 RLA    
+mulax6                    00F325 RLA    popptr1                   00F33B RLA    
+pusha                     00F34D RLA    push0                     00F35F RLA    
+pusha0                    00F361 RLA    pushax                    00F363 RLA    
+pushw0sp                  00F379 RLA    pushwysp                  00F37B RLA    
+staspidx                  00F395 RLA    stax0sp                   00F3AB RLA    
+staxysp                   00F3AD RLA    staxspidx                 00F3B6 RLA    
+tossubax                  00F3D3 RLA    subysp                    00F3E6 RLA    
+tosudiva0                 00F3F3 RLA    udiv16                    00F404 RLA    
+tosumoda0                 00F442 RLA    zerobss                   00F453 RLA    
+__DESTRUCTOR_TABLE__      00FD13 RLA    __PERIPHSTART__           00FFE0 REA    
+
+
+
+Imports list:
+-------------
+__BSS_RUN__ ([linker generated]):
+    zerobss.o                 common/zerobss.s(8)
+__BSS_SIZE__ ([linker generated]):
+    zerobss.o                 common/zerobss.s(8)
+__CONSTRUCTOR_COUNT__ ([linker generated]):
+    condes.o                  runtime/condes.s(18)
+__CONSTRUCTOR_TABLE__ ([linker generated]):
+    condes.o                  runtime/condes.s(18)
+__DESTRUCTOR_COUNT__ ([linker generated]):
+    condes.o                  runtime/condes.s(19)
+__DESTRUCTOR_TABLE__ ([linker generated]):
+    condes.o                  runtime/condes.s(19)
+__PERIPHSTART__ ([linker generated]):
+    [linker generated]        C:\Users\druzy\Google Drive\Electronics\6502\CC65\projects\RobotGame\\game.cfg(15)
+__RAMSIZE__ ([linker generated]):
+    [linker generated]        C:\Users\druzy\Google Drive\Electronics\6502\CC65\projects\RobotGame\\game.cfg(16)
+__RAMSTART__ ([linker generated]):
+    [linker generated]        C:\Users\druzy\Google Drive\Electronics\6502\CC65\projects\RobotGame\\game.cfg(16)
+    [linker generated]        C:\Users\druzy\Google Drive\Electronics\6502\CC65\projects\RobotGame\\game.cfg(16)
+__STACKSIZE__ ([linker generated]):
+    [linker generated]        C:\Users\druzy\Google Drive\Electronics\6502\CC65\projects\RobotGame\\game.cfg(16)
+__STACKSTART__ ([linker generated]):
+    crt0.o                    none/crt0.s(5)
+__STARTUP__ (crt0.o):
+    main.o                    robotgame\main.s(24)
+__ZPSTART__ ([linker generated]):
+    [linker generated]        C:\Users\druzy\Google Drive\Electronics\6502\CC65\projects\RobotGame\\game.cfg(13)
+_main (main.o):
+    crt0.o                    none/crt0.s(3)
+addysp (addysp.o):
+    incsp8.o                  runtime/incsp8.s(8)
+    incsp7.o                  runtime/incsp7.s(8)
+    incsp6.o                  runtime/incsp6.s(8)
+    incsp5.o                  runtime/incsp5.s(8)
+    incsp4.o                  runtime/incsp4.s(8)
+    incsp3.o                  runtime/incsp3.s(8)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+addysp1 (addysp.o):
+    sub.o                     runtime/sub.s(8)
+aslax3 (aslax3.o):
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+bnega (bneg.o):
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+booleq (makebool.o):
+    main.o                    robotgame\main.s(19629)
+decsp1 (decsp1.o):
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+decsp2 (decsp2.o):
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+decsp3 (decsp3.o):
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+decsp4 (decsp4.o):
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+decsp5 (decsp5.o):
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+decsp6 (decsp6.o):
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+decsp7 (decsp7.o):
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+donelib (condes.o):
+    crt0.o                    none/crt0.s(4)
+incsp1 (incsp1.o):
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+incsp2 (incsp2.o):
+    staxspi.o                 runtime/staxspi.s(9)
+    staspidx.o                runtime/staspidx.s(8)
+    popptr1.o                 runtime/popptr1.s(8)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+incsp3 (incsp3.o):
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+incsp4 (incsp4.o):
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+incsp5 (incsp5.o):
+    main.o                    robotgame\main.s(19629)
+incsp6 (incsp6.o):
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+incsp7 (incsp7.o):
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+incsp8 (incsp8.o):
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+initlib (condes.o):
+    crt0.o                    none/crt0.s(4)
+mulax3 (mulax3.o):
+    main.o                    robotgame\main.s(19629)
+mulax5 (mulax5.o):
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+mulax6 (mulax6.o):
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+popptr1 (popptr1.o):
+    umod.o                    runtime/umod.s(8)
+    udiv.o                    runtime/udiv.s(9)
+    mul8.o                    runtime/mul8.s(9)
+ptr1 (zeropage.o):
+    zerobss.o                 common/zerobss.s(9)
+    udiv.o                    runtime/udiv.s(10)
+    staxspi.o                 runtime/staxspi.s(10)
+    staspidx.o                runtime/staspidx.s(9)
+    popptr1.o                 runtime/popptr1.s(9)
+    mulax6.o                  runtime/mulax6.s(9)
+    mulax5.o                  runtime/mulax5.s(9)
+    mulax3.o                  runtime/mulax3.s(9)
+    mul8.o                    runtime/mul8.s(10)
+    main.o                    robotgame\main.s(11)
+ptr4 (zeropage.o):
+    umod.o                    runtime/umod.s(9)
+    udiv.o                    runtime/udiv.s(10)
+    mul8.o                    runtime/mul8.s(10)
+push0 (pushax.o):
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+pusha (pusha.o):
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+pusha0 (pushax.o):
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+pushax (pushax.o):
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+pushw0sp (pushwsp.o):
+    main.o                    robotgame\main.s(19629)
+pushwysp (pushwsp.o):
+    main.o                    robotgame\main.s(19629)
+regbank (zeropage.o):
+    main.o                    robotgame\main.s(10)
+regsave (zeropage.o):
+    main.o                    robotgame\main.s(10)
+shlax3 (aslax3.o):
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+shlax4 (aslax4.o):
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+sp (zeropage.o):
+    subysp.o                  runtime/subysp.s(9)
+    sub.o                     runtime/sub.s(9)
+    staxspi.o                 runtime/staxspi.s(10)
+    staxsp.o                  runtime/staxsp.s(8)
+    staspidx.o                runtime/staspidx.s(9)
+    pushwsp.o                 runtime/pushwsp.s(8)
+    pushax.o                  runtime/pushax.s(8)
+    pusha.o                   runtime/pusha.s(8)
+    popptr1.o                 runtime/popptr1.s(9)
+    incsp2.o                  runtime/incsp2.s(8)
+    incsp1.o                  runtime/incsp1.s(8)
+    icmp.o                    runtime/icmp.s(9)
+    decsp7.o                  runtime/decsp7.s(8)
+    decsp6.o                  runtime/decsp6.s(8)
+    decsp5.o                  runtime/decsp5.s(8)
+    decsp4.o                  runtime/decsp4.s(8)
+    decsp3.o                  runtime/decsp3.s(8)
+    decsp2.o                  runtime/decsp2.s(8)
+    decsp1.o                  runtime/decsp1.s(8)
+    crt0.o                    /home/travis/build/cc65/cc65/asminc/zeropage.inc(11)
+    addysp.o                  runtime/addysp.s(8)
+    add.o                     runtime/add.s(12)
+    main.o                    robotgame\main.s(10)
+sreg (zeropage.o):
+    umod.o                    runtime/umod.s(9)
+    udiv.o                    runtime/udiv.s(10)
+    icmp.o                    runtime/icmp.s(9)
+    main.o                    robotgame\main.s(10)
+staspidx (staspidx.o):
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+stax0sp (staxsp.o):
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+staxspidx (staxspi.o):
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+staxysp (staxsp.o):
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+subysp (subysp.o):
+    main.o                    robotgame\main.s(19629)
+tmp1 (zeropage.o):
+    staxspi.o                 runtime/staxspi.s(10)
+    staspidx.o                runtime/staspidx.s(9)
+    aslax4.o                  runtime/aslax4.s(8)
+    aslax3.o                  runtime/aslax3.s(8)
+    add.o                     runtime/add.s(12)
+    main.o                    robotgame\main.s(11)
+tosaddax (add.o):
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+tosicmp (icmp.o):
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+tosicmp0 (icmp.o):
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+tosmula0 (mul8.o):
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+tossubax (sub.o):
+    main.o                    robotgame\main.s(19629)
+tosudiva0 (udiv.o):
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+tosumoda0 (umod.o):
+    main.o                    robotgame\main.s(19629)
+tosumula0 (mul8.o):
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+    main.o                    robotgame\main.s(19629)
+udiv16 (udiv.o):
+    umod.o                    runtime/umod.s(8)
+zerobss (zerobss.o):
+    crt0.o                    none/crt0.s(3)
+

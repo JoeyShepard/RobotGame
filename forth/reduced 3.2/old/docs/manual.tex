@@ -1,0 +1,136 @@
+% Manual for Tali Forth for the 65c02
+% Scot W. Stevenson <scot.stevenson@gmail.com>
+% First version: 02. Mar 2018
+% This version: 20. May 2018
+% See:
+% - https://en.wikibooks.org/wiki/LaTeX/Document_Structure#Document_classes
+% - https://www.sharelatex.com/blog/2013/08/02/thesis-series-pt1.html
+% Install additional fonds with "sudo apt-get install texlive-fonts-extra"
+% https://launchpad.net/ubuntu/xenial/+package/texlive-fonts-extra
+\documentclass[a4paper,notitlepage]{report}
+\usepackage[width=150mm,top=25mm,bottom=25mm]{geometry}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+\usepackage{graphicx}
+\usepackage{makeidx}
+\makeindex
+
+\usepackage{sourcecodepro}      % for monospaced
+
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily,breaklines=true} % use monospace
+
+\usepackage{color}
+\usepackage[colorlinks=true]{hyperref}   % must be last
+
+% Add real titlepage
+
+\title{The Tali Forth 2 Manual (ALPHA)}
+\author{Scot W.~Stevenson}
+\date{\today}
+
+
+% --------------------------------
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+        Tali Forth 2 is a bare-metal ANSI(ish) Forth for the 65c02 8-bit MPU. 
+        It aims to be, roughly in order of importance: 
+
+        \begin{description}
+
+        \item [Easy to try.]
+                \href{https://github.com/scotws/TaliForth2}{Download the source}
+                -- or even just the binary -- and you can immediately
+                run it in an emulater. This lets you experiment with a
+                working 8-bit Forth for the 65c02 without any special
+                configuration.
+
+        \item [Simple.] The subroutine-threaded (STC) design and happily
+                overcommented source code give hobbyists the chance to study a
+                working Forth at the lowest level. The manual -- this
+                document -- explains structure and code in detail. The aim
+                is to make it easy to port Tali Forth 2
+                to various 65c02 hardware projects.
+
+        \item [Specific.] Many Forths available are `general' implementations with
+                a small core adapted to the target processor. Tali Forth 2 was
+                written as a "bare metal Forth" for the 65c02 8-bit MPU
+                and that MPU only, with its strengths and limitations in
+                mind.
+
+        \item [Standardized.] Most Forths available for the 65c02 are based on ancient,
+                outdated templates such as FIG Forth. Learning Forth with them is like
+                trying to learn modern English by reading Chaucer. Tali
+                Forth (mostly) follows the current ANSI Standard.
+\end{description}
+
+        Tali Forth is hosted at GitHub at
+        \href{https://github.com/scotws/TaliForth2}{https://github.com/scotws/TaliForth2}. 
+        The discussion thread is at 6502.org at
+        \href{http://forum.6502.org/viewtopic.php?f=9\&t=2926}{http://forum.6502.org/viewtopic.php?f=9\&t=2926}.
+        
+\end{abstract}
+
+% --------------------------------
+\tableofcontents
+\listoffigures
+\listoftables
+
+% --------------------------------
+\part{Introduction}
+
+\chapter{Why}
+        \input{ch_why}
+
+\chapter{Overview of Tali Forth}
+        \input{ch_overview}
+
+% --------------------------------
+\part{User Guide}
+
+\chapter{Installing}
+        \input{ch_installation}
+
+\chapter{Running}
+        \input{ch_running}
+
+\chapter{The Editor}
+\textit{(Currently, there is no editor installed.)}
+
+
+% --------------------------------
+\part{Developer Guide}
+
+\chapter{How Tali Forth works}
+        \input{ch_internals}
+
+\chapter{Developing}
+        \input{ch_developing}
+
+\chapter{Future plans}
+        \textit{(See the file TODO.txt)}
+
+% --------------------------------
+
+\appendix
+
+\chapter{FAQ}
+        \input{ch_faq}
+
+\chapter{Testing Tali Forth}
+        \input{ch_tests}
+
+\chapter{Thanks}
+        \input{ch_thanks}
+
+\input{bibliography}
+
+% See https://en.wikibooks.org/wiki/LaTeX/Indexing#Sophisticated_indexing for
+% details
+\printindex
+
+\end{document}

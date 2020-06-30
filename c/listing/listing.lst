@@ -1,0 +1,10149 @@
+FD13 _output_mode:
+F476 _RAM_BANK1:
+F478 _RAM_BANK2:
+F47A _RAM_BANK3:
+F47C _ROM_BANK:
+F47E _KB_INPUT:
+F480 _TIMER_MS4:
+F482 _TIMER_S:
+F484 _DEBUG:
+F486 _DEBUG_HEX:
+F488 _DEBUG_DEC:
+F48A _DEBUG_DEC16:
+F48C _DEBUG_TIMING:
+F48E _LOG_ON:
+F490 _LOG_OFF:
+F492 _LOG_SEND:
+F494 _RB1:
+F496 _RB2:
+F498 _RB3:
+F49A _ROMB:
+8000 _str_Basic_Head_raw:
+800B _str_Head_MKII_raw:
+8015 _str_Head_MKIII_raw:
+8020 _str_Head_MKIV_raw:
+802A _str_Lightning_raw:
+8034 _str_Basic_Body_raw:
+803F _str_Tin_Body_raw:
+8048 _str_Iron_Body_raw:
+8052 _str_Steel_Body_raw:
+805D _str_Fortress_raw:
+8066 _str_Basic_Legs_raw:
+8071 _str_Fast_Legs_raw:
+807B _str_Quick_Legs_raw:
+8086 _str_Agile_Legs_raw:
+8091 _str_Mustang_raw:
+8099 _str_Basic_Gun_raw:
+80A3 _str_Blaster_raw:
+80AB _str_Laser_raw:
+80B1 _str_Phaser_raw:
+80B8 _str_Death_Ray_raw:
+80C2 _str_Basic_Tool_raw:
+80CD _str_Rock_Pick_raw:
+80D7 _str_Rock_Drill_raw:
+80E2 _str_Rock_Borer_raw:
+80ED _str_Laser_Bit_raw:
+80F7 _item_titles_raw:
+F49C _item_titles:
+F4CE _item_Basic_Head:
+F4D5 _item_Head_MKII:
+F4DC _item_Head_MKIII:
+F4E5 _item_Head_MKIV:
+F4F0 _item_Lightning:
+F4FB _item_Basic_Body:
+F502 _item_Tin_Body:
+F509 _item_Iron_Body:
+F512 _item_Steel_Body:
+F51D _item_Fortress:
+F528 _item_Basic_Legs:
+F52F _item_Fast_Legs:
+F536 _item_Quick_Legs:
+F53F _item_Agile_Legs:
+F54A _item_Mustang:
+F555 _item_Basic_Gun:
+F55C _item_Blaster:
+F563 _item_Laser:
+F56C _item_Phaser:
+F577 _item_Death_Ray:
+F582 _item_Basic_Tool:
+F589 _item_Rock_Pick:
+F590 _item_Rock_Drill:
+F599 _item_Rock_Borer:
+F5A4 _item_Laser_Bit:
+F5AF _str_Res_HP_Heal:
+F5C0 _str_Res_HP_Upgrade:
+F5C6 _str_Res_Batt_Heal:
+F5E0 _str_Res_Batt_Upgrade:
+F5E8 _str_Res_Exp_Upgrade:
+F5F6 _str_Res_Dmg_Upgrade:
+F5FD _res_descriptions:
+F609 _item_Res_HP_Heal:
+F60D _item_Res_HP_Upgrade:
+F611 _item_Res_Batt_Heal:
+F615 _item_Res_Batt_Upgrade:
+F619 _item_Res_Exp_Upgrade:
+F61D _item_Res_Dmg_Upgrade:
+F621 _item_stats:
+F65F _str_stat_Batt:
+F667 _str_stat_HP:
+F66D _str_stat_Dmg:
+F674 _str_stat_Mine:
+F67D _str_stat_Mine1s:
+F685 _str_stat_Crit:
+F68E _str_stat_Lava:
+F697 _str_stat_Drill:
+F6A1 _str_stat_Drill1s:
+F6AA _str_stat_Batt_Recharge:
+F6B4 _str_stat_HP_Recharge:
+F6BC _str_stat_LavaHeals:
+F6C7 _str_stat_AttackCost50:
+F6D1 _str_stat_MineCost50:
+F6DB _stat_descriptions:
+F6F7 _stat_description_colors:
+F705 _stat_pointers:
+F721 _str_hero_stat_HP:
+F729 _str_hero_stat_Batt:
+F731 _str_hero_stat_Dmg:
+F739 _str_hero_stat_Crit:
+F742 _str_hero_stat_Mine:
+F74B _str_hero_stat_Drill:
+F754 _str_hero_stat_Lava:
+F75E _hero_stat_colors:
+F765 _hero_stat_texts:
+F773 _hero_stat_pointers:
+8129 _str_Skill0_title_raw:
+8137 _str_Skill1_title_raw:
+8145 _str_Skill2_title_raw:
+8151 _str_Skill3_title_raw:
+815F _str_Skill4_title_raw:
+816C _str_Skill5_title_raw:
+8177 _str_Skill6_title_raw:
+8181 _str_Skill7_title_raw:
+818D _str_Skill8_title_raw:
+8197 _str_Skill9_title_raw:
+819D _str_Skill10_title_raw:
+81A8 _str_Skill11_title_raw:
+81B5 _str_Skill12_title_raw:
+81C2 _str_Skill13_title_raw:
+81D0 _str_Skill14_title_raw:
+81DD _str_Skill0_description_raw:
+8209 _str_Skill1_description_raw:
+8236 _str_Skill2_description_raw:
+824D _str_Skill3_description_raw:
+8274 _str_Skill4_description_raw:
+8289 _str_Skill5_description_raw:
+82A5 _str_Skill6_description_raw:
+82CA _str_Skill7_description_raw:
+82EB _str_Skill8_description_raw:
+830E _str_Skill9_description_raw:
+8323 _str_Skill10_description_raw:
+834E _str_Skill11_description_raw:
+8371 _str_Skill12_description_raw:
+8385 _str_Skill13_description_raw:
+83BA _str_Skill14_description_raw:
+83CF _skill_titles_raw:
+83ED _skill_descriptions_raw:
+F781 _skill_titles:
+F79F _skill_descriptions:
+840B _tile_Menu_head_raw:
+84BD _tile_Menu_body_raw:
+854F _tile_Menu_legs_raw:
+85F1 _tile_Menu_gun_raw:
+8661 _tile_Menu_tool_raw:
+86BF _tile_Robot_left_raw:
+88C1 _tile_Robot_right_raw:
+8AC3 _tile_Crystal_raw:
+8CED _tile_Ground_raw:
+8DA3 _tile_Monster_raw:
+8F41 _tile_Monster_dead_raw:
+90F3 _tile_Menu_item_slot_raw:
+91A3 _tile_Crystal_base_raw:
+9265 _tile_Hero_target_raw:
+92E8 _tile_Menu_item_selector_raw:
+931E _tile_Menu_skill_selector_raw:
+9369 _tile_Exit_raw:
+93EC _tile_Res_HP_Heal_raw:
+940F _tile_Res_Batt_Heal_raw:
+9432 _tile_Res_HP_Upgrade_raw:
+9455 _tile_Res_Batt_Upgrade_raw:
+9478 _tile_Res_Exp_Upgrade_raw:
+949B _tile_Res_Dmg_Upgrade_raw:
+94BE _tile_Skill0_raw:
+9509 _tile_Skill1_raw:
+9554 _tile_Skill2_raw:
+959F _tile_Skill3_raw:
+95EA _tile_Skill4_raw:
+9635 _tile_Skill5_raw:
+9680 _tile_Skill6_raw:
+96CB _tile_Skill7_raw:
+9716 _tile_Skill8_raw:
+9761 _tile_Skill9_raw:
+97AC _tile_Skill10_raw:
+97F7 _tile_Skill11_raw:
+9842 _tile_Skill12_raw:
+988D _tile_Skill13_raw:
+98D8 _tile_Skill14_raw:
+F7BD _tiles:
+F873 _chartable:
+FB6B _color_Basic_Head:
+FB77 _color_Head_MKII:
+FB83 _color_Head_MKIII:
+FB8F _color_Head_MKIV:
+FB9B _color_Lightning:
+FBA7 _color_Basic_Body:
+FBAD _color_Tin_Body:
+FBB3 _color_Iron_Body:
+FBB9 _color_Steel_Body:
+FBBF _color_Fortress:
+FBC5 _color_Basic_Legs:
+FBCB _color_Fast_Legs:
+FBD1 _color_Quick_Legs:
+FBD7 _color_Agile_Legs:
+FBDD _color_Mustang:
+FBE3 _color_Basic_Gun:
+FBE9 _color_Blaster:
+FBEF _color_Laser:
+FBF5 _color_Phaser:
+FBFB _color_Death_Ray:
+FC01 _color_Basic_Tool:
+FC05 _color_Rock_Pick:
+FC09 _color_Rock_Drill:
+FC0D _color_Rock_Borer:
+FC11 _color_Laser_Bit:
+9923 _color_Ground_0:
+992B _color_Ground_90:
+9933 _color_Ground_180:
+993B _color_Ground_270:
+9943 _color_Crystal_red:
+994F _color_Crystal_yellow:
+995B _color_Crystal_blue:
+9967 _color_Rock:
+996F _color_Lava:
+FC15 _item_colors:
+FC47 _tile_colors:
+FC59 _title_colors:
+FC5E _crystal_colors:
+FC61 L2335:
+FC70 L21E2:
+FC7C L21D4:
+FC88 L202D:
+FC93 L21DB:
+FC9C L241D:
+FCA5 L1FF6:
+FCAE L2485:
+FCB7 L23D6:
+FCBF L2006:
+FCC7 L203A:
+FCCF L1FE6:
+FCD6 L2024:
+FCDB L201B:
+0200 _display_X:
+0201 _display_Y:
+0202 _hero_X:
+0203 _hero_Y:
+0204 _hero_HP:
+0206 _hero_HP_Max:
+0208 _hero_HP_Max_temp:
+0209 _hero_HP_Upgrade:
+020A _hero_Batt:
+020B _hero_Batt_Max:
+020C _hero_Batt_Upgrade:
+020D _hero_Dmg:
+020E _hero_Dmg_Upgrade:
+020F _hero_Mine_Speed:
+0210 _hero_Drill_Speed:
+0211 _hero_Lava_Res:
+0212 _hero_Batt_Recharge:
+0213 _hero_Crit_Rate:
+0214 _hero_HP_Recharge:
+0215 _hero_Lava_Dmg:
+0217 _hero_Dmg_Cost:
+0218 _hero_Mine_Cost:
+0219 _hero_Drill_Cost:
+021A _hero_Exp:
+021B _hero_Exp_Max:
+021C _hero_Level:
+021D _hero_Red:
+021E _hero_Blue:
+021F _hero_Yellow:
+0220 _hero_Points:
+0221 _hero_facing:
+0222 _hero_target_direction:
+0223 _hero_target_type:
+0224 _hero_target_index:
+0225 _hero_target_index2:
+0226 _hero_activity:
+0227 _hero_activity_ticks:
+0229 _hero_activity_ticks_max:
+022B _hero_equipped:
+0230 _hero_inventory:
+024E _skill_list:
+025D _menu_char_x:
+025E _menu_char_y:
+025F _menu_skills_x:
+0260 _menu_skills_y:
+0261 _menu_res_x:
+0262 _menu_res_y:
+0263 _menu_res_target:
+0264 _monster_list:
+0354 _crystal_list:
+0494 _map_data:
+07B4 _monster_map:
+0AD4 _crystal_map:
+0DF4 _rand_val:
+0DF6 _bank_3_copy:
+0DF7 _bank_3_save:
+0DF8 _str_Basic_Head:
+0E03 _str_Head_MKII:
+0E0D _str_Head_MKIII:
+0E18 _str_Head_MKIV:
+0E22 _str_Lightning:
+0E2C _str_Basic_Body:
+0E37 _str_Tin_Body:
+0E40 _str_Iron_Body:
+0E4A _str_Steel_Body:
+0E55 _str_Fortress:
+0E5E _str_Basic_Legs:
+0E69 _str_Fast_Legs:
+0E73 _str_Quick_Legs:
+0E7E _str_Agile_Legs:
+0E89 _str_Mustang:
+0E91 _str_Basic_Gun:
+0E9B _str_Blaster:
+0EA3 _str_Laser:
+0EA9 _str_Phaser:
+0EB0 _str_Death_Ray:
+0EBA _str_Basic_Tool:
+0EC5 _str_Rock_Pick:
+0ECF _str_Rock_Drill:
+0EDA _str_Rock_Borer:
+0EE5 _str_Laser_Bit:
+0EEF _str_Skill0_title:
+0EFD _str_Skill1_title:
+0F0B _str_Skill2_title:
+0F17 _str_Skill3_title:
+0F25 _str_Skill4_title:
+0F32 _str_Skill5_title:
+0F3D _str_Skill6_title:
+0F47 _str_Skill7_title:
+0F53 _str_Skill8_title:
+0F5D _str_Skill9_title:
+0F63 _str_Skill10_title:
+0F6E _str_Skill11_title:
+0F7B _str_Skill12_title:
+0F88 _str_Skill13_title:
+0F96 _str_Skill14_title:
+0FA3 _str_Skill0_description:
+0FCF _str_Skill1_description:
+0FFC _str_Skill2_description:
+1013 _str_Skill3_description:
+103A _str_Skill4_description:
+104F _str_Skill5_description:
+106B _str_Skill6_description:
+1090 _str_Skill7_description:
+10B1 _str_Skill8_description:
+10D4 _str_Skill9_description:
+10E9 _str_Skill10_description:
+1114 _str_Skill11_description:
+1137 _str_Skill12_description:
+114B _str_Skill13_description:
+1180 _str_Skill14_description:
+1195 _tile_Ground_0:
+124B _tile_Ground_90:
+1305 _tile_Ground_180:
+13BB _tile_Ground_270:
+1475 _tile_Rock:
+152B _tile_Lava:
+15E1 _tile_Crystal_red:
+180B _tile_Crystal_yellow:
+1A35 _tile_Crystal_blue:
+1C5F _tile_Robot_left:
+1E61 _tile_Robot_right:
+2063 _tile_Menu_head_temp:
+2115 _tile_Menu_body_temp:
+21A7 _tile_Menu_legs_temp:
+2249 _tile_Menu_gun_temp:
+22B9 _tile_Menu_tool_temp:
+2317 _tile_Skill_temp:
+2362 _tile_Menu_head:
+2414 _tile_Menu_body:
+24A6 _tile_Menu_legs:
+2548 _tile_Menu_gun:
+25B8 _tile_Menu_tool:
+2616 _tile_Robot_left_blank:
+2818 _tile_Robot_right_blank:
+2A1A _tile_Monster:
+2BB8 _tile_Monster_dead:
+2D6A _tile_Menu_item_slot:
+2E1A _tile_Crystal_base:
+2EDC _tile_Hero_target:
+2F5F _tile_Menu_item_selector:
+2F95 _tile_Menu_skill_selector:
+2FE0 _tile_Exit:
+3063 _tile_Res_HP_Heal:
+3086 _tile_Res_HP_Upgrade:
+30A9 _tile_Res_Batt_Heal:
+30CC _tile_Res_Batt_Upgrade:
+30EF _tile_Res_Exp_Upgrade:
+3112 _tile_Res_Dmg_Upgrade:
+3135 _tile_Skill0:
+3180 _tile_Skill1:
+31CB _tile_Skill2:
+3216 _tile_Skill3:
+3261 _tile_Skill4:
+32AC _tile_Skill5:
+32F7 _tile_Skill6:
+3342 _tile_Skill7:
+338D _tile_Skill8:
+33D8 _tile_Skill9:
+3423 _tile_Skill10:
+346E _tile_Skill11:
+34B9 _tile_Skill12:
+3504 _tile_Skill13:
+354F _tile_Skill14:
+C023 AddExp:
+C023 jsr pusha
+C026 jsr decsp1
+C029 ldy #$01
+C02B lda (sp),y
+C02D clc
+C02E adc _hero_Exp
+C031 sta _hero_Exp
+C034 cmp _hero_Exp_Max
+C037 bcc L244D
+C039 lda _hero_Exp_Max
+C03C eor #$FF
+C03E sec
+C03F adc _hero_Exp
+C042 sta _hero_Exp
+C045 lda #$0A
+C047 clc
+C048 adc _hero_Exp_Max
+C04B sta _hero_Exp_Max
+C04E inc _hero_Level
+C051 inc _hero_Points
+C054 lda _hero_HP_Max+1
+C057 sta _hero_HP+1
+C05A lda _hero_HP_Max
+C05D sta _hero_HP
+C060 lda _hero_Batt_Max
+C063 sta _hero_Batt
+C066 lda _skill_list+11
+C069 cmp #$01
+C06B bne L244D
+C06D lda #$03
+C06F jsr _rand8
+C072 sta (sp)
+C074 lda (sp)
+C076 bne L2C5D
+C078 lda #$05
+C07A clc
+C07B adc _hero_Blue
+C07E sta _hero_Blue
+C081 jmp incsp2
+C084 L2C5D:
+C084 lda (sp)
+C086 cmp #$01
+C088 bne L2C5E
+C08A lda #$05
+C08C clc
+C08D adc _hero_Red
+C090 sta _hero_Red
+C093 jmp incsp2
+C096 L2C5E:
+C096 lda #$05
+C098 clc
+C099 adc _hero_Yellow
+C09C sta _hero_Yellow
+C09F L244D:
+C09F jmp incsp2
+C0A2 CalcStats:
+C0A2 jsr decsp6
+C0A5 lda #$00
+C0A7 jsr pusha
+C0AA jsr pusha
+C0AD lda _hero_HP_Upgrade
+C0B0 clc
+C0B1 adc #$02
+C0B3 sta _hero_HP_Max_temp
+C0B6 lda _hero_Batt_Upgrade
+C0B9 clc
+C0BA adc #$03
+C0BC sta _hero_Batt_Max
+C0BF lda _hero_Dmg_Upgrade
+C0C2 sta _hero_Dmg
+C0C5 lda #$08
+C0C7 sta _hero_Mine_Speed
+C0CA lda #$0C
+C0CC sta _hero_Drill_Speed
+C0CF lda #$01
+C0D1 sta _hero_Batt_Recharge
+C0D4 lda #$05
+C0D6 sta _hero_Crit_Rate
+C0D9 stz _hero_HP_Recharge
+C0DC stz _hero_Lava_Res
+C0DF dea
+C0E0 sta _hero_Lava_Dmg
+C0E3 stz _hero_Lava_Dmg+1
+C0E6 sta _hero_Dmg_Cost
+C0E9 lda #$02
+C0EB sta _hero_Mine_Cost
+C0EE sta _hero_Drill_Cost
+C0F1 lda #$00
+C0F3 ldy #$07
+C0F5 L2C7C:
+C0F5 sta (sp),y
+C0F7 cmp #$05
+C0F9 jcs L2C77
+C0FE lda #$00
+C100 dey
+C101 L2C7E:
+C101 sta (sp),y
+C103 lda (sp),y
+C105 jsr pusha0
+C108 ldy #$09
+C10A lda (sp),y
+C10C tay
+C10D lda _hero_equipped,y
+C110 asl a
+C111 bcc L2C67
+C113 ldx #$01
+C115 clc
+C116 L2C67:
+C116 adc #<(_item_stats)
+C118 sta ptr1
+C11A txa
+C11B adc #>(_item_stats)
+C11D sta ptr1+1
+C11F ldy #$01
+C121 lda (ptr1),y
+C123 tax
+C124 lda (ptr1)
+C126 sta ptr1
+C128 stx ptr1+1
+C12A ldy #$04
+C12C lda (ptr1),y
+C12E jsr tosicmp0
+C131 jcs L25A3
+C136 ldy #$07
+C138 lda (sp),y
+C13A tay
+C13B ldx #$00
+C13D lda _hero_equipped,y
+C140 asl a
+C141 bcc L2C68
+C143 inx
+C144 clc
+C145 L2C68:
+C145 adc #<(_item_stats)
+C147 sta ptr1
+C149 txa
+C14A adc #>(_item_stats)
+C14C sta ptr1+1
+C14E ldy #$01
+C150 lda (ptr1),y
+C152 tax
+C153 lda (ptr1)
+C155 sta ptr1
+C157 stx ptr1+1
+C159 ldx #$00
+C15B ldy #$06
+C15D lda (sp),y
+C15F asl a
+C160 bcc L2C69
+C162 inx
+C163 clc
+C164 L2C69:
+C164 adc #$05
+C166 bcc L2C6A
+C168 inx
+C169 clc
+C16A L2C6A:
+C16A adc ptr1
+C16C sta ptr1
+C16E txa
+C16F adc ptr1+1
+C171 sta ptr1+1
+C173 lda (ptr1)
+C175 ldy #$03
+C177 sta (sp),y
+C179 ldx #$00
+C17B lda (sp),y
+C17D asl a
+C17E bcc L2C6B
+C180 inx
+C181 clc
+C182 L2C6B:
+C182 adc #<(_stat_pointers)
+C184 sta ptr1
+C186 txa
+C187 adc #>(_stat_pointers)
+C189 sta ptr1+1
+C18B ldy #$01
+C18D lda (ptr1),y
+C18F tax
+C190 lda (ptr1)
+C192 ldy #$04
+C194 jsr staxysp
+C197 ldy #$07
+C199 lda (sp),y
+C19B tay
+C19C ldx #$00
+C19E lda _hero_equipped,y
+C1A1 asl a
+C1A2 bcc L2C6C
+C1A4 inx
+C1A5 clc
+C1A6 L2C6C:
+C1A6 adc #<(_item_stats)
+C1A8 sta ptr1
+C1AA txa
+C1AB adc #>(_item_stats)
+C1AD sta ptr1+1
+C1AF ldy #$01
+C1B1 lda (ptr1),y
+C1B3 tax
+C1B4 lda (ptr1)
+C1B6 sta ptr1
+C1B8 stx ptr1+1
+C1BA ldx #$00
+C1BC ldy #$06
+C1BE lda (sp),y
+C1C0 asl a
+C1C1 bcc L2C6D
+C1C3 inx
+C1C4 clc
+C1C5 L2C6D:
+C1C5 adc #$05
+C1C7 bcc L25C5
+C1C9 inx
+C1CA L25C5:
+C1CA ina
+C1CB bne L25C6
+C1CD inx
+C1CE L25C6:
+C1CE clc
+C1CF adc ptr1
+C1D1 sta ptr1
+C1D3 txa
+C1D4 adc ptr1+1
+C1D6 sta ptr1+1
+C1D8 lda (ptr1)
+C1DA ldy #$02
+C1DC sta (sp),y
+C1DE ldy #$04
+C1E0 lda (sp),y
+C1E2 iny
+C1E3 ora (sp),y
+C1E5 bne L2C76
+C1E7 ldy #$03
+C1E9 lda (sp),y
+C1EB cmp #$03
+C1ED beq L25CE
+C1EF cmp #$04
+C1F1 beq L2C72
+C1F3 cmp #$07
+C1F5 beq L25D6
+C1F7 cmp #$08
+C1F9 beq L2C73
+C1FB cmp #$0B
+C1FD beq L25DE
+C1FF cmp #$0C
+C201 beq L2C74
+C203 cmp #$0D
+C205 beq L2C75
+C207 bra L25AB
+C209 L25CE:
+C209 dey
+C20A lda (sp),y
+C20C eor #$FF
+C20E sec
+C20F adc _hero_Mine_Speed
+C212 sta _hero_Mine_Speed
+C215 bra L25AB
+C217 L2C72:
+C217 lda #$01
+C219 tay
+C21A sta (sp),y
+C21C bra L25AB
+C21E L25D6:
+C21E dey
+C21F lda (sp),y
+C221 eor #$FF
+C223 sec
+C224 adc _hero_Drill_Speed
+C227 sta _hero_Drill_Speed
+C22A bra L25AB
+C22C L2C73:
+C22C lda #$01
+C22E sta (sp)
+C230 bra L25AB
+C232 L25DE:
+C232 lda #$FF
+C234 sta _hero_Lava_Dmg
+C237 sta _hero_Lava_Dmg+1
+C23A bra L25AB
+C23C L2C74:
+C23C lda #$02
+C23E sta _hero_Dmg_Cost
+C241 bra L25AB
+C243 L2C75:
+C243 lda #$01
+C245 sta _hero_Mine_Cost
+C248 bra L25AB
+C24A L2C76:
+C24A lda (sp),y
+C24C tax
+C24D dey
+C24E lda (sp),y
+C250 jsr pushax
+C253 sta ptr1
+C255 stx ptr1+1
+C257 lda (ptr1)
+C259 sta ptr1
+C25B ldy #$04
+C25D lda (sp),y
+C25F clc
+C260 adc ptr1
+C262 ldy #$00
+C264 jsr staspidx
+C267 L25AB:
+C267 ldy #$06
+C269 lda (sp),y
+C26B ina
+C26C jmp L2C7E
+C26F L25A3:
+C26F ldy #$07
+C271 lda (sp),y
+C273 ina
+C274 jmp L2C7C
+C277 L2C77:
+C277 lda _skill_list+2
+C27A cmp #$01
+C27C bne L25EC
+C27E lda _hero_Mine_Speed
+C281 sec
+C282 sbc #$02
+C284 sta _hero_Mine_Speed
+C287 lda _hero_Drill_Speed
+C28A sec
+C28B sbc #$02
+C28D sta _hero_Drill_Speed
+C290 L25EC:
+C290 ldy #$01
+C292 lda (sp),y
+C294 cmp #$01
+C296 bne L25F3
+C298 sta _hero_Mine_Speed
+C29B L25F3:
+C29B lda (sp)
+C29D cmp #$01
+C29F bne L2C78
+C2A1 sta _hero_Drill_Speed
+C2A4 L2C78:
+C2A4 lda _skill_list+5
+C2A7 cmp #$01
+C2A9 bne L25FB
+C2AB lda #$14
+C2AD clc
+C2AE adc _hero_Crit_Rate
+C2B1 sta _hero_Crit_Rate
+C2B4 L25FB:
+C2B4 lda _hero_Lava_Dmg+1
+C2B7 cmp #$FF
+C2B9 bne L2C7B
+C2BB lda _hero_Lava_Dmg
+C2BE cmp #$FF
+C2C0 beq L2C7A
+C2C2 L2C7B:
+C2C2 lda _hero_Lava_Res
+C2C5 cmp #$19
+C2C7 bne L2C79
+C2C9 lda #$03
+C2CB bra L2C7D
+C2CD L2C79:
+C2CD lda _hero_Lava_Res
+C2D0 cmp #$32
+C2D2 bne L2C7A
+C2D4 lda #$02
+C2D6 L2C7D:
+C2D6 sta _hero_Lava_Dmg
+C2D9 stz _hero_Lava_Dmg+1
+C2DC L2C7A:
+C2DC stz _hero_HP_Max+1
+C2DF lda _hero_HP_Max_temp
+C2E2 sta _hero_HP_Max
+C2E5 lda _hero_HP
+C2E8 ldx _hero_HP+1
+C2EB jsr pushax
+C2EE lda _hero_HP_Max
+C2F1 ldx _hero_HP_Max+1
+C2F4 jsr tosicmp
+C2F7 bmi L260E
+C2F9 beq L260E
+C2FB lda _hero_HP_Max+1
+C2FE sta _hero_HP+1
+C301 lda _hero_HP_Max
+C304 sta _hero_HP
+C307 L260E:
+C307 lda _hero_Batt
+C30A sec
+C30B sbc _hero_Batt_Max
+C30E bcc L2582
+C310 beq L2582
+C312 lda _hero_Batt_Max
+C315 sta _hero_Batt
+C318 L2582:
+C318 jmp incsp8
+C31B CalcXY:
+C31B jsr pushax
+C31E lda _RB2
+C321 ldx _RB2+1
+C324 jsr pushax
+C327 ldy #$02
+C329 lda (sp),y
+C32B tax
+C32C lda #$00
+C32E jsr tosaddax
+C331 sta ptr1
+C333 stx ptr1+1
+C335 ldy #$03
+C337 lda (sp),y
+C339 tax
+C33A dey
+C33B lda (sp),y
+C33D clc
+C33E adc ptr1
+C340 pha
+C341 txa
+C342 adc ptr1+1
+C344 tax
+C345 pla
+C346 jmp incsp4
+C349 CheckForCrystal:
+C349 jsr pusha
+C34C lda (sp)
+C34E jsr pusha0
+C351 lda #$28
+C353 jsr tosmula0
+C356 clc
+C357 adc #<(_crystal_map)
+C359 sta ptr1
+C35B txa
+C35C adc #>(_crystal_map)
+C35E sta ptr1+1
+C360 ldy #$01
+C362 lda (sp),y
+C364 tay
+C365 ldx #$00
+C367 lda (ptr1),y
+C369 cmp #$FF
+C36B beq L2C7F
+C36D lda (sp)
+C36F jsr pusha0
+C372 lda #$28
+C374 jsr tosmula0
+C377 clc
+C378 adc #<(_crystal_map)
+C37A sta ptr1
+C37C txa
+C37D adc #>(_crystal_map)
+C37F sta ptr1+1
+C381 ldy #$01
+C383 lda (sp),y
+C385 tay
+C386 ldx #$00
+C388 lda (ptr1),y
+C38A jsr aslax3
+C38D clc
+C38E adc #<(_crystal_list)
+C390 sta ptr1
+C392 txa
+C393 adc #>(_crystal_list)
+C395 sta ptr1+1
+C397 ldy #$05
+C399 lda (ptr1),y
+C39B tax
+C39C dey
+C39D lda (ptr1),y
+C39F cpx #$00
+C3A1 bne L1E7B
+C3A3 cmp #$01
+C3A5 bne L2C7F
+C3A7 jmp incsp2
+C3AA L1E7B:
+C3AA ldx #$00
+C3AC L2C7F:
+C3AC txa
+C3AD jmp incsp2
+C3B0 CheckForMonster:
+C3B0 jsr pusha
+C3B3 lda (sp)
+C3B5 jsr pusha0
+C3B8 lda #$28
+C3BA jsr tosmula0
+C3BD clc
+C3BE adc #<(_monster_map)
+C3C0 sta ptr1
+C3C2 txa
+C3C3 adc #>(_monster_map)
+C3C5 sta ptr1+1
+C3C7 ldy #$01
+C3C9 lda (sp),y
+C3CB tay
+C3CC ldx #$00
+C3CE lda (ptr1),y
+C3D0 cmp #$FF
+C3D2 beq L2C80
+C3D4 lda (sp)
+C3D6 jsr pusha0
+C3D9 lda #$28
+C3DB jsr tosmula0
+C3DE clc
+C3DF adc #<(_monster_map)
+C3E1 sta ptr1
+C3E3 txa
+C3E4 adc #>(_monster_map)
+C3E6 sta ptr1+1
+C3E8 ldy #$01
+C3EA lda (sp),y
+C3EC tay
+C3ED ldx #$00
+C3EF lda (ptr1),y
+C3F1 jsr mulax6
+C3F4 clc
+C3F5 adc #<(_monster_list)
+C3F7 sta ptr1
+C3F9 txa
+C3FA adc #>(_monster_list)
+C3FC sta ptr1+1
+C3FE ldy #$05
+C400 lda (ptr1),y
+C402 tax
+C403 dey
+C404 lda (ptr1),y
+C406 cpx #$00
+C408 bne L1E6E
+C40A cmp #$01
+C40C bne L2C80
+C40E jmp incsp2
+C411 L1E6E:
+C411 ldx #$00
+C413 L2C80:
+C413 txa
+C414 jmp incsp2
+C417 CheckHP:
+C417 lda _hero_HP
+C41A ldx _hero_HP+1
+C41D jsr pushax
+C420 lda _hero_HP_Max
+C423 ldx _hero_HP_Max+1
+C426 jsr tosicmp
+C429 bmi L2471
+C42B beq L2471
+C42D lda _hero_HP_Max+1
+C430 sta _hero_HP+1
+C433 lda _hero_HP_Max
+C436 sta _hero_HP
+C439 rts
+C43A L2471:
+C43A lda _hero_HP
+C43D cmp #$01
+C43F lda _hero_HP+1
+C442 sbc #$00
+C444 bvc L2478
+C446 eor #$80
+C448 L2478:
+C448 bpl L2470
+C44A jsr _EnableGfxRAM
+C44D stz _hero_HP
+C450 stz _hero_HP+1
+C453 jsr _DrawFrame
+C456 jsr _DrawLegend
+C459 jsr decsp4
+C45C lda #$64
+C45E ldy #$03
+C460 sta (sp),y
+C462 lda #$38
+C464 dey
+C465 sta (sp),y
+C467 dea
+C468 dey
+C469 sta (sp),y
+C46B lda #$0F
+C46D sta (sp)
+C46F lda #$00
+C471 jsr _DrawRect
+C474 jsr decsp5
+C477 lda #<(L2485)
+C479 ldy #$03
+C47B sta (sp),y
+C47D iny
+C47E lda #>(L2485)
+C480 sta (sp),y
+C482 lda #$68
+C484 ldy #$02
+C486 sta (sp),y
+C488 lda #$3C
+C48A dey
+C48B sta (sp),y
+C48D lda #$3F
+C48F sta (sp)
+C491 lda #$00
+C493 jsr _DrawText
+C496 L2C81:
+C496 bra L2C81
+C498 L2470:
+C498 rts
+C499 clrscr:
+C499 jsr pusha
+C49C lda regbank+18
+C49E ldx regbank+19
+C4A0 jsr pushax
+C4A3 lda _RB2+1
+C4A6 sta regbank+18+1
+C4A8 lda _RB2
+C4AB sta regbank+18
+C4AD lda regbank+16
+C4AF ldx regbank+17
+C4B1 jsr pushax
+C4B4 stz regbank+16
+C4B6 stz regbank+16+1
+C4B8 L1CD2:
+C4B8 ldx regbank+16+1
+C4BA cpx #$80
+C4BC bcs L1CD0
+C4BE lda regbank+18
+C4C0 ldx regbank+18+1
+C4C2 sta regsave
+C4C4 stx regsave+1
+C4C6 ina
+C4C7 bne L1CDC
+C4C9 inx
+C4CA L1CDC:
+C4CA sta regbank+18
+C4CC stx regbank+18+1
+C4CE ldy #$04
+C4D0 lda (sp),y
+C4D2 sta (regsave)
+C4D4 lda regbank+16
+C4D6 ldx regbank+16+1
+C4D8 ina
+C4D9 bne L1CDA
+C4DB inx
+C4DC L1CDA:
+C4DC sta regbank+16
+C4DE stx regbank+16+1
+C4E0 bra L1CD2
+C4E2 L1CD0:
+C4E2 ldy #$00
+C4E4 L1CDE:
+C4E4 lda (sp),y
+C4E6 sta regbank+16,y
+C4E9 iny
+C4EA cpy #$04
+C4EC bne L1CDE
+C4EE jmp incsp5
+C4F1 ColorHero:
+C4F1 lda #$09
+C4F3 jsr pusha0
+C4F6 lda #$3C
+C4F8 jsr _CopyTile
+C4FB lda #$09
+C4FD jsr pusha0
+C500 lda _hero_equipped
+C503 jsr _ColorTile
+C506 lda #$09
+C508 jsr pusha0
+C50B lda _hero_equipped+1
+C50E jsr _ColorTile
+C511 lda #$09
+C513 jsr pusha0
+C516 lda _hero_equipped+2
+C519 jsr _ColorTile
+C51C lda #$09
+C51E jsr pusha0
+C521 lda _hero_equipped+3
+C524 jsr _ColorTile
+C527 lda #$09
+C529 jsr pusha0
+C52C lda _hero_equipped+4
+C52F jsr _ColorTile
+C532 lda #$0A
+C534 jsr pusha0
+C537 lda #$3D
+C539 jsr _CopyTile
+C53C lda #$0A
+C53E jsr pusha0
+C541 lda _hero_equipped
+C544 jsr _ColorTile
+C547 lda #$0A
+C549 jsr pusha0
+C54C lda _hero_equipped+1
+C54F jsr _ColorTile
+C552 lda #$0A
+C554 jsr pusha0
+C557 lda _hero_equipped+2
+C55A jsr _ColorTile
+C55D lda #$0A
+C55F jsr pusha0
+C562 lda _hero_equipped+3
+C565 jsr _ColorTile
+C568 lda #$0A
+C56A jsr pusha0
+C56D lda _hero_equipped+4
+C570 jmp _ColorTile
+C573 ColorTile:
+C573 jsr pushax
+C576 lda regbank+18
+C578 ldx regbank+19
+C57A jsr pushax
+C57D ldy #$05
+C57F lda (sp),y
+C581 sta tmp1
+C583 dey
+C584 lda (sp),y
+C586 asl a
+C587 rol tmp1
+C589 clc
+C58A adc #<(_tiles)
+C58C sta ptr1
+C58E lda tmp1
+C590 adc #>(_tiles)
+C592 sta ptr1+1
+C594 ldy #$01
+C596 lda (ptr1),y
+C598 tax
+C599 lda (ptr1)
+C59B sta regbank+18
+C59D stx regbank+18+1
+C59F lda regbank+17
+C5A1 jsr pusha
+C5A4 lda regbank+16
+C5A6 jsr pusha
+C5A9 lda regbank+15
+C5AB jsr pusha
+C5AE lda regbank+13
+C5B0 ldx regbank+14
+C5B2 jsr pushax
+C5B5 lda regbank+12
+C5B7 jsr pusha
+C5BA lda regbank+11
+C5BC jsr pusha
+C5BF jsr decsp1
+C5C2 ldy #$0D
+C5C4 lda (sp),y
+C5C6 tax
+C5C7 dey
+C5C8 lda (sp),y
+C5CA cpx #$00
+C5CC bne L1E33
+C5CE cmp #$09
+C5D0 beq L1E23
+C5D2 cmp #$0A
+C5D4 beq L1E23
+C5D6 cmp #$0B
+C5D8 beq L1E23
+C5DA cmp #$0C
+C5DC beq L1E23
+C5DE cmp #$0D
+C5E0 beq L1E23
+C5E2 cmp #$0E
+C5E4 beq L1E23
+C5E6 cmp #$0F
+C5E8 bne L1E33
+C5EA L1E23:
+C5EA dey
+C5EB lda (sp),y
+C5ED sta tmp1
+C5EF dey
+C5F0 lda (sp),y
+C5F2 asl a
+C5F3 rol tmp1
+C5F5 clc
+C5F6 adc #<(_item_colors)
+C5F8 sta ptr1
+C5FA lda tmp1
+C5FC adc #>(_item_colors)
+C5FE bra L2C90
+C600 L1E33:
+C600 dey
+C601 lda (sp),y
+C603 sta tmp1
+C605 dey
+C606 lda (sp),y
+C608 asl a
+C609 rol tmp1
+C60B clc
+C60C adc #<(_tile_colors)
+C60E sta ptr1
+C610 lda tmp1
+C612 adc #>(_tile_colors)
+C614 L2C90:
+C614 sta ptr1+1
+C616 ldy #$01
+C618 lda (ptr1),y
+C61A tax
+C61B lda (ptr1)
+C61D sta regbank+13
+C61F stx regbank+13+1
+C621 ldy #$01
+C623 lda (regbank+18),y
+C625 sta regbank+17
+C627 lda (regbank+13),y
+C629 asl a
+C62A sta regbank+12
+C62C lda #$02
+C62E clc
+C62F adc regbank+18
+C631 sta regbank+18
+C633 jcc L1E4A
+C638 inc regbank+18+1
+C63A jmp L1E4A
+C63D L1E40:
+C63D lda regbank+18
+C63F ldx regbank+18+1
+C641 sta regsave
+C643 stx regsave+1
+C645 ina
+C646 bne L1E46
+C648 inx
+C649 L1E46:
+C649 sta regbank+18
+C64B stx regbank+18+1
+C64D lda (regsave)
+C64F sta regbank+16
+C651 lda regbank+16
+C653 bne L2C87
+C655 dec regbank+17
+C657 bra L1E4A
+C659 L2C87:
+C659 lda (regbank+18)
+C65B sta regbank+15
+C65D cmp #$41
+C65F bcc L1E64
+C661 lda #$00
+C663 sta (sp)
+C665 L2C83:
+C665 sta regbank+11
+C667 lda regbank+11
+C669 cmp regbank+12
+C66B bcs L2C89
+C66D lda regbank+15
+C66F jsr pusha0
+C672 lda regbank+11
+C674 clc
+C675 adc #$02
+C677 bcc L2C84
+C679 ldx #$01
+C67B clc
+C67C L2C84:
+C67C adc regbank+13
+C67E sta ptr1
+C680 txa
+C681 adc regbank+13+1
+C683 sta ptr1+1
+C685 lda (ptr1)
+C687 jsr tosicmp0
+C68A bne L1E53
+C68C ldx #$00
+C68E lda regbank+11
+C690 clc
+C691 adc #$03
+C693 bcc L2C85
+C695 inx
+C696 clc
+C697 L2C85:
+C697 adc regbank+13
+C699 sta ptr1
+C69B txa
+C69C adc regbank+13+1
+C69E sta ptr1+1
+C6A0 lda (ptr1)
+C6A2 sta (regbank+18)
+C6A4 lda #$01
+C6A6 sta (sp)
+C6A8 bra L2C89
+C6AA L1E53:
+C6AA lda #$02
+C6AC clc
+C6AD adc regbank+11
+C6AF bra L2C83
+C6B1 L2C89:
+C6B1 lda (sp)
+C6B3 jsr booleq
+C6B6 L1E64:
+C6B6 lda regbank+18
+C6B8 ldx regbank+18+1
+C6BA ina
+C6BB bne L1E67
+C6BD inx
+C6BE L1E67:
+C6BE sta regbank+18
+C6C0 stx regbank+18+1
+C6C2 L1E4A:
+C6C2 lda regbank+17
+C6C4 jne L1E40
+C6C9 ldy #$01
+C6CB L1E68:
+C6CB lda (sp),y
+C6CD sta regbank+10,y
+C6D0 iny
+C6D1 cpy #$0A
+C6D3 bne L1E68
+C6D5 ldy #$0E
+C6D7 jmp addysp
+C6DA CopyTile:
+C6DA jsr pushax
+C6DD lda regbank+18
+C6DF ldx regbank+19
+C6E1 jsr pushax
+C6E4 ldy #$05
+C6E6 lda (sp),y
+C6E8 sta tmp1
+C6EA dey
+C6EB lda (sp),y
+C6ED asl a
+C6EE rol tmp1
+C6F0 clc
+C6F1 adc #<(_tiles)
+C6F3 sta ptr1
+C6F5 lda tmp1
+C6F7 adc #>(_tiles)
+C6F9 sta ptr1+1
+C6FB ldy #$01
+C6FD lda (ptr1),y
+C6FF tax
+C700 lda (ptr1)
+C702 sta regbank+18
+C704 stx regbank+18+1
+C706 lda regbank+16
+C708 ldx regbank+17
+C70A jsr pushax
+C70D ldy #$05
+C70F lda (sp),y
+C711 sta tmp1
+C713 dey
+C714 lda (sp),y
+C716 asl a
+C717 rol tmp1
+C719 clc
+C71A adc #<(_tiles)
+C71C sta ptr1
+C71E lda tmp1
+C720 adc #>(_tiles)
+C722 sta ptr1+1
+C724 ldy #$01
+C726 lda (ptr1),y
+C728 tax
+C729 lda (ptr1)
+C72B sta regbank+16
+C72D stx regbank+16+1
+C72F lda regbank+15
+C731 jsr pusha
+C734 ldy #$01
+C736 lda (regbank+16),y
+C738 sta regbank+15
+C73A lda regbank+14
+C73C jsr pusha
+C73F lda regbank+18
+C741 ldx regbank+18+1
+C743 sta regsave
+C745 stx regsave+1
+C747 ina
+C748 bne L1DE2
+C74A inx
+C74B L1DE2:
+C74B sta regbank+18
+C74D stx regbank+18+1
+C74F lda regsave
+C751 ldx regsave+1
+C753 jsr pushax
+C756 lda regbank+16
+C758 ldx regbank+16+1
+C75A sta regsave
+C75C stx regsave+1
+C75E ina
+C75F bne L1DE4
+C761 inx
+C762 L1DE4:
+C762 sta regbank+16
+C764 stx regbank+16+1
+C766 ldy #$00
+C768 lda (regsave)
+C76A jsr staspidx
+C76D bra L1DF3
+C76F L1DE9:
+C76F lda regbank+16
+C771 ldx regbank+16+1
+C773 sta regsave
+C775 stx regsave+1
+C777 ina
+C778 bne L1DEF
+C77A inx
+C77B L1DEF:
+C77B sta regbank+16
+C77D stx regbank+16+1
+C77F lda (regsave)
+C781 sta regbank+14
+C783 lda regbank+18
+C785 ldx regbank+18+1
+C787 sta regsave
+C789 stx regsave+1
+C78B ina
+C78C bne L1DF1
+C78E inx
+C78F L1DF1:
+C78F sta regbank+18
+C791 stx regbank+18+1
+C793 lda regbank+14
+C795 sta (regsave)
+C797 lda regbank+14
+C799 bne L1DF3
+C79B dec regbank+15
+C79D bra L1DF6
+C79F L1DF3:
+C79F lda regbank+18
+C7A1 ldx regbank+18+1
+C7A3 sta regsave
+C7A5 stx regsave+1
+C7A7 ina
+C7A8 bne L1DF8
+C7AA inx
+C7AB L1DF8:
+C7AB sta regbank+18
+C7AD stx regbank+18+1
+C7AF lda regsave
+C7B1 ldx regsave+1
+C7B3 jsr pushax
+C7B6 lda regbank+16
+C7B8 ldx regbank+16+1
+C7BA sta regsave
+C7BC stx regsave+1
+C7BE ina
+C7BF bne L1DFA
+C7C1 inx
+C7C2 L1DFA:
+C7C2 sta regbank+16
+C7C4 stx regbank+16+1
+C7C6 ldy #$00
+C7C8 lda (regsave)
+C7CA jsr staspidx
+C7CD L1DF6:
+C7CD lda regbank+15
+C7CF bne L1DE9
+C7D1 tay
+C7D2 L1DFB:
+C7D2 lda (sp),y
+C7D4 sta regbank+14,y
+C7D7 iny
+C7D8 cpy #$06
+C7DA bne L1DFB
+C7DC ldy #$0A
+C7DE jmp addysp
+C7E1 DrawBar:
+C7E1 jsr pusha
+C7E4 lda regbank+19
+C7E6 jsr pusha
+C7E9 ldy #$04
+C7EB lda (sp),y
+C7ED jsr pusha0
+C7F0 lda #$50
+C7F2 jsr tosumula0
+C7F5 jsr pushax
+C7F8 ldy #$05
+C7FA lda (sp),y
+C7FC jsr tosudiva0
+C7FF sta regbank+19
+C801 jsr decsp4
+C804 ldy #$0A
+C806 lda (sp),y
+C808 ldy #$03
+C80A sta (sp),y
+C80C ldy #$09
+C80E lda (sp),y
+C810 ldy #$02
+C812 sta (sp),y
+C814 lda regbank+19
+C816 dey
+C817 sta (sp),y
+C819 lda #$06
+C81B sta (sp)
+C81D tay
+C81E lda (sp),y
+C820 jsr _DrawRect
+C823 jsr decsp4
+C826 ldy #$0A
+C828 lda (sp),y
+C82A clc
+C82B adc regbank+19
+C82D ldy #$03
+C82F sta (sp),y
+C831 ldy #$09
+C833 lda (sp),y
+C835 ldy #$02
+C837 sta (sp),y
+C839 lda #$50
+C83B sec
+C83C sbc regbank+19
+C83E dey
+C83F sta (sp),y
+C841 lda #$06
+C843 sta (sp)
+C845 ldy #$05
+C847 lda (sp),y
+C849 jsr _DrawRect
+C84C ldx #$00
+C84E txa
+C84F pha
+C850 lda (sp)
+C852 sta regbank+19
+C854 pla
+C855 jmp incsp7
+C858 DrawBorder:
+C858 jsr pusha
+C85B lda regbank+18
+C85D ldx regbank+19
+C85F jsr pushax
+C862 ldy #$07
+C864 lda (sp),y
+C866 jsr pusha0
+C869 ldy #$08
+C86B lda (sp),y
+C86D jsr _CalcXY
+C870 sta regbank+18
+C872 stx regbank+18+1
+C874 lda regbank+16
+C876 ldx regbank+17
+C878 jsr pushax
+C87B ldy #$07
+C87D lda (sp),y
+C87F tax
+C880 dey
+C881 lda (sp),y
+C883 sec
+C884 sbc #$01
+C886 bcs L1EE5
+C888 dex
+C889 L1EE5:
+C889 jsr staxysp
+C88C ldy #$05
+C88E lda (sp),y
+C890 dea
+C891 sta (sp),y
+C893 stz regbank+16
+C895 stz regbank+16+1
+C897 L1EE7:
+C897 lda regbank+16
+C899 ldy #$06
+C89B cmp (sp),y
+C89D lda regbank+16+1
+C89F iny
+C8A0 sbc (sp),y
+C8A2 bcs L1EE8
+C8A4 lda regbank+18
+C8A6 ldx regbank+18+1
+C8A8 sta regsave
+C8AA stx regsave+1
+C8AC ina
+C8AD bne L1EF1
+C8AF inx
+C8B0 L1EF1:
+C8B0 sta regbank+18
+C8B2 stx regbank+18+1
+C8B4 ldy #$04
+C8B6 lda (sp),y
+C8B8 sta (regsave)
+C8BA lda regbank+16
+C8BC ldx regbank+16+1
+C8BE ina
+C8BF bne L1EEF
+C8C1 inx
+C8C2 L1EEF:
+C8C2 sta regbank+16
+C8C4 stx regbank+16+1
+C8C6 bra L1EE7
+C8C8 L1EE8:
+C8C8 stz regbank+16
+C8CA stz regbank+16+1
+C8CC L1EF3:
+C8CC lda regbank+16
+C8CE ldy #$05
+C8D0 cmp (sp),y
+C8D2 lda regbank+16+1
+C8D4 sbc #$00
+C8D6 bcs L1EF4
+C8D8 dey
+C8D9 lda (sp),y
+C8DB sta (regbank+18)
+C8DD lda #$00
+C8DF clc
+C8E0 adc regbank+18
+C8E2 sta regbank+18
+C8E4 lda #$01
+C8E6 adc regbank+18+1
+C8E8 sta regbank+18+1
+C8EA lda regbank+16
+C8EC ldx regbank+16+1
+C8EE ina
+C8EF bne L1EFB
+C8F1 inx
+C8F2 L1EFB:
+C8F2 sta regbank+16
+C8F4 stx regbank+16+1
+C8F6 bra L1EF3
+C8F8 L1EF4:
+C8F8 stz regbank+16
+C8FA stz regbank+16+1
+C8FC L1F00:
+C8FC lda regbank+16
+C8FE ldy #$06
+C900 cmp (sp),y
+C902 lda regbank+16+1
+C904 iny
+C905 sbc (sp),y
+C907 bcs L1F01
+C909 lda regbank+18
+C90B ldx regbank+18+1
+C90D sta regsave
+C90F stx regsave+1
+C911 sec
+C912 sbc #$01
+C914 bcs L1F0A
+C916 dex
+C917 L1F0A:
+C917 sta regbank+18
+C919 stx regbank+18+1
+C91B ldy #$04
+C91D lda (sp),y
+C91F sta (regsave)
+C921 lda regbank+16
+C923 ldx regbank+16+1
+C925 ina
+C926 bne L1F08
+C928 inx
+C929 L1F08:
+C929 sta regbank+16
+C92B stx regbank+16+1
+C92D bra L1F00
+C92F L1F01:
+C92F stz regbank+16
+C931 stz regbank+16+1
+C933 L1F0C:
+C933 lda regbank+16
+C935 ldy #$05
+C937 cmp (sp),y
+C939 lda regbank+16+1
+C93B sbc #$00
+C93D bcs L1EE0
+C93F dey
+C940 lda (sp),y
+C942 sta (regbank+18)
+C944 lda regbank+18
+C946 sec
+C947 sbc #$00
+C949 sta regbank+18
+C94B lda regbank+18+1
+C94D sbc #$01
+C94F sta regbank+18+1
+C951 lda regbank+16
+C953 ldx regbank+16+1
+C955 ina
+C956 bne L1F14
+C958 inx
+C959 L1F14:
+C959 sta regbank+16
+C95B stx regbank+16+1
+C95D bra L1F0C
+C95F L1EE0:
+C95F ldy #$00
+C961 L1F19:
+C961 lda (sp),y
+C963 sta regbank+16,y
+C966 iny
+C967 cpy #$04
+C969 bne L1F19
+C96B ldy #$0A
+C96D jmp addysp
+C970 DrawFrame:
+C970 jsr decsp2
+C973 lda #$00
+C975 ldy #$01
+C977 L2CDC:
+C977 sta (sp),y
+C979 cmp #$04
+C97B jcs L2CCA
+C980 lda #$00
+C982 L2CDB:
+C982 sta (sp)
+C984 cmp #$05
+C986 jcs L20D2
+C98B ldy #$01
+C98D ldx #$00
+C98F lda (sp),y
+C991 clc
+C992 adc _display_Y
+C995 bcc L2CA7
+C997 inx
+C998 L2CA7:
+C998 jsr pushax
+C99B lda #$28
+C99D jsr tosmula0
+C9A0 clc
+C9A1 adc #<(_map_data)
+C9A3 sta ptr1
+C9A5 txa
+C9A6 adc #>(_map_data)
+C9A8 sta ptr1+1
+C9AA ldx #$00
+C9AC lda (sp)
+C9AE clc
+C9AF adc _display_X
+C9B2 bcc L2CBC
+C9B4 inx
+C9B5 clc
+C9B6 L2CBC:
+C9B6 adc ptr1
+C9B8 sta ptr1
+C9BA txa
+C9BB adc ptr1+1
+C9BD sta ptr1+1
+C9BF lda (ptr1)
+C9C1 beq L20E6
+C9C3 cmp #$01
+C9C5 beq L20EC
+C9C7 cmp #$02
+C9C9 beq L20F2
+C9CB cmp #$03
+C9CD beq L20F8
+C9CF cmp #$04
+C9D1 beq L20FE
+C9D3 cmp #$05
+C9D5 beq L2104
+C9D7 cmp #$06
+C9D9 beq L210A
+C9DB bra L20E4
+C9DD L20E6:
+C9DD jsr decsp4
+C9E0 lda #$00
+C9E2 ldy #$02
+C9E4 sta (sp),y
+C9E6 iny
+C9E7 bra L2D35
+C9E9 L20EC:
+C9E9 jsr decsp4
+C9EC lda #$01
+C9EE bra L2D3C
+C9F0 L20F2:
+C9F0 jsr decsp4
+C9F3 lda #$02
+C9F5 bra L2D3C
+C9F7 L20F8:
+C9F7 jsr decsp4
+C9FA lda #$03
+C9FC bra L2D3C
+C9FE L20FE:
+C9FE jsr decsp4
+CA01 lda #$04
+CA03 bra L2D3C
+CA05 L2104:
+CA05 jsr decsp4
+CA08 lda #$05
+CA0A bra L2D3C
+CA0C L210A:
+CA0C jsr decsp4
+CA0F lda #$45
+CA11 L2D3C:
+CA11 ldy #$02
+CA13 sta (sp),y
+CA15 iny
+CA16 lda #$00
+CA18 L2D35:
+CA18 sta (sp),y
+CA1A iny
+CA1B tax
+CA1C lda (sp),y
+CA1E jsr shlax4
+CA21 stx tmp1
+CA23 asl a
+CA24 rol tmp1
+CA26 sta (sp)
+CA28 ldy #$01
+CA2A lda tmp1
+CA2C sta (sp),y
+CA2E ldy #$05
+CA30 ldx #$00
+CA32 lda (sp),y
+CA34 jsr shlax4
+CA37 stx tmp1
+CA39 asl a
+CA3A rol tmp1
+CA3C ldx tmp1
+CA3E jsr _DrawTile
+CA41 L20E4:
+CA41 ldy #$01
+CA43 ldx #$00
+CA45 lda (sp),y
+CA47 clc
+CA48 adc _display_Y
+CA4B bcc L2CA9
+CA4D inx
+CA4E L2CA9:
+CA4E jsr pushax
+CA51 lda #$28
+CA53 jsr tosmula0
+CA56 clc
+CA57 adc #<(_monster_map)
+CA59 sta ptr1
+CA5B txa
+CA5C adc #>(_monster_map)
+CA5E sta ptr1+1
+CA60 ldx #$00
+CA62 lda (sp)
+CA64 clc
+CA65 adc _display_X
+CA68 bcc L2CBD
+CA6A inx
+CA6B clc
+CA6C L2CBD:
+CA6C adc ptr1
+CA6E sta ptr1
+CA70 txa
+CA71 adc ptr1+1
+CA73 sta ptr1+1
+CA75 lda (ptr1)
+CA77 cmp #$FF
+CA79 jeq L211D
+CA7E ldy #$01
+CA80 ldx #$00
+CA82 lda (sp),y
+CA84 clc
+CA85 adc _display_Y
+CA88 bcc L2CAB
+CA8A inx
+CA8B L2CAB:
+CA8B jsr pushax
+CA8E lda #$28
+CA90 jsr tosmula0
+CA93 clc
+CA94 adc #<(_monster_map)
+CA96 sta ptr1
+CA98 txa
+CA99 adc #>(_monster_map)
+CA9B sta ptr1+1
+CA9D ldx #$00
+CA9F lda (sp)
+CAA1 clc
+CAA2 adc _display_X
+CAA5 bcc L2CBE
+CAA7 inx
+CAA8 clc
+CAA9 L2CBE:
+CAA9 adc ptr1
+CAAB sta ptr1
+CAAD txa
+CAAE adc ptr1+1
+CAB0 sta ptr1+1
+CAB2 ldx #$00
+CAB4 lda (ptr1)
+CAB6 jsr mulax6
+CAB9 clc
+CABA adc #<(_monster_list)
+CABC sta ptr1
+CABE txa
+CABF adc #>(_monster_list)
+CAC1 sta ptr1+1
+CAC3 ldy #$05
+CAC5 lda (ptr1),y
+CAC7 tax
+CAC8 dey
+CAC9 lda (ptr1),y
+CACB cpx #$00
+CACD bne L2113
+CACF cmp #$01
+CAD1 bne L2113
+CAD3 jsr decsp4
+CAD6 lda #$3E
+CAD8 ldy #$02
+CADA sta (sp),y
+CADC iny
+CADD txa
+CADE sta (sp),y
+CAE0 iny
+CAE1 bra L2D2E
+CAE3 L2113:
+CAE3 jsr decsp4
+CAE6 lda #$3F
+CAE8 ldy #$02
+CAEA sta (sp),y
+CAEC iny
+CAED lda #$00
+CAEF sta (sp),y
+CAF1 iny
+CAF2 tax
+CAF3 L2D2E:
+CAF3 lda (sp),y
+CAF5 jsr shlax4
+CAF8 stx tmp1
+CAFA asl a
+CAFB rol tmp1
+CAFD sta (sp)
+CAFF ldy #$01
+CB01 lda tmp1
+CB03 sta (sp),y
+CB05 ldy #$05
+CB07 ldx #$00
+CB09 lda (sp),y
+CB0B jsr shlax4
+CB0E stx tmp1
+CB10 asl a
+CB11 rol tmp1
+CB13 ldx tmp1
+CB15 jsr _DrawTile
+CB18 L211D:
+CB18 ldy #$01
+CB1A ldx #$00
+CB1C lda (sp),y
+CB1E clc
+CB1F adc _display_Y
+CB22 bcc L2CAD
+CB24 inx
+CB25 L2CAD:
+CB25 jsr pushax
+CB28 lda #$28
+CB2A jsr tosmula0
+CB2D clc
+CB2E adc #<(_crystal_map)
+CB30 sta ptr1
+CB32 txa
+CB33 adc #>(_crystal_map)
+CB35 sta ptr1+1
+CB37 ldx #$00
+CB39 lda (sp)
+CB3B clc
+CB3C adc _display_X
+CB3F bcc L2CBF
+CB41 inx
+CB42 clc
+CB43 L2CBF:
+CB43 adc ptr1
+CB45 sta ptr1
+CB47 txa
+CB48 adc ptr1+1
+CB4A sta ptr1+1
+CB4C lda (ptr1)
+CB4E cmp #$FF
+CB50 jeq L2CC9
+CB55 ldy #$01
+CB57 ldx #$00
+CB59 lda (sp),y
+CB5B clc
+CB5C adc _display_Y
+CB5F bcc L2CAF
+CB61 inx
+CB62 L2CAF:
+CB62 jsr pushax
+CB65 lda #$28
+CB67 jsr tosmula0
+CB6A clc
+CB6B adc #<(_crystal_map)
+CB6D sta ptr1
+CB6F txa
+CB70 adc #>(_crystal_map)
+CB72 sta ptr1+1
+CB74 ldx #$00
+CB76 lda (sp)
+CB78 clc
+CB79 adc _display_X
+CB7C bcc L2CC0
+CB7E inx
+CB7F clc
+CB80 L2CC0:
+CB80 adc ptr1
+CB82 sta ptr1
+CB84 txa
+CB85 adc ptr1+1
+CB87 sta ptr1+1
+CB89 ldx #$00
+CB8B lda (ptr1)
+CB8D jsr aslax3
+CB90 clc
+CB91 adc #<(_crystal_list)
+CB93 sta ptr1
+CB95 txa
+CB96 adc #>(_crystal_list)
+CB98 sta ptr1+1
+CB9A ldy #$05
+CB9C lda (ptr1),y
+CB9E tax
+CB9F dey
+CBA0 lda (ptr1),y
+CBA2 cpx #$00
+CBA4 jne L2126
+CBA9 cmp #$01
+CBAB jne L2126
+CBB0 tay
+CBB1 lda (sp),y
+CBB3 clc
+CBB4 adc _display_Y
+CBB7 bcc L2CB1
+CBB9 inx
+CBBA L2CB1:
+CBBA jsr pushax
+CBBD lda #$28
+CBBF jsr tosmula0
+CBC2 clc
+CBC3 adc #<(_crystal_map)
+CBC5 sta ptr1
+CBC7 txa
+CBC8 adc #>(_crystal_map)
+CBCA sta ptr1+1
+CBCC ldx #$00
+CBCE lda (sp)
+CBD0 clc
+CBD1 adc _display_X
+CBD4 bcc L2CC1
+CBD6 inx
+CBD7 clc
+CBD8 L2CC1:
+CBD8 adc ptr1
+CBDA sta ptr1
+CBDC txa
+CBDD adc ptr1+1
+CBDF sta ptr1+1
+CBE1 ldx #$00
+CBE3 lda (ptr1)
+CBE5 jsr aslax3
+CBE8 clc
+CBE9 adc #<(_crystal_list)
+CBEB sta ptr1
+CBED txa
+CBEE adc #>(_crystal_list)
+CBF0 sta ptr1+1
+CBF2 ldy #$07
+CBF4 lda (ptr1),y
+CBF6 tax
+CBF7 dey
+CBF8 lda (ptr1),y
+CBFA cpx #$00
+CBFC bne L212C
+CBFE cmp #$00
+CC00 bne L212C
+CC02 jsr decsp4
+CC05 tya
+CC06 ldy #$02
+CC08 sta (sp),y
+CC0A iny
+CC0B txa
+CC0C sta (sp),y
+CC0E iny
+CC0F jmp L2D2F
+CC12 L212C:
+CC12 ldy #$01
+CC14 ldx #$00
+CC16 lda (sp),y
+CC18 clc
+CC19 adc _display_Y
+CC1C bcc L2CB3
+CC1E inx
+CC1F L2CB3:
+CC1F jsr pushax
+CC22 lda #$28
+CC24 jsr tosmula0
+CC27 clc
+CC28 adc #<(_crystal_map)
+CC2A sta ptr1
+CC2C txa
+CC2D adc #>(_crystal_map)
+CC2F sta ptr1+1
+CC31 ldx #$00
+CC33 lda (sp)
+CC35 clc
+CC36 adc _display_X
+CC39 bcc L2CC2
+CC3B inx
+CC3C clc
+CC3D L2CC2:
+CC3D adc ptr1
+CC3F sta ptr1
+CC41 txa
+CC42 adc ptr1+1
+CC44 sta ptr1+1
+CC46 ldx #$00
+CC48 lda (ptr1)
+CC4A jsr aslax3
+CC4D clc
+CC4E adc #<(_crystal_list)
+CC50 sta ptr1
+CC52 txa
+CC53 adc #>(_crystal_list)
+CC55 sta ptr1+1
+CC57 ldy #$07
+CC59 lda (ptr1),y
+CC5B tax
+CC5C dey
+CC5D lda (ptr1),y
+CC5F cpx #$00
+CC61 bne L2137
+CC63 cmp #$01
+CC65 bne L2137
+CC67 jsr decsp4
+CC6A lda #$08
+CC6C ldy #$02
+CC6E sta (sp),y
+CC70 iny
+CC71 txa
+CC72 sta (sp),y
+CC74 iny
+CC75 bra L2D2F
+CC77 L2137:
+CC77 ldy #$01
+CC79 ldx #$00
+CC7B lda (sp),y
+CC7D clc
+CC7E adc _display_Y
+CC81 bcc L2CB5
+CC83 inx
+CC84 L2CB5:
+CC84 jsr pushax
+CC87 lda #$28
+CC89 jsr tosmula0
+CC8C clc
+CC8D adc #<(_crystal_map)
+CC8F sta ptr1
+CC91 txa
+CC92 adc #>(_crystal_map)
+CC94 sta ptr1+1
+CC96 ldx #$00
+CC98 lda (sp)
+CC9A clc
+CC9B adc _display_X
+CC9E bcc L2CC3
+CCA0 inx
+CCA1 clc
+CCA2 L2CC3:
+CCA2 adc ptr1
+CCA4 sta ptr1
+CCA6 txa
+CCA7 adc ptr1+1
+CCA9 sta ptr1+1
+CCAB ldx #$00
+CCAD lda (ptr1)
+CCAF jsr aslax3
+CCB2 clc
+CCB3 adc #<(_crystal_list)
+CCB5 sta ptr1
+CCB7 txa
+CCB8 adc #>(_crystal_list)
+CCBA sta ptr1+1
+CCBC ldy #$07
+CCBE lda (ptr1),y
+CCC0 tax
+CCC1 dey
+CCC2 lda (ptr1),y
+CCC4 cpx #$00
+CCC6 bne L2CC9
+CCC8 cmp #$02
+CCCA bne L2CC9
+CCCC jsr decsp4
+CCCF lda #$07
+CCD1 ldy #$02
+CCD3 sta (sp),y
+CCD5 iny
+CCD6 txa
+CCD7 sta (sp),y
+CCD9 iny
+CCDA bra L2D2F
+CCDC L2126:
+CCDC jsr decsp4
+CCDF lda #$41
+CCE1 ldy #$02
+CCE3 sta (sp),y
+CCE5 iny
+CCE6 lda #$00
+CCE8 sta (sp),y
+CCEA iny
+CCEB tax
+CCEC L2D2F:
+CCEC lda (sp),y
+CCEE jsr shlax4
+CCF1 stx tmp1
+CCF3 asl a
+CCF4 rol tmp1
+CCF6 sta (sp)
+CCF8 ldy #$01
+CCFA lda tmp1
+CCFC sta (sp),y
+CCFE ldy #$05
+CD00 ldx #$00
+CD02 lda (sp),y
+CD04 jsr shlax4
+CD07 stx tmp1
+CD09 asl a
+CD0A rol tmp1
+CD0C ldx tmp1
+CD0E jsr _DrawTile
+CD11 L2CC9:
+CD11 lda (sp)
+CD13 ina
+CD14 jmp L2CDB
+CD17 L20D2:
+CD17 ldy #$01
+CD19 lda (sp),y
+CD1B ina
+CD1C jmp L2CDC
+CD1F L2CCA:
+CD1F lda _hero_facing
+CD22 cmp #$03
+CD24 bne L2CCB
+CD26 jsr decsp4
+CD29 lda #$09
+CD2B bra L2D3A
+CD2D L2CCB:
+CD2D lda _hero_facing
+CD30 cmp #$04
+CD32 bne L2CCC
+CD34 jsr decsp4
+CD37 lda #$0A
+CD39 L2D3A:
+CD39 iny
+CD3A sta (sp),y
+CD3C iny
+CD3D lda #$00
+CD3F sta (sp),y
+CD41 tax
+CD42 lda _hero_X
+CD45 jsr shlax4
+CD48 stx tmp1
+CD4A asl a
+CD4B rol tmp1
+CD4D sta (sp)
+CD4F ldy #$01
+CD51 lda tmp1
+CD53 sta (sp),y
+CD55 ldx #$00
+CD57 lda _hero_Y
+CD5A jsr shlax4
+CD5D stx tmp1
+CD5F asl a
+CD60 rol tmp1
+CD62 ldx tmp1
+CD64 jsr _DrawTile
+CD67 L2CCC:
+CD67 lda _hero_target_direction
+CD6A cmp #$01
+CD6C bne L2CCF
+CD6E lda _hero_Y
+CD71 beq L2CCF
+CD73 jsr decsp4
+CD76 lda #$42
+CD78 ldy #$02
+CD7A sta (sp),y
+CD7C iny
+CD7D lda #$00
+CD7F sta (sp),y
+CD81 tax
+CD82 lda _hero_X
+CD85 jsr shlax4
+CD88 stx tmp1
+CD8A asl a
+CD8B rol tmp1
+CD8D sta (sp)
+CD8F ldy #$01
+CD91 lda tmp1
+CD93 sta (sp),y
+CD95 ldx #$00
+CD97 lda _hero_Y
+CD9A sec
+CD9B sbc #$01
+CD9D jcs L2CF2
+CDA2 dex
+CDA3 jmp L2CF2
+CDA6 L2CCF:
+CDA6 lda _hero_target_direction
+CDA9 cmp #$02
+CDAB bne L2CD2
+CDAD lda _hero_Y
+CDB0 cmp #$03
+CDB2 beq L2CD2
+CDB4 jsr decsp4
+CDB7 lda #$42
+CDB9 ldy #$02
+CDBB sta (sp),y
+CDBD iny
+CDBE lda #$00
+CDC0 sta (sp),y
+CDC2 tax
+CDC3 lda _hero_X
+CDC6 jsr shlax4
+CDC9 stx tmp1
+CDCB asl a
+CDCC rol tmp1
+CDCE sta (sp)
+CDD0 ldy #$01
+CDD2 lda tmp1
+CDD4 sta (sp),y
+CDD6 ldx #$00
+CDD8 lda _hero_Y
+CDDB ina
+CDDC bne L2CF2
+CDDE inx
+CDDF bra L2CF2
+CDE1 L2CD2:
+CDE1 lda _hero_target_direction
+CDE4 cmp #$03
+CDE6 bne L2CD5
+CDE8 lda _hero_X
+CDEB beq L2CD5
+CDED jsr decsp4
+CDF0 lda #$42
+CDF2 ldy #$02
+CDF4 sta (sp),y
+CDF6 iny
+CDF7 lda #$00
+CDF9 sta (sp),y
+CDFB tax
+CDFC lda _hero_X
+CDFF sec
+CE00 sbc #$01
+CE02 bcs L218F
+CE04 dex
+CE05 bra L218F
+CE07 L2CD5:
+CE07 lda _hero_target_direction
+CE0A cmp #$04
+CE0C bne L20CF
+CE0E lda _hero_X
+CE11 cmp #$04
+CE13 jeq incsp2
+CE18 jsr decsp4
+CE1B lda #$42
+CE1D ldy #$02
+CE1F sta (sp),y
+CE21 iny
+CE22 lda #$00
+CE24 sta (sp),y
+CE26 tax
+CE27 lda _hero_X
+CE2A ina
+CE2B bne L218F
+CE2D inx
+CE2E L218F:
+CE2E jsr shlax4
+CE31 stx tmp1
+CE33 asl a
+CE34 rol tmp1
+CE36 sta (sp)
+CE38 ldy #$01
+CE3A lda tmp1
+CE3C sta (sp),y
+CE3E ldx #$00
+CE40 lda _hero_Y
+CE43 L2CF2:
+CE43 jsr shlax4
+CE46 stx tmp1
+CE48 asl a
+CE49 rol tmp1
+CE4B ldx tmp1
+CE4D jsr _DrawTile
+CE50 L20CF:
+CE50 jmp incsp2
+CE53 DrawItem:
+FCE0 L21EF:
+FCE5 L21F6:
+CE53 jsr pusha
+CE56 jsr decsp5
+CE59 ldy #$04
+CE5B L21F5:
+CE5B lda L21EF,y
+CE5E sta (sp),y
+CE60 dey
+CE61 bpl L21F5
+CE63 jsr decsp5
+CE66 ldy #$04
+CE68 L21FC:
+CE68 lda L21F6,y
+CE6B sta (sp),y
+CE6D dey
+CE6E bpl L21FC
+CE70 jsr decsp1
+CE73 ldy #$0D
+CE75 ldx #$00
+CE77 lda (sp),y
+CE79 asl a
+CE7A bcc L2D3E
+CE7C inx
+CE7D clc
+CE7E L2D3E:
+CE7E adc #<(_item_stats)
+CE80 sta ptr1
+CE82 txa
+CE83 adc #>(_item_stats)
+CE85 sta ptr1+1
+CE87 ldy #$01
+CE89 lda (ptr1),y
+CE8B tax
+CE8C lda (ptr1)
+CE8E sta ptr1
+CE90 stx ptr1+1
+CE92 lda (ptr1)
+CE94 sta (sp)
+CE96 lda sp
+CE98 ldx sp+1
+CE9A clc
+CE9B adc #$06
+CE9D bcc L2D40
+CE9F inx
+CEA0 clc
+CEA1 L2D40:
+CEA1 adc (sp)
+CEA3 bcc L2205
+CEA5 inx
+CEA6 L2205:
+CEA6 sta ptr1
+CEA8 stx ptr1+1
+CEAA lda (ptr1)
+CEAC jsr pusha0
+CEAF lda sp
+CEB1 ldx sp+1
+CEB3 clc
+CEB4 adc #$03
+CEB6 bcc L2208
+CEB8 inx
+CEB9 L2208:
+CEB9 ldy #$02
+CEBB clc
+CEBC adc (sp),y
+CEBE bcc L2209
+CEC0 inx
+CEC1 L2209:
+CEC1 sta ptr1
+CEC3 stx ptr1+1
+CEC5 lda (ptr1)
+CEC7 ldx #$00
+CEC9 jsr _CopyTile
+CECC lda sp
+CECE ldx sp+1
+CED0 clc
+CED1 adc #$06
+CED3 bcc L220D
+CED5 inx
+CED6 L220D:
+CED6 clc
+CED7 adc (sp)
+CED9 bcc L220E
+CEDB inx
+CEDC L220E:
+CEDC sta ptr1
+CEDE stx ptr1+1
+CEE0 lda (ptr1)
+CEE2 jsr pusha0
+CEE5 ldy #$0F
+CEE7 lda (sp),y
+CEE9 jsr _ColorTile
+CEEC jsr decsp4
+CEEF lda sp
+CEF1 ldx sp+1
+CEF3 clc
+CEF4 adc #$0A
+CEF6 bcc L2213
+CEF8 inx
+CEF9 L2213:
+CEF9 ldy #$04
+CEFB clc
+CEFC adc (sp),y
+CEFE bcc L2214
+CF00 inx
+CF01 L2214:
+CF01 sta ptr1
+CF03 stx ptr1+1
+CF05 lda (ptr1)
+CF07 ldy #$02
+CF09 sta (sp),y
+CF0B iny
+CF0C lda #$00
+CF0E sta (sp),y
+CF10 ldy #$10
+CF12 lda (sp),y
+CF14 sta (sp)
+CF16 ldy #$01
+CF18 lda #$00
+CF1A sta (sp),y
+CF1C ldy #$0F
+CF1E lda (sp),y
+CF20 ldx #$00
+CF22 jsr _DrawTile
+CF25 ldy #$0E
+CF27 jmp addysp
+CF2A DrawItemStats:
+CF2A jsr pusha
+CF2D ldy #$01
+CF2F lda (sp),y
+CF31 clc
+CF32 adc #$0F
+CF34 jsr pusha
+CF37 jsr decsp3
+CF3A ldy #$07
+CF3C ldx #$00
+CF3E lda (sp),y
+CF40 asl a
+CF41 bcc L2D4C
+CF43 inx
+CF44 clc
+CF45 L2D4C:
+CF45 adc #<(_item_stats)
+CF47 sta ptr1
+CF49 txa
+CF4A adc #>(_item_stats)
+CF4C sta ptr1+1
+CF4E ldy #$01
+CF50 lda (ptr1),y
+CF52 tax
+CF53 lda (ptr1)
+CF55 sta ptr1
+CF57 stx ptr1+1
+CF59 lda (ptr1)
+CF5B cmp #$0E
+CF5D bne L227E
+CF5F jsr decsp6
+CF62 ldy #$0D
+CF64 ldx #$00
+CF66 lda (sp),y
+CF68 asl a
+CF69 bcc L2D4D
+CF6B inx
+CF6C clc
+CF6D L2D4D:
+CF6D adc #<(_item_stats)
+CF6F sta ptr1
+CF71 txa
+CF72 adc #>(_item_stats)
+CF74 sta ptr1+1
+CF76 ldy #$01
+CF78 lda (ptr1),y
+CF7A tax
+CF7B lda (ptr1)
+CF7D sta ptr1
+CF7F stx ptr1+1
+CF81 ldy #$03
+CF83 lda (ptr1),y
+CF85 stz tmp1
+CF87 asl a
+CF88 rol tmp1
+CF8A clc
+CF8B adc #<(_res_descriptions)
+CF8D sta ptr1
+CF8F lda tmp1
+CF91 adc #>(_res_descriptions)
+CF93 sta ptr1+1
+CF95 ldy #$01
+CF97 lda (ptr1),y
+CF99 tax
+CF9A lda (ptr1)
+CF9C ldy #$04
+CF9E sta (sp),y
+CFA0 iny
+CFA1 txa
+CFA2 sta (sp),y
+CFA4 ldy #$0C
+CFA6 lda (sp),y
+CFA8 clc
+CFA9 adc #$02
+CFAB ldy #$03
+CFAD sta (sp),y
+CFAF ldy #$0B
+CFB1 lda (sp),y
+CFB3 clc
+CFB4 adc #$02
+CFB6 ldy #$02
+CFB8 sta (sp),y
+CFBA lda #$0A
+CFBC dey
+CFBD sta (sp),y
+CFBF lda #$3F
+CFC1 sta (sp)
+CFC3 ldy #$0A
+CFC5 lda (sp),y
+CFC7 jsr _DrawTextNL
+CFCA jmp incsp8
+CFCD L227E:
+CFCD jsr decsp2
+CFD0 ldy #$09
+CFD2 lda (sp),y
+CFD4 ldy #$01
+CFD6 sta (sp),y
+CFD8 ldy #$08
+CFDA lda (sp),y
+CFDC sta (sp)
+CFDE dey
+CFDF lda (sp),y
+CFE1 jsr _DrawItem
+CFE4 jsr decsp5
+CFE7 ldy #$0C
+CFE9 ldx #$00
+CFEB lda (sp),y
+CFED asl a
+CFEE bcc L2D4E
+CFF0 inx
+CFF1 clc
+CFF2 L2D4E:
+CFF2 adc #<(_item_titles)
+CFF4 sta ptr1
+CFF6 txa
+CFF7 adc #>(_item_titles)
+CFF9 sta ptr1+1
+CFFB ldy #$01
+CFFD lda (ptr1),y
+CFFF tax
+D000 lda (ptr1)
+D002 ldy #$03
+D004 sta (sp),y
+D006 iny
+D007 txa
+D008 sta (sp),y
+D00A ldy #$0B
+D00C lda (sp),y
+D00E clc
+D00F adc #$12
+D011 ldy #$02
+D013 sta (sp),y
+D015 ldy #$0A
+D017 lda (sp),y
+D019 clc
+D01A adc #$04
+D01C ldy #$01
+D01E sta (sp),y
+D020 lda #$00
+D022 sta (sp)
+D024 ldy #$0C
+D026 tax
+D027 lda (sp),y
+D029 asl a
+D02A bcc L2D4F
+D02C inx
+D02D clc
+D02E L2D4F:
+D02E adc #<(_item_stats)
+D030 sta ptr1
+D032 txa
+D033 adc #>(_item_stats)
+D035 sta ptr1+1
+D037 ldy #$01
+D039 lda (ptr1),y
+D03B tax
+D03C lda (ptr1)
+D03E sta ptr1
+D040 stx ptr1+1
+D042 ldy #$03
+D044 lda (ptr1),y
+D046 sta ptr1
+D048 lda #$00
+D04A clc
+D04B adc #>(_title_colors)
+D04D sta ptr1+1
+D04F ldy #<(_title_colors)
+D051 lda (ptr1),y
+D053 jsr _DrawText
+D056 lda #$00
+D058 ldy #$02
+D05A L2D59:
+D05A sta (sp),y
+D05C lda (sp),y
+D05E jsr pusha0
+D061 ldy #$09
+D063 lda (sp),y
+D065 asl a
+D066 bcc L2D50
+D068 ldx #$01
+D06A clc
+D06B L2D50:
+D06B adc #<(_item_stats)
+D06D sta ptr1
+D06F txa
+D070 adc #>(_item_stats)
+D072 sta ptr1+1
+D074 ldy #$01
+D076 lda (ptr1),y
+D078 tax
+D079 lda (ptr1)
+D07B sta ptr1
+D07D stx ptr1+1
+D07F ldy #$04
+D081 lda (ptr1),y
+D083 jsr tosicmp0
+D086 bcc L2D5A
+D088 jmp incsp8
+D08B L2D5A:
+D08B ldy #$07
+D08D ldx #$00
+D08F lda (sp),y
+D091 asl a
+D092 bcc L2D51
+D094 inx
+D095 clc
+D096 L2D51:
+D096 adc #<(_item_stats)
+D098 sta ptr1
+D09A txa
+D09B adc #>(_item_stats)
+D09D sta ptr1+1
+D09F ldy #$01
+D0A1 lda (ptr1),y
+D0A3 tax
+D0A4 lda (ptr1)
+D0A6 sta ptr1
+D0A8 stx ptr1+1
+D0AA ldx #$00
+D0AC iny
+D0AD lda (sp),y
+D0AF asl a
+D0B0 bcc L2D52
+D0B2 inx
+D0B3 clc
+D0B4 L2D52:
+D0B4 adc #$05
+D0B6 bcc L2D53
+D0B8 inx
+D0B9 clc
+D0BA L2D53:
+D0BA adc ptr1
+D0BC sta ptr1
+D0BE txa
+D0BF adc ptr1+1
+D0C1 sta ptr1+1
+D0C3 lda (ptr1)
+D0C5 dey
+D0C6 sta (sp),y
+D0C8 tay
+D0C9 lda _stat_description_colors,y
+D0CC sta (sp)
+D0CE ldx #$00
+D0D0 lda (sp)
+D0D2 ldy #$04
+D0D4 cmp (sp),y
+D0D6 bne L22B2
+D0D8 lda #$03
+D0DA sta (sp)
+D0DC L22B2:
+D0DC jsr decsp7
+D0DF ldy #$08
+D0E1 lda (sp),y
+D0E3 asl a
+D0E4 bcc L2D54
+D0E6 inx
+D0E7 clc
+D0E8 L2D54:
+D0E8 adc #<(_stat_descriptions)
+D0EA sta ptr1
+D0EC txa
+D0ED adc #>(_stat_descriptions)
+D0EF sta ptr1+1
+D0F1 ldy #$01
+D0F3 lda (ptr1),y
+D0F5 tax
+D0F6 lda (ptr1)
+D0F8 ldy #$05
+D0FA sta (sp),y
+D0FC iny
+D0FD txa
+D0FE sta (sp),y
+D100 ldy #$0E
+D102 ldx #$00
+D104 lda (sp),y
+D106 asl a
+D107 bcc L2D55
+D109 inx
+D10A clc
+D10B L2D55:
+D10B adc #<(_item_stats)
+D10D sta ptr1
+D10F txa
+D110 adc #>(_item_stats)
+D112 sta ptr1+1
+D114 ldy #$01
+D116 lda (ptr1),y
+D118 tax
+D119 lda (ptr1)
+D11B sta ptr1
+D11D stx ptr1+1
+D11F ldx #$00
+D121 ldy #$09
+D123 lda (sp),y
+D125 asl a
+D126 bcc L2D56
+D128 inx
+D129 clc
+D12A L2D56:
+D12A adc #$05
+D12C bcc L22BC
+D12E inx
+D12F L22BC:
+D12F ina
+D130 bne L22BD
+D132 inx
+D133 L22BD:
+D133 clc
+D134 adc ptr1
+D136 sta ptr1
+D138 txa
+D139 adc ptr1+1
+D13B sta ptr1+1
+D13D lda (ptr1)
+D13F ldy #$04
+D141 sta (sp),y
+D143 lda #$00
+D145 dey
+D146 sta (sp),y
+D148 ldy #$0D
+D14A lda (sp),y
+D14C clc
+D14D adc #$12
+D14F ldy #$02
+D151 sta (sp),y
+D153 ldy #$0A
+D155 lda (sp),y
+D157 ldy #$01
+D159 sta (sp),y
+D15B ldy #$07
+D15D lda (sp),y
+D15F sta (sp)
+D161 ldy #$0B
+D163 lda (sp),y
+D165 jsr _DrawTextF
+D168 ldy #$03
+D16A clc
+D16B lda #$0A
+D16D adc (sp),y
+D16F sta (sp),y
+D171 dey
+D172 lda (sp),y
+D174 ina
+D175 jmp L2D59
+D178 DrawLegend:
+D178 lda regbank+18
+D17A ldx regbank+19
+D17C jsr pushax
+D17F lda regbank+16
+D181 ldx regbank+17
+D183 jsr pushax
+D186 lda #>(_map_data)
+D188 sta regbank+16+1
+D18A lda #<(_map_data)
+D18C sta regbank+16
+D18E lda regbank+15
+D190 jsr pusha
+D193 lda regbank+14
+D195 jsr pusha
+D198 lda regbank+13
+D19A jsr pusha
+D19D jsr decsp4
+D1A0 lda #$A0
+D1A2 ldy #$03
+D1A4 sta (sp),y
+D1A6 lda #$00
+D1A8 dey
+D1A9 sta (sp),y
+D1AB lda #$60
+D1AD dey
+D1AE sta (sp),y
+D1B0 lda #$80
+D1B2 sta (sp)
+D1B4 lda #$15
+D1B6 jsr _DrawRect
+D1B9 jsr decsp7
+D1BC lda #<(L1FE6)
+D1BE ldy #$05
+D1C0 sta (sp),y
+D1C2 iny
+D1C3 lda #>(L1FE6)
+D1C5 sta (sp),y
+D1C7 lda _hero_HP
+D1CA ldy #$04
+D1CC sta (sp),y
+D1CE lda _hero_HP_Max
+D1D1 dey
+D1D2 sta (sp),y
+D1D4 lda #$A8
+D1D6 dey
+D1D7 sta (sp),y
+D1D9 lda #$04
+D1DB dey
+D1DC sta (sp),y
+D1DE lda #$3F
+D1E0 sta (sp)
+D1E2 lda #$15
+D1E4 jsr _DrawTextF
+D1E7 jsr decsp5
+D1EA lda #$A8
+D1EC ldy #$04
+D1EE sta (sp),y
+D1F0 lda #$0D
+D1F2 dey
+D1F3 sta (sp),y
+D1F5 lda _hero_HP
+D1F8 dey
+D1F9 sta (sp),y
+D1FB lda _hero_HP_Max
+D1FE dey
+D1FF sta (sp),y
+D201 lda #$03
+D203 sta (sp)
+D205 dea
+D206 jsr _DrawBar
+D209 jsr decsp7
+D20C lda #<(L1FF6)
+D20E ldy #$05
+D210 sta (sp),y
+D212 iny
+D213 lda #>(L1FF6)
+D215 sta (sp),y
+D217 lda _hero_Batt
+D21A ldy #$04
+D21C sta (sp),y
+D21E lda _hero_Batt_Max
+D221 dey
+D222 sta (sp),y
+D224 lda #$A8
+D226 dey
+D227 sta (sp),y
+D229 lda #$18
+D22B dey
+D22C sta (sp),y
+D22E lda #$3F
+D230 sta (sp)
+D232 lda #$15
+D234 jsr _DrawTextF
+D237 jsr decsp5
+D23A lda #$A8
+D23C ldy #$04
+D23E sta (sp),y
+D240 lda #$21
+D242 dey
+D243 sta (sp),y
+D245 lda _hero_Batt
+D248 dey
+D249 sta (sp),y
+D24B lda _hero_Batt_Max
+D24E dey
+D24F sta (sp),y
+D251 lda #$30
+D253 sta (sp)
+D255 lda #$20
+D257 jsr _DrawBar
+D25A jsr decsp7
+D25D lda #<(L2006)
+D25F ldy #$05
+D261 sta (sp),y
+D263 iny
+D264 lda #>(L2006)
+D266 sta (sp),y
+D268 lda _hero_Exp
+D26B ldy #$04
+D26D sta (sp),y
+D26F lda _hero_Exp_Max
+D272 dey
+D273 sta (sp),y
+D275 lda #$A8
+D277 dey
+D278 sta (sp),y
+D27A lda #$2C
+D27C dey
+D27D sta (sp),y
+D27F lda #$3F
+D281 sta (sp)
+D283 lda #$15
+D285 jsr _DrawTextF
+D288 jsr decsp5
+D28B lda #$A8
+D28D ldy #$04
+D28F sta (sp),y
+D291 lda #$35
+D293 dey
+D294 sta (sp),y
+D296 lda _hero_Exp
+D299 dey
+D29A sta (sp),y
+D29C lda _hero_Exp_Max
+D29F dey
+D2A0 sta (sp),y
+D2A2 lda #$0C
+D2A4 sta (sp)
+D2A6 lda #$08
+D2A8 jsr _DrawBar
+D2AB ldx #$00
+D2AD lda _hero_target_type
+D2B0 beq L2019
+D2B2 cmp #$01
+D2B4 beq L202B
+D2B6 cmp #$02
+D2B8 beq L2022
+D2BA cmp #$03
+D2BC beq L2D66
+D2BE cmp #$04
+D2C0 jeq L2D67
+D2C5 jmp L2D67
+D2C8 L2019:
+D2C8 jsr decsp5
+D2CB lda #<(L201B)
+D2CD ldy #$03
+D2CF sta (sp),y
+D2D1 iny
+D2D2 lda #>(L201B)
+D2D4 sta (sp),y
+D2D6 lda #$A8
+D2D8 ldy #$02
+D2DA sta (sp),y
+D2DC lda #$40
+D2DE dey
+D2DF sta (sp),y
+D2E1 lda #$21
+D2E3 bra L2D77
+D2E5 L2022:
+D2E5 jsr decsp5
+D2E8 lda #<(L2024)
+D2EA ldy #$03
+D2EC sta (sp),y
+D2EE iny
+D2EF lda #>(L2024)
+D2F1 sta (sp),y
+D2F3 lda #$A8
+D2F5 ldy #$02
+D2F7 sta (sp),y
+D2F9 lda #$40
+D2FB dey
+D2FC sta (sp),y
+D2FE lda #$35
+D300 bra L2D77
+D302 L202B:
+D302 jsr decsp5
+D305 lda #<(L202D)
+D307 ldy #$03
+D309 sta (sp),y
+D30B iny
+D30C lda #>(L202D)
+D30E sta (sp),y
+D310 lda #$A8
+D312 ldy #$02
+D314 sta (sp),y
+D316 lda #$40
+D318 dey
+D319 sta (sp),y
+D31B tya
+D31C bra L2D77
+D31E L2D66:
+D31E lda _hero_target_index
+D321 jsr aslax3
+D324 clc
+D325 adc #<(_crystal_list)
+D327 sta ptr1
+D329 txa
+D32A adc #>(_crystal_list)
+D32C sta ptr1+1
+D32E ldy #$07
+D330 lda (ptr1),y
+D332 tax
+D333 dey
+D334 lda (ptr1),y
+D336 sta ptr1
+D338 txa
+D339 clc
+D33A adc #>(_crystal_colors)
+D33C sta ptr1+1
+D33E ldy #<(_crystal_colors)
+D340 lda (ptr1),y
+D342 sta regbank+15
+D344 jsr decsp5
+D347 lda #<(L203A)
+D349 ldy #$03
+D34B sta (sp),y
+D34D iny
+D34E lda #>(L203A)
+D350 sta (sp),y
+D352 lda #$A8
+D354 ldy #$02
+D356 sta (sp),y
+D358 lda #$40
+D35A dey
+D35B sta (sp),y
+D35D lda regbank+15
+D35F L2D77:
+D35F sta (sp)
+D361 lda #$15
+D363 jsr _DrawText
+D366 L2D67:
+D366 lda _hero_activity
+D369 cmp #$01
+D36B bne L2D68
+D36D jsr decsp5
+D370 lda #$A8
+D372 ldy #$04
+D374 sta (sp),y
+D376 lda #$49
+D378 dey
+D379 sta (sp),y
+D37B lda _hero_activity_ticks
+D37E dey
+D37F sta (sp),y
+D381 lda _hero_activity_ticks_max
+D384 dey
+D385 sta (sp),y
+D387 lda #$32
+D389 sta (sp)
+D38B lda #$21
+D38D jsr _DrawBar
+D390 L2D68:
+D390 lda #$A8
+D392 jsr pusha0
+D395 lda #$54
+D397 jsr _CalcXY
+D39A sta regbank+18
+D39C stx regbank+18+1
+D39E stz regbank+15
+D3A0 ldx #$00
+D3A2 L2D69:
+D3A2 lda regbank+15
+D3A4 cmp #$14
+D3A6 jcs L2D70
+D3AB stz regbank+14
+D3AD L2D6A:
+D3AD lda regbank+14
+D3AF cmp #$28
+D3B1 jcs L2059
+D3B6 jsr pusha
+D3B9 lda regbank+15
+D3BB jsr _CheckForMonster
+D3BE cmp #$01
+D3C0 bne L2060
+D3C2 lda #$03
+D3C4 bra L2D5F
+D3C6 L2060:
+D3C6 lda regbank+14
+D3C8 jsr pusha
+D3CB lda regbank+15
+D3CD jsr _CheckForCrystal
+D3D0 cmp #$01
+D3D2 bne L2067
+D3D4 lda #$0F
+D3D6 bra L2D5F
+D3D8 L2067:
+D3D8 lda (regbank+16)
+D3DA beq L2D6B
+D3DC cmp #$01
+D3DE beq L2D6B
+D3E0 cmp #$02
+D3E2 beq L2D6B
+D3E4 cmp #$03
+D3E6 beq L2D6B
+D3E8 cmp #$04
+D3EA beq L2D6C
+D3EC cmp #$05
+D3EE beq L2D6D
+D3F0 cmp #$06
+D3F2 beq L2D6E
+D3F4 bra L2D6F
+D3F6 L2D6B:
+D3F6 lda #$3B
+D3F8 bra L2D5F
+D3FA L2D6C:
+D3FA lda #$21
+D3FC bra L2D5F
+D3FE L2D6D:
+D3FE lda #$0B
+D400 bra L2D5F
+D402 L2D6E:
+D402 lda #$35
+D404 bra L2D5F
+D406 L2D6F:
+D406 lda #$3F
+D408 L2D5F:
+D408 sta regbank+13
+D40A sta (regbank+18)
+D40C lda regbank+18
+D40E ldx regbank+18+1
+D410 ina
+D411 bne L208E
+D413 inx
+D414 L208E:
+D414 sta ptr1
+D416 stx ptr1+1
+D418 lda regbank+13
+D41A sta (ptr1)
+D41C lda regbank+18
+D41E ldx regbank+18+1
+D420 inx
+D421 sta ptr1
+D423 stx ptr1+1
+D425 lda regbank+13
+D427 sta (ptr1)
+D429 lda regbank+18
+D42B ldx regbank+18+1
+D42D inx
+D42E ina
+D42F bne L2095
+D431 inx
+D432 L2095:
+D432 sta ptr1
+D434 stx ptr1+1
+D436 lda regbank+13
+D438 sta (ptr1)
+D43A lda #$02
+D43C clc
+D43D adc regbank+18
+D43F sta regbank+18
+D441 bcc L2099
+D443 inc regbank+18+1
+D445 L2099:
+D445 lda regbank+16
+D447 ldx regbank+16+1
+D449 ina
+D44A bne L209B
+D44C inx
+D44D L209B:
+D44D sta regbank+16
+D44F stx regbank+16+1
+D451 inc regbank+14
+D453 jmp L2D6A
+D456 L2059:
+D456 lda #$B0
+D458 clc
+D459 adc regbank+18
+D45B sta regbank+18
+D45D lda #$01
+D45F adc regbank+18+1
+D461 sta regbank+18+1
+D463 ldx #$00
+D465 inc regbank+15
+D467 jmp L2D69
+D46A L2D70:
+D46A lda _display_X
+D46D asl a
+D46E bcc L2D60
+D470 inx
+D471 clc
+D472 L2D60:
+D472 adc #$A0
+D474 bcc L2D61
+D476 inx
+D477 clc
+D478 L2D61:
+D478 adc #$08
+D47A bcc L20A3
+D47C inx
+D47D L20A3:
+D47D jsr pushax
+D480 ldx #$00
+D482 lda _display_Y
+D485 asl a
+D486 bcc L2D62
+D488 inx
+D489 clc
+D48A L2D62:
+D48A adc #$54
+D48C bcc L20A5
+D48E inx
+D48F L20A5:
+D48F jsr _CalcXY
+D492 sta regbank+18
+D494 stx regbank+18+1
+D496 stz regbank+15
+D498 ldx #$00
+D49A L2D71:
+D49A lda regbank+15
+D49C cmp #$0A
+D49E bcs L2D72
+D4A0 lda #$0C
+D4A2 sta (regbank+18)
+D4A4 lda regbank+18
+D4A6 sta ptr1
+D4A8 lda regbank+18+1
+D4AA clc
+D4AB adc #$07
+D4AD sta ptr1+1
+D4AF lda #$0C
+D4B1 sta (ptr1)
+D4B3 lda regbank+18
+D4B5 ldx regbank+18+1
+D4B7 ina
+D4B8 bne L20B5
+D4BA inx
+D4BB L20B5:
+D4BB sta regbank+18
+D4BD stx regbank+18+1
+D4BF ldx #$00
+D4C1 inc regbank+15
+D4C3 bra L2D71
+D4C5 L2D72:
+D4C5 lda _display_X
+D4C8 asl a
+D4C9 bcc L2D63
+D4CB inx
+D4CC clc
+D4CD L2D63:
+D4CD adc #$A0
+D4CF bcc L2D64
+D4D1 inx
+D4D2 clc
+D4D3 L2D64:
+D4D3 adc #$08
+D4D5 bcc L20BA
+D4D7 inx
+D4D8 L20BA:
+D4D8 jsr pushax
+D4DB ldx #$00
+D4DD lda _display_Y
+D4E0 asl a
+D4E1 bcc L2D65
+D4E3 inx
+D4E4 clc
+D4E5 L2D65:
+D4E5 adc #$54
+D4E7 bcc L20BC
+D4E9 inx
+D4EA L20BC:
+D4EA jsr _CalcXY
+D4ED sta regbank+18
+D4EF stx regbank+18+1
+D4F1 stz regbank+15
+D4F3 L2D73:
+D4F3 lda regbank+15
+D4F5 cmp #$08
+D4F7 bcs L1FDB
+D4F9 lda #$0C
+D4FB sta (regbank+18)
+D4FD lda regbank+18
+D4FF ldx regbank+18+1
+D501 clc
+D502 adc #$0A
+D504 bcc L20C9
+D506 inx
+D507 L20C9:
+D507 sec
+D508 sbc #$01
+D50A bcs L20CA
+D50C dex
+D50D L20CA:
+D50D sta ptr1
+D50F stx ptr1+1
+D511 lda #$0C
+D513 sta (ptr1)
+D515 lda #$00
+D517 clc
+D518 adc regbank+18
+D51A sta regbank+18
+D51C lda #$01
+D51E adc regbank+18+1
+D520 sta regbank+18+1
+D522 inc regbank+15
+D524 bra L2D73
+D526 L1FDB:
+D526 ldy #$00
+D528 L20CE:
+D528 lda (sp),y
+D52A sta regbank+13,y
+D52D iny
+D52E cpy #$07
+D530 bne L20CE
+D532 jmp incsp7
+D535 DrawMenu:
+FCEA L23E0:
+D535 jsr decsp4
+D538 ldy #$01
+D53A L23E1:
+D53A lda L23E0,y
+D53D sta (sp),y
+D53F dey
+D540 bpl L23E1
+D542 jsr decsp2
+D545 lda _output_mode+1
+D548 jne L23E2
+D54D lda _output_mode
+D550 cmp #$01
+D552 jne L23E2
+D557 jsr decsp4
+D55A lda #$09
+D55C ldy #$03
+D55E sta (sp),y
+D560 lda #$11
+D562 dey
+D563 sta (sp),y
+D565 lda #$EE
+D567 dey
+D568 sta (sp),y
+D56A lda #$66
+D56C sta (sp)
+D56E lda #$08
+D570 jsr _DrawRect
+D573 jsr decsp4
+D576 lda #$0A
+D578 ldy #$02
+D57A sta (sp),y
+D57C iny
+D57D lda #$00
+D57F sta (sp),y
+D581 lda #$1B
+D583 sta (sp)
+D585 ldy #$01
+D587 lda #$00
+D589 sta (sp),y
+D58B tax
+D58C lda #$15
+D58E jsr _DrawTile
+D591 lda #$38
+D593 ldy #$01
+D595 sta (sp),y
+D597 lda #$00
+D599 ldy #$04
+D59B L2D81:
+D59B sta (sp),y
+D59D cmp #$07
+D59F jcs L23F2
+D5A4 ldx #$00
+D5A6 lda (sp),y
+D5A8 asl a
+D5A9 bcc L2D7C
+D5AB inx
+D5AC clc
+D5AD L2D7C:
+D5AD adc #<(_hero_stat_pointers)
+D5AF sta ptr1
+D5B1 txa
+D5B2 adc #>(_hero_stat_pointers)
+D5B4 sta ptr1+1
+D5B6 ldy #$01
+D5B8 lda (ptr1),y
+D5BA tax
+D5BB lda (ptr1)
+D5BD cpx #$00
+D5BF bne L23F9
+D5C1 cmp #$00
+D5C3 bne L23F9
+D5C5 lda _hero_HP_Max
+D5C8 bra L2D7B
+D5CA L23F9:
+D5CA ldy #$04
+D5CC ldx #$00
+D5CE lda (sp),y
+D5D0 asl a
+D5D1 bcc L2D7D
+D5D3 inx
+D5D4 clc
+D5D5 L2D7D:
+D5D5 adc #<(_hero_stat_pointers)
+D5D7 sta ptr1
+D5D9 txa
+D5DA adc #>(_hero_stat_pointers)
+D5DC sta ptr1+1
+D5DE ldy #$01
+D5E0 lda (ptr1),y
+D5E2 tax
+D5E3 lda (ptr1)
+D5E5 sta ptr1
+D5E7 stx ptr1+1
+D5E9 lda (ptr1)
+D5EB L2D7B:
+D5EB sta (sp)
+D5ED jsr decsp7
+D5F0 ldy #$0B
+D5F2 ldx #$00
+D5F4 lda (sp),y
+D5F6 asl a
+D5F7 bcc L2D7E
+D5F9 inx
+D5FA clc
+D5FB L2D7E:
+D5FB adc #<(_hero_stat_texts)
+D5FD sta ptr1
+D5FF txa
+D600 adc #>(_hero_stat_texts)
+D602 sta ptr1+1
+D604 ldy #$01
+D606 lda (ptr1),y
+D608 tax
+D609 lda (ptr1)
+D60B ldy #$05
+D60D sta (sp),y
+D60F iny
+D610 txa
+D611 sta (sp),y
+D613 iny
+D614 lda (sp),y
+D616 ldy #$04
+D618 sta (sp),y
+D61A lda #$00
+D61C dey
+D61D sta (sp),y
+D61F lda #$0D
+D621 dey
+D622 sta (sp),y
+D624 ldy #$08
+D626 lda (sp),y
+D628 ldy #$01
+D62A sta (sp),y
+D62C ldy #$0B
+D62E lda (sp),y
+D630 tay
+D631 lda _hero_stat_colors,y
+D634 sta (sp)
+D636 lda #$08
+D638 jsr _DrawTextF
+D63B ldy #$01
+D63D clc
+D63E lda #$09
+D640 adc (sp),y
+D642 sta (sp),y
+D644 ldy #$04
+D646 lda (sp),y
+D648 ina
+D649 jmp L2D81
+D64C L23F2:
+D64C jsr _DrawMenuInventory
+D64F jmp incsp6
+D652 L23E2:
+D652 lda _output_mode+1
+D655 bne L2412
+D657 lda _output_mode
+D65A cmp #$02
+D65C bne L2412
+D65E jsr decsp4
+D661 lda #$09
+D663 ldy #$03
+D665 sta (sp),y
+D667 lda #$11
+D669 dey
+D66A sta (sp),y
+D66C lda #$EE
+D66E dey
+D66F sta (sp),y
+D671 lda #$66
+D673 sta (sp)
+D675 lda #$20
+D677 jsr _DrawRect
+D67A jsr decsp5
+D67D lda #<(L241D)
+D67F ldy #$03
+D681 sta (sp),y
+D683 iny
+D684 lda #>(L241D)
+D686 sta (sp),y
+D688 lda #$0B
+D68A ldy #$02
+D68C sta (sp),y
+D68E lda #$14
+D690 dey
+D691 sta (sp),y
+D693 lda #$3F
+D695 sta (sp)
+D697 lda #$20
+D699 jsr _DrawText
+D69C ldy #$05
+D69E sta (sp),y
+D6A0 jsr decsp4
+D6A3 lda _hero_Points
+D6A6 ldy #$03
+D6A8 sta (sp),y
+D6AA ldy #$09
+D6AC lda (sp),y
+D6AE ldy #$02
+D6B0 sta (sp),y
+D6B2 lda #$14
+D6B4 dey
+D6B5 sta (sp),y
+D6B7 lda #$3F
+D6B9 sta (sp)
+D6BB lda #$20
+D6BD jsr _DrawUC
+D6C0 jsr _DrawSkills
+D6C3 jmp incsp6
+D6C6 L2412:
+D6C6 lda _output_mode+1
+D6C9 beq L2D82
+D6CB jmp incsp6
+D6CE L2D82:
+D6CE lda _output_mode
+D6D1 cmp #$03
+D6D3 beq L2D83
+D6D5 jmp incsp6
+D6D8 L2D83:
+D6D8 jsr decsp4
+D6DB lda #$09
+D6DD ldy #$03
+D6DF sta (sp),y
+D6E1 lda #$11
+D6E3 dey
+D6E4 sta (sp),y
+D6E6 lda #$EE
+D6E8 dey
+D6E9 sta (sp),y
+D6EB lda #$66
+D6ED sta (sp)
+D6EF lda #$02
+D6F1 jsr _DrawRect
+D6F4 jsr decsp4
+D6F7 lda #$98
+D6F9 ldy #$03
+D6FB sta (sp),y
+D6FD lda #$13
+D6FF dey
+D700 sta (sp),y
+D702 lda #$5C
+D704 dey
+D705 sta (sp),y
+D707 lda #$0A
+D709 sta (sp)
+D70B lda #$00
+D70D jsr _DrawRect
+D710 jsr decsp4
+D713 lda _hero_Red
+D716 ldy #$03
+D718 sta (sp),y
+D71A lda #$AB
+D71C dey
+D71D sta (sp),y
+D71F lda #$15
+D721 dey
+D722 sta (sp),y
+D724 lda #$17
+D726 sta (sp)
+D728 lda #$00
+D72A jsr _DrawUC
+D72D jsr decsp4
+D730 lda _hero_Blue
+D733 ldy #$03
+D735 sta (sp),y
+D737 lda #$C3
+D739 dey
+D73A sta (sp),y
+D73C lda #$15
+D73E dey
+D73F sta (sp),y
+D741 lda #$35
+D743 sta (sp)
+D745 lda #$00
+D747 jsr _DrawUC
+D74A jsr decsp4
+D74D lda _hero_Yellow
+D750 ldy #$03
+D752 sta (sp),y
+D754 lda #$DB
+D756 dey
+D757 sta (sp),y
+D759 lda #$15
+D75B dey
+D75C sta (sp),y
+D75E lda #$1F
+D760 sta (sp)
+D762 lda #$00
+D764 jsr _DrawUC
+D767 jsr _DrawResources
+D76A jmp incsp6
+D76D DrawMenuBorder:
+D76D jsr decsp5
+D770 lda #$01
+D772 ldy #$03
+D774 sta (sp),y
+D776 dey
+D777 sta (sp),y
+D779 lda #$FE
+D77B dey
+D77C sta (sp),y
+D77E lda #$10
+D780 sta (sp)
+D782 lda #$2A
+D784 jsr _DrawRect
+D787 jsr decsp4
+D78A lda #$01
+D78C ldy #$03
+D78E sta (sp),y
+D790 lda #$78
+D792 dey
+D793 sta (sp),y
+D795 lda #$FE
+D797 dey
+D798 sta (sp),y
+D79A lda #$07
+D79C sta (sp)
+D79E lda #$2A
+D7A0 jsr _DrawRect
+D7A3 jsr decsp4
+D7A6 lda #$01
+D7A8 ldy #$03
+D7AA sta (sp),y
+D7AC lda #$11
+D7AE dey
+D7AF sta (sp),y
+D7B1 lda #$07
+D7B3 dey
+D7B4 sta (sp),y
+D7B6 lda #$67
+D7B8 sta (sp)
+D7BA lda #$2A
+D7BC jsr _DrawRect
+D7BF jsr decsp4
+D7C2 lda #$F8
+D7C4 ldy #$03
+D7C6 sta (sp),y
+D7C8 lda #$11
+D7CA dey
+D7CB sta (sp),y
+D7CD lda #$07
+D7CF dey
+D7D0 sta (sp),y
+D7D2 lda #$67
+D7D4 sta (sp)
+D7D6 lda #$2A
+D7D8 jsr _DrawRect
+D7DB jsr decsp5
+D7DE lda #$00
+D7E0 ldy #$04
+D7E2 sta (sp),y
+D7E4 dey
+D7E5 sta (sp),y
+D7E7 ldy #$01
+D7E9 sta (sp),y
+D7EB iny
+D7EC ina
+D7ED sta (sp),y
+D7EF lda #$80
+D7F1 sta (sp)
+D7F3 lda #$00
+D7F5 jsr _DrawBorder
+D7F8 jsr decsp5
+D7FB lda #$08
+D7FD ldy #$04
+D7FF sta (sp),y
+D801 dey
+D802 sta (sp),y
+D804 lda #$F0
+D806 ldy #$01
+D808 sta (sp),y
+D80A iny
+D80B lda #$00
+D80D sta (sp),y
+D80F lda #$70
+D811 sta (sp)
+D813 lda #$00
+D815 jsr _DrawBorder
+D818 lda #$01
+D81A L2D86:
+D81A sta (sp)
+D81C cmp #$08
+D81E jcs L21B8
+D823 lda (sp)
+D825 jsr pusha0
+D828 ldy #$02
+D82A lda (sp),y
+D82C jsr _CalcXY
+D82F sta ptr1
+D831 stx ptr1+1
+D833 lda #$00
+D835 sta (ptr1)
+D837 sec
+D838 sbc (sp)
+D83A pha
+D83B lda #$01
+D83D sbc #$00
+D83F tax
+D840 pla
+D841 sec
+D842 sbc #$01
+D844 bcs L21C5
+D846 dex
+D847 L21C5:
+D847 jsr pushax
+D84A ldy #$02
+D84C lda (sp),y
+D84E ldx #$00
+D850 jsr _CalcXY
+D853 sta ptr1
+D855 stx ptr1+1
+D857 lda #$00
+D859 sta (ptr1)
+D85B sec
+D85C sbc (sp)
+D85E pha
+D85F lda #$01
+D861 sbc #$00
+D863 tax
+D864 pla
+D865 sec
+D866 sbc #$01
+D868 bcs L21CA
+D86A dex
+D86B L21CA:
+D86B jsr pushax
+D86E lda #$80
+D870 sec
+D871 ldy #$02
+D873 sbc (sp),y
+D875 ldx #$00
+D877 sec
+D878 sbc #$01
+D87A bcs L21CC
+D87C dex
+D87D L21CC:
+D87D jsr _CalcXY
+D880 sta ptr1
+D882 stx ptr1+1
+D884 lda #$00
+D886 sta (ptr1)
+D888 lda (sp)
+D88A jsr pusha0
+D88D lda #$80
+D88F sec
+D890 ldy #$02
+D892 sbc (sp),y
+D894 sec
+D895 sbc #$01
+D897 bcs L21D1
+D899 dex
+D89A L21D1:
+D89A jsr _CalcXY
+D89D sta ptr1
+D89F stx ptr1+1
+D8A1 lda #$00
+D8A3 sta (ptr1)
+D8A5 lda (sp)
+D8A7 ina
+D8A8 jmp L2D86
+D8AB L21B8:
+D8AB jsr decsp5
+D8AE lda #<(L21D4)
+D8B0 ldy #$03
+D8B2 sta (sp),y
+D8B4 iny
+D8B5 lda #>(L21D4)
+D8B7 sta (sp),y
+D8B9 lda #$09
+D8BB ldy #$02
+D8BD sta (sp),y
+D8BF dey
+D8C0 sta (sp),y
+D8C2 lda #$3F
+D8C4 sta (sp)
+D8C6 lda #$08
+D8C8 jsr _DrawText
+D8CB jsr decsp5
+D8CE lda #<(L21DB)
+D8D0 ldy #$03
+D8D2 sta (sp),y
+D8D4 iny
+D8D5 lda #>(L21DB)
+D8D7 sta (sp),y
+D8D9 lda #$4C
+D8DB ldy #$02
+D8DD sta (sp),y
+D8DF lda #$09
+D8E1 dey
+D8E2 sta (sp),y
+D8E4 lda #$3F
+D8E6 sta (sp)
+D8E8 lda #$20
+D8EA jsr _DrawText
+D8ED jsr decsp5
+D8F0 lda #<(L21E2)
+D8F2 ldy #$03
+D8F4 sta (sp),y
+D8F6 iny
+D8F7 lda #>(L21E2)
+D8F9 sta (sp),y
+D8FB lda #$7C
+D8FD ldy #$02
+D8FF sta (sp),y
+D901 lda #$09
+D903 dey
+D904 sta (sp),y
+D906 lda #$3F
+D908 sta (sp)
+D90A lda #$02
+D90C jsr _DrawText
+D90F jsr decsp4
+D912 lda #$4B
+D914 ldy #$03
+D916 sta (sp),y
+D918 lda #$09
+D91A dey
+D91B sta (sp),y
+D91D lda #$01
+D91F dey
+D920 sta (sp),y
+D922 lda #$08
+D924 sta (sp)
+D926 lda #$20
+D928 jsr _DrawRect
+D92B jmp incsp1
+D92E DrawMenuInventory:
+D92E jsr decsp2
+D931 lda #$00
+D933 jsr pusha
+D936 jsr decsp4
+D939 lda #$50
+D93B ldy #$03
+D93D sta (sp),y
+D93F lda #$16
+D941 dey
+D942 sta (sp),y
+D944 lda #$50
+D946 dey
+D947 sta (sp),y
+D949 lda #$2D
+D94B sta (sp)
+D94D lda #$04
+D94F jsr _DrawRect
+D952 jsr decsp4
+D955 lda #$50
+D957 ldy #$03
+D959 sta (sp),y
+D95B lda #$46
+D95D dey
+D95E sta (sp),y
+D960 lda #$50
+D962 dey
+D963 sta (sp),y
+D965 lda #$2D
+D967 sta (sp)
+D969 lda #$04
+D96B jsr _DrawRect
+D96E lda #$00
+D970 ldy #$02
+D972 L2D96:
+D972 sta (sp),y
+D974 cmp #$06
+D976 jcs L2226
+D97B lda #$00
+D97D dey
+D97E L2D95:
+D97E sta (sp),y
+D980 cmp #$05
+D982 jcs L2227
+D987 jsr decsp4
+D98A lda #$40
+D98C iny
+D98D sta (sp),y
+D98F iny
+D990 lda #$00
+D992 sta (sp),y
+D994 ldy #$05
+D996 tax
+D997 lda (sp),y
+D999 jsr shlax4
+D99C clc
+D99D adc #$A4
+D99F bcc L2238
+D9A1 inx
+D9A2 L2238:
+D9A2 sta (sp)
+D9A4 ldy #$01
+D9A6 txa
+D9A7 sta (sp),y
+D9A9 ldy #$06
+D9AB ldx #$00
+D9AD lda (sp),y
+D9AF jsr shlax4
+D9B2 clc
+D9B3 adc #$14
+D9B5 bcc L223A
+D9B7 inx
+D9B8 L223A:
+D9B8 jsr _DrawTile
+D9BB lda (sp)
+D9BD tay
+D9BE lda _hero_inventory,y
+D9C1 cmp #$20
+D9C3 jeq L2D94
+D9C8 lda (sp)
+D9CA tay
+D9CB ldx #$00
+D9CD lda _hero_inventory,y
+D9D0 asl a
+D9D1 bcc L2D8B
+D9D3 inx
+D9D4 clc
+D9D5 L2D8B:
+D9D5 adc #<(_item_stats)
+D9D7 sta ptr1
+D9D9 txa
+D9DA adc #>(_item_stats)
+D9DC sta ptr1+1
+D9DE ldy #$01
+D9E0 lda (ptr1),y
+D9E2 tax
+D9E3 lda (ptr1)
+D9E5 sta ptr1
+D9E7 stx ptr1+1
+D9E9 lda (ptr1)
+D9EB cmp #$0E
+D9ED jeq L2D94
+D9F2 jsr decsp2
+D9F5 iny
+D9F6 lda (sp),y
+D9F8 tay
+D9F9 lda _hero_inventory,y
+D9FC ldy #$01
+D9FE sta (sp),y
+DA00 ldy #$03
+DA02 lda (sp),y
+DA04 asl a
+DA05 asl a
+DA06 asl a
+DA07 asl a
+DA08 clc
+DA09 adc #$A4
+DA0B sta (sp)
+DA0D iny
+DA0E lda (sp),y
+DA10 asl a
+DA11 asl a
+DA12 asl a
+DA13 asl a
+DA14 clc
+DA15 adc #$14
+DA17 jsr _DrawItem
+DA1A ldy #$01
+DA1C lda (sp),y
+DA1E cmp _menu_char_x
+DA21 jne L2D94
+DA26 iny
+DA27 lda (sp),y
+DA29 cmp _menu_char_y
+DA2C jne L2D94
+DA31 jsr decsp3
+DA34 iny
+DA35 lda (sp),y
+DA37 tay
+DA38 ldx #$00
+DA3A lda _hero_inventory,y
+DA3D asl a
+DA3E bcc L2D8C
+DA40 inx
+DA41 clc
+DA42 L2D8C:
+DA42 adc #<(_item_stats)
+DA44 sta ptr1
+DA46 txa
+DA47 adc #>(_item_stats)
+DA49 sta ptr1+1
+DA4B ldy #$01
+DA4D lda (ptr1),y
+DA4F tax
+DA50 lda (ptr1)
+DA52 sta ptr1
+DA54 stx ptr1+1
+DA56 lda (ptr1)
+DA58 sta ptr1
+DA5A lda #$00
+DA5C clc
+DA5D adc #>(_hero_equipped)
+DA5F sta ptr1+1
+DA61 ldy #<(_hero_equipped)
+DA63 lda (ptr1),y
+DA65 ldy #$02
+DA67 sta (sp),y
+DA69 lda #$50
+DA6B dey
+DA6C sta (sp),y
+DA6E lda #$16
+DA70 sta (sp)
+DA72 lda #$04
+DA74 jsr _DrawItemStats
+DA77 jsr decsp3
+DA7A ldy #$03
+DA7C lda (sp),y
+DA7E tay
+DA7F lda _hero_inventory,y
+DA82 ldy #$02
+DA84 sta (sp),y
+DA86 lda #$50
+DA88 dey
+DA89 sta (sp),y
+DA8B lda #$46
+DA8D sta (sp)
+DA8F lda #$04
+DA91 jsr _DrawItemStats
+DA94 jsr decsp4
+DA97 lda #$43
+DA99 ldy #$02
+DA9B sta (sp),y
+DA9D iny
+DA9E lda #$00
+DAA0 sta (sp),y
+DAA2 lda #$50
+DAA4 sta (sp)
+DAA6 ldy #$01
+DAA8 lda #$00
+DAAA sta (sp),y
+DAAC tax
+DAAD lda #$46
+DAAF jsr _DrawTile
+DAB2 L2D94:
+DAB2 lda (sp)
+DAB4 ina
+DAB5 sta (sp)
+DAB7 ldy #$01
+DAB9 lda (sp),y
+DABB ina
+DABC jmp L2D95
+DABF L2227:
+DABF iny
+DAC0 lda (sp),y
+DAC2 ina
+DAC3 jmp L2D96
+DAC6 L2226:
+DAC6 jsr decsp4
+DAC9 lda #$A4
+DACB iny
+DACC sta (sp),y
+DACE lda #$74
+DAD0 dey
+DAD1 sta (sp),y
+DAD3 lda #$50
+DAD5 dey
+DAD6 sta (sp),y
+DAD8 tya
+DAD9 sta (sp)
+DADB dea
+DADC jsr _DrawRect
+DADF jsr decsp4
+DAE2 lda #$F4
+DAE4 ldy #$03
+DAE6 sta (sp),y
+DAE8 lda #$14
+DAEA dey
+DAEB sta (sp),y
+DAED lda #$01
+DAEF dey
+DAF0 sta (sp),y
+DAF2 lda #$61
+DAF4 sta (sp)
+DAF6 lda #$00
+DAF8 jsr _DrawRect
+DAFB jsr decsp4
+DAFE lda #$43
+DB00 ldy #$02
+DB02 sta (sp),y
+DB04 iny
+DB05 lda #$00
+DB07 sta (sp),y
+DB09 tax
+DB0A lda _menu_char_x
+DB0D jsr shlax4
+DB10 clc
+DB11 adc #$A4
+DB13 bcc L2278
+DB15 inx
+DB16 L2278:
+DB16 sta (sp)
+DB18 ldy #$01
+DB1A txa
+DB1B sta (sp),y
+DB1D ldx #$00
+DB1F lda _menu_char_y
+DB22 jsr shlax4
+DB25 clc
+DB26 adc #$14
+DB28 bcc L227A
+DB2A inx
+DB2B L227A:
+DB2B jsr _DrawTile
+DB2E jmp incsp3
+DB31 DrawRect:
+DB31 jsr pusha
+DB34 lda regbank+18
+DB36 ldx regbank+19
+DB38 jsr pushax
+DB3B ldy #$06
+DB3D lda (sp),y
+DB3F jsr pusha0
+DB42 ldy #$07
+DB44 lda (sp),y
+DB46 jsr _CalcXY
+DB49 sta regbank+18
+DB4B stx regbank+18+1
+DB4D lda regbank+17
+DB4F jsr pusha
+DB52 lda regbank+16
+DB54 jsr pusha
+DB57 stz regbank+17
+DB59 ldx #$00
+DB5B L2D97:
+DB5B lda regbank+17
+DB5D ldy #$05
+DB5F cmp (sp),y
+DB61 bcs L1EC6
+DB63 stz regbank+16
+DB65 L2D98:
+DB65 lda regbank+16
+DB67 ldy #$06
+DB69 cmp (sp),y
+DB6B txa
+DB6C bcs L2D9A
+DB6E lda regbank+18
+DB70 ldx regbank+18+1
+DB72 sta regsave
+DB74 stx regsave+1
+DB76 ina
+DB77 bne L1EDB
+DB79 inx
+DB7A L1EDB:
+DB7A sta regbank+18
+DB7C stx regbank+18+1
+DB7E ldy #$04
+DB80 lda (sp),y
+DB82 sta (regsave)
+DB84 ldx #$00
+DB86 inc regbank+16
+DB88 bra L2D98
+DB8A L2D9A:
+DB8A sbc (sp),y
+DB8C pha
+DB8D lda #$01
+DB8F sbc #$00
+DB91 tax
+DB92 pla
+DB93 clc
+DB94 adc regbank+18
+DB96 sta regbank+18
+DB98 txa
+DB99 adc regbank+18+1
+DB9B sta regbank+18+1
+DB9D ldx #$00
+DB9F inc regbank+17
+DBA1 bra L2D97
+DBA3 L1EC6:
+DBA3 ldy #$00
+DBA5 L1EDF:
+DBA5 lda (sp),y
+DBA7 sta regbank+16,y
+DBAA iny
+DBAB cpy #$04
+DBAD bne L1EDF
+DBAF ldy #$09
+DBB1 jmp addysp
+DBB4 DrawResources:
+FCEC L235D:
+FCF2 L2365:
+DBB4 jsr decsp6
+DBB7 ldy #$05
+DBB9 L2364:
+DBB9 lda L235D,y
+DBBC sta (sp),y
+DBBE dey
+DBBF bpl L2364
+DBC1 jsr decsp6
+DBC4 ldy #$05
+DBC6 L236C:
+DBC6 lda L2365,y
+DBC9 sta (sp),y
+DBCB dey
+DBCC bpl L236C
+DBCE jsr decsp3
+DBD1 lda #$20
+DBD3 jsr pusha
+DBD6 jsr decsp2
+DBD9 lda #$20
+DBDB sta _menu_res_target
+DBDE jsr decsp4
+DBE1 lda #$98
+DBE3 ldy #$03
+DBE5 sta (sp),y
+DBE7 lda #$1D
+DBE9 dey
+DBEA sta (sp),y
+DBEC lda #$5C
+DBEE dey
+DBEF sta (sp),y
+DBF1 lda #$57
+DBF3 sta (sp)
+DBF5 tya
+DBF6 jsr _DrawRect
+DBF9 lda #$00
+DBFB ldy #$05
+DBFD L2DAD:
+DBFD sta (sp),y
+DBFF cmp #$06
+DC01 jcs L2DAB
+DC06 lda (sp),y
+DC08 ina
+DC09 ldy #$03
+DC0B sta (sp),y
+DC0D jsr decsp4
+DC10 ldy #$09
+DC12 lda (sp),y
+DC14 jsr pusha0
+DC17 lda #$17
+DC19 jsr tosumula0
+DC1C clc
+DC1D adc #$0B
+DC1F ldy #$03
+DC21 sta (sp),y
+DC23 lda #$13
+DC25 dey
+DC26 sta (sp),y
+DC28 lda #$17
+DC2A dey
+DC2B sta (sp),y
+DC2D lda #$61
+DC2F sta (sp)
+DC31 lda sp
+DC33 ldx sp+1
+DC35 clc
+DC36 adc #$10
+DC38 bcc L2389
+DC3A inx
+DC3B L2389:
+DC3B ldy #$09
+DC3D clc
+DC3E adc (sp),y
+DC40 bcc L238A
+DC42 inx
+DC43 L238A:
+DC43 sta ptr1
+DC45 stx ptr1+1
+DC47 lda (ptr1)
+DC49 jsr _DrawRect
+DC4C lda #$00
+DC4E ldy #$04
+DC50 L2DAC:
+DC50 sta (sp),y
+DC52 cmp #$05
+DC54 jcs L2378
+DC59 iny
+DC5A lda (sp),y
+DC5C cmp #$04
+DC5E bcs L2393
+DC60 jsr decsp2
+DC63 lda (sp),y
+DC65 ldy #$01
+DC67 sta (sp),y
+DC69 ldy #$07
+DC6B lda (sp),y
+DC6D jsr pusha0
+DC70 lda #$17
+DC72 jsr tosumula0
+DC75 clc
+DC76 adc #$0E
+DC78 sta (sp)
+DC7A ldy #$06
+DC7C lda (sp),y
+DC7E jsr pusha0
+DC81 lda #$13
+DC83 jsr tosumula0
+DC86 clc
+DC87 adc #$15
+DC89 jsr _DrawItem
+DC8C ldy #$03
+DC8E lda (sp),y
+DC90 dey
+DC91 sta (sp),y
+DC93 iny
+DC94 clc
+DC95 lda #$05
+DC97 adc (sp),y
+DC99 jmp L2DA0
+DC9C L2393:
+DC9C dey
+DC9D lda (sp),y
+DC9F cmp #$03
+DCA1 jcs L2DA8
+DCA6 jsr decsp4
+DCA9 ldy #$08
+DCAB lda (sp),y
+DCAD jsr pusha0
+DCB0 ldy #$0B
+DCB2 lda (sp),y
+DCB4 sec
+DCB5 sbc #$04
+DCB7 bcs L23A6
+DCB9 ldx #$FF
+DCBB L23A6:
+DCBB jsr mulax3
+DCBE jsr tosaddax
+DCC1 clc
+DCC2 adc #$0A
+DCC4 bcc L23A7
+DCC6 inx
+DCC7 clc
+DCC8 L23A7:
+DCC8 adc sp
+DCCA sta ptr1
+DCCC txa
+DCCD adc sp+1
+DCCF sta ptr1+1
+DCD1 lda (ptr1)
+DCD3 ldy #$02
+DCD5 sta (sp),y
+DCD7 iny
+DCD8 lda #$00
+DCDA sta (sp),y
+DCDC ldy #$09
+DCDE lda (sp),y
+DCE0 jsr pusha0
+DCE3 lda #$17
+DCE5 jsr tosumula0
+DCE8 clc
+DCE9 adc #$0E
+DCEB bcc L23A9
+DCED inx
+DCEE L23A9:
+DCEE sta (sp)
+DCF0 ldy #$01
+DCF2 txa
+DCF3 sta (sp),y
+DCF5 ldy #$08
+DCF7 lda (sp),y
+DCF9 jsr pusha0
+DCFC lda #$13
+DCFE jsr tosumula0
+DD01 clc
+DD02 adc #$15
+DD04 bcc L23AB
+DD06 inx
+DD07 L23AB:
+DD07 jsr _DrawTile
+DD0A ldy #$04
+DD0C ldx #$00
+DD0E lda (sp),y
+DD10 asl a
+DD11 bcc L2D9D
+DD13 inx
+DD14 L2D9D:
+DD14 sta ptr1
+DD16 stx ptr1+1
+DD18 ldx #$00
+DD1A iny
+DD1B lda (sp),y
+DD1D sec
+DD1E sbc #$04
+DD20 bcs L23AF
+DD22 dex
+DD23 L23AF:
+DD23 clc
+DD24 adc ptr1
+DD26 pha
+DD27 txa
+DD28 adc ptr1+1
+DD2A pla
+DD2B ldy #$02
+DD2D sta (sp),y
+DD2F clc
+DD30 lda #$19
+DD32 adc (sp),y
+DD34 bra L2DA0
+DD36 L2DA8:
+DD36 lda #$20
+DD38 ldy #$02
+DD3A L2DA0:
+DD3A sta (sp),y
+DD3C ldy #$05
+DD3E lda (sp),y
+DD40 cmp _menu_res_x
+DD43 bne L238D
+DD45 dey
+DD46 lda (sp),y
+DD48 cmp _menu_res_y
+DD4B bne L2DAE
+DD4D jsr decsp4
+DD50 lda #$43
+DD52 ldy #$02
+DD54 sta (sp),y
+DD56 iny
+DD57 lda #$00
+DD59 sta (sp),y
+DD5B ldy #$09
+DD5D lda (sp),y
+DD5F jsr pusha0
+DD62 lda #$17
+DD64 jsr tosumula0
+DD67 clc
+DD68 adc #$0E
+DD6A bcc L23BE
+DD6C inx
+DD6D L23BE:
+DD6D sta (sp)
+DD6F ldy #$01
+DD71 txa
+DD72 sta (sp),y
+DD74 ldy #$08
+DD76 lda (sp),y
+DD78 jsr pusha0
+DD7B lda #$13
+DD7D jsr tosumula0
+DD80 clc
+DD81 adc #$15
+DD83 bcc L23C0
+DD85 inx
+DD86 L23C0:
+DD86 jsr _DrawTile
+DD89 ldy #$02
+DD8B lda (sp),y
+DD8D cmp #$20
+DD8F beq L238D
+DD91 jsr decsp3
+DD94 ldy #$05
+DD96 lda (sp),y
+DD98 ldy #$02
+DD9A sta (sp),y
+DD9C lda #$98
+DD9E dey
+DD9F sta (sp),y
+DDA1 lda #$1D
+DDA3 sta (sp)
+DDA5 tya
+DDA6 jsr _DrawItemStats
+DDA9 ldy #$02
+DDAB lda (sp),y
+DDAD sta _menu_res_target
+DDB0 L238D:
+DDB0 ldy #$04
+DDB2 L2DAE:
+DDB2 lda (sp),y
+DDB4 ina
+DDB5 jmp L2DAC
+DDB8 L2378:
+DDB8 iny
+DDB9 lda (sp),y
+DDBB ina
+DDBC jmp L2DAD
+DDBF L2DAB:
+DDBF lda _menu_res_target
+DDC2 cmp #$20
+DDC4 jeq L235C
+DDC9 ldx #$00
+DDCB lda _menu_res_target
+DDCE asl a
+DDCF bcc L2DA1
+DDD1 inx
+DDD2 clc
+DDD3 L2DA1:
+DDD3 adc #<(_item_stats)
+DDD5 sta ptr1
+DDD7 txa
+DDD8 adc #>(_item_stats)
+DDDA sta ptr1+1
+DDDC ldy #$01
+DDDE lda (ptr1),y
+DDE0 tax
+DDE1 lda (ptr1)
+DDE3 sta ptr1
+DDE5 stx ptr1+1
+DDE7 ldy #$01
+DDE9 lda (ptr1),y
+DDEB sta (sp),y
+DDED ldx #$00
+DDEF lda _menu_res_target
+DDF2 asl a
+DDF3 bcc L2DA2
+DDF5 inx
+DDF6 clc
+DDF7 L2DA2:
+DDF7 adc #<(_item_stats)
+DDF9 sta ptr1
+DDFB txa
+DDFC adc #>(_item_stats)
+DDFE sta ptr1+1
+DE00 lda (ptr1),y
+DE02 tax
+DE03 lda (ptr1)
+DE05 sta ptr1
+DE07 stx ptr1+1
+DE09 iny
+DE0A lda (ptr1),y
+DE0C sta ptr1
+DE0E lda #$00
+DE10 clc
+DE11 adc #>(_crystal_colors)
+DE13 sta ptr1+1
+DE15 ldy #<(_crystal_colors)
+DE17 lda (ptr1),y
+DE19 sta (sp)
+DE1B jsr decsp7
+DE1E lda #<(L23D6)
+DE20 ldy #$05
+DE22 sta (sp),y
+DE24 iny
+DE25 lda #>(L23D6)
+DE27 sta (sp),y
+DE29 ldy #$08
+DE2B lda (sp),y
+DE2D ldy #$04
+DE2F sta (sp),y
+DE31 lda #$00
+DE33 dey
+DE34 sta (sp),y
+DE36 lda #$9A
+DE38 dey
+DE39 sta (sp),y
+DE3B lda #$6B
+DE3D dey
+DE3E sta (sp),y
+DE40 ldy #$07
+DE42 lda (sp),y
+DE44 sta (sp)
+DE46 lda #$01
+DE48 jsr _DrawTextF
+DE4B L235C:
+DE4B ldy #$12
+DE4D jmp addysp
+DE50 DrawSkills:
+FCF8 L22C7:
+FCFB L22CC:
+FCFE L22D1:
+FD01 L22D6:
+FD04 L22DD:
+DE50 jsr decsp3
+DE53 ldy #$02
+DE55 L22CB:
+DE55 lda L22C7,y
+DE58 sta (sp),y
+DE5A dey
+DE5B bpl L22CB
+DE5D jsr decsp3
+DE60 ldy #$02
+DE62 L22D0:
+DE62 lda L22CC,y
+DE65 sta (sp),y
+DE67 dey
+DE68 bpl L22D0
+DE6A jsr decsp3
+DE6D ldy #$02
+DE6F L22D5:
+DE6F lda L22D1,y
+DE72 sta (sp),y
+DE74 dey
+DE75 bpl L22D5
+DE77 jsr decsp3
+DE7A ldy #$02
+DE7C L22DA:
+DE7C lda L22D6,y
+DE7F sta (sp),y
+DE81 dey
+DE82 bpl L22DA
+DE84 jsr decsp2
+DE87 lda #$4C
+DE89 jsr pusha
+DE8C jsr decsp5
+DE8F ldy #$01
+DE91 L22DE:
+DE91 lda L22DD,y
+DE94 sta (sp),y
+DE96 dey
+DE97 bpl L22DE
+DE99 jsr decsp4
+DE9C lda #$98
+DE9E ldy #$03
+DEA0 sta (sp),y
+DEA2 lda #$1D
+DEA4 dey
+DEA5 sta (sp),y
+DEA7 lda #$5C
+DEA9 dey
+DEAA sta (sp),y
+DEAC lda #$57
+DEAE sta (sp)
+DEB0 lda #$10
+DEB2 jsr _DrawRect
+DEB5 lda #$00
+DEB7 ldy #$07
+DEB9 sta (sp),y
+DEBB tax
+DEBC L2DB9:
+DEBC lda (sp),y
+DEBE cmp #$03
+DEC0 jcs L2DC0
+DEC5 jsr decsp4
+DEC8 lda #$09
+DECA ldy #$03
+DECC sta (sp),y
+DECE lda sp
+DED0 ldx sp+1
+DED2 clc
+DED3 adc #$0F
+DED5 bcc L22F1
+DED7 inx
+DED8 L22F1:
+DED8 ldy #$0B
+DEDA clc
+DEDB adc (sp),y
+DEDD bcc L22F2
+DEDF inx
+DEE0 L22F2:
+DEE0 sta ptr1
+DEE2 stx ptr1+1
+DEE4 lda (ptr1)
+DEE6 ldy #$02
+DEE8 sta (sp),y
+DEEA lda #$8C
+DEEC dey
+DEED sta (sp),y
+DEEF lda #$1E
+DEF1 sta (sp)
+DEF3 lda sp
+DEF5 ldx sp+1
+DEF7 clc
+DEF8 adc #$0C
+DEFA bcc L22F7
+DEFC inx
+DEFD L22F7:
+DEFD ldy #$0B
+DEFF clc
+DF00 adc (sp),y
+DF02 bcc L22F8
+DF04 inx
+DF05 L22F8:
+DF05 sta ptr1
+DF07 stx ptr1+1
+DF09 lda (ptr1)
+DF0B jsr _DrawRect
+DF0E lda #$00
+DF10 ldy #$06
+DF12 L2DC1:
+DF12 sta (sp),y
+DF14 cmp #$05
+DF16 jcs L22E7
+DF1B iny
+DF1C ldx #$00
+DF1E lda (sp),y
+DF20 jsr mulax5
+DF23 sta ptr1
+DF25 stx ptr1+1
+DF27 dey
+DF28 lda (sp),y
+DF2A clc
+DF2B adc ptr1
+DF2D ldx ptr1+1
+DF2F bcc L2DB2
+DF31 inx
+DF32 L2DB2:
+DF32 sta ptr1
+DF34 txa
+DF35 clc
+DF36 adc #>(_skill_list)
+DF38 sta ptr1+1
+DF3A ldy #<(_skill_list)
+DF3C lda (ptr1),y
+DF3E cmp #$01
+DF40 bne L2301
+DF42 jsr decsp4
+DF45 ldy #$09
+DF47 lda (sp),y
+DF49 ldy #$03
+DF4B sta (sp),y
+DF4D ldy #$0A
+DF4F lda (sp),y
+DF51 jsr pusha0
+DF54 lda #$1C
+DF56 jsr tosumula0
+DF59 clc
+DF5A adc #$0B
+DF5C ldy #$02
+DF5E sta (sp),y
+DF60 ldy #$0B
+DF62 lda (sp),y
+DF64 jsr pusha0
+DF67 lda #$1E
+DF69 jsr tosumula0
+DF6C clc
+DF6D adc #$20
+DF6F ldy #$01
+DF71 sta (sp),y
+DF73 lda sp
+DF75 ldx sp+1
+DF77 clc
+DF78 adc #$15
+DF7A bcc L230C
+DF7C inx
+DF7D L230C:
+DF7D ldy #$0B
+DF7F clc
+DF80 adc (sp),y
+DF82 bcc L230D
+DF84 inx
+DF85 L230D:
+DF85 sta ptr1
+DF87 stx ptr1+1
+DF89 lda (ptr1)
+DF8B sta (sp)
+DF8D lda sp
+DF8F ldx sp+1
+DF91 clc
+DF92 adc #$12
+DF94 bcc L2310
+DF96 inx
+DF97 L2310:
+DF97 ldy #$0B
+DF99 clc
+DF9A adc (sp),y
+DF9C bcc L2311
+DF9E inx
+DF9F L2311:
+DF9F sta ptr1
+DFA1 stx ptr1+1
+DFA3 lda (ptr1)
+DFA5 bra L2DB6
+DFA7 L2301:
+DFA7 jsr decsp4
+DFAA ldy #$09
+DFAC lda (sp),y
+DFAE ldy #$03
+DFB0 sta (sp),y
+DFB2 ldy #$0A
+DFB4 lda (sp),y
+DFB6 jsr pusha0
+DFB9 lda #$1C
+DFBB jsr tosumula0
+DFBE clc
+DFBF adc #$0B
+DFC1 ldy #$02
+DFC3 sta (sp),y
+DFC5 ldy #$0B
+DFC7 lda (sp),y
+DFC9 jsr pusha0
+DFCC lda #$1E
+DFCE jsr tosumula0
+DFD1 clc
+DFD2 adc #$20
+DFD4 ldy #$01
+DFD6 sta (sp),y
+DFD8 lda #$15
+DFDA sta (sp)
+DFDC lda #$2A
+DFDE L2DB6:
+DFDE jsr _DrawTile1bpp
+DFE1 ldy #$06
+DFE3 lda (sp),y
+DFE5 cmp _menu_skills_x
+DFE8 jne L232D
+DFED iny
+DFEE lda (sp),y
+DFF0 cmp _menu_skills_y
+DFF3 jne L232D
+DFF8 jsr decsp4
+DFFB lda #$44
+DFFD ldy #$02
+DFFF sta (sp),y
+E001 iny
+E002 lda #$00
+E004 sta (sp),y
+E006 ldy #$0A
+E008 lda (sp),y
+E00A jsr pusha0
+E00D lda #$1C
+E00F jsr tosumula0
+E012 clc
+E013 adc #$0B
+E015 bcc L2324
+E017 inx
+E018 L2324:
+E018 sta (sp)
+E01A ldy #$01
+E01C txa
+E01D sta (sp),y
+E01F ldy #$0B
+E021 lda (sp),y
+E023 jsr pusha0
+E026 lda #$1E
+E028 jsr tosumula0
+E02B clc
+E02C adc #$20
+E02E bcc L2326
+E030 inx
+E031 L2326:
+E031 jsr _DrawTile
+E034 ldy #$07
+E036 ldx #$00
+E038 lda (sp),y
+E03A jsr mulax5
+E03D sta ptr1
+E03F dey
+E040 lda (sp),y
+E042 clc
+E043 adc ptr1
+E045 ldy #$02
+E047 sta (sp),y
+E049 tay
+E04A lda _skill_list,y
+E04D bne L232D
+E04F lda _menu_skills_x
+E052 beq L2DBF
+E054 ldy #$02
+E056 ldx #$00
+E058 lda (sp),y
+E05A sec
+E05B sbc #$01
+E05D bcs L2332
+E05F dex
+E060 L2332:
+E060 sta ptr1
+E062 txa
+E063 clc
+E064 adc #>(_skill_list)
+E066 sta ptr1+1
+E068 ldy #<(_skill_list)
+E06A lda (ptr1),y
+E06C cmp #$01
+E06E bne L232D
+E070 L2DBF:
+E070 jsr decsp5
+E073 lda #<(L2335)
+E075 ldy #$03
+E077 sta (sp),y
+E079 iny
+E07A lda #>(L2335)
+E07C sta (sp),y
+E07E lda #$9A
+E080 ldy #$02
+E082 sta (sp),y
+E084 lda #$6A
+E086 dey
+E087 sta (sp),y
+E089 lda #$0F
+E08B sta (sp)
+E08D ina
+E08E jsr _DrawText
+E091 L232D:
+E091 ldy #$05
+E093 lda (sp),y
+E095 ina
+E096 sta (sp),y
+E098 iny
+E099 lda (sp),y
+E09B ina
+E09C jmp L2DC1
+E09F L22E7:
+E09F iny
+E0A0 ldx #$00
+E0A2 lda (sp),y
+E0A4 ina
+E0A5 sta (sp),y
+E0A7 jmp L2DB9
+E0AA L2DC0:
+E0AA lda _menu_skills_y
+E0AD jsr mulax5
+E0B0 clc
+E0B1 adc _menu_skills_x
+E0B4 bcc L2DAF
+E0B6 inx
+E0B7 L2DAF:
+E0B7 stx tmp1
+E0B9 asl a
+E0BA rol tmp1
+E0BC clc
+E0BD adc #<(_skill_titles)
+E0BF sta ptr1
+E0C1 lda tmp1
+E0C3 adc #>(_skill_titles)
+E0C5 sta ptr1+1
+E0C7 ldy #$01
+E0C9 lda (ptr1),y
+E0CB tax
+E0CC lda (ptr1)
+E0CE ldy #$03
+E0D0 jsr staxysp
+E0D3 lda #$00
+E0D5 ldy #$07
+E0D7 bra L2DB7
+E0D9 L2341:
+E0D9 ldy #$07
+E0DB clc
+E0DC lda #$06
+E0DE adc (sp),y
+E0E0 L2DB7:
+E0E0 sta (sp),y
+E0E2 ldy #$04
+E0E4 lda (sp),y
+E0E6 tax
+E0E7 dey
+E0E8 lda (sp),y
+E0EA sta regsave
+E0EC stx regsave+1
+E0EE ina
+E0EF bne L2345
+E0F1 inx
+E0F2 L2345:
+E0F2 jsr staxysp
+E0F5 lda (regsave)
+E0F7 bne L2341
+E0F9 jsr decsp5
+E0FC ldx #$00
+E0FE lda _menu_skills_y
+E101 jsr mulax5
+E104 clc
+E105 adc _menu_skills_x
+E108 bcc L2DB0
+E10A inx
+E10B L2DB0:
+E10B stx tmp1
+E10D asl a
+E10E rol tmp1
+E110 clc
+E111 adc #<(_skill_titles)
+E113 sta ptr1
+E115 lda tmp1
+E117 adc #>(_skill_titles)
+E119 sta ptr1+1
+E11B ldy #$01
+E11D lda (ptr1),y
+E11F tax
+E120 lda (ptr1)
+E122 ldy #$03
+E124 sta (sp),y
+E126 iny
+E127 txa
+E128 sta (sp),y
+E12A lda #$5C
+E12C sec
+E12D ldy #$0C
+E12F sbc (sp),y
+E131 lsr a
+E132 clc
+E133 adc #$98
+E135 ldy #$02
+E137 sta (sp),y
+E139 lda #$1F
+E13B dey
+E13C sta (sp),y
+E13E lda #$3F
+E140 sta (sp)
+E142 lda sp
+E144 ldx sp+1
+E146 clc
+E147 adc #$13
+E149 bcc L2352
+E14B inx
+E14C L2352:
+E14C ldy _menu_skills_y
+E14F sta ptr1
+E151 stx ptr1+1
+E153 lda (ptr1),y
+E155 jsr _DrawText
+E158 jsr decsp6
+E15B ldx #$00
+E15D lda _menu_skills_y
+E160 jsr mulax5
+E163 clc
+E164 adc _menu_skills_x
+E167 bcc L2DB1
+E169 inx
+E16A L2DB1:
+E16A stx tmp1
+E16C asl a
+E16D rol tmp1
+E16F clc
+E170 adc #<(_skill_descriptions)
+E172 sta ptr1
+E174 lda tmp1
+E176 adc #>(_skill_descriptions)
+E178 sta ptr1+1
+E17A ldy #$01
+E17C lda (ptr1),y
+E17E tax
+E17F lda (ptr1)
+E181 ldy #$04
+E183 sta (sp),y
+E185 iny
+E186 txa
+E187 sta (sp),y
+E189 lda #$9A
+E18B ldy #$03
+E18D sta (sp),y
+E18F lda #$2B
+E191 dey
+E192 sta (sp),y
+E194 lda #$0A
+E196 dey
+E197 sta (sp),y
+E199 lda #$3F
+E19B sta (sp)
+E19D lda #$10
+E19F jsr _DrawTextNL
+E1A2 ldy #$14
+E1A4 jmp addysp
+E1A7 DrawText:
+E1A7 jsr pusha
+E1AA lda regbank+18
+E1AC ldx regbank+19
+E1AE jsr pushax
+E1B1 ldy #$05
+E1B3 lda (sp),y
+E1B5 jsr pusha0
+E1B8 ldy #$06
+E1BA lda (sp),y
+E1BC jsr _CalcXY
+E1BF sta regbank+18
+E1C1 stx regbank+18+1
+E1C3 lda regbank+16
+E1C5 ldx regbank+17
+E1C7 jsr pushax
+E1CA ldy #$09
+E1CC lda (sp),y
+E1CE sta regbank+16+1
+E1D0 dey
+E1D1 lda (sp),y
+E1D3 sta regbank+16
+E1D5 lda regbank+14
+E1D7 ldx regbank+15
+E1D9 jsr pushax
+E1DC lda regbank+13
+E1DE jsr pusha
+E1E1 jsr decsp1
+E1E4 ldy #$0B
+E1E6 lda (sp),y
+E1E8 jsr pusha
+E1EB lda regbank+12
+E1ED jsr pusha
+E1F0 lda regbank+11
+E1F2 jsr pusha
+E1F5 jmp L2DD5
+E1F8 L2DC5:
+E1F8 lda (sp),y
+E1FA sec
+E1FB sbc #$20
+E1FD bcs L1F2A
+E1FF dex
+E200 L1F2A:
+E200 jsr shlax3
+E203 clc
+E204 adc #<(_chartable)
+E206 sta regbank+14
+E208 txa
+E209 adc #>(_chartable)
+E20B sta regbank+14+1
+E20D stz regbank+12
+E20F L2DC6:
+E20F lda regbank+12
+E211 cmp #$08
+E213 bcs L1F2C
+E215 lda regbank+14
+E217 ldx regbank+14+1
+E219 sta regsave
+E21B stx regsave+1
+E21D ina
+E21E bne L1F35
+E220 inx
+E221 L1F35:
+E221 sta regbank+14
+E223 stx regbank+14+1
+E225 lda (regsave)
+E227 sta regbank+13
+E229 stz regbank+11
+E22B L2DC7:
+E22B lda regbank+11
+E22D cmp #$06
+E22F bcs L1F37
+E231 lda regbank+13
+E233 and #$01
+E235 beq L1F3E
+E237 lda regbank+18
+E239 ldx regbank+18+1
+E23B sta regsave
+E23D stx regsave+1
+E23F ina
+E240 bne L1F41
+E242 inx
+E243 L1F41:
+E243 sta regbank+18
+E245 stx regbank+18+1
+E247 ldy #$0C
+E249 bra L2DCB
+E24B L1F3E:
+E24B lda regbank+18
+E24D ldx regbank+18+1
+E24F sta regsave
+E251 stx regsave+1
+E253 ina
+E254 bne L1F45
+E256 inx
+E257 L1F45:
+E257 sta regbank+18
+E259 stx regbank+18+1
+E25B ldy #$0B
+E25D L2DCB:
+E25D lda (sp),y
+E25F sta (regsave)
+E261 lda regbank+13
+E263 lsr a
+E264 sta regbank+13
+E266 inc regbank+11
+E268 bra L2DC7
+E26A L1F37:
+E26A lda #$FA
+E26C clc
+E26D adc regbank+18
+E26F sta regbank+18
+E271 bcc L1F4B
+E273 inc regbank+18+1
+E275 L1F4B:
+E275 inc regbank+12
+E277 bra L2DC6
+E279 L1F2C:
+E279 lda regbank+18
+E27B sec
+E27C sbc #$FA
+E27E sta regbank+18
+E280 lda regbank+18+1
+E282 sbc #$07
+E284 sta regbank+18+1
+E286 ldy #$02
+E288 clc
+E289 lda #$06
+E28B adc (sp),y
+E28D sta (sp),y
+E28F L2DD5:
+E28F lda regbank+16
+E291 ldx regbank+16+1
+E293 sta regsave
+E295 stx regsave+1
+E297 ina
+E298 bne L1F52
+E29A inx
+E29B L1F52:
+E29B sta regbank+16
+E29D stx regbank+16+1
+E29F ldx #$00
+E2A1 lda (regsave)
+E2A3 ldy #$03
+E2A5 sta (sp),y
+E2A7 lda (sp),y
+E2A9 jne L2DC5
+E2AE dey
+E2AF lda (sp),y
+E2B1 pha
+E2B2 ldy #$04
+E2B4 L1F54:
+E2B4 lda (sp),y
+E2B6 sta regbank+9,y
+E2B9 iny
+E2BA cpy #$0B
+E2BC bne L1F54
+E2BE lda (sp)
+E2C0 sta regbank+11
+E2C2 ldy #$01
+E2C4 lda (sp),y
+E2C6 sta regbank+12
+E2C8 pla
+E2C9 ldy #$11
+E2CB jmp addysp
+E2CE DrawTextF:
+FD06 L1F8E:
+E2CE jsr pusha
+E2D1 jsr decsp2
+E2D4 ldy #$01
+E2D6 L1F8F:
+E2D6 lda L1F8E,y
+E2D9 sta (sp),y
+E2DB dey
+E2DC bpl L1F8F
+E2DE jmp L1F92
+E2E1 L1F90:
+E2E1 iny
+E2E2 lda (sp),y
+E2E4 sta ptr1+1
+E2E6 dey
+E2E7 lda (sp),y
+E2E9 sta ptr1
+E2EB lda (ptr1)
+E2ED cmp #$24
+E2EF bne L1F94
+E2F1 jsr decsp4
+E2F4 ldy #$0B
+E2F6 lda (sp),y
+E2F8 ldy #$03
+E2FA sta (sp),y
+E2FC ldy #$09
+E2FE lda (sp),y
+E300 ldy #$02
+E302 sta (sp),y
+E304 ldy #$08
+E306 lda (sp),y
+E308 ldy #$01
+E30A sta (sp),y
+E30C ldy #$07
+E30E lda (sp),y
+E310 sta (sp)
+E312 dey
+E313 lda (sp),y
+E315 jsr _DrawUC
+E318 ldy #$05
+E31A sta (sp),y
+E31C iny
+E31D lda (sp),y
+E31F iny
+E320 bra L2DD6
+E322 L1F94:
+E322 iny
+E323 lda (sp),y
+E325 sta ptr1+1
+E327 dey
+E328 lda (sp),y
+E32A sta ptr1
+E32C lda (ptr1)
+E32E sta (sp)
+E330 jsr decsp5
+E333 lda sp
+E335 ldx sp+1
+E337 clc
+E338 adc #$05
+E33A bcc L1FA6
+E33C inx
+E33D L1FA6:
+E33D ldy #$03
+E33F sta (sp),y
+E341 iny
+E342 txa
+E343 sta (sp),y
+E345 ldy #$0A
+E347 lda (sp),y
+E349 ldy #$02
+E34B sta (sp),y
+E34D ldy #$09
+E34F lda (sp),y
+E351 ldy #$01
+E353 sta (sp),y
+E355 ldy #$08
+E357 lda (sp),y
+E359 sta (sp)
+E35B dey
+E35C lda (sp),y
+E35E jsr _DrawText
+E361 ldy #$05
+E363 L2DD6:
+E363 sta (sp),y
+E365 ldy #$09
+E367 lda (sp),y
+E369 tax
+E36A dey
+E36B lda (sp),y
+E36D ina
+E36E bne L1FAC
+E370 inx
+E371 L1FAC:
+E371 jsr staxysp
+E374 L1F92:
+E374 ldy #$09
+E376 lda (sp),y
+E378 sta ptr1+1
+E37A dey
+E37B lda (sp),y
+E37D sta ptr1
+E37F lda (ptr1)
+E381 jne L1F90
+E386 ldy #$0A
+E388 jmp addysp
+E38B DrawTextNL:
+FD08 L1FB1:
+E38B jsr pusha
+E38E ldy #$03
+E390 lda (sp),y
+E392 jsr pusha
+E395 ldy #$05
+E397 lda (sp),y
+E399 jsr pusha
+E39C jsr decsp2
+E39F ldy #$01
+E3A1 L1FB2:
+E3A1 lda L1FB1,y
+E3A4 sta (sp),y
+E3A6 dey
+E3A7 bpl L1FB2
+E3A9 bra L1FB5
+E3AB L1FB3:
+E3AB iny
+E3AC lda (sp),y
+E3AE sta ptr1+1
+E3B0 dey
+E3B1 lda (sp),y
+E3B3 sta ptr1
+E3B5 lda (ptr1)
+E3B7 cmp #$24
+E3B9 bne L1FB7
+E3BB ldy #$06
+E3BD lda (sp),y
+E3BF ldy #$03
+E3C1 clc
+E3C2 adc (sp),y
+E3C4 sta (sp),y
+E3C6 ldy #$08
+E3C8 lda (sp),y
+E3CA bra L2DD8
+E3CC L1FB7:
+E3CC iny
+E3CD lda (sp),y
+E3CF sta ptr1+1
+E3D1 dey
+E3D2 lda (sp),y
+E3D4 sta ptr1
+E3D6 lda (ptr1)
+E3D8 sta (sp)
+E3DA jsr decsp5
+E3DD lda sp
+E3DF ldx sp+1
+E3E1 clc
+E3E2 adc #$05
+E3E4 bcc L1FC4
+E3E6 inx
+E3E7 L1FC4:
+E3E7 ldy #$03
+E3E9 sta (sp),y
+E3EB iny
+E3EC txa
+E3ED sta (sp),y
+E3EF ldy #$07
+E3F1 lda (sp),y
+E3F3 ldy #$02
+E3F5 sta (sp),y
+E3F7 ldy #$08
+E3F9 lda (sp),y
+E3FB ldy #$01
+E3FD sta (sp),y
+E3FF ldy #$0A
+E401 lda (sp),y
+E403 sta (sp)
+E405 dey
+E406 lda (sp),y
+E408 jsr _DrawText
+E40B L2DD8:
+E40B ldy #$02
+E40D sta (sp),y
+E40F ldy #$0A
+E411 lda (sp),y
+E413 tax
+E414 dey
+E415 lda (sp),y
+E417 ina
+E418 bne L1FCA
+E41A inx
+E41B L1FCA:
+E41B jsr staxysp
+E41E L1FB5:
+E41E ldy #$0A
+E420 lda (sp),y
+E422 sta ptr1+1
+E424 dey
+E425 lda (sp),y
+E427 sta ptr1
+E429 lda (ptr1)
+E42B jne L1FB3
+E430 ldy #$0B
+E432 jmp addysp
+E435 DrawTile:
+E435 jsr pushax
+E438 jsr decsp2
+E43B ldy #$07
+E43D lda (sp),y
+E43F tax
+E440 dey
+E441 lda (sp),y
+E443 cpx #$00
+E445 bne L1DCF
+E447 cmp #$42
+E449 beq L2DD9
+E44B cmp #$43
+E44D beq L2DDA
+E44F cmp #$44
+E451 beq L2DDA
+E453 cmp #$45
+E455 beq L2DDB
+E457 cmp #$46
+E459 beq L2DDC
+E45B cmp #$47
+E45D beq L2DDC
+E45F cmp #$48
+E461 beq L2DDD
+E463 cmp #$49
+E465 beq L2DDD
+E467 cmp #$4A
+E469 beq L2DDE
+E46B cmp #$4B
+E46D beq L2DDE
+E46F bra L1DCF
+E471 L2DD9:
+E471 lda #$0C
+E473 ldy #$01
+E475 sta (sp),y
+E477 lda #$40
+E479 sta (sp)
+E47B bra L1DA2
+E47D L2DDA:
+E47D lda #$40
+E47F ldy #$01
+E481 sta (sp),y
+E483 lda #$0C
+E485 sta (sp)
+E487 bra L1DA2
+E489 L2DDB:
+E489 txa
+E48A ldy #$01
+E48C sta (sp),y
+E48E lda #$30
+E490 sta (sp)
+E492 bra L1DA2
+E494 L2DDC:
+E494 lda #$01
+E496 tay
+E497 sta (sp),y
+E499 lda #$17
+E49B sta (sp)
+E49D bra L1DA2
+E49F L2DDD:
+E49F lda #$10
+E4A1 ldy #$01
+E4A3 sta (sp),y
+E4A5 lda #$35
+E4A7 sta (sp)
+E4A9 bra L1DA2
+E4AB L2DDE:
+E4AB lda #$05
+E4AD ldy #$01
+E4AF sta (sp),y
+E4B1 lda #$1F
+E4B3 sta (sp)
+E4B5 bra L1DA2
+E4B7 L1DCF:
+E4B7 jsr decsp4
+E4BA ldy #$0B
+E4BC lda (sp),y
+E4BE tax
+E4BF dey
+E4C0 lda (sp),y
+E4C2 ldy #$02
+E4C4 sta (sp),y
+E4C6 iny
+E4C7 txa
+E4C8 sta (sp),y
+E4CA ldy #$09
+E4CC lda (sp),y
+E4CE tax
+E4CF dey
+E4D0 lda (sp),y
+E4D2 sta (sp)
+E4D4 ldy #$01
+E4D6 txa
+E4D7 sta (sp),y
+E4D9 ldy #$07
+E4DB lda (sp),y
+E4DD tax
+E4DE dey
+E4DF lda (sp),y
+E4E1 jsr _DrawTileFull
+E4E4 jmp incsp8
+E4E7 L1DA2:
+E4E7 jsr decsp4
+E4EA ldy #$0A
+E4EC lda (sp),y
+E4EE ldy #$03
+E4F0 sta (sp),y
+E4F2 ldy #$08
+E4F4 lda (sp),y
+E4F6 ldy #$02
+E4F8 sta (sp),y
+E4FA ldy #$06
+E4FC lda (sp),y
+E4FE ldy #$01
+E500 sta (sp),y
+E502 ldy #$05
+E504 lda (sp),y
+E506 sta (sp)
+E508 dey
+E509 lda (sp),y
+E50B jsr _DrawTile1bpp
+E50E jmp incsp8
+E511 DrawTile1bpp:
+E511 jsr pusha
+E514 lda regbank+18
+E516 ldx regbank+19
+E518 jsr pushax
+E51B ldy #$05
+E51D lda (sp),y
+E51F jsr pusha0
+E522 ldy #$06
+E524 lda (sp),y
+E526 jsr _CalcXY
+E529 sta regbank+18
+E52B stx regbank+18+1
+E52D lda regbank+16
+E52F ldx regbank+17
+E531 jsr pushax
+E534 ldy #$08
+E536 ldx #$00
+E538 lda (sp),y
+E53A asl a
+E53B bcc L2DEB
+E53D inx
+E53E clc
+E53F L2DEB:
+E53F adc #<(_tiles)
+E541 sta ptr1
+E543 txa
+E544 adc #>(_tiles)
+E546 sta ptr1+1
+E548 ldy #$01
+E54A lda (ptr1),y
+E54C tax
+E54D lda (ptr1)
+E54F sta regbank+16
+E551 stx regbank+16+1
+E553 lda regbank+15
+E555 jsr pusha
+E558 lda regbank+14
+E55A jsr pusha
+E55D lda regbank+13
+E55F jsr pusha
+E562 lda regbank+12
+E564 jsr pusha
+E567 lda regbank+11
+E569 jsr pusha
+E56C lda regbank+10
+E56E jsr pusha
+E571 lda regbank+9
+E573 jsr pusha
+E576 jsr decsp5
+E579 lda #$00
+E57B jsr pusha
+E57E stz regbank+14
+E580 stz regbank+15
+E582 lda (regbank+16)
+E584 sta regbank+11
+E586 ldy #$01
+E588 lda (regbank+16),y
+E58A sta regbank+12
+E58C sta regbank+13
+E58E iny
+E58F lda (regbank+16),y
+E591 sta regbank+9
+E593 lda #$03
+E595 clc
+E596 adc regbank+16
+E598 sta regbank+16
+E59A jcc L1D6C
+E59F inc regbank+16+1
+E5A1 jmp L1D6C
+E5A4 L1CFA:
+E5A4 lda regbank+14
+E5A6 jne L1D38
+E5AB lda regbank+16
+E5AD ldx regbank+16+1
+E5AF sta regsave
+E5B1 stx regsave+1
+E5B3 ina
+E5B4 bne L1D02
+E5B6 inx
+E5B7 L1D02:
+E5B7 sta regbank+16
+E5B9 stx regbank+16+1
+E5BB lda (regsave)
+E5BD sta regbank+10
+E5BF lda regbank+15
+E5C1 bne L1D38
+E5C3 lda regbank+9
+E5C5 beq L2DF7
+E5C7 lda regbank+13
+E5C9 cmp #$01
+E5CB beq L2DEF
+E5CD lda regbank+12
+E5CF cmp regbank+13
+E5D1 bne L2DF1
+E5D3 L2DEF:
+E5D3 lda #$00
+E5D5 ldy #$05
+E5D7 sta (sp),y
+E5D9 lda regbank+11
+E5DB sec
+E5DC sbc #$01
+E5DE dey
+E5DF sta (sp),y
+E5E1 lda regbank+9
+E5E3 cmp #$02
+E5E5 bne L2E0B
+E5E7 dea
+E5E8 dey
+E5E9 sta (sp),y
+E5EB lda regbank+11
+E5ED sec
+E5EE sbc #$02
+E5F0 bra L2E06
+E5F2 L2DF1:
+E5F2 lda regbank+13
+E5F4 cmp #$02
+E5F6 beq L2DF2
+E5F8 ldx #$00
+E5FA lda regbank+12
+E5FC sec
+E5FD sbc #$01
+E5FF bcs L1D28
+E601 dex
+E602 L1D28:
+E602 cpx #$00
+E604 bne L2DFE
+E606 cmp regbank+13
+E608 beq L2DF2
+E60A L2DFE:
+E60A lda #$00
+E60C bra L2DF7
+E60E L2DF2:
+E60E lda regbank+9
+E610 cmp #$02
+E612 beq L2DF5
+E614 lda #$00
+E616 bra L2DF7
+E618 L2DF5:
+E618 lda #$00
+E61A ldy #$05
+E61C sta (sp),y
+E61E lda regbank+11
+E620 sec
+E621 sbc #$01
+E623 dey
+E624 sta (sp),y
+E626 L2E0B:
+E626 lda #$FF
+E628 dey
+E629 sta (sp),y
+E62B L2E06:
+E62B dey
+E62C sta (sp),y
+E62E lda #$01
+E630 L2DF7:
+E630 ldy #$01
+E632 sta (sp),y
+E634 L1D38:
+E634 ldy #$01
+E636 lda (sp),y
+E638 cmp #$01
+E63A bne L2DFB
+E63C ldy #$05
+E63E lda (sp),y
+E640 cmp regbank+15
+E642 beq L2DF8
+E644 dey
+E645 lda (sp),y
+E647 cmp regbank+15
+E649 beq L2DF8
+E64B dey
+E64C lda (sp),y
+E64E cmp regbank+15
+E650 beq L2DF8
+E652 dey
+E653 lda (sp),y
+E655 cmp regbank+15
+E657 bne L2DFB
+E659 L2DF8:
+E659 lda #$01
+E65B bra L2E00
+E65D L2DFB:
+E65D lda #$00
+E65F L2E00:
+E65F sta (sp)
+E661 lda (sp)
+E663 bne L1D55
+E665 lda regbank+10
+E667 and #$80
+E669 beq L1D4E
+E66B ldy #$12
+E66D bra L2E09
+E66F L1D4E:
+E66F ldy #$11
+E671 L2E09:
+E671 lda (sp),y
+E673 cmp #$40
+E675 beq L1D55
+E677 sta (regbank+18)
+E679 L1D55:
+E679 lda regbank+18
+E67B ldx regbank+18+1
+E67D ina
+E67E bne L1D5A
+E680 inx
+E681 L1D5A:
+E681 sta regbank+18
+E683 stx regbank+18+1
+E685 lda regbank+10
+E687 asl a
+E688 sta regbank+10
+E68A inc regbank+15
+E68C lda regbank+11
+E68E cmp regbank+15
+E690 bne L2DFC
+E692 lda #$00
+E694 stz regbank+15
+E696 stz regbank+14
+E698 dec regbank+13
+E69A sec
+E69B sbc regbank+11
+E69D pha
+E69E lda #$01
+E6A0 sbc #$00
+E6A2 tax
+E6A3 pla
+E6A4 clc
+E6A5 adc regbank+18
+E6A7 sta regbank+18
+E6A9 txa
+E6AA adc regbank+18+1
+E6AC sta regbank+18+1
+E6AE bra L1D6C
+E6B0 L2DFC:
+E6B0 lda regbank+14
+E6B2 cmp #$07
+E6B4 bne L2DFD
+E6B6 stz regbank+14
+E6B8 bra L1D6C
+E6BA L2DFD:
+E6BA inc regbank+14
+E6BC L1D6C:
+E6BC lda regbank+13
+E6BE jne L1CFA
+E6C3 ldy #$06
+E6C5 L1D6E:
+E6C5 lda (sp),y
+E6C7 sta regbank+3,y
+E6CA iny
+E6CB cpy #$11
+E6CD bne L1D6E
+E6CF ldy #$16
+E6D1 jmp addysp
+E6D4 DrawTileFull:
+E6D4 jsr pushax
+E6D7 lda regbank+18
+E6D9 ldx regbank+19
+E6DB jsr pushax
+E6DE ldy #$07
+E6E0 jsr pushwysp
+E6E3 ldy #$05
+E6E5 lda (sp),y
+E6E7 tax
+E6E8 dey
+E6E9 lda (sp),y
+E6EB jsr _CalcXY
+E6EE sta regbank+18
+E6F0 stx regbank+18+1
+E6F2 lda regbank+16
+E6F4 ldx regbank+17
+E6F6 jsr pushax
+E6F9 ldy #$09
+E6FB lda (sp),y
+E6FD sta tmp1
+E6FF dey
+E700 lda (sp),y
+E702 asl a
+E703 rol tmp1
+E705 clc
+E706 adc #<(_tiles)
+E708 sta ptr1
+E70A lda tmp1
+E70C adc #>(_tiles)
+E70E sta ptr1+1
+E710 ldy #$01
+E712 lda (ptr1),y
+E714 tax
+E715 lda (ptr1)
+E717 sta regbank+16
+E719 stx regbank+16+1
+E71B lda regbank+15
+E71D jsr pusha
+E720 lda regbank+14
+E722 jsr pusha
+E725 lda regbank+13
+E727 jsr pusha
+E72A lda regbank+12
+E72C jsr pusha
+E72F lda regbank+11
+E731 jsr pusha
+E734 lda (regbank+16)
+E736 sta regbank+11
+E738 ldy #$01
+E73A lda (regbank+16),y
+E73C sta regbank+12
+E73E lda #$02
+E740 clc
+E741 adc regbank+16
+E743 sta regbank+16
+E745 bcc L1D94
+E747 inc regbank+16+1
+E749 bra L1D94
+E74B L1D7E:
+E74B lda regbank+16
+E74D ldx regbank+16+1
+E74F sta regsave
+E751 stx regsave+1
+E753 ina
+E754 bne L1D84
+E756 inx
+E757 L1D84:
+E757 sta regbank+16
+E759 stx regbank+16+1
+E75B ldy #$00
+E75D lda (regsave)
+E75F sta regbank+15
+E761 lda regbank+15
+E763 bne L1D85
+E765 dec regbank+12
+E767 sec
+E768 sbc regbank+11
+E76A pha
+E76B lda #$01
+E76D sbc #$00
+E76F tax
+E770 pla
+E771 clc
+E772 adc regbank+18
+E774 sta regbank+18
+E776 txa
+E777 adc regbank+18+1
+E779 sta regbank+18+1
+E77B bra L1D94
+E77D L1D85:
+E77D lda regbank+16
+E77F ldx regbank+16+1
+E781 sta regsave
+E783 stx regsave+1
+E785 ina
+E786 bne L1D8D
+E788 inx
+E789 L1D8D:
+E789 sta regbank+16
+E78B stx regbank+16+1
+E78D lda (regsave)
+E78F sta regbank+14
+E791 cmp #$40
+E793 bne L2E0C
+E795 lda regbank+15
+E797 clc
+E798 adc regbank+18
+E79A sta regbank+18
+E79C tya
+E79D adc regbank+18+1
+E79F sta regbank+18+1
+E7A1 bra L1D94
+E7A3 L2E0C:
+E7A3 stz regbank+13
+E7A5 L2E0D:
+E7A5 lda regbank+13
+E7A7 cmp regbank+15
+E7A9 bcs L1D94
+E7AB lda regbank+18
+E7AD ldx regbank+18+1
+E7AF sta regsave
+E7B1 stx regsave+1
+E7B3 ina
+E7B4 bne L1D9C
+E7B6 inx
+E7B7 L1D9C:
+E7B7 sta regbank+18
+E7B9 stx regbank+18+1
+E7BB lda regbank+14
+E7BD sta (regsave),y
+E7BF inc regbank+13
+E7C1 bra L2E0D
+E7C3 L1D94:
+E7C3 lda regbank+12
+E7C5 bne L1D7E
+E7C7 tay
+E7C8 L1D9E:
+E7C8 lda (sp),y
+E7CA sta regbank+11,y
+E7CD iny
+E7CE cpy #$09
+E7D0 bne L1D9E
+E7D2 ldy #$0F
+E7D4 jmp addysp
+E7D7 DrawUC:
+E7D7 jsr pusha
+E7DA lda #$64
+E7DC jsr pusha
+E7DF jsr decsp4
+E7E2 lda #$00
+E7E4 jsr pusha
+E7E7 jsr pusha
+E7EA ldy #$0A
+E7EC lda (sp),y
+E7EE jsr pusha
+E7F1 bra L1F5D
+E7F3 L2E0F:
+E7F3 lda (sp),y
+E7F5 ldy #$0C
+E7F7 eor #$FF
+E7F9 sec
+E7FA adc (sp),y
+E7FC sta (sp),y
+E7FE ldy #$01
+E800 lda (sp),y
+E802 ina
+E803 sta (sp),y
+E805 L1F61:
+E805 ldy #$0C
+E807 ldx #$00
+E809 lda (sp),y
+E80B ldy #$07
+E80D cmp (sp),y
+E80F bcs L2E0F
+E811 ldy #$01
+E813 lda (sp),y
+E815 bne L2E10
+E817 iny
+E818 lda (sp),y
+E81A beq L2E12
+E81C L2E10:
+E81C ldy #$02
+E81E lda (sp),y
+E820 pha
+E821 ina
+E822 sta (sp),y
+E824 pla
+E825 clc
+E826 adc #$03
+E828 bcc L1F6D
+E82A inx
+E82B clc
+E82C L1F6D:
+E82C adc sp
+E82E sta ptr1
+E830 txa
+E831 adc sp+1
+E833 sta ptr1+1
+E835 dey
+E836 lda (sp),y
+E838 clc
+E839 adc #$30
+E83B sta (ptr1)
+E83D clc
+E83E lda #$06
+E840 adc (sp)
+E842 sta (sp)
+E844 lda #$00
+E846 L2E12:
+E846 ldy #$01
+E848 sta (sp),y
+E84A ldy #$07
+E84C lda (sp),y
+E84E jsr pusha0
+E851 lda #$0A
+E853 jsr tosudiva0
+E856 ldy #$07
+E858 sta (sp),y
+E85A L1F5D:
+E85A ldy #$07
+E85C lda (sp),y
+E85E bne L1F61
+E860 ldy #$02
+E862 lda (sp),y
+E864 bne L1F76
+E866 tax
+E867 lda (sp),y
+E869 pha
+E86A ina
+E86B sta (sp),y
+E86D pla
+E86E clc
+E86F adc #$03
+E871 bcc L1F7A
+E873 inx
+E874 clc
+E875 L1F7A:
+E875 adc sp
+E877 sta ptr1
+E879 txa
+E87A adc sp+1
+E87C sta ptr1+1
+E87E lda #$30
+E880 sta (ptr1)
+E882 clc
+E883 lda #$06
+E885 adc (sp)
+E887 sta (sp)
+E889 L1F76:
+E889 lda sp
+E88B ldx sp+1
+E88D clc
+E88E adc #$03
+E890 bcc L1F80
+E892 inx
+E893 L1F80:
+E893 ldy #$02
+E895 sta ptr1
+E897 stx ptr1+1
+E899 lda (sp),y
+E89B tay
+E89C lda #$00
+E89E sta (ptr1),y
+E8A0 jsr decsp5
+E8A3 lda sp
+E8A5 ldx sp+1
+E8A7 clc
+E8A8 adc #$08
+E8AA bcc L1F85
+E8AC inx
+E8AD L1F85:
+E8AD ldy #$03
+E8AF sta (sp),y
+E8B1 iny
+E8B2 txa
+E8B3 sta (sp),y
+E8B5 ldy #$10
+E8B7 lda (sp),y
+E8B9 ldy #$02
+E8BB sta (sp),y
+E8BD ldy #$0F
+E8BF lda (sp),y
+E8C1 ldy #$01
+E8C3 sta (sp),y
+E8C5 ldy #$0E
+E8C7 lda (sp),y
+E8C9 sta (sp)
+E8CB dey
+E8CC lda (sp),y
+E8CE jsr _DrawText
+E8D1 ldx #$00
+E8D3 lda (sp)
+E8D5 ldy #$0D
+E8D7 jmp addysp
+E8DA EnableGfxRAM:
+E8DA lda _RAM_BANK3+1
+E8DD sta ptr1+1
+E8DF lda _RAM_BANK3
+E8E2 sta ptr1
+E8E4 lda #$05
+E8E6 sta (ptr1)
+E8E8 sta _bank_3_copy
+E8EB rts
+E8EC main:
+E8EC jsr decsp3
+E8EF jsr _Setup
+E8F2 jsr _LoadStrings
+E8F5 jsr _LoadTiles
+E8F8 jsr _MakeMap
+E8FB jsr _LoadMonsters
+E8FE jsr _LoadCrystals
+E901 jsr _InitHero
+E904 jsr _CalcStats
+E907 jsr _EnableGfxRAM
+E90A jsr _ColorHero
+E90D jsr _ResetGame
+E910 jsr _DrawFrame
+E913 jsr _DrawLegend
+E916 L2C20:
+E916 ldy #$01
+E918 lda (sp),y
+E91A jsr pusha0
+E91D lda _TIMER_S+1
+E920 sta ptr1+1
+E922 lda _TIMER_S
+E925 sta ptr1
+E927 lda (ptr1)
+E929 jsr tosicmp0
+E92C beq L2C28
+E92E lda _TIMER_S+1
+E931 sta ptr1+1
+E933 lda _TIMER_S
+E936 sta ptr1
+E938 lda (ptr1)
+E93A ldy #$01
+E93C sta (sp),y
+E93E lda _output_mode
+E941 ora _output_mode+1
+E944 bne L2C28
+E946 jsr _TickHandler
+E949 L2C28:
+E949 lda _KB_INPUT+1
+E94C sta ptr1+1
+E94E lda _KB_INPUT
+E951 sta ptr1
+E953 lda (ptr1)
+E955 ldy #$02
+E957 sta (sp),y
+E959 lda (sp),y
+E95B beq L2C20
+E95D jsr _EnableBankROM
+E960 lda _output_mode
+E963 ora _output_mode+1
+E966 bne L2C31
+E968 ldy #$02
+E96A lda (sp),y
+E96C jsr _KeyHandlerGame
+E96F bra L2E22
+E971 L2C31:
+E971 ldy #$02
+E973 lda (sp),y
+E975 jsr _KeyHandlerMenu
+E978 L2E22:
+E978 sta (sp)
+E97A jsr _EnableGfxRAM
+E97D lda (sp)
+E97F and #$01
+E981 beq L2E15
+E983 jsr _DrawMenuBorder
+E986 L2E15:
+E986 lda (sp)
+E988 and #$04
+E98A beq L2E17
+E98C jsr _UpdateTarget
+E98F L2E17:
+E98F lda (sp)
+E991 and #$02
+E993 beq L2E19
+E995 jsr _DrawMenu
+E998 L2E19:
+E998 lda (sp)
+E99A and #$08
+E99C beq L2E1B
+E99E jsr _DrawFrame
+E9A1 L2E1B:
+E9A1 lda (sp)
+E9A3 and #$10
+E9A5 beq L2E1D
+E9A7 jsr _DrawLegend
+E9AA L2E1D:
+E9AA lda (sp)
+E9AC and #$20
+E9AE beq L2E1F
+E9B0 jsr _DrawMenuInventory
+E9B3 L2E1F:
+E9B3 lda (sp)
+E9B5 and #$40
+E9B7 beq L2E21
+E9B9 jsr _DrawSkills
+E9BC L2E21:
+E9BC lda (sp)
+E9BE and #$80
+E9C0 jeq L2C20
+E9C5 jsr _DrawResources
+E9C8 jmp L2C20
+E9CB PopBank3:
+E9CB lda _RAM_BANK3+1
+E9CE sta ptr1+1
+E9D0 lda _RAM_BANK3
+E9D3 sta ptr1
+E9D5 lda _bank_3_save
+E9D8 sta (ptr1)
+E9DA lda _bank_3_save
+E9DD sta _bank_3_copy
+E9E0 rts
+E9E1 PushBank3:
+E9E1 lda _bank_3_copy
+E9E4 sta _bank_3_save
+E9E7 rts
+E9E8 rand:
+E9E8 lda _rand_val
+E9EB ldx _rand_val+1
+E9EE jsr shlax4
+E9F1 jsr shlax3
+E9F4 eor _rand_val
+E9F7 pha
+E9F8 txa
+E9F9 eor _rand_val+1
+E9FC tax
+E9FD pla
+E9FE sta _rand_val
+EA01 stx _rand_val+1
+EA04 sta ptr1
+EA06 stx ptr1+1
+EA08 lda _rand_val+1
+EA0B lsr a
+EA0C eor ptr1
+EA0E pha
+EA0F lda #$00
+EA11 eor ptr1+1
+EA13 tax
+EA14 pla
+EA15 sta _rand_val
+EA18 stx _rand_val+1
+EA1B sta ptr1
+EA1D stx ptr1+1
+EA1F lda #$00
+EA21 eor ptr1
+EA23 pha
+EA24 lda _rand_val
+EA27 eor ptr1+1
+EA29 tax
+EA2A pla
+EA2B sta _rand_val
+EA2E stx _rand_val+1
+EA31 rts
+EA32 rand5050:
+EA32 jsr _rand
+EA35 and #$01
+EA37 ldx #$00
+EA39 rts
+EA3A rand8:
+EA3A jsr pusha
+EA3D jsr _rand
+EA40 jsr pushax
+EA43 ldy #$02
+EA45 lda (sp),y
+EA47 jsr tosumoda0
+EA4A ldx #$00
+EA4C jmp incsp1
+EA4F ResetGame:
+EA4F stz _display_X
+EA52 stz _display_Y
+EA55 lda #$01
+EA57 sta _hero_X
+EA5A sta _hero_Y
+EA5D stz _hero_activity
+EA60 lda _hero_HP_Max+1
+EA63 sta _hero_HP+1
+EA66 lda _hero_HP_Max
+EA69 sta _hero_HP
+EA6C lda _hero_Batt_Max
+EA6F sta _hero_Batt
+EA72 lda #$04
+EA74 sta _hero_facing
+EA77 sta _hero_target_direction
+EA7A jmp _UpdateTarget
+EA7D Setup:
+EA7D lda _RAM_BANK1+1
+EA80 sta ptr1+1
+EA82 lda _RAM_BANK1
+EA85 sta ptr1
+EA87 lda #$00
+EA89 sta (ptr1)
+EA8B lda _RAM_BANK2+1
+EA8E sta ptr1+1
+EA90 lda _RAM_BANK2
+EA93 sta ptr1
+EA95 lda #$04
+EA97 sta (ptr1)
+EA99 lda _RAM_BANK3+1
+EA9C sta ptr1+1
+EA9E lda _RAM_BANK3
+EAA1 sta ptr1
+EAA3 lda #$02
+EAA5 sta (ptr1)
+EAA7 lda #$20
+EAA9 sta _rand_val
+EAAC stz _rand_val+1
+EAAF stz _menu_char_x
+EAB2 stz _menu_char_y
+EAB5 stz _menu_skills_x
+EAB8 stz _menu_skills_y
+EABB stz _menu_res_x
+EABE stz _menu_res_y
+EAC1 rts
+EAC2 TickHandler:
+EAC2 lda #$00
+EAC4 jsr pusha
+EAC7 lda _hero_HP
+EACA jsr pusha
+EACD lda _hero_Batt
+EAD0 jsr pusha
+EAD3 jsr decsp1
+EAD6 lda _hero_HP_Recharge
+EAD9 clc
+EADA adc _hero_HP
+EADD sta _hero_HP
+EAE0 lda #$00
+EAE2 adc _hero_HP+1
+EAE5 sta _hero_HP+1
+EAE8 lda _hero_Batt_Recharge
+EAEB clc
+EAEC adc _hero_Batt
+EAEF sta _hero_Batt
+EAF2 lda _hero_activity
+EAF5 jeq L2E37
+EAFA lda _hero_target_type
+EAFD cmp #$03
+EAFF jne L2E2D
+EB04 lda _hero_Batt
+EB07 cmp _hero_Mine_Cost
+EB0A jcc L2E37
+EB0F lda _skill_list
+EB12 beq L2E2A
+EB14 lda #$05
+EB16 jsr _rand8
+EB19 cmp #$00
+EB1B beq L24B3
+EB1D L2E2A:
+EB1D lda _hero_Mine_Cost
+EB20 eor #$FF
+EB22 sec
+EB23 adc _hero_Batt
+EB26 sta _hero_Batt
+EB29 L24B3:
+EB29 lda _hero_activity_ticks
+EB2C ldx _hero_activity_ticks+1
+EB2F ina
+EB30 bne L24BD
+EB32 inx
+EB33 L24BD:
+EB33 sta _hero_activity_ticks
+EB36 stx _hero_activity_ticks+1
+EB39 lda #$01
+EB3B ldy #$03
+EB3D sta (sp),y
+EB3F lda _hero_activity_ticks_max
+EB42 ldx _hero_activity_ticks_max+1
+EB45 cpx _hero_activity_ticks+1
+EB48 jne L2E37
+EB4D cmp _hero_activity_ticks
+EB50 jne L2E37
+EB55 ldx #$00
+EB57 lda _hero_target_index
+EB5A jsr aslax3
+EB5D clc
+EB5E adc #<(_crystal_list)
+EB60 sta ptr1
+EB62 txa
+EB63 adc #>(_crystal_list)
+EB65 sta ptr1+1
+EB67 ldy #$07
+EB69 lda (ptr1),y
+EB6B tax
+EB6C dey
+EB6D lda (ptr1),y
+EB6F cpx #$00
+EB71 bne L24C2
+EB73 cmp #$00
+EB75 bne L2E3A
+EB77 inc _hero_Red
+EB7A bra L2E2B
+EB7C L24C2:
+EB7C ldx #$00
+EB7E L2E3A:
+EB7E lda _hero_target_index
+EB81 jsr aslax3
+EB84 clc
+EB85 adc #<(_crystal_list)
+EB87 sta ptr1
+EB89 txa
+EB8A adc #>(_crystal_list)
+EB8C sta ptr1+1
+EB8E iny
+EB8F lda (ptr1),y
+EB91 tax
+EB92 dey
+EB93 lda (ptr1),y
+EB95 cpx #$00
+EB97 bne L24C8
+EB99 cmp #$01
+EB9B bne L2E3B
+EB9D inc _hero_Blue
+EBA0 bra L2E2B
+EBA2 L24C8:
+EBA2 ldx #$00
+EBA4 L2E3B:
+EBA4 lda _hero_target_index
+EBA7 jsr aslax3
+EBAA clc
+EBAB adc #<(_crystal_list)
+EBAD sta ptr1
+EBAF txa
+EBB0 adc #>(_crystal_list)
+EBB2 sta ptr1+1
+EBB4 iny
+EBB5 lda (ptr1),y
+EBB7 tax
+EBB8 dey
+EBB9 lda (ptr1),y
+EBBB cpx #$00
+EBBD bne L24C7
+EBBF cmp #$02
+EBC1 bne L2E2B
+EBC3 inc _hero_Yellow
+EBC6 L24C7:
+EBC6 ldx #$00
+EBC8 L2E2B:
+EBC8 lda _skill_list+4
+EBCB cmp #$01
+EBCD bne L2E2C
+EBCF lda _hero_target_index
+EBD2 jsr aslax3
+EBD5 clc
+EBD6 adc #<(_crystal_list)
+EBD8 sta ptr1
+EBDA txa
+EBDB adc #>(_crystal_list)
+EBDD sta ptr1+1
+EBDF iny
+EBE0 lda (ptr1),y
+EBE2 tax
+EBE3 dey
+EBE4 lda (ptr1),y
+EBE6 cpx #$00
+EBE8 bne L24D6
+EBEA cmp #$00
+EBEC bne L2E3C
+EBEE inc _hero_Red
+EBF1 bra L24E2
+EBF3 L24D6:
+EBF3 ldx #$00
+EBF5 L2E3C:
+EBF5 lda _hero_target_index
+EBF8 jsr aslax3
+EBFB clc
+EBFC adc #<(_crystal_list)
+EBFE sta ptr1
+EC00 txa
+EC01 adc #>(_crystal_list)
+EC03 sta ptr1+1
+EC05 iny
+EC06 lda (ptr1),y
+EC08 tax
+EC09 dey
+EC0A lda (ptr1),y
+EC0C cpx #$00
+EC0E bne L24DC
+EC10 cmp #$01
+EC12 bne L2E3D
+EC14 inc _hero_Blue
+EC17 bra L24E2
+EC19 L24DC:
+EC19 ldx #$00
+EC1B L2E3D:
+EC1B lda _hero_target_index
+EC1E jsr aslax3
+EC21 clc
+EC22 adc #<(_crystal_list)
+EC24 sta ptr1
+EC26 txa
+EC27 adc #>(_crystal_list)
+EC29 sta ptr1+1
+EC2B iny
+EC2C lda (ptr1),y
+EC2E tax
+EC2F dey
+EC30 lda (ptr1),y
+EC32 cpx #$00
+EC34 bne L24E2
+EC36 cmp #$02
+EC38 bne L24E2
+EC3A inc _hero_Yellow
+EC3D L24E2:
+EC3D lda #$02
+EC3F jsr _AddExp
+EC42 ldx #$00
+EC44 L2E2C:
+EC44 lda _hero_target_index
+EC47 jsr aslax3
+EC4A clc
+EC4B adc #<(_crystal_list)
+EC4D sta ptr1
+EC4F txa
+EC50 adc #>(_crystal_list)
+EC52 sta ptr1+1
+EC54 lda #$00
+EC56 ldy #$04
+EC58 sta (ptr1),y
+EC5A iny
+EC5B sta (ptr1),y
+EC5D lda #$02
+EC5F jsr _AddExp
+EC62 lda #$04
+EC64 sta _hero_target_type
+EC67 stz _hero_activity
+EC6A jsr _DrawFrame
+EC6D lda #$01
+EC6F ldy #$03
+EC71 sta (sp),y
+EC73 jmp L2E37
+EC76 L2E2D:
+EC76 lda _hero_target_type
+EC79 jne L2E31
+EC7E lda _hero_Batt
+EC81 cmp _hero_Drill_Cost
+EC84 jcc L2E37
+EC89 lda _hero_Drill_Cost
+EC8C eor #$FF
+EC8E sec
+EC8F adc _hero_Batt
+EC92 sta _hero_Batt
+EC95 lda _hero_activity_ticks
+EC98 ldx _hero_activity_ticks+1
+EC9B ina
+EC9C bne L24FD
+EC9E inx
+EC9F L24FD:
+EC9F sta _hero_activity_ticks
+ECA2 stx _hero_activity_ticks+1
+ECA5 lda #$01
+ECA7 ldy #$03
+ECA9 sta (sp),y
+ECAB lda _hero_activity_ticks_max
+ECAE ldx _hero_activity_ticks_max+1
+ECB1 cpx _hero_activity_ticks+1
+ECB4 jne L2E37
+ECB9 cmp _hero_activity_ticks
+ECBC jne L2E37
+ECC1 lda _hero_target_index2
+ECC4 jsr pusha0
+ECC7 lda #$28
+ECC9 jsr tosmula0
+ECCC clc
+ECCD adc #<(_map_data)
+ECCF tay
+ECD0 txa
+ECD1 adc #>(_map_data)
+ECD3 tax
+ECD4 tya
+ECD5 clc
+ECD6 adc _hero_target_index
+ECD9 bcc L2E23
+ECDB inx
+ECDC L2E23:
+ECDC sta ptr1
+ECDE stx ptr1+1
+ECE0 lda #$00
+ECE2 sta (ptr1)
+ECE4 ina
+ECE5 jsr _AddExp
+ECE8 lda #$04
+ECEA sta _hero_target_type
+ECED stz _hero_activity
+ECF0 lda _skill_list+3
+ECF3 cmp #$01
+ECF5 bne L250F
+ECF7 lda #$04
+ECF9 jsr _rand8
+ECFC cmp #$00
+ECFE bne L250F
+ED00 lda #$03
+ED02 jsr _rand8
+ED05 sta (sp)
+ED07 lda (sp)
+ED09 bne L2E2F
+ED0B inc _hero_Blue
+ED0E bra L251C
+ED10 L2E2F:
+ED10 lda (sp)
+ED12 cmp #$01
+ED14 bne L2E30
+ED16 inc _hero_Red
+ED19 bra L251C
+ED1B L2E30:
+ED1B inc _hero_Yellow
+ED1E L251C:
+ED1E lda #$02
+ED20 jsr _AddExp
+ED23 L250F:
+ED23 jsr _DrawFrame
+ED26 lda #$01
+ED28 ldy #$03
+ED2A sta (sp),y
+ED2C jmp L2E37
+ED2F L2E31:
+ED2F lda _hero_target_type
+ED32 cmp #$01
+ED34 jne L2E37
+ED39 lda _hero_Batt
+ED3C cmp _hero_Dmg_Cost
+ED3F jcc L2526
+ED44 lda _hero_Dmg_Cost
+ED47 eor #$FF
+ED49 sec
+ED4A adc _hero_Batt
+ED4D sta _hero_Batt
+ED50 lda _skill_list+8
+ED53 cmp #$01
+ED55 bne L252D
+ED57 lda #$14
+ED59 jsr _rand8
+ED5C cmp #$00
+ED5E bne L252D
+ED60 stz _hero_activity_ticks
+ED63 stz _hero_activity_ticks+1
+ED66 L252D:
+ED66 lda _hero_activity_ticks
+ED69 ora _hero_activity_ticks+1
+ED6C beq L253F
+ED6E lda _hero_Dmg
+ED71 eor #$FF
+ED73 sec
+ED74 adc _hero_activity_ticks
+ED77 sta _hero_activity_ticks
+ED7A lda #$FF
+ED7C adc _hero_activity_ticks+1
+ED7F sta _hero_activity_ticks+1
+ED82 lda #$64
+ED84 jsr _rand8
+ED87 cmp _hero_Crit_Rate
+ED8A txa
+ED8B sbc #$00
+ED8D bcs L253F
+ED8F lda _skill_list+6
+ED92 cmp #$01
+ED94 bne L2E32
+ED96 lda _hero_Dmg
+ED99 bra L2E43
+ED9B L2E32:
+ED9B lda _hero_Dmg
+ED9E lsr a
+ED9F L2E43:
+ED9F eor #$FF
+EDA1 sec
+EDA2 adc _hero_activity_ticks
+EDA5 sta _hero_activity_ticks
+EDA8 lda #$FF
+EDAA adc _hero_activity_ticks+1
+EDAD sta _hero_activity_ticks+1
+EDB0 L253F:
+EDB0 lda _hero_activity_ticks
+EDB3 cmp #$01
+EDB5 lda _hero_activity_ticks+1
+EDB8 sbc #$00
+EDBA bvc L2544
+EDBC eor #$80
+EDBE L2544:
+EDBE bpl L2E36
+EDC0 ldx #$00
+EDC2 lda _hero_target_index
+EDC5 jsr mulax6
+EDC8 clc
+EDC9 adc #<(_monster_list)
+EDCB sta ptr1
+EDCD txa
+EDCE adc #>(_monster_list)
+EDD0 sta ptr1+1
+EDD2 lda #$00
+EDD4 ldy #$04
+EDD6 sta (ptr1),y
+EDD8 iny
+EDD9 sta (ptr1),y
+EDDB lda _skill_list+7
+EDDE cmp #$01
+EDE0 bne L2548
+EDE2 lda #$0B
+EDE4 bra L2E29
+EDE6 L2548:
+EDE6 lda #$0A
+EDE8 L2E29:
+EDE8 jsr _AddExp
+EDEB lda #$04
+EDED sta _hero_target_type
+EDF0 stz _hero_activity
+EDF3 lda _skill_list+1
+EDF6 cmp #$01
+EDF8 bne L2564
+EDFA lda #$0A
+EDFC jsr _rand8
+EDFF cmp #$00
+EE01 bne L2564
+EE03 lda #$03
+EE05 jsr _rand8
+EE08 sta (sp)
+EE0A lda (sp)
+EE0C bne L2E34
+EE0E inc _hero_Red
+EE11 bra L2564
+EE13 L2E34:
+EE13 lda (sp)
+EE15 cmp #$01
+EE17 bne L2E35
+EE19 inc _hero_Blue
+EE1C bra L2564
+EE1E L2E35:
+EE1E inc _hero_Yellow
+EE21 L2564:
+EE21 jsr _DrawFrame
+EE24 L2E36:
+EE24 lda #$01
+EE26 ldy #$03
+EE28 sta (sp),y
+EE2A L2526:
+EE2A jsr _rand5050
+EE2D tax
+EE2E beq L2E37
+EE30 lda _hero_HP
+EE33 sec
+EE34 sbc #$02
+EE36 sta _hero_HP
+EE39 bcs L2E37
+EE3B dec _hero_HP+1
+EE3E L2E37:
+EE3E lda _hero_Batt
+EE41 sec
+EE42 sbc _hero_Batt_Max
+EE45 bcc L256E
+EE47 beq L256E
+EE49 lda _hero_Batt_Max
+EE4C sta _hero_Batt
+EE4F L256E:
+EE4F ldy #$01
+EE51 lda (sp),y
+EE53 cmp _hero_Batt
+EE56 beq L2572
+EE58 tya
+EE59 ldy #$03
+EE5B sta (sp),y
+EE5D L2572:
+EE5D jsr _CheckHP
+EE60 ldx #$00
+EE62 ldy #$02
+EE64 lda (sp),y
+EE66 cpx _hero_HP+1
+EE69 bne L2E38
+EE6B cmp _hero_HP
+EE6E beq L2577
+EE70 L2E38:
+EE70 lda #$01
+EE72 iny
+EE73 sta (sp),y
+EE75 L2577:
+EE75 jsr _CheckLavaExit
+EE78 cmp #$01
+EE7A bne L257B
+EE7C ldy #$03
+EE7E sta (sp),y
+EE80 L257B:
+EE80 ldy #$03
+EE82 lda (sp),y
+EE84 cmp #$01
+EE86 bne L24A5
+EE88 jsr _DrawLegend
+EE8B L24A5:
+EE8B jmp incsp4
+EE8E UpdateTarget:
+EE8E lda _display_X
+EE91 clc
+EE92 adc _hero_X
+EE95 jsr pusha
+EE98 lda _display_Y
+EE9B clc
+EE9C adc _hero_Y
+EE9F jsr pusha
+EEA2 lda #$04
+EEA4 sta _hero_target_type
+EEA7 lda _hero_target_direction
+EEAA cmp #$01
+EEAC bne L2E48
+EEAE lda _hero_Y
+EEB1 bne L2E54
+EEB3 jmp incsp2
+EEB6 L2E54:
+EEB6 ldy #$00
+EEB8 lda (sp)
+EEBA pha
+EEBB dea
+EEBC bra L2E4B
+EEBE L2E48:
+EEBE lda _hero_target_direction
+EEC1 cmp #$02
+EEC3 bne L2E49
+EEC5 lda _hero_Y
+EEC8 cmp #$03
+EECA bne L2E55
+EECC jmp incsp2
+EECF L2E55:
+EECF ldy #$00
+EED1 bra L2E51
+EED3 L2E49:
+EED3 lda _hero_target_direction
+EED6 cmp #$03
+EED8 bne L2E4A
+EEDA lda _hero_X
+EEDD bne L2E56
+EEDF jmp incsp2
+EEE2 L2E56:
+EEE2 ldy #$01
+EEE4 lda (sp),y
+EEE6 pha
+EEE7 dea
+EEE8 bra L2E4B
+EEEA L2E4A:
+EEEA lda _hero_target_direction
+EEED cmp #$04
+EEEF bne L1E9A
+EEF1 lda _hero_Y
+EEF4 cmp #$04
+EEF6 bne L2E57
+EEF8 jmp incsp2
+EEFB L2E57:
+EEFB ldy #$01
+EEFD L2E51:
+EEFD lda (sp),y
+EEFF pha
+EF00 ina
+EF01 L2E4B:
+EF01 sta (sp),y
+EF03 pla
+EF04 L1E9A:
+EF04 ldy #$01
+EF06 lda (sp),y
+EF08 sta _hero_target_index
+EF0B lda (sp)
+EF0D sta _hero_target_index2
+EF10 lda (sp)
+EF12 jsr pusha0
+EF15 lda #$28
+EF17 jsr tosmula0
+EF1A clc
+EF1B adc #<(_map_data)
+EF1D sta ptr1
+EF1F txa
+EF20 adc #>(_map_data)
+EF22 sta ptr1+1
+EF24 ldy #$01
+EF26 lda (sp),y
+EF28 tay
+EF29 lda (ptr1),y
+EF2B cmp #$04
+EF2D bne L1EA3
+EF2F stz _hero_target_type
+EF32 jmp incsp2
+EF35 L1EA3:
+EF35 lda (sp)
+EF37 jsr pusha0
+EF3A lda #$28
+EF3C jsr tosmula0
+EF3F clc
+EF40 adc #<(_map_data)
+EF42 sta ptr1
+EF44 txa
+EF45 adc #>(_map_data)
+EF47 sta ptr1+1
+EF49 ldy #$01
+EF4B lda (sp),y
+EF4D tay
+EF4E lda (ptr1),y
+EF50 cmp #$06
+EF52 bne L1EAA
+EF54 lda #$02
+EF56 sta _hero_target_type
+EF59 jmp incsp2
+EF5C L1EAA:
+EF5C ldy #$01
+EF5E lda (sp),y
+EF60 jsr pusha
+EF63 ldy #$01
+EF65 lda (sp),y
+EF67 jsr _CheckForMonster
+EF6A cmp #$01
+EF6C bne L1EB1
+EF6E sta _hero_target_type
+EF71 lda (sp)
+EF73 jsr pusha0
+EF76 lda #$28
+EF78 jsr tosmula0
+EF7B clc
+EF7C adc #<(_monster_map)
+EF7E sta ptr1
+EF80 txa
+EF81 adc #>(_monster_map)
+EF83 bra L2E53
+EF85 L1EB1:
+EF85 ldy #$01
+EF87 lda (sp),y
+EF89 jsr pusha
+EF8C ldy #$01
+EF8E lda (sp),y
+EF90 jsr _CheckForCrystal
+EF93 cmp #$01
+EF95 bne L1E83
+EF97 lda #$03
+EF99 sta _hero_target_type
+EF9C lda (sp)
+EF9E jsr pusha0
+EFA1 lda #$28
+EFA3 jsr tosmula0
+EFA6 clc
+EFA7 adc #<(_crystal_map)
+EFA9 sta ptr1
+EFAB txa
+EFAC adc #>(_crystal_map)
+EFAE L2E53:
+EFAE sta ptr1+1
+EFB0 ldy #$01
+EFB2 lda (sp),y
+EFB4 tay
+EFB5 lda (ptr1),y
+EFB7 sta _hero_target_index
+EFBA L1E83:
+EFBA jmp incsp2
+9977 CopyString:
+9977 jsr pushax
+997A bra L2672
+997C L2670:
+997C ldy #$03
+997E lda (sp),y
+9980 tax
+9981 dey
+9982 lda (sp),y
+9984 sta regsave
+9986 stx regsave+1
+9988 ina
+9989 bne L2675
+998B inx
+998C L2675:
+998C jsr staxysp
+998F lda regsave
+9991 ldx regsave+1
+9993 jsr pushax
+9996 ldy #$03
+9998 lda (sp),y
+999A tax
+999B dey
+999C lda (sp),y
+999E sta regsave
+99A0 stx regsave+1
+99A2 ina
+99A3 bne L2677
+99A5 inx
+99A6 L2677:
+99A6 jsr staxysp
+99A9 ldy #$00
+99AB lda (regsave)
+99AD jsr staspidx
+99B0 L2672:
+99B0 ldy #$01
+99B2 lda (sp),y
+99B4 sta ptr1+1
+99B6 lda (sp)
+99B8 sta ptr1
+99BA lda (ptr1)
+99BC bne L2670
+99BE tax
+99BF jmp incsp4
+99C2 KeyHandlerGame:
+99C2 jsr pusha
+99C5 jsr decsp2
+99C8 ldy #$02
+99CA lda (sp),y
+99CC cmp #$6D
+99CE beq L2E74
+99D0 cmp #$63
+99D2 bne L2E76
+99D4 L2E74:
+99D4 lda #$01
+99D6 bra L2EA5
+99D8 L2E76:
+99D8 lda (sp),y
+99DA cmp #$6B
+99DC bne L2E78
+99DE tya
+99DF bra L2EA5
+99E1 L2E78:
+99E1 lda (sp),y
+99E3 cmp #$72
+99E5 bne L26C6
+99E7 lda #$03
+99E9 L2EA5:
+99E9 sta _output_mode
+99EC stz _output_mode+1
+99EF L26C6:
+99EF lda _output_mode
+99F2 ora _output_mode+1
+99F5 beq L2E7A
+99F7 ldx #$00
+99F9 lda #$03
+99FB jmp incsp3
+99FE L2E7A:
+99FE dey
+99FF sta (sp),y
+9A01 sta (sp)
+9A03 lda _hero_activity
+9A06 jne L27BC
+9A0B iny
+9A0C lda (sp),y
+9A0E cmp #$73
+9A10 jne L2E82
+9A15 ldx #$00
+9A17 lda _hero_target_direction
+9A1A cmp #$02
+9A1C beq L2E7B
+9A1E tya
+9A1F sta _hero_target_direction
+9A22 dea
+9A23 jmp L2EA6
+9A26 L2E7B:
+9A26 lda _display_Y
+9A29 clc
+9A2A adc _hero_Y
+9A2D bcc L2E58
+9A2F inx
+9A30 L2E58:
+9A30 ina
+9A31 bne L26E1
+9A33 inx
+9A34 L26E1:
+9A34 cpx #$00
+9A36 bne L26E2
+9A38 cmp #$14
+9A3A L26E2:
+9A3A jcs L27BC
+9A3F ldx #$00
+9A41 lda _display_Y
+9A44 clc
+9A45 adc _hero_Y
+9A48 bcc L2E59
+9A4A inx
+9A4B L2E59:
+9A4B ina
+9A4C bne L26E6
+9A4E inx
+9A4F L26E6:
+9A4F jsr pushax
+9A52 lda #$28
+9A54 jsr tosmula0
+9A57 clc
+9A58 adc #<(_map_data)
+9A5A sta ptr1
+9A5C txa
+9A5D adc #>(_map_data)
+9A5F sta ptr1+1
+9A61 ldx #$00
+9A63 lda _display_X
+9A66 clc
+9A67 adc _hero_X
+9A6A bcc L2E72
+9A6C inx
+9A6D clc
+9A6E L2E72:
+9A6E adc ptr1
+9A70 sta ptr1
+9A72 txa
+9A73 adc ptr1+1
+9A75 sta ptr1+1
+9A77 lda (ptr1)
+9A79 cmp #$04
+9A7B jeq L27BC
+9A80 lda _display_X
+9A83 clc
+9A84 adc _hero_X
+9A87 jsr pusha
+9A8A lda _display_Y
+9A8D clc
+9A8E adc _hero_Y
+9A91 ina
+9A92 jsr _CheckForMonster
+9A95 cmp #$00
+9A97 beq L2E7E
+9A99 lda _skill_list+9
+9A9C cmp #$01
+9A9E bne L26FF
+9AA0 L2E7E:
+9AA0 lda _hero_Y
+9AA3 cmp #$02
+9AA5 bcs L2E7F
+9AA7 inc _hero_Y
+9AAA bra L2EAB
+9AAC L2E7F:
+9AAC lda _hero_Y
+9AAF cmp #$02
+9AB1 bne L26FF
+9AB3 lda _display_Y
+9AB6 cmp #$10
+9AB8 bne L2E80
+9ABA lda #$03
+9ABC sta _hero_Y
+9ABF bra L2EAB
+9AC1 L2E80:
+9AC1 inc _display_Y
+9AC4 L2EAB:
+9AC4 lda #$01
+9AC6 sta (sp)
+9AC8 L26FF:
+9AC8 lda (sp)
+9ACA jeq L27BC
+9ACF jsr _CheckLavaExit
+9AD2 jmp L27BC
+9AD5 L2E82:
+9AD5 lda (sp),y
+9AD7 cmp #$77
+9AD9 jne L2E8A
+9ADE ldx #$00
+9AE0 lda _hero_target_direction
+9AE3 cmp #$01
+9AE5 beq L2E83
+9AE7 lda #$01
+9AE9 sta _hero_target_direction
+9AEC jmp L2EA6
+9AEF L2E83:
+9AEF lda _display_Y
+9AF2 clc
+9AF3 adc _hero_Y
+9AF6 bcc L2E5D
+9AF8 inx
+9AF9 L2E5D:
+9AF9 cpx #$00
+9AFB bne L2EA3
+9AFD cmp #$00
+9AFF jeq L27BC
+9B04 L2EA3:
+9B04 ldx #$00
+9B06 lda _display_Y
+9B09 clc
+9B0A adc _hero_Y
+9B0D bcc L2E5E
+9B0F inx
+9B10 L2E5E:
+9B10 sec
+9B11 sbc #$01
+9B13 bcs L2716
+9B15 dex
+9B16 L2716:
+9B16 jsr pushax
+9B19 lda #$28
+9B1B jsr tosmula0
+9B1E clc
+9B1F adc #<(_map_data)
+9B21 sta ptr1
+9B23 txa
+9B24 adc #>(_map_data)
+9B26 sta ptr1+1
+9B28 ldx #$00
+9B2A lda _display_X
+9B2D clc
+9B2E adc _hero_X
+9B31 bcc L2E73
+9B33 inx
+9B34 clc
+9B35 L2E73:
+9B35 adc ptr1
+9B37 sta ptr1
+9B39 txa
+9B3A adc ptr1+1
+9B3C sta ptr1+1
+9B3E lda (ptr1)
+9B40 cmp #$04
+9B42 jeq L27BC
+9B47 lda _display_X
+9B4A clc
+9B4B adc _hero_X
+9B4E jsr pusha
+9B51 lda _display_Y
+9B54 clc
+9B55 adc _hero_Y
+9B58 sec
+9B59 sbc #$01
+9B5B jsr _CheckForMonster
+9B5E cmp #$00
+9B60 beq L2E86
+9B62 lda _skill_list+9
+9B65 cmp #$01
+9B67 bne L272F
+9B69 L2E86:
+9B69 lda _hero_Y
+9B6C cmp #$02
+9B6E bcc L2E87
+9B70 dec _hero_Y
+9B73 bra L2EAC
+9B75 L2E87:
+9B75 lda _hero_Y
+9B78 cmp #$01
+9B7A bne L272F
+9B7C lda _display_Y
+9B7F bne L2E88
+9B81 stz _hero_Y
+9B84 bra L2EAC
+9B86 L2E88:
+9B86 dec _display_Y
+9B89 L2EAC:
+9B89 lda #$01
+9B8B sta (sp)
+9B8D L272F:
+9B8D lda (sp)
+9B8F jeq L27BC
+9B94 jsr _CheckLavaExit
+9B97 jmp L27BC
+9B9A L2E8A:
+9B9A lda (sp),y
+9B9C cmp #$64
+9B9E jne L2E93
+9BA3 ldx #$00
+9BA5 lda _hero_facing
+9BA8 cmp #$03
+9BAA bne L2E8B
+9BAC ina
+9BAD sta _hero_facing
+9BB0 lda #$01
+9BB2 dey
+9BB3 sta (sp),y
+9BB5 L2E8B:
+9BB5 lda _hero_target_direction
+9BB8 cmp #$04
+9BBA beq L2E8C
+9BBC lda #$04
+9BBE sta _hero_target_direction
+9BC1 lda #$01
+9BC3 jmp L2EA6
+9BC6 L2E8C:
+9BC6 lda _display_X
+9BC9 clc
+9BCA adc _hero_X
+9BCD bcc L2E62
+9BCF inx
+9BD0 L2E62:
+9BD0 ina
+9BD1 bne L2748
+9BD3 inx
+9BD4 L2748:
+9BD4 cpx #$00
+9BD6 bne L2749
+9BD8 cmp #$28
+9BDA L2749:
+9BDA jcs L27BC
+9BDF ldx #$00
+9BE1 lda _display_Y
+9BE4 clc
+9BE5 adc _hero_Y
+9BE8 bcc L2E63
+9BEA inx
+9BEB L2E63:
+9BEB jsr pushax
+9BEE lda #$28
+9BF0 jsr tosmula0
+9BF3 clc
+9BF4 adc #<(_map_data)
+9BF6 sta ptr1
+9BF8 txa
+9BF9 adc #>(_map_data)
+9BFB sta ptr1+1
+9BFD ldx #$00
+9BFF lda _display_X
+9C02 clc
+9C03 adc _hero_X
+9C06 bcc L2E64
+9C08 inx
+9C09 L2E64:
+9C09 ina
+9C0A bne L274E
+9C0C inx
+9C0D L274E:
+9C0D clc
+9C0E adc ptr1
+9C10 sta ptr1
+9C12 txa
+9C13 adc ptr1+1
+9C15 sta ptr1+1
+9C17 lda (ptr1)
+9C19 cmp #$04
+9C1B jeq L27BC
+9C20 lda _display_X
+9C23 clc
+9C24 adc _hero_X
+9C27 ina
+9C28 jsr pusha
+9C2B lda _display_Y
+9C2E clc
+9C2F adc _hero_Y
+9C32 jsr _CheckForMonster
+9C35 cmp #$00
+9C37 beq L2E8F
+9C39 lda _skill_list+9
+9C3C cmp #$01
+9C3E bne L2766
+9C40 L2E8F:
+9C40 lda _hero_X
+9C43 cmp #$03
+9C45 bcs L2E90
+9C47 inc _hero_X
+9C4A bra L2EAD
+9C4C L2E90:
+9C4C lda _hero_X
+9C4F cmp #$03
+9C51 bne L2766
+9C53 lda _display_X
+9C56 cmp #$23
+9C58 bne L2E91
+9C5A lda #$04
+9C5C sta _hero_X
+9C5F bra L2EAD
+9C61 L2E91:
+9C61 inc _display_X
+9C64 L2EAD:
+9C64 lda #$01
+9C66 sta (sp)
+9C68 L2766:
+9C68 lda (sp)
+9C6A jeq L27BC
+9C6F jsr _CheckLavaExit
+9C72 jmp L27BC
+9C75 L2E93:
+9C75 lda (sp),y
+9C77 cmp #$61
+9C79 jne L2E9C
+9C7E ldx #$00
+9C80 lda _hero_facing
+9C83 cmp #$04
+9C85 bne L2E94
+9C87 dea
+9C88 sta _hero_facing
+9C8B lda #$01
+9C8D dey
+9C8E sta (sp),y
+9C90 L2E94:
+9C90 lda _hero_target_direction
+9C93 cmp #$03
+9C95 beq L2E95
+9C97 lda #$03
+9C99 sta _hero_target_direction
+9C9C lda #$01
+9C9E jmp L2EA6
+9CA1 L2E95:
+9CA1 lda _display_X
+9CA4 clc
+9CA5 adc _hero_X
+9CA8 bcc L2E67
+9CAA inx
+9CAB L2E67:
+9CAB cpx #$00
+9CAD bne L2EA4
+9CAF cmp #$00
+9CB1 jeq L27BC
+9CB6 L2EA4:
+9CB6 ldx #$00
+9CB8 lda _display_Y
+9CBB clc
+9CBC adc _hero_Y
+9CBF bcc L2E68
+9CC1 inx
+9CC2 L2E68:
+9CC2 jsr pushax
+9CC5 lda #$28
+9CC7 jsr tosmula0
+9CCA clc
+9CCB adc #<(_map_data)
+9CCD sta ptr1
+9CCF txa
+9CD0 adc #>(_map_data)
+9CD2 sta ptr1+1
+9CD4 ldx #$00
+9CD6 lda _display_X
+9CD9 clc
+9CDA adc _hero_X
+9CDD bcc L2E69
+9CDF inx
+9CE0 L2E69:
+9CE0 sec
+9CE1 sbc #$01
+9CE3 bcs L2784
+9CE5 dex
+9CE6 L2784:
+9CE6 clc
+9CE7 adc ptr1
+9CE9 sta ptr1
+9CEB txa
+9CEC adc ptr1+1
+9CEE sta ptr1+1
+9CF0 lda (ptr1)
+9CF2 cmp #$04
+9CF4 jeq L27BC
+9CF9 lda _display_X
+9CFC clc
+9CFD adc _hero_X
+9D00 sec
+9D01 sbc #$01
+9D03 jsr pusha
+9D06 lda _display_Y
+9D09 clc
+9D0A adc _hero_Y
+9D0D jsr _CheckForMonster
+9D10 cmp #$00
+9D12 beq L2E98
+9D14 lda _skill_list+9
+9D17 cmp #$01
+9D19 bne L279C
+9D1B L2E98:
+9D1B lda _hero_X
+9D1E cmp #$02
+9D20 bcc L2E99
+9D22 dec _hero_X
+9D25 bra L2EAE
+9D27 L2E99:
+9D27 lda _hero_X
+9D2A cmp #$01
+9D2C bne L279C
+9D2E lda _display_X
+9D31 bne L2E9A
+9D33 stz _hero_X
+9D36 bra L2EAE
+9D38 L2E9A:
+9D38 dec _display_X
+9D3B L2EAE:
+9D3B lda #$01
+9D3D sta (sp)
+9D3F L279C:
+9D3F lda (sp)
+9D41 beq L27BC
+9D43 jsr _CheckLavaExit
+9D46 bra L27BC
+9D48 L2E9C:
+9D48 lda (sp),y
+9D4A cmp #$20
+9D4C bne L27BC
+9D4E lda _hero_target_type
+9D51 cmp #$03
+9D53 bne L2E9D
+9D55 stz _hero_activity_ticks_max+1
+9D58 lda _hero_Mine_Speed
+9D5B sta _hero_activity_ticks_max
+9D5E stz _hero_activity_ticks
+9D61 bra L2EB1
+9D63 L2E9D:
+9D63 lda _hero_target_type
+9D66 bne L2E9E
+9D68 stz _hero_activity_ticks_max+1
+9D6B lda _hero_Drill_Speed
+9D6E sta _hero_activity_ticks_max
+9D71 stz _hero_activity_ticks
+9D74 bra L2EB1
+9D76 L2E9E:
+9D76 lda _hero_target_type
+9D79 cmp #$01
+9D7B bne L27BC
+9D7D lda #$1E
+9D7F sta _hero_activity_ticks_max
+9D82 stz _hero_activity_ticks_max+1
+9D85 sta _hero_activity_ticks
+9D88 L2EB1:
+9D88 stz _hero_activity_ticks+1
+9D8B lda #$01
+9D8D sta _hero_activity
+9D90 L2EA6:
+9D90 tay
+9D91 sta (sp),y
+9D93 L27BC:
+9D93 ldy #$01
+9D95 ldx #$00
+9D97 lda (sp),y
+9D99 cmp #$01
+9D9B beq L2EA1
+9D9D lda (sp)
+9D9F cmp #$01
+9DA1 beq L2EA1
+9DA3 txa
+9DA4 jmp incsp3
+9DA7 L2EA1:
+9DA7 lda #$1C
+9DA9 jmp incsp3
+9DAC KeyHandlerMenu:
+9DAC jsr pusha
+9DAF jsr decsp5
+9DB2 lda #$00
+9DB4 jsr pusha
+9DB7 jsr pusha
+9DBA jsr decsp3
+9DBD lda #$00
+9DBF ldy #$09
+9DC1 sta (sp),y
+9DC3 dey
+9DC4 sta (sp),y
+9DC6 dey
+9DC7 sta (sp),y
+9DC9 ldy #$0A
+9DCB lda (sp),y
+9DCD cmp #$6D
+9DCF bne L2EDC
+9DD1 ldx #$00
+9DD3 stz _output_mode
+9DD6 stz _output_mode+1
+9DD9 lda #$18
+9DDB jmp L27D0
+9DDE L2EDC:
+9DDE lda (sp),y
+9DE0 cmp #$63
+9DE2 bne L2EDE
+9DE4 lda #$01
+9DE6 bra L2F28
+9DE8 L2EDE:
+9DE8 lda (sp),y
+9DEA cmp #$6B
+9DEC bne L2EE0
+9DEE lda #$02
+9DF0 bra L2F28
+9DF2 L2EE0:
+9DF2 lda (sp),y
+9DF4 cmp #$72
+9DF6 bne L27F1
+9DF8 lda #$03
+9DFA L2F28:
+9DFA sta _output_mode
+9DFD stz _output_mode+1
+9E00 ldy #$03
+9E02 lda (sp),y
+9E04 ora #$02
+9E06 sta (sp),y
+9E08 L27F1:
+9E08 lda _output_mode+1
+9E0B jne L27F8
+9E10 lda _output_mode
+9E13 cmp #$01
+9E15 jne L27F8
+9E1A ldy #$0A
+9E1C lda (sp),y
+9E1E cmp #$77
+9E20 bne L2EE2
+9E22 lda _menu_char_y
+9E25 jeq L294A
+9E2A dec _menu_char_y
+9E2D ldy #$03
+9E2F lda (sp),y
+9E31 ora #$20
+9E33 sta (sp),y
+9E35 jmp L294A
+9E38 L2EE2:
+9E38 lda (sp),y
+9E3A cmp #$73
+9E3C bne L2EE4
+9E3E lda _menu_char_y
+9E41 cmp #$05
+9E43 jcs L294A
+9E48 inc _menu_char_y
+9E4B ldy #$03
+9E4D lda (sp),y
+9E4F ora #$20
+9E51 sta (sp),y
+9E53 jmp L294A
+9E56 L2EE4:
+9E56 lda (sp),y
+9E58 cmp #$61
+9E5A bne L2EE7
+9E5C lda _menu_char_x
+9E5F beq L2EE5
+9E61 dec _menu_char_x
+9E64 ldy #$03
+9E66 lda (sp),y
+9E68 ora #$20
+9E6A jmp L2EC7
+9E6D L2EE5:
+9E6D lda _menu_char_y
+9E70 jeq L294A
+9E75 lda #$04
+9E77 sta _menu_char_x
+9E7A dec _menu_char_y
+9E7D ldy #$03
+9E7F lda (sp),y
+9E81 ora #$20
+9E83 sta (sp),y
+9E85 jmp L294A
+9E88 L2EE7:
+9E88 lda (sp),y
+9E8A cmp #$64
+9E8C bne L2EEA
+9E8E lda _menu_char_x
+9E91 cmp #$04
+9E93 bcs L2EE8
+9E95 inc _menu_char_x
+9E98 ldy #$03
+9E9A lda (sp),y
+9E9C ora #$20
+9E9E jmp L2EC7
+9EA1 L2EE8:
+9EA1 lda _menu_char_y
+9EA4 cmp #$05
+9EA6 jcs L294A
+9EAB stz _menu_char_x
+9EAE inc _menu_char_y
+9EB1 ldy #$03
+9EB3 lda (sp),y
+9EB5 ora #$20
+9EB7 sta (sp),y
+9EB9 jmp L294A
+9EBC L2EEA:
+9EBC lda (sp),y
+9EBE cmp #$0D
+9EC0 jne L294A
+9EC5 ldx #$00
+9EC7 lda _menu_char_y
+9ECA jsr mulax5
+9ECD clc
+9ECE adc _menu_char_x
+9ED1 ldy #$05
+9ED3 sta (sp),y
+9ED5 tay
+9ED6 lda _hero_inventory,y
+9ED9 cmp #$20
+9EDB jeq L294A
+9EE0 ldy #$05
+9EE2 lda (sp),y
+9EE4 tay
+9EE5 lda _hero_inventory,y
+9EE8 ldy #$06
+9EEA sta (sp),y
+9EEC lda #<(_hero_inventory)
+9EEE ldx #>(_hero_inventory)
+9EF0 dey
+9EF1 clc
+9EF2 adc (sp),y
+9EF4 bcc L283F
+9EF6 inx
+9EF7 L283F:
+9EF7 sta sreg
+9EF9 stx sreg+1
+9EFB ldx #$00
+9EFD iny
+9EFE lda (sp),y
+9F00 asl a
+9F01 bcc L2ECC
+9F03 inx
+9F04 clc
+9F05 L2ECC:
+9F05 adc #<(_item_stats)
+9F07 sta ptr1
+9F09 txa
+9F0A adc #>(_item_stats)
+9F0C sta ptr1+1
+9F0E ldy #$01
+9F10 lda (ptr1),y
+9F12 tax
+9F13 lda (ptr1)
+9F15 sta ptr1
+9F17 stx ptr1+1
+9F19 lda (ptr1)
+9F1B sta ptr1
+9F1D lda #$00
+9F1F clc
+9F20 adc #>(_hero_equipped)
+9F22 sta ptr1+1
+9F24 ldy #<(_hero_equipped)
+9F26 lda (ptr1),y
+9F28 sta (sreg)
+9F2A ldy #$06
+9F2C ldx #$00
+9F2E lda (sp),y
+9F30 asl a
+9F31 bcc L2ECD
+9F33 inx
+9F34 clc
+9F35 L2ECD:
+9F35 adc #<(_item_stats)
+9F37 sta ptr1
+9F39 txa
+9F3A adc #>(_item_stats)
+9F3C sta ptr1+1
+9F3E ldy #$01
+9F40 lda (ptr1),y
+9F42 tax
+9F43 lda (ptr1)
+9F45 sta ptr1
+9F47 stx ptr1+1
+9F49 lda (ptr1)
+9F4B clc
+9F4C adc #<(_hero_equipped)
+9F4E sta ptr1
+9F50 lda #$00
+9F52 adc #>(_hero_equipped)
+9F54 sta ptr1+1
+9F56 ldy #$06
+9F58 lda (sp),y
+9F5A sta (ptr1)
+9F5C jsr _ColorHero
+9F5F jsr _CalcStats
+9F62 lda #$01
+9F64 ldy #$09
+9F66 L2EC7:
+9F66 sta (sp),y
+9F68 jmp L294A
+9F6B L27F8:
+9F6B lda _output_mode+1
+9F6E jne L284E
+9F73 lda _output_mode
+9F76 cmp #$02
+9F78 jne L284E
+9F7D ldy #$0A
+9F7F lda (sp),y
+9F81 cmp #$77
+9F83 bne L2EEC
+9F85 lda _menu_skills_y
+9F88 jeq L294A
+9F8D dec _menu_skills_y
+9F90 lda #$01
+9F92 ldy #$08
+9F94 sta (sp),y
+9F96 jmp L294A
+9F99 L2EEC:
+9F99 lda (sp),y
+9F9B cmp #$73
+9F9D bne L2EEE
+9F9F lda _menu_skills_y
+9FA2 cmp #$02
+9FA4 jcs L294A
+9FA9 inc _menu_skills_y
+9FAC lda #$01
+9FAE ldy #$08
+9FB0 sta (sp),y
+9FB2 jmp L294A
+9FB5 L2EEE:
+9FB5 lda (sp),y
+9FB7 cmp #$61
+9FB9 bne L2EF0
+9FBB lda _menu_skills_x
+9FBE jeq L294A
+9FC3 dec _menu_skills_x
+9FC6 lda #$01
+9FC8 ldy #$08
+9FCA sta (sp),y
+9FCC jmp L294A
+9FCF L2EF0:
+9FCF lda (sp),y
+9FD1 cmp #$64
+9FD3 bne L2EF2
+9FD5 lda _menu_skills_x
+9FD8 cmp #$04
+9FDA jcs L294A
+9FDF inc _menu_skills_x
+9FE2 lda #$01
+9FE4 ldy #$08
+9FE6 sta (sp),y
+9FE8 jmp L294A
+9FEB L2EF2:
+9FEB lda (sp),y
+9FED cmp #$0D
+9FEF jne L294A
+9FF4 lda _hero_Points
+9FF7 jeq L294A
+9FFC ldx #$00
+9FFE lda _menu_skills_y
+A001 jsr mulax5
+A004 clc
+A005 adc _menu_skills_x
+A008 ldy #$05
+A00A sta (sp),y
+A00C tay
+A00D lda _skill_list,y
+A010 jne L294A
+A015 lda _menu_skills_x
+A018 beq L2EF5
+A01A ldy #$05
+A01C ldx #$00
+A01E lda (sp),y
+A020 sec
+A021 sbc #$01
+A023 bcs L2880
+A025 dex
+A026 L2880:
+A026 sta ptr1
+A028 txa
+A029 clc
+A02A adc #>(_skill_list)
+A02C sta ptr1+1
+A02E ldy #<(_skill_list)
+A030 lda (ptr1),y
+A032 cmp #$01
+A034 jne L294A
+A039 L2EF5:
+A039 dec _hero_Points
+A03C ldy #$05
+A03E lda (sp),y
+A040 tay
+A041 lda #$01
+A043 sta _skill_list,y
+A046 jsr _CalcStats
+A049 lda #$01
+A04B ldy #$09
+A04D sta (sp),y
+A04F jmp L2F22
+A052 L284E:
+A052 lda _output_mode+1
+A055 jne L294A
+A05A lda _output_mode
+A05D cmp #$03
+A05F jne L294A
+A064 ldy #$0A
+A066 lda (sp),y
+A068 cmp #$77
+A06A bne L2EF7
+A06C lda _menu_res_y
+A06F jeq L294A
+A074 dec _menu_res_y
+A077 lda #$01
+A079 ldy #$07
+A07B sta (sp),y
+A07D jmp L294A
+A080 L2EF7:
+A080 lda (sp),y
+A082 cmp #$73
+A084 bne L2EF9
+A086 lda _menu_res_y
+A089 cmp #$04
+A08B jcs L294A
+A090 inc _menu_res_y
+A093 lda #$01
+A095 ldy #$07
+A097 sta (sp),y
+A099 jmp L294A
+A09C L2EF9:
+A09C lda (sp),y
+A09E cmp #$61
+A0A0 bne L2EFB
+A0A2 lda _menu_res_x
+A0A5 jeq L294A
+A0AA dec _menu_res_x
+A0AD lda #$01
+A0AF ldy #$07
+A0B1 sta (sp),y
+A0B3 jmp L294A
+A0B6 L2EFB:
+A0B6 lda (sp),y
+A0B8 cmp #$64
+A0BA bne L2EFD
+A0BC lda _menu_res_x
+A0BF cmp #$05
+A0C1 jcs L294A
+A0C6 inc _menu_res_x
+A0C9 lda #$01
+A0CB ldy #$07
+A0CD sta (sp),y
+A0CF jmp L294A
+A0D2 L2EFD:
+A0D2 lda (sp),y
+A0D4 cmp #$0D
+A0D6 jne L294A
+A0DB lda _menu_res_target
+A0DE cmp #$20
+A0E0 jeq L2932
+A0E5 lda _skill_list+12
+A0E8 cmp #$01
+A0EA bne L2EFE
+A0EC lda _menu_res_x
+A0EF cmp #$04
+A0F1 bcc L2EFF
+A0F3 L2EFE:
+A0F3 lda #$00
+A0F5 bra L2F01
+A0F7 L2EFF:
+A0F7 lda #$01
+A0F9 L2F01:
+A0F9 ldy #$02
+A0FB sta (sp),y
+A0FD ldx #$00
+A0FF lda _skill_list+14
+A102 cmp #$01
+A104 jne L2F0E
+A109 lda _hero_Red
+A10C clc
+A10D adc _hero_Blue
+A110 bcc L2ECE
+A112 inx
+A113 clc
+A114 L2ECE:
+A114 adc _hero_Yellow
+A117 bcc L2EB5
+A119 inx
+A11A L2EB5:
+A11A jsr stax0sp
+A11D jsr pushax
+A120 ldx #$00
+A122 lda _menu_res_target
+A125 asl a
+A126 bcc L2ECF
+A128 inx
+A129 clc
+A12A L2ECF:
+A12A adc #<(_item_stats)
+A12C sta ptr1
+A12E txa
+A12F adc #>(_item_stats)
+A131 sta ptr1+1
+A133 ldy #$01
+A135 lda (ptr1),y
+A137 tax
+A138 lda (ptr1)
+A13A sta ptr1
+A13C stx ptr1+1
+A13E ldy #$01
+A140 lda (ptr1),y
+A142 sec
+A143 ldy #$04
+A145 sbc (sp),y
+A147 jsr tosicmp0
+A14A jcc L2932
+A14F lda _skill_list+10
+A152 beq L2F02
+A154 lda #$05
+A156 jsr _rand8
+A159 cmp #$00
+A15B jeq L2F16
+A160 L2F02:
+A160 ldx #$00
+A162 lda _menu_res_target
+A165 asl a
+A166 bcc L2ED0
+A168 inx
+A169 clc
+A16A L2ED0:
+A16A adc #<(_item_stats)
+A16C sta ptr1
+A16E txa
+A16F adc #>(_item_stats)
+A171 sta ptr1+1
+A173 ldy #$01
+A175 lda (ptr1),y
+A177 tax
+A178 lda (ptr1)
+A17A sta ptr1
+A17C stx ptr1+1
+A17E ldy #$01
+A180 lda (ptr1),y
+A182 sec
+A183 iny
+A184 sbc (sp),y
+A186 ldx #$00
+A188 jsr stax0sp
+A18B bra L28D5
+A18D L2F03:
+A18D lda (sp),y
+A18F tax
+A190 lda (sp)
+A192 sec
+A193 sbc #$01
+A195 bcs L28DD
+A197 dex
+A198 L28DD:
+A198 jsr stax0sp
+A19B dec _hero_Red
+A19E L28D5:
+A19E lda (sp)
+A1A0 ldy #$01
+A1A2 ora (sp),y
+A1A4 beq L28E1
+A1A6 lda _hero_Red
+A1A9 bne L2F03
+A1AB bra L28E1
+A1AD L2F05:
+A1AD lda (sp),y
+A1AF tax
+A1B0 lda (sp)
+A1B2 sec
+A1B3 sbc #$01
+A1B5 bcs L28E9
+A1B7 dex
+A1B8 L28E9:
+A1B8 jsr stax0sp
+A1BB dec _hero_Blue
+A1BE L28E1:
+A1BE lda (sp)
+A1C0 ldy #$01
+A1C2 ora (sp),y
+A1C4 beq L28ED
+A1C6 lda _hero_Blue
+A1C9 bne L2F05
+A1CB bra L28ED
+A1CD L2F09:
+A1CD lda (sp),y
+A1CF tax
+A1D0 lda (sp)
+A1D2 sec
+A1D3 sbc #$01
+A1D5 bcs L28F5
+A1D7 dex
+A1D8 L28F5:
+A1D8 jsr stax0sp
+A1DB dec _hero_Yellow
+A1DE L28ED:
+A1DE lda (sp)
+A1E0 ldy #$01
+A1E2 ora (sp),y
+A1E4 jeq L2F16
+A1E9 lda _hero_Yellow
+A1EC bne L2F09
+A1EE jmp L2F16
+A1F1 L2F0E:
+A1F1 lda _menu_res_target
+A1F4 asl a
+A1F5 bcc L2ED1
+A1F7 inx
+A1F8 clc
+A1F9 L2ED1:
+A1F9 adc #<(_item_stats)
+A1FB sta ptr1
+A1FD txa
+A1FE adc #>(_item_stats)
+A200 sta ptr1+1
+A202 dey
+A203 lda (ptr1),y
+A205 tax
+A206 lda (ptr1)
+A208 sta ptr1
+A20A stx ptr1+1
+A20C iny
+A20D ldx #$00
+A20F lda (ptr1),y
+A211 bne L2F11
+A213 lda _hero_Red
+A216 jsr pusha0
+A219 lda _menu_res_target
+A21C asl a
+A21D bcc L2ED2
+A21F ldx #$01
+A221 clc
+A222 L2ED2:
+A222 adc #<(_item_stats)
+A224 sta ptr1
+A226 txa
+A227 adc #>(_item_stats)
+A229 sta ptr1+1
+A22B ldy #$01
+A22D lda (ptr1),y
+A22F tax
+A230 lda (ptr1)
+A232 sta ptr1
+A234 stx ptr1+1
+A236 ldy #$01
+A238 lda (ptr1),y
+A23A sec
+A23B ldy #$04
+A23D sbc (sp),y
+A23F jsr tosicmp0
+A242 jcc L2932
+A247 lda _skill_list+10
+A24A beq L2F0F
+A24C lda #$05
+A24E jsr _rand8
+A251 cmp #$00
+A253 jeq L2F16
+A258 L2F0F:
+A258 ldx #$00
+A25A lda _menu_res_target
+A25D asl a
+A25E bcc L2ED3
+A260 inx
+A261 clc
+A262 L2ED3:
+A262 adc #<(_item_stats)
+A264 sta ptr1
+A266 txa
+A267 adc #>(_item_stats)
+A269 sta ptr1+1
+A26B ldy #$01
+A26D lda (ptr1),y
+A26F tax
+A270 lda (ptr1)
+A272 sta ptr1
+A274 stx ptr1+1
+A276 ldy #$01
+A278 lda (ptr1),y
+A27A sec
+A27B iny
+A27C sbc (sp),y
+A27E eor #$FF
+A280 sec
+A281 adc _hero_Red
+A284 sta _hero_Red
+A287 jmp L2F16
+A28A L2F11:
+A28A lda _menu_res_target
+A28D asl a
+A28E bcc L2ED4
+A290 inx
+A291 clc
+A292 L2ED4:
+A292 adc #<(_item_stats)
+A294 sta ptr1
+A296 txa
+A297 adc #>(_item_stats)
+A299 sta ptr1+1
+A29B dey
+A29C lda (ptr1),y
+A29E tax
+A29F lda (ptr1)
+A2A1 sta ptr1
+A2A3 stx ptr1+1
+A2A5 iny
+A2A6 ldx #$00
+A2A8 lda (ptr1),y
+A2AA cmp #$01
+A2AC bne L2F14
+A2AE lda _hero_Blue
+A2B1 jsr pusha0
+A2B4 lda _menu_res_target
+A2B7 asl a
+A2B8 bcc L2ED5
+A2BA ldx #$01
+A2BC clc
+A2BD L2ED5:
+A2BD adc #<(_item_stats)
+A2BF sta ptr1
+A2C1 txa
+A2C2 adc #>(_item_stats)
+A2C4 sta ptr1+1
+A2C6 ldy #$01
+A2C8 lda (ptr1),y
+A2CA tax
+A2CB lda (ptr1)
+A2CD sta ptr1
+A2CF stx ptr1+1
+A2D1 ldy #$01
+A2D3 lda (ptr1),y
+A2D5 sec
+A2D6 ldy #$04
+A2D8 sbc (sp),y
+A2DA jsr tosicmp0
+A2DD jcc L2932
+A2E2 lda _skill_list+10
+A2E5 beq L2F12
+A2E7 lda #$05
+A2E9 jsr _rand8
+A2EC cmp #$00
+A2EE jeq L2F16
+A2F3 L2F12:
+A2F3 ldx #$00
+A2F5 lda _menu_res_target
+A2F8 asl a
+A2F9 bcc L2ED6
+A2FB inx
+A2FC clc
+A2FD L2ED6:
+A2FD adc #<(_item_stats)
+A2FF sta ptr1
+A301 txa
+A302 adc #>(_item_stats)
+A304 sta ptr1+1
+A306 ldy #$01
+A308 lda (ptr1),y
+A30A tax
+A30B lda (ptr1)
+A30D sta ptr1
+A30F stx ptr1+1
+A311 ldy #$01
+A313 lda (ptr1),y
+A315 sec
+A316 iny
+A317 sbc (sp),y
+A319 eor #$FF
+A31B sec
+A31C adc _hero_Blue
+A31F sta _hero_Blue
+A322 jmp L2F16
+A325 L2F14:
+A325 lda _menu_res_target
+A328 asl a
+A329 bcc L2ED7
+A32B inx
+A32C clc
+A32D L2ED7:
+A32D adc #<(_item_stats)
+A32F sta ptr1
+A331 txa
+A332 adc #>(_item_stats)
+A334 sta ptr1+1
+A336 dey
+A337 lda (ptr1),y
+A339 tax
+A33A lda (ptr1)
+A33C sta ptr1
+A33E stx ptr1+1
+A340 iny
+A341 lda (ptr1),y
+A343 cmp #$02
+A345 bne L2932
+A347 lda _hero_Yellow
+A34A jsr pusha0
+A34D lda _menu_res_target
+A350 asl a
+A351 bcc L2ED8
+A353 ldx #$01
+A355 clc
+A356 L2ED8:
+A356 adc #<(_item_stats)
+A358 sta ptr1
+A35A txa
+A35B adc #>(_item_stats)
+A35D sta ptr1+1
+A35F ldy #$01
+A361 lda (ptr1),y
+A363 tax
+A364 lda (ptr1)
+A366 sta ptr1
+A368 stx ptr1+1
+A36A ldy #$01
+A36C lda (ptr1),y
+A36E sec
+A36F ldy #$04
+A371 sbc (sp),y
+A373 jsr tosicmp0
+A376 bcc L2932
+A378 lda _skill_list+10
+A37B beq L2F15
+A37D lda #$05
+A37F jsr _rand8
+A382 cmp #$00
+A384 beq L2F16
+A386 L2F15:
+A386 ldx #$00
+A388 lda _menu_res_target
+A38B asl a
+A38C bcc L2ED9
+A38E inx
+A38F clc
+A390 L2ED9:
+A390 adc #<(_item_stats)
+A392 sta ptr1
+A394 txa
+A395 adc #>(_item_stats)
+A397 sta ptr1+1
+A399 ldy #$01
+A39B lda (ptr1),y
+A39D tax
+A39E lda (ptr1)
+A3A0 sta ptr1
+A3A2 stx ptr1+1
+A3A4 ldy #$01
+A3A6 lda (ptr1),y
+A3A8 sec
+A3A9 iny
+A3AA sbc (sp),y
+A3AC eor #$FF
+A3AE sec
+A3AF adc _hero_Yellow
+A3B2 sta _hero_Yellow
+A3B5 L2F16:
+A3B5 lda #$01
+A3B7 ldy #$04
+A3B9 sta (sp),y
+A3BB ldy #$09
+A3BD sta (sp),y
+A3BF L2932:
+A3BF ldy #$04
+A3C1 lda (sp),y
+A3C3 cmp #$01
+A3C5 jne L294A
+A3CA lda _menu_res_target
+A3CD cmp #$19
+A3CF beq L294C
+A3D1 cmp #$1A
+A3D3 beq L2F17
+A3D5 cmp #$1B
+A3D7 beq L2F18
+A3D9 cmp #$1C
+A3DB beq L2F19
+A3DD cmp #$1D
+A3DF beq L2960
+A3E1 cmp #$1E
+A3E3 beq L2F1A
+A3E5 bra L2F1B
+A3E7 L294C:
+A3E7 lda _hero_HP_Max+1
+A3EA sta _hero_HP+1
+A3ED lda _hero_HP_Max
+A3F0 sta _hero_HP
+A3F3 jmp L294A
+A3F6 L2F17:
+A3F6 inc _hero_HP_Upgrade
+A3F9 jsr _CalcStats
+A3FC lda _hero_HP_Max+1
+A3FF sta _hero_HP+1
+A402 lda _hero_HP_Max
+A405 sta _hero_HP
+A408 jmp L294A
+A40B L2F18:
+A40B lda _hero_Batt_Max
+A40E sta _hero_Batt
+A411 jmp L294A
+A414 L2F19:
+A414 inc _hero_Batt_Upgrade
+A417 jsr _CalcStats
+A41A lda _hero_Batt_Max
+A41D sta _hero_Batt
+A420 jmp L294A
+A423 L2960:
+A423 lda #$0A
+A425 jsr _AddExp
+A428 jmp L294A
+A42B L2F1A:
+A42B inc _hero_Dmg_Upgrade
+A42E jsr _CalcStats
+A431 jmp L294A
+A434 L2F1B:
+A434 lda #$00
+A436 ldy #$02
+A438 L2F21:
+A438 sta (sp),y
+A43A cmp #$1E
+A43C jcs L294A
+A441 lda (sp),y
+A443 tay
+A444 lda _hero_inventory,y
+A447 cmp #$20
+A449 bne L296A
+A44B lda _skill_list+13
+A44E cmp #$01
+A450 bne L2974
+A452 lda #$0A
+A454 jsr _rand8
+A457 cmp #$00
+A459 bne L2974
+A45B tax
+A45C lda _menu_res_target
+A45F asl a
+A460 bcc L2EDA
+A462 inx
+A463 clc
+A464 L2EDA:
+A464 adc #<(_item_stats)
+A466 sta ptr1
+A468 txa
+A469 adc #>(_item_stats)
+A46B sta ptr1+1
+A46D ldy #$01
+A46F lda (ptr1),y
+A471 tax
+A472 lda (ptr1)
+A474 sta ptr1
+A476 stx ptr1+1
+A478 lda (ptr1)
+A47A beq L2982
+A47C cmp #$01
+A47E beq L2988
+A480 cmp #$02
+A482 beq L298E
+A484 cmp #$03
+A486 beq L2994
+A488 cmp #$04
+A48A beq L299A
+A48C bra L294A
+A48E L2982:
+A48E iny
+A48F lda (sp),y
+A491 tay
+A492 lda #$04
+A494 bra L2ECA
+A496 L2988:
+A496 iny
+A497 lda (sp),y
+A499 tay
+A49A lda #$09
+A49C bra L2ECA
+A49E L298E:
+A49E iny
+A49F lda (sp),y
+A4A1 tay
+A4A2 lda #$0E
+A4A4 bra L2ECA
+A4A6 L2994:
+A4A6 iny
+A4A7 lda (sp),y
+A4A9 tay
+A4AA lda #$13
+A4AC bra L2ECA
+A4AE L299A:
+A4AE iny
+A4AF lda (sp),y
+A4B1 tay
+A4B2 lda #$18
+A4B4 bra L2ECA
+A4B6 L2974:
+A4B6 ldy #$02
+A4B8 lda (sp),y
+A4BA tay
+A4BB lda _menu_res_target
+A4BE L2ECA:
+A4BE sta _hero_inventory,y
+A4C1 bra L294A
+A4C3 L296A:
+A4C3 ldy #$02
+A4C5 lda (sp),y
+A4C7 ina
+A4C8 jmp L2F21
+A4CB L294A:
+A4CB ldy #$09
+A4CD L2F22:
+A4CD lda (sp),y
+A4CF cmp #$01
+A4D1 bne L29A4
+A4D3 ldy #$03
+A4D5 lda (sp),y
+A4D7 ora #$02
+A4D9 bra L2ECB
+A4DB L29A4:
+A4DB dey
+A4DC lda (sp),y
+A4DE cmp #$01
+A4E0 bne L29AA
+A4E2 ldy #$03
+A4E4 lda (sp),y
+A4E6 ora #$40
+A4E8 bra L2ECB
+A4EA L29AA:
+A4EA dey
+A4EB lda (sp),y
+A4ED cmp #$01
+A4EF bne L29B0
+A4F1 ldy #$03
+A4F3 lda (sp),y
+A4F5 ora #$80
+A4F7 L2ECB:
+A4F7 sta (sp),y
+A4F9 L29B0:
+A4F9 ldy #$03
+A4FB lda (sp),y
+A4FD ldx #$00
+A4FF L27D0:
+A4FF ldy #$0B
+A501 jmp addysp
+A504 LoadCrystals:
+A504 lda #$00
+A506 jsr pusha
+A509 jsr decsp3
+A50C lda #$00
+A50E ldy #$01
+A510 L2F37:
+A510 sta (sp),y
+A512 cmp #$14
+A514 jcs L29E9
+A519 lda #$00
+A51B iny
+A51C L2F36:
+A51C sta (sp),y
+A51E cmp #$28
+A520 bcs L29BA
+A522 dey
+A523 lda (sp),y
+A525 jsr pusha0
+A528 lda #$28
+A52A jsr tosmula0
+A52D clc
+A52E adc #<(_crystal_map)
+A530 sta ptr1
+A532 txa
+A533 adc #>(_crystal_map)
+A535 sta ptr1+1
+A537 ldy #$02
+A539 lda (sp),y
+A53B clc
+A53C adc ptr1
+A53E ldx ptr1+1
+A540 bcc L2F29
+A542 inx
+A543 L2F29:
+A543 sta ptr1
+A545 stx ptr1+1
+A547 lda #$FF
+A549 sta (ptr1)
+A54B ldy #$02
+A54D lda (sp),y
+A54F ina
+A550 bra L2F36
+A552 L29BA:
+A552 dey
+A553 lda (sp),y
+A555 ina
+A556 bra L2F37
+A558 L29CC:
+A558 lda #$28
+A55A jsr _rand8
+A55D ldy #$02
+A55F sta (sp),y
+A561 lda #$14
+A563 jsr _rand8
+A566 ldy #$01
+A568 sta (sp),y
+A56A iny
+A56B lda (sp),y
+A56D cmp #$01
+A56F bne L2F30
+A571 dey
+A572 lda (sp),y
+A574 cmp #$01
+A576 beq L29DC
+A578 L2F30:
+A578 lda #$00
+A57A L29DC:
+A57A jsr bnega
+A57D jeq L29E9
+A582 ldy #$02
+A584 lda (sp),y
+A586 jsr pusha
+A589 ldy #$02
+A58B lda (sp),y
+A58D jsr _CheckForMonster
+A590 cmp #$00
+A592 jne L29E9
+A597 ldy #$02
+A599 lda (sp),y
+A59B jsr pusha
+A59E ldy #$02
+A5A0 lda (sp),y
+A5A2 jsr _CheckForCrystal
+A5A5 cmp #$00
+A5A7 jne L29E9
+A5AC ldy #$01
+A5AE lda (sp),y
+A5B0 jsr pusha0
+A5B3 lda #$28
+A5B5 jsr tosmula0
+A5B8 clc
+A5B9 adc #<(_map_data)
+A5BB sta ptr1
+A5BD txa
+A5BE adc #>(_map_data)
+A5C0 sta ptr1+1
+A5C2 ldy #$02
+A5C4 lda (sp),y
+A5C6 tay
+A5C7 lda (ptr1),y
+A5C9 beq L29EB
+A5CB cmp #$01
+A5CD beq L29EB
+A5CF cmp #$02
+A5D1 beq L29EB
+A5D3 cmp #$03
+A5D5 jne L29E9
+A5DA L29EB:
+A5DA ldy #$03
+A5DC ldx #$00
+A5DE lda (sp),y
+A5E0 jsr aslax3
+A5E3 clc
+A5E4 adc #<(_crystal_list)
+A5E6 tay
+A5E7 txa
+A5E8 adc #>(_crystal_list)
+A5EA tax
+A5EB tya
+A5EC jsr pushax
+A5EF ldy #$04
+A5F1 lda (sp),y
+A5F3 ldx #$00
+A5F5 ldy #$00
+A5F7 jsr staxspidx
+A5FA ldy #$03
+A5FC lda (sp),y
+A5FE jsr aslax3
+A601 clc
+A602 adc #<(_crystal_list)
+A604 tay
+A605 txa
+A606 adc #>(_crystal_list)
+A608 tax
+A609 tya
+A60A jsr pushax
+A60D ldy #$03
+A60F lda (sp),y
+A611 ldx #$00
+A613 dey
+A614 jsr staxspidx
+A617 iny
+A618 lda (sp),y
+A61A jsr aslax3
+A61D clc
+A61E adc #<(_crystal_list)
+A620 sta ptr1
+A622 txa
+A623 adc #>(_crystal_list)
+A625 sta ptr1+1
+A627 lda #$01
+A629 iny
+A62A sta (ptr1),y
+A62C iny
+A62D dea
+A62E sta (ptr1),y
+A630 lda #$03
+A632 jsr _rand8
+A635 sta (sp)
+A637 lda (sp)
+A639 bne L2F33
+A63B ldy #$03
+A63D tax
+A63E lda (sp),y
+A640 jsr aslax3
+A643 clc
+A644 adc #<(_crystal_list)
+A646 sta ptr1
+A648 txa
+A649 adc #>(_crystal_list)
+A64B sta ptr1+1
+A64D lda #$00
+A64F ldy #$06
+A651 sta (ptr1),y
+A653 iny
+A654 bra L2F38
+A656 L2F33:
+A656 lda (sp)
+A658 cmp #$01
+A65A bne L2F35
+A65C ldy #$03
+A65E ldx #$00
+A660 lda (sp),y
+A662 jsr aslax3
+A665 clc
+A666 adc #<(_crystal_list)
+A668 sta ptr1
+A66A txa
+A66B adc #>(_crystal_list)
+A66D sta ptr1+1
+A66F lda #$01
+A671 bra L2F3C
+A673 L2F35:
+A673 lda (sp)
+A675 cmp #$02
+A677 bne L2A0A
+A679 ldy #$03
+A67B ldx #$00
+A67D lda (sp),y
+A67F jsr aslax3
+A682 clc
+A683 adc #<(_crystal_list)
+A685 sta ptr1
+A687 txa
+A688 adc #>(_crystal_list)
+A68A sta ptr1+1
+A68C lda #$02
+A68E L2F3C:
+A68E ldy #$06
+A690 sta (ptr1),y
+A692 iny
+A693 lda #$00
+A695 L2F38:
+A695 sta (ptr1),y
+A697 L2A0A:
+A697 ldy #$01
+A699 lda (sp),y
+A69B jsr pusha0
+A69E lda #$28
+A6A0 jsr tosmula0
+A6A3 clc
+A6A4 adc #<(_crystal_map)
+A6A6 sta ptr1
+A6A8 txa
+A6A9 adc #>(_crystal_map)
+A6AB sta ptr1+1
+A6AD ldy #$02
+A6AF lda (sp),y
+A6B1 clc
+A6B2 adc ptr1
+A6B4 ldx ptr1+1
+A6B6 bcc L2F2A
+A6B8 inx
+A6B9 L2F2A:
+A6B9 sta ptr1
+A6BB stx ptr1+1
+A6BD iny
+A6BE lda (sp),y
+A6C0 sta (ptr1)
+A6C2 ldy #$03
+A6C4 lda (sp),y
+A6C6 ina
+A6C7 sta (sp),y
+A6C9 L29E9:
+A6C9 ldy #$03
+A6CB lda (sp),y
+A6CD cmp #$28
+A6CF jcc L29CC
+A6D4 ldx #$00
+A6D6 txa
+A6D7 jmp incsp4
+A6DA LoadMonsters:
+A6DA lda #$00
+A6DC jsr pusha
+A6DF jsr decsp2
+A6E2 lda #$00
+A6E4 L2F46:
+A6E4 sta (sp)
+A6E6 cmp #$14
+A6E8 jcs L2A44
+A6ED lda #$00
+A6EF ldy #$01
+A6F1 L2F45:
+A6F1 sta (sp),y
+A6F3 cmp #$28
+A6F5 bcs L2A19
+A6F7 lda (sp)
+A6F9 jsr pusha0
+A6FC lda #$28
+A6FE jsr tosmula0
+A701 clc
+A702 adc #<(_monster_map)
+A704 sta ptr1
+A706 txa
+A707 adc #>(_monster_map)
+A709 sta ptr1+1
+A70B ldy #$01
+A70D lda (sp),y
+A70F clc
+A710 adc ptr1
+A712 ldx ptr1+1
+A714 bcc L2F3D
+A716 inx
+A717 L2F3D:
+A717 sta ptr1
+A719 stx ptr1+1
+A71B lda #$FF
+A71D sta (ptr1)
+A71F ldy #$01
+A721 lda (sp),y
+A723 ina
+A724 bra L2F45
+A726 L2A19:
+A726 lda (sp)
+A728 ina
+A729 bra L2F46
+A72B L2A2B:
+A72B lda #$28
+A72D jsr _rand8
+A730 ldy #$01
+A732 sta (sp),y
+A734 lda #$14
+A736 jsr _rand8
+A739 sta (sp)
+A73B ldy #$01
+A73D lda (sp),y
+A73F cmp #$01
+A741 bne L2F43
+A743 lda (sp)
+A745 cmp #$01
+A747 beq L2A3B
+A749 L2F43:
+A749 lda #$00
+A74B L2A3B:
+A74B jsr bnega
+A74E jeq L2A44
+A753 ldy #$01
+A755 lda (sp),y
+A757 jsr pusha
+A75A ldy #$01
+A75C lda (sp),y
+A75E jsr _CheckForMonster
+A761 cmp #$00
+A763 jne L2A44
+A768 lda (sp)
+A76A jsr pusha0
+A76D lda #$28
+A76F jsr tosmula0
+A772 clc
+A773 adc #<(_map_data)
+A775 sta ptr1
+A777 txa
+A778 adc #>(_map_data)
+A77A sta ptr1+1
+A77C ldy #$01
+A77E lda (sp),y
+A780 tay
+A781 lda (ptr1),y
+A783 beq L2A46
+A785 cmp #$01
+A787 beq L2A46
+A789 cmp #$02
+A78B beq L2A46
+A78D cmp #$03
+A78F jne L2A44
+A794 L2A46:
+A794 ldy #$02
+A796 ldx #$00
+A798 lda (sp),y
+A79A jsr mulax6
+A79D clc
+A79E adc #<(_monster_list)
+A7A0 tay
+A7A1 txa
+A7A2 adc #>(_monster_list)
+A7A4 tax
+A7A5 tya
+A7A6 jsr pushax
+A7A9 ldy #$03
+A7AB lda (sp),y
+A7AD ldx #$00
+A7AF ldy #$00
+A7B1 jsr staxspidx
+A7B4 ldy #$02
+A7B6 lda (sp),y
+A7B8 jsr mulax6
+A7BB clc
+A7BC adc #<(_monster_list)
+A7BE tay
+A7BF txa
+A7C0 adc #>(_monster_list)
+A7C2 tax
+A7C3 tya
+A7C4 jsr pushax
+A7C7 ldy #$02
+A7C9 lda (sp),y
+A7CB ldx #$00
+A7CD jsr staxspidx
+A7D0 lda (sp),y
+A7D2 jsr mulax6
+A7D5 clc
+A7D6 adc #<(_monster_list)
+A7D8 sta ptr1
+A7DA txa
+A7DB adc #>(_monster_list)
+A7DD sta ptr1+1
+A7DF lda #$01
+A7E1 ldy #$04
+A7E3 sta (ptr1),y
+A7E5 iny
+A7E6 dea
+A7E7 sta (ptr1),y
+A7E9 lda (sp)
+A7EB jsr pusha0
+A7EE lda #$28
+A7F0 jsr tosmula0
+A7F3 clc
+A7F4 adc #<(_monster_map)
+A7F6 sta ptr1
+A7F8 txa
+A7F9 adc #>(_monster_map)
+A7FB sta ptr1+1
+A7FD ldy #$01
+A7FF lda (sp),y
+A801 clc
+A802 adc ptr1
+A804 ldx ptr1+1
+A806 bcc L2F3E
+A808 inx
+A809 L2F3E:
+A809 sta ptr1
+A80B stx ptr1+1
+A80D iny
+A80E lda (sp),y
+A810 sta (ptr1)
+A812 ldy #$02
+A814 lda (sp),y
+A816 ina
+A817 sta (sp),y
+A819 L2A44:
+A819 ldy #$02
+A81B lda (sp),y
+A81D cmp #$28
+A81F jcc L2A2B
+A824 ldx #$00
+A826 txa
+A827 jmp incsp3
+A82A LoadTiles:
+FD0A L2A7E:
+A82A ldy #$09
+A82C jsr subysp
+A82F ldy #$08
+A831 L2A88:
+A831 lda L2A7E,y
+A834 sta (sp),y
+A836 dey
+A837 bpl L2A88
+A839 jsr decsp1
+A83C lda #$37
+A83E jsr pusha0
+A841 lda #$11
+A843 jsr _CopyTile
+A846 lda #$38
+A848 jsr pusha0
+A84B lda #$12
+A84D jsr _CopyTile
+A850 lda #$39
+A852 jsr pusha0
+A855 lda #$13
+A857 jsr _CopyTile
+A85A lda #$3A
+A85C jsr pusha0
+A85F lda #$14
+A861 jsr _CopyTile
+A864 lda #$3B
+A866 jsr pusha0
+A869 lda #$15
+A86B jsr _CopyTile
+A86E lda #$3C
+A870 jsr pusha0
+A873 lda #$16
+A875 jsr _CopyTile
+A878 lda #$3D
+A87A jsr pusha0
+A87D lda #$17
+A87F jsr _CopyTile
+A882 lda #$3E
+A884 jsr pusha0
+A887 lda #$1A
+A889 jsr _CopyTile
+A88C lda #$3F
+A88E jsr pusha0
+A891 lda #$1B
+A893 jsr _CopyTile
+A896 lda #$40
+A898 jsr pusha0
+A89B lda #$1C
+A89D jsr _CopyTile
+A8A0 lda #$41
+A8A2 jsr pusha0
+A8A5 lda #$1D
+A8A7 jsr _CopyTile
+A8AA lda #$42
+A8AC jsr pusha0
+A8AF lda #$1E
+A8B1 jsr _CopyTile1bpp
+A8B4 lda #$43
+A8B6 jsr pusha0
+A8B9 lda #$1F
+A8BB jsr _CopyTile1bpp
+A8BE lda #$44
+A8C0 jsr pusha0
+A8C3 lda #$20
+A8C5 jsr _CopyTile1bpp
+A8C8 lda #$45
+A8CA jsr pusha0
+A8CD lda #$21
+A8CF jsr _CopyTile1bpp
+A8D2 lda #$46
+A8D4 jsr pusha0
+A8D7 lda #$22
+A8D9 jsr _CopyTile1bpp
+A8DC lda #$48
+A8DE jsr pusha0
+A8E1 lda #$24
+A8E3 jsr _CopyTile1bpp
+A8E6 lda #$47
+A8E8 jsr pusha0
+A8EB lda #$23
+A8ED jsr _CopyTile1bpp
+A8F0 lda #$49
+A8F2 jsr pusha0
+A8F5 lda #$25
+A8F7 jsr _CopyTile1bpp
+A8FA lda #$4A
+A8FC jsr pusha0
+A8FF lda #$26
+A901 jsr _CopyTile1bpp
+A904 lda #$4B
+A906 jsr pusha0
+A909 lda #$27
+A90B jsr _CopyTile1bpp
+A90E lda #$00
+A910 sta (sp)
+A912 tax
+A913 L2F48:
+A913 lda (sp)
+A915 cmp #$0F
+A917 bcs L2F49
+A919 clc
+A91A adc #$4C
+A91C bcc L2AD2
+A91E inx
+A91F L2AD2:
+A91F jsr pushax
+A922 ldy #$02
+A924 ldx #$00
+A926 lda (sp),y
+A928 clc
+A929 adc #$28
+A92B bcc L2AD4
+A92D inx
+A92E L2AD4:
+A92E jsr _CopyTile1bpp
+A931 ldx #$00
+A933 lda (sp)
+A935 ina
+A936 sta (sp)
+A938 bra L2F48
+A93A L2F49:
+A93A jsr push0
+A93D lda #$19
+A93F jsr _CopyTile
+A942 lda #$01
+A944 jsr pusha0
+A947 dea
+A948 jsr _RotateTile90
+A94B lda #$02
+A94D jsr pusha0
+A950 dea
+A951 jsr _RotateTile90
+A954 lda #$03
+A956 jsr pusha0
+A959 dea
+A95A jsr _RotateTile90
+A95D lda #$04
+A95F jsr pusha0
+A962 lda #$19
+A964 jsr _CopyTile
+A967 lda #$05
+A969 jsr pusha0
+A96C lda #$19
+A96E jsr _CopyTile
+A971 lda #$06
+A973 jsr pusha0
+A976 lda #$18
+A978 jsr _CopyTile
+A97B lda #$08
+A97D jsr pusha0
+A980 lda #$18
+A982 jsr _CopyTile
+A985 lda #$07
+A987 jsr pusha0
+A98A lda #$18
+A98C jsr _CopyTile
+A98F lda #$00
+A991 sta (sp)
+A993 tax
+A994 L2F4B:
+A994 lda (sp)
+A996 cmp #$09
+A998 bcs L2F4D
+A99A lda sp
+A99C ldx sp+1
+A99E clc
+A99F adc #$01
+A9A1 bcc L2F4E
+A9A3 inx
+A9A4 clc
+A9A5 L2F4E:
+A9A5 adc (sp)
+A9A7 bcc L2AFD
+A9A9 inx
+A9AA L2AFD:
+A9AA sta ptr1
+A9AC stx ptr1+1
+A9AE lda (ptr1)
+A9B0 jsr pusha0
+A9B3 lda sp
+A9B5 ldx sp+1
+A9B7 clc
+A9B8 adc #$03
+A9BA bcc L2B00
+A9BC inx
+A9BD L2B00:
+A9BD ldy #$02
+A9BF clc
+A9C0 adc (sp),y
+A9C2 bcc L2B01
+A9C4 inx
+A9C5 L2B01:
+A9C5 sta ptr1
+A9C7 stx ptr1+1
+A9C9 lda (ptr1)
+A9CB ldx #$00
+A9CD jsr _ColorTile
+A9D0 ldx #$00
+A9D2 lda (sp)
+A9D4 ina
+A9D5 sta (sp)
+A9D7 bra L2F4B
+A9D9 L2F4D:
+A9D9 txa
+A9DA ldy #$0A
+A9DC jmp addysp
+A9DF MakeMap:
+A9DF lda regbank+18
+A9E1 ldx regbank+19
+A9E3 jsr pushax
+A9E6 lda #>(_map_data)
+A9E8 sta regbank+18+1
+A9EA lda #<(_map_data)
+A9EC sta regbank+18
+A9EE lda regbank+17
+A9F0 jsr pusha
+A9F3 lda regbank+16
+A9F5 jsr pusha
+A9F8 lda regbank+14
+A9FA ldx regbank+15
+A9FC jsr pushax
+A9FF stz regbank+14
+AA01 stz regbank+14+1
+AA03 L2B07:
+AA03 lda regbank+14
+AA05 cmp #$20
+AA07 lda regbank+14+1
+AA09 sbc #$03
+AA0B bvc L2B0E
+AA0D eor #$80
+AA0F L2B0E:
+AA0F asl a
+AA10 bcc L2F51
+AA12 lda regbank+18
+AA14 ldx regbank+18+1
+AA16 sta regsave
+AA18 stx regsave+1
+AA1A ina
+AA1B bne L2B12
+AA1D inx
+AA1E L2B12:
+AA1E sta regbank+18
+AA20 stx regbank+18+1
+AA22 lda #$00
+AA24 sta (regsave)
+AA26 lda regbank+14
+AA28 ldx regbank+14+1
+AA2A ina
+AA2B bne L2B10
+AA2D inx
+AA2E L2B10:
+AA2E sta regbank+14
+AA30 stx regbank+14+1
+AA32 bra L2B07
+AA34 L2F51:
+AA34 stz regbank+14
+AA36 stz regbank+14+1
+AA38 L2B14:
+AA38 lda regbank+14
+AA3A cmp #$14
+AA3C lda regbank+14+1
+AA3E sbc #$00
+AA40 bvc L2B1B
+AA42 eor #$80
+AA44 L2B1B:
+AA44 asl a
+AA45 bcc L2F53
+AA47 lda #$05
+AA49 jsr _MazeHorizStripe
+AA4C lda regbank+14
+AA4E ldx regbank+14+1
+AA50 ina
+AA51 bne L2B1D
+AA53 inx
+AA54 L2B1D:
+AA54 sta regbank+14
+AA56 stx regbank+14+1
+AA58 bra L2B14
+AA5A L2F53:
+AA5A stz regbank+14
+AA5C stz regbank+14+1
+AA5E L2B20:
+AA5E lda regbank+14
+AA60 cmp #$3C
+AA62 lda regbank+14+1
+AA64 sbc #$00
+AA66 bvc L2B27
+AA68 eor #$80
+AA6A L2B27:
+AA6A bpl L2B21
+AA6C lda #$04
+AA6E jsr _MazeHorizStripe
+AA71 lda regbank+14
+AA73 ldx regbank+14+1
+AA75 ina
+AA76 bne L2B29
+AA78 inx
+AA79 L2B29:
+AA79 sta regbank+14
+AA7B stx regbank+14+1
+AA7D bra L2B20
+AA7F L2B21:
+AA7F lda #>(_map_data)
+AA81 sta regbank+18+1
+AA83 lda #<(_map_data)
+AA85 sta regbank+18
+AA87 stz regbank+14
+AA89 stz regbank+14+1
+AA8B L2B30:
+AA8B lda regbank+14
+AA8D cmp #$20
+AA8F lda regbank+14+1
+AA91 sbc #$03
+AA93 bvc L2B37
+AA95 eor #$80
+AA97 L2B37:
+AA97 asl a
+AA98 bcc L2F55
+AA9A lda (regbank+18)
+AA9C sta regbank+17
+AA9E lda regbank+17
+AAA0 bne L2B43
+AAA2 lda #$04
+AAA4 jsr _rand8
+AAA7 sta regbank+16
+AAA9 cmp #$01
+AAAB beq L2B4D
+AAAD cmp #$02
+AAAF beq L2B4D
+AAB1 cmp #$03
+AAB3 bne L2B43
+AAB5 L2B4D:
+AAB5 sta (regbank+18)
+AAB7 L2B43:
+AAB7 lda regbank+18
+AAB9 ldx regbank+18+1
+AABB ina
+AABC bne L2B51
+AABE inx
+AABF L2B51:
+AABF sta regbank+18
+AAC1 stx regbank+18+1
+AAC3 lda regbank+14
+AAC5 ldx regbank+14+1
+AAC7 ina
+AAC8 bne L2B39
+AACA inx
+AACB L2B39:
+AACB sta regbank+14
+AACD stx regbank+14+1
+AACF bra L2B30
+AAD1 L2F55:
+AAD1 stz _map_data+41
+AAD4 lda #$0A
+AAD6 jsr _rand8
+AAD9 clc
+AADA adc #$0A
+AADC bcc L2B59
+AADE inx
+AADF L2B59:
+AADF jsr pushax
+AAE2 lda #$28
+AAE4 jsr tosmula0
+AAE7 clc
+AAE8 adc #<(_map_data)
+AAEA tay
+AAEB txa
+AAEC adc #>(_map_data)
+AAEE tax
+AAEF tya
+AAF0 jsr pushax
+AAF3 lda #$14
+AAF5 jsr _rand8
+AAF8 clc
+AAF9 adc #$14
+AAFB bcc L2B5C
+AAFD inx
+AAFE L2B5C:
+AAFE jsr tosaddax
+AB01 sta ptr1
+AB03 stx ptr1+1
+AB05 lda #$06
+AB07 ldy #$00
+AB09 sta (ptr1)
+AB0B ldx #$00
+AB0D txa
+AB0E pha
+AB0F L2B5F:
+AB0F lda (sp),y
+AB11 sta regbank+14,y
+AB14 iny
+AB15 cpy #$06
+AB17 bne L2B5F
+AB19 pla
+AB1A jmp incsp6
+AB1D MazeHorizStripe:
+AB1D jsr pusha
+AB20 lda #$28
+AB22 jsr _rand8
+AB25 jsr pusha
+AB28 lda #$14
+AB2A jsr _rand8
+AB2D jsr pusha
+AB30 lda #$04
+AB32 jsr _rand8
+AB35 ina
+AB36 jsr pusha
+AB39 lda #$04
+AB3B jsr _rand8
+AB3E ina
+AB3F jsr pusha
+AB42 jsr decsp4
+AB45 jsr _rand5050
+AB48 tax
+AB49 beq L2F58
+AB4B lda #$FF
+AB4D bra L2F62
+AB4F L2F58:
+AB4F ina
+AB50 L2F62:
+AB50 ldy #$03
+AB52 sta (sp),y
+AB54 jsr _rand5050
+AB57 tax
+AB58 beq L2F59
+AB5A lda #$FF
+AB5C bra L2F63
+AB5E L2F59:
+AB5E ina
+AB5F L2F63:
+AB5F ldy #$02
+AB61 sta (sp),y
+AB63 lda #$00
+AB65 dey
+AB66 sta (sp),y
+AB68 tax
+AB69 L2F5B:
+AB69 lda (sp),y
+AB6B ldy #$04
+AB6D cmp (sp),y
+AB6F txa
+AB70 sbc #$00
+AB72 jcs L2F61
+AB77 lda #$00
+AB79 L2F64:
+AB79 sta (sp)
+AB7B ldy #$05
+AB7D cmp (sp),y
+AB7F txa
+AB80 sbc #$00
+AB82 bcs L2B82
+AB84 ldy #$07
+AB86 lda (sp),y
+AB88 sec
+AB89 sbc #$28
+AB8B bvc L2B8D
+AB8D eor #$80
+AB8F L2B8D:
+AB8F bpl L2B93
+AB91 dey
+AB92 lda (sp),y
+AB94 sec
+AB95 sbc #$14
+AB97 bvc L2B91
+AB99 eor #$80
+AB9B L2B91:
+AB9B bpl L2B93
+AB9D iny
+AB9E lda (sp),y
+ABA0 tax
+ABA1 bmi L2B93
+ABA3 dey
+ABA4 lda (sp),y
+ABA6 tax
+ABA7 bmi L2B93
+ABA9 ldx #$00
+ABAB lda (sp),y
+ABAD bpl L2B9D
+ABAF dex
+ABB0 L2B9D:
+ABB0 jsr pushax
+ABB3 lda #$28
+ABB5 jsr tosmula0
+ABB8 clc
+ABB9 adc #<(_map_data)
+ABBB sta ptr1
+ABBD txa
+ABBE adc #>(_map_data)
+ABC0 sta ptr1+1
+ABC2 ldx #$00
+ABC4 ldy #$07
+ABC6 lda (sp),y
+ABC8 bpl L2B9F
+ABCA dex
+ABCB L2B9F:
+ABCB clc
+ABCC adc ptr1
+ABCE sta ptr1
+ABD0 txa
+ABD1 adc ptr1+1
+ABD3 sta ptr1+1
+ABD5 iny
+ABD6 lda (sp),y
+ABD8 sta (ptr1)
+ABDA L2B93:
+ABDA ldy #$03
+ABDC lda (sp),y
+ABDE cmp #$80
+ABE0 ldy #$07
+ABE2 clc
+ABE3 adc (sp),y
+ABE5 sta (sp),y
+ABE7 ldx #$00
+ABE9 lda (sp)
+ABEB ina
+ABEC bra L2F64
+ABEE L2B82:
+ABEE ldy #$02
+ABF0 lda (sp),y
+ABF2 cmp #$80
+ABF4 ldy #$06
+ABF6 clc
+ABF7 adc (sp),y
+ABF9 sta (sp),y
+ABFB ldy #$01
+ABFD lda (sp),y
+ABFF ina
+AC00 sta (sp),y
+AC02 jmp L2F5B
+AC05 L2F61:
+AC05 lda #$00
+AC07 ldy #$09
+AC09 jmp addysp
+AC0C RotateTile90:
+AC0C jsr pushax
+AC0F lda regbank+18
+AC11 ldx regbank+19
+AC13 jsr pushax
+AC16 ldy #$05
+AC18 lda (sp),y
+AC1A sta tmp1
+AC1C dey
+AC1D lda (sp),y
+AC1F asl a
+AC20 rol tmp1
+AC22 clc
+AC23 adc #<(_tiles)
+AC25 sta ptr1
+AC27 lda tmp1
+AC29 adc #>(_tiles)
+AC2B sta ptr1+1
+AC2D ldy #$01
+AC2F lda (ptr1),y
+AC31 tax
+AC32 lda (ptr1)
+AC34 sta regbank+18
+AC36 stx regbank+18+1
+AC38 lda regbank+16
+AC3A ldx regbank+17
+AC3C jsr pushax
+AC3F ldy #$05
+AC41 lda (sp),y
+AC43 sta tmp1
+AC45 dey
+AC46 lda (sp),y
+AC48 asl a
+AC49 rol tmp1
+AC4B clc
+AC4C adc #<(_tiles)
+AC4E sta ptr1
+AC50 lda tmp1
+AC52 adc #>(_tiles)
+AC54 sta ptr1+1
+AC56 ldy #$01
+AC58 lda (ptr1),y
+AC5A tax
+AC5B lda (ptr1)
+AC5D sta regbank+16
+AC5F stx regbank+16+1
+AC61 lda regbank+15
+AC63 jsr pusha
+AC66 ldy #$01
+AC68 lda (regbank+16),y
+AC6A sta regbank+15
+AC6C lda regbank+14
+AC6E jsr pusha
+AC71 lda regbank+13
+AC73 jsr pusha
+AC76 lda regbank+12
+AC78 jsr pusha
+AC7B lda regbank+11
+AC7D jsr pusha
+AC80 jsr push0
+AC83 jsr _CalcXY
+AC86 sta regbank+16
+AC88 stx regbank+16+1
+AC8A stz regbank+12
+AC8C L2F66:
+AC8C lda regbank+12
+AC8E jsr pusha0
+AC91 lda regbank+15
+AC93 ina
+AC94 bne L2BBD
+AC96 ldx #$01
+AC98 L2BBD:
+AC98 jsr tosicmp
+AC9B bcs L2BB6
+AC9D stz regbank+11
+AC9F L2F67:
+AC9F lda regbank+11
+ACA1 jsr pusha0
+ACA4 lda regbank+15
+ACA6 ina
+ACA7 bne L2BC6
+ACA9 ldx #$01
+ACAB L2BC6:
+ACAB jsr tosicmp
+ACAE bcs L2BC0
+ACB0 lda regbank+16
+ACB2 ldx regbank+16+1
+ACB4 sta regsave
+ACB6 stx regsave+1
+ACB8 ina
+ACB9 bne L2BC9
+ACBB inx
+ACBC L2BC9:
+ACBC sta regbank+16
+ACBE stx regbank+16+1
+ACC0 lda #$40
+ACC2 sta (regsave)
+ACC4 inc regbank+11
+ACC6 bra L2F67
+ACC8 L2BC0:
+ACC8 lda #$00
+ACCA sec
+ACCB sbc regbank+15
+ACCD pha
+ACCE lda #$01
+ACD0 sbc #$00
+ACD2 tax
+ACD3 pla
+ACD4 sec
+ACD5 sbc #$01
+ACD7 bcs L2BCD
+ACD9 dex
+ACDA L2BCD:
+ACDA clc
+ACDB adc regbank+16
+ACDD sta regbank+16
+ACDF txa
+ACE0 adc regbank+16+1
+ACE2 sta regbank+16+1
+ACE4 inc regbank+12
+ACE6 bra L2F66
+ACE8 L2BB6:
+ACE8 jsr decsp4
+ACEB ldy #$0E
+ACED lda (sp),y
+ACEF tax
+ACF0 dey
+ACF1 lda (sp),y
+ACF3 ldy #$02
+ACF5 sta (sp),y
+ACF7 iny
+ACF8 txa
+ACF9 sta (sp),y
+ACFB lda #$01
+ACFD sta (sp)
+ACFF tay
+AD00 dea
+AD01 sta (sp),y
+AD03 tax
+AD04 tya
+AD05 jsr _DrawTile
+AD08 lda #$01
+AD0A jsr pusha0
+AD0D lda regbank+15
+AD0F jsr _CalcXY
+AD12 sta regbank+16
+AD14 stx regbank+16+1
+AD16 lda regbank+18
+AD18 ldx regbank+18+1
+AD1A sta regsave
+AD1C stx regsave+1
+AD1E ina
+AD1F bne L2BD7
+AD21 inx
+AD22 L2BD7:
+AD22 sta regbank+18
+AD24 stx regbank+18+1
+AD26 lda regbank+15
+AD28 ldy #$00
+AD2A sta (regsave)
+AD2C lda regbank+18
+AD2E ldx regbank+18+1
+AD30 sta regsave
+AD32 stx regsave+1
+AD34 ina
+AD35 bne L2BDA
+AD37 inx
+AD38 L2BDA:
+AD38 sta regbank+18
+AD3A stx regbank+18+1
+AD3C lda regbank+15
+AD3E sta (regsave)
+AD40 stz regbank+12
+AD42 ldx #$00
+AD44 L2F68:
+AD44 lda regbank+12
+AD46 cmp regbank+15
+AD48 txa
+AD49 jcs L2F6B
+AD4E ina
+AD4F sta regbank+14
+AD51 lda (regbank+16)
+AD53 sta regbank+13
+AD55 lda regbank+16
+AD57 sec
+AD58 sbc #$00
+AD5A sta regbank+16
+AD5C lda regbank+16+1
+AD5E sbc #$01
+AD60 sta regbank+16+1
+AD62 stz regbank+11
+AD64 L2F69:
+AD64 lda regbank+11
+AD66 jsr pusha0
+AD69 lda regbank+15
+AD6B sec
+AD6C sbc #$01
+AD6E bcs L2BF1
+AD70 ldx #$FF
+AD72 L2BF1:
+AD72 jsr tosicmp
+AD75 bcs L2BEB
+AD77 lda (regbank+16)
+AD79 cmp regbank+13
+AD7B bne L2BF3
+AD7D inc regbank+14
+AD7F bra L2BF6
+AD81 L2BF3:
+AD81 lda regbank+18
+AD83 ldx regbank+18+1
+AD85 sta regsave
+AD87 stx regsave+1
+AD89 ina
+AD8A bne L2BF8
+AD8C inx
+AD8D L2BF8:
+AD8D sta regbank+18
+AD8F stx regbank+18+1
+AD91 lda regbank+14
+AD93 sta (regsave)
+AD95 lda regbank+18
+AD97 ldx regbank+18+1
+AD99 sta regsave
+AD9B stx regsave+1
+AD9D ina
+AD9E bne L2BFB
+ADA0 inx
+ADA1 L2BFB:
+ADA1 sta regbank+18
+ADA3 stx regbank+18+1
+ADA5 lda regbank+13
+ADA7 sta (regsave)
+ADA9 lda #$01
+ADAB sta regbank+14
+ADAD lda (regbank+16)
+ADAF sta regbank+13
+ADB1 L2BF6:
+ADB1 lda regbank+16
+ADB3 sec
+ADB4 sbc #$00
+ADB6 sta regbank+16
+ADB8 lda regbank+16+1
+ADBA sbc #$01
+ADBC sta regbank+16+1
+ADBE inc regbank+11
+ADC0 bra L2F69
+ADC2 L2BEB:
+ADC2 lda regbank+18
+ADC4 ldx regbank+18+1
+ADC6 sta regsave
+ADC8 stx regsave+1
+ADCA ina
+ADCB bne L2C04
+ADCD inx
+ADCE L2C04:
+ADCE sta regbank+18
+ADD0 stx regbank+18+1
+ADD2 lda regbank+14
+ADD4 ldy #$00
+ADD6 sta (regsave)
+ADD8 lda regbank+18
+ADDA ldx regbank+18+1
+ADDC sta regsave
+ADDE stx regsave+1
+ADE0 ina
+ADE1 bne L2C07
+ADE3 inx
+ADE4 L2C07:
+ADE4 sta regbank+18
+ADE6 stx regbank+18+1
+ADE8 lda regbank+13
+ADEA sta (regsave)
+ADEC lda regbank+18
+ADEE ldx regbank+18+1
+ADF0 sta regsave
+ADF2 stx regsave+1
+ADF4 ina
+ADF5 bne L2C0A
+ADF7 inx
+ADF8 L2C0A:
+ADF8 sta regbank+18
+ADFA stx regbank+18+1
+ADFC tya
+ADFD sta (regsave)
+ADFF ina
+AE00 clc
+AE01 adc regbank+16
+AE03 sta regbank+16
+AE05 lda regbank+15
+AE07 adc regbank+16+1
+AE09 sta regbank+16+1
+AE0B ldx #$00
+AE0D inc regbank+12
+AE0F jmp L2F68
+AE12 L2F6B:
+AE12 pha
+AE13 L2C10:
+AE13 lda (sp),y
+AE15 sta regbank+11,y
+AE18 iny
+AE19 cpy #$09
+AE1B bne L2C10
+AE1D pla
+AE1E ldy #$0D
+AE20 jmp addysp
+EFBD EnableBankROM:
+EFBD lda _RAM_BANK3+1
+EFC0 sta ptr1+1
+EFC2 lda _RAM_BANK3
+EFC5 sta ptr1
+EFC7 lda #$02
+EFC9 sta (ptr1)
+EFCB sta _bank_3_copy
+EFCE rts
+EFCF CopyTile1bpp:
+EFCF jsr pushax
+EFD2 lda regbank+18
+EFD4 ldx regbank+19
+EFD6 jsr pushax
+EFD9 ldy #$05
+EFDB lda (sp),y
+EFDD sta tmp1
+EFDF dey
+EFE0 lda (sp),y
+EFE2 asl a
+EFE3 rol tmp1
+EFE5 clc
+EFE6 adc #<(_tiles)
+EFE8 sta ptr1
+EFEA lda tmp1
+EFEC adc #>(_tiles)
+EFEE sta ptr1+1
+EFF0 ldy #$01
+EFF2 lda (ptr1),y
+EFF4 tax
+EFF5 lda (ptr1)
+EFF7 sta regbank+18
+EFF9 stx regbank+18+1
+EFFB lda regbank+16
+EFFD ldx regbank+17
+EFFF jsr pushax
+F002 ldy #$05
+F004 lda (sp),y
+F006 sta tmp1
+F008 dey
+F009 lda (sp),y
+F00B asl a
+F00C rol tmp1
+F00E clc
+F00F adc #<(_tiles)
+F011 sta ptr1
+F013 lda tmp1
+F015 adc #>(_tiles)
+F017 sta ptr1+1
+F019 ldy #$01
+F01B lda (ptr1),y
+F01D tax
+F01E lda (ptr1)
+F020 sta regbank+16
+F022 stx regbank+16+1
+F024 lda regbank+15
+F026 jsr pusha
+F029 lda regbank+14
+F02B jsr pusha
+F02E jsr decsp2
+F031 lda (regbank+16)
+F033 lsr a
+F034 lsr a
+F035 lsr a
+F036 sta regbank+15
+F038 lda (regbank+16)
+F03A jsr pusha0
+F03D lda regbank+15
+F03F jsr shlax3
+F042 jsr tossubax
+F045 cpx #$00
+F047 bne L2F6C
+F049 cmp #$00
+F04B beq L1E04
+F04D L2F6C:
+F04D inc regbank+15
+F04F L1E04:
+F04F ldy #$01
+F051 lda (regbank+16),y
+F053 sta regbank+14
+F055 lda #$00
+F057 sta (sp)
+F059 ldy #$01
+F05B sta (sp),y
+F05D L1E0C:
+F05D jsr pushw0sp
+F060 lda regbank+15
+F062 jsr pusha0
+F065 lda regbank+14
+F067 jsr tosumula0
+F06A clc
+F06B adc #$03
+F06D bcc L1E13
+F06F inx
+F070 L1E13:
+F070 jsr tosicmp
+F073 bcs L1E0D
+F075 lda regbank+18
+F077 ldx regbank+18+1
+F079 sta regsave
+F07B stx regsave+1
+F07D ina
+F07E bne L1E17
+F080 inx
+F081 L1E17:
+F081 sta regbank+18
+F083 stx regbank+18+1
+F085 lda regsave
+F087 ldx regsave+1
+F089 jsr pushax
+F08C lda regbank+16
+F08E ldx regbank+16+1
+F090 sta regsave
+F092 stx regsave+1
+F094 ina
+F095 bne L1E19
+F097 inx
+F098 L1E19:
+F098 sta regbank+16
+F09A stx regbank+16+1
+F09C ldy #$00
+F09E lda (regsave)
+F0A0 jsr staspidx
+F0A3 ldy #$01
+F0A5 lda (sp),y
+F0A7 tax
+F0A8 lda (sp)
+F0AA ina
+F0AB bne L1E15
+F0AD inx
+F0AE L1E15:
+F0AE jsr stax0sp
+F0B1 bra L1E0C
+F0B3 L1E0D:
+F0B3 ldx #$00
+F0B5 txa
+F0B6 pha
+F0B7 ldy #$02
+F0B9 L1E1B:
+F0B9 lda (sp),y
+F0BB sta regbank+12,y
+F0BE iny
+F0BF cpy #$08
+F0C1 bne L1E1B
+F0C3 pla
+F0C4 ldy #$0C
+F0C6 jmp addysp
+F0C9 CheckLavaExit:
+F0C9 ldx #$00
+F0CB lda _display_Y
+F0CE clc
+F0CF adc _hero_Y
+F0D2 bcc L2F6D
+F0D4 inx
+F0D5 L2F6D:
+F0D5 jsr pushax
+F0D8 lda #$28
+F0DA jsr tosmula0
+F0DD clc
+F0DE adc #<(_map_data)
+F0E0 sta ptr1
+F0E2 txa
+F0E3 adc #>(_map_data)
+F0E5 sta ptr1+1
+F0E7 ldx #$00
+F0E9 lda _display_X
+F0EC clc
+F0ED adc _hero_X
+F0F0 bcc L2F71
+F0F2 inx
+F0F3 clc
+F0F4 L2F71:
+F0F4 adc ptr1
+F0F6 sta ptr1
+F0F8 txa
+F0F9 adc ptr1+1
+F0FB sta ptr1+1
+F0FD ldx #$00
+F0FF lda (ptr1)
+F101 cmp #$05
+F103 bne L2F73
+F105 lda _hero_Lava_Dmg
+F108 eor #$FF
+F10A sec
+F10B adc _hero_HP
+F10E sta _hero_HP
+F111 lda _hero_Lava_Dmg+1
+F114 eor #$FF
+F116 adc _hero_HP+1
+F119 sta _hero_HP+1
+F11C jsr _CheckHP
+F11F ldx #$00
+F121 lda #$01
+F123 rts
+F124 L2F73:
+F124 lda _display_Y
+F127 clc
+F128 adc _hero_Y
+F12B bcc L2F6F
+F12D inx
+F12E L2F6F:
+F12E jsr pushax
+F131 lda #$28
+F133 jsr tosmula0
+F136 clc
+F137 adc #<(_map_data)
+F139 sta ptr1
+F13B txa
+F13C adc #>(_map_data)
+F13E sta ptr1+1
+F140 ldx #$00
+F142 lda _display_X
+F145 clc
+F146 adc _hero_X
+F149 bcc L2F72
+F14B inx
+F14C clc
+F14D L2F72:
+F14D adc ptr1
+F14F sta ptr1
+F151 txa
+F152 adc ptr1+1
+F154 sta ptr1+1
+F156 ldx #$00
+F158 lda (ptr1)
+F15A cmp #$06
+F15C bne L2F74
+F15E jsr _PushBank3
+F161 jsr _MakeMap
+F164 jsr _LoadMonsters
+F167 jsr _LoadCrystals
+F16A jsr _PopBank3
+F16D jsr _ResetGame
+F170 ldx #$00
+F172 lda #$01
+F174 rts
+F175 L2F74:
+F175 txa
+F176 rts
+AE23 InitHero:
+AE23 jsr decsp1
+AE26 stz _hero_Exp
+AE29 lda #$28
+AE2B sta _hero_Exp_Max
+AE2E stz _hero_HP_Upgrade
+AE31 stz _hero_Batt_Upgrade
+AE34 stz _hero_Dmg_Upgrade
+AE37 lda #$01
+AE39 sta _hero_Level
+AE3C stz _hero_Red
+AE3F stz _hero_Blue
+AE42 stz _hero_Yellow
+AE45 stz _hero_Points
+AE48 stz _hero_activity
+AE4B stz _hero_equipped
+AE4E lda #$05
+AE50 sta _hero_equipped+1
+AE53 lda #$0A
+AE55 sta _hero_equipped+2
+AE58 lda #$0F
+AE5A sta _hero_equipped+3
+AE5D lda #$14
+AE5F sta _hero_equipped+4
+AE62 lda #$00
+AE64 L2F7B:
+AE64 sta (sp)
+AE66 cmp #$1E
+AE68 bcs L2F77
+AE6A lda (sp)
+AE6C tay
+AE6D lda #$20
+AE6F sta _hero_inventory,y
+AE72 lda (sp)
+AE74 ina
+AE75 bra L2F7B
+AE77 L2F77:
+AE77 lda #$00
+AE79 sta (sp)
+AE7B tax
+AE7C L2F79:
+AE7C lda (sp)
+AE7E cmp #$0F
+AE80 bcs L2F7A
+AE82 tay
+AE83 lda #$00
+AE85 sta _skill_list,y
+AE88 lda (sp)
+AE8A ina
+AE8B sta (sp)
+AE8D bra L2F79
+AE8F L2F7A:
+AE8F lda #$00
+AE91 jmp incsp1
+AE94 LoadStrings:
+AE94 jsr decsp1
+AE97 lda #$00
+AE99 L2F8E:
+AE99 sta (sp)
+AE9B cmp #$0F
+AE9D bcs L2F8A
+AE9F ldx #$00
+AEA1 lda (sp)
+AEA3 asl a
+AEA4 bcc L2F82
+AEA6 inx
+AEA7 clc
+AEA8 L2F82:
+AEA8 adc #<(_skill_descriptions)
+AEAA sta ptr1
+AEAC txa
+AEAD adc #>(_skill_descriptions)
+AEAF sta ptr1+1
+AEB1 ldy #$01
+AEB3 lda (ptr1),y
+AEB5 tax
+AEB6 lda (ptr1)
+AEB8 jsr pushax
+AEBB ldy #$02
+AEBD ldx #$00
+AEBF lda (sp),y
+AEC1 asl a
+AEC2 bcc L2F83
+AEC4 inx
+AEC5 clc
+AEC6 L2F83:
+AEC6 adc #<(_skill_descriptions_raw)
+AEC8 sta ptr1
+AECA txa
+AECB adc #>(_skill_descriptions_raw)
+AECD sta ptr1+1
+AECF dey
+AED0 lda (ptr1),y
+AED2 tax
+AED3 lda (ptr1)
+AED5 jsr _CopyString
+AED8 ldx #$00
+AEDA lda (sp)
+AEDC asl a
+AEDD bcc L2F84
+AEDF inx
+AEE0 clc
+AEE1 L2F84:
+AEE1 adc #<(_skill_titles)
+AEE3 sta ptr1
+AEE5 txa
+AEE6 adc #>(_skill_titles)
+AEE8 sta ptr1+1
+AEEA ldy #$01
+AEEC lda (ptr1),y
+AEEE tax
+AEEF lda (ptr1)
+AEF1 jsr pushax
+AEF4 ldy #$02
+AEF6 ldx #$00
+AEF8 lda (sp),y
+AEFA asl a
+AEFB bcc L2F85
+AEFD inx
+AEFE clc
+AEFF L2F85:
+AEFF adc #<(_skill_titles_raw)
+AF01 sta ptr1
+AF03 txa
+AF04 adc #>(_skill_titles_raw)
+AF06 sta ptr1+1
+AF08 dey
+AF09 lda (ptr1),y
+AF0B tax
+AF0C lda (ptr1)
+AF0E jsr _CopyString
+AF11 lda (sp)
+AF13 ina
+AF14 bra L2F8E
+AF16 L2F8A:
+AF16 lda #$00
+AF18 sta (sp)
+AF1A tax
+AF1B L2F8C:
+AF1B lda (sp)
+AF1D cmp #$19
+AF1F bcs L2F8D
+AF21 asl a
+AF22 bcc L2F86
+AF24 inx
+AF25 clc
+AF26 L2F86:
+AF26 adc #<(_item_titles)
+AF28 sta ptr1
+AF2A txa
+AF2B adc #>(_item_titles)
+AF2D sta ptr1+1
+AF2F ldy #$01
+AF31 lda (ptr1),y
+AF33 tax
+AF34 lda (ptr1)
+AF36 jsr pushax
+AF39 ldy #$02
+AF3B ldx #$00
+AF3D lda (sp),y
+AF3F asl a
+AF40 bcc L2F87
+AF42 inx
+AF43 clc
+AF44 L2F87:
+AF44 adc #<(_item_titles_raw)
+AF46 sta ptr1
+AF48 txa
+AF49 adc #>(_item_titles_raw)
+AF4B sta ptr1+1
+AF4D dey
+AF4E lda (ptr1),y
+AF50 tax
+AF51 lda (ptr1)
+AF53 jsr _CopyString
+AF56 ldx #$00
+AF58 lda (sp)
+AF5A ina
+AF5B sta (sp)
+AF5D bra L2F8C
+AF5F L2F8D:
+AF5F txa
+AF60 jmp incsp1
